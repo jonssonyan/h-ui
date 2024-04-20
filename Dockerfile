@@ -3,7 +3,7 @@ FROM golang:1.20 as builder
 WORKDIR /app
 COPY . .
 
-RUN go build -o h-ui -ldflags="-s -w" .
+RUN go build -trimpath -ldflags -o h-ui -ldflags="-s -w"
 
 FROM alpine:3.15
 
