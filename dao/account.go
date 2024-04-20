@@ -3,6 +3,7 @@ package dao
 import (
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
@@ -12,14 +13,16 @@ import (
 
 func SaveAccount(account entity.Account) (int64, error) {
 	if tx := sqliteDB.Save(&account); tx.Error != nil {
-		return 0, tx.Error
+		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		return 0, errors.New(constant.SysError)
 	}
 	return *account.Id, nil
 }
 
 func DeleteAccount(ids []int64) error {
 	if tx := sqliteDB.Where("id in ?", ids).Delete(&entity.Account{}); tx.Error != nil {
-		return tx.Error
+		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		return errors.New(constant.SysError)
 	}
 	return nil
 }
@@ -30,7 +33,8 @@ func UpdateAccount(ids []int64, updates map[string]interface{}) error {
 		if tx := sqliteDB.Model(&entity.Account{}).
 			Where("id in ?", ids).
 			Updates(updates); tx.Error != nil {
-			return tx.Error
+			logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+			return errors.New(constant.SysError)
 		}
 	}
 	return nil
@@ -43,7 +47,8 @@ func GetAccount(query interface{}, args ...interface{}) (entity.Account, error) 
 		if tx.Error == gorm.ErrRecordNotFound {
 			return account, errors.New(constant.AccountNotExist)
 		}
-		return account, tx.Error
+		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		return account, errors.New(constant.SysError)
 	}
 	return account, nil
 }
@@ -62,7 +67,8 @@ func PageAccount(accountPageDto dto.AccountPageDto) ([]entity.Account, int64, er
 	}
 	tx.Count(&total)
 	if tx := tx.Find(&accounts); tx.Error != nil {
-		return nil, 0, tx.Error
+		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		return accounts, 0, errors.New(constant.SysError)
 	}
 	return accounts, total, nil
 }

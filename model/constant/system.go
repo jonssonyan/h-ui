@@ -5,6 +5,5 @@ const (
 	ProxyDir    = "proxy/"
 	SqliteDBDir = "data/"
 
-	SqliteDBPath  = "data/h_ui.db"
-	Hysteria2Path = "proxy/hysteria2"
+	SqliteDBPath = "data/h_ui.db"
 )

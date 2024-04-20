@@ -9,20 +9,19 @@ import (
 	"h-ui/middleware"
 	"h-ui/model/constant"
 	"h-ui/router"
-	"h-ui/service"
 	"h-ui/util"
 	"os"
 )
 
 func main() {
-	webServerPort, err := service.GetConfig(constant.WebServerPort)
+	config, err := dao.GetConfig("key = ?", constant.WebServerPort)
 	if err != nil {
 		logrus.Errorf("webServerPort get err: %v", err)
 		panic(err)
 	}
 	r := gin.Default()
 	router.Router(r)
-	_ = r.Run(fmt.Sprintf(":%s", webServerPort))
+	_ = r.Run(fmt.Sprintf(":%s", *config.Value))
 	defer releaseResource()
 }
 
@@ -55,11 +54,11 @@ func initFile() {
 		if !util.Exists(item) {
 			func() {
 				file, err := os.Create(item)
-				defer file.Close()
 				if err != nil {
 					logrus.Errorf("%s file create err: %v", item, err)
 					panic(err)
 				}
+				defer file.Close()
 			}()
 		}
 	}

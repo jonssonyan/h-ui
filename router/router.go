@@ -10,6 +10,7 @@ func Router(router *gin.Engine) {
 	api := router.Group("/hui")
 	{
 		initAccountRouter(api)
+		initConfigRouter(api)
 		initHysteria2Router(api)
 	}
 }

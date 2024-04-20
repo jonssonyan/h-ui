@@ -8,6 +8,6 @@ import (
 func initAccountRouter(accountApi *gin.RouterGroup) {
 	account := accountApi.Group("/account")
 	{
-		account.POST("/pageAccount", controller.PageAccount)
+		account.GET("/pageAccount", controller.PageAccount)
 	}
 }

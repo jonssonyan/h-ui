@@ -77,6 +77,7 @@ func CloseSqliteDB() {
 		db, err := sqliteDB.DB()
 		if err != nil {
 			logrus.Errorf("sqlite err: %v", err)
+			return
 		}
 		if err = db.Close(); err != nil {
 			logrus.Errorf("sqlite close err: %v", err)

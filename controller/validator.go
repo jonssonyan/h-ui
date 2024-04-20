@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"h-ui/model/constant"
@@ -35,7 +35,7 @@ func validateField[T interface{}](c *gin.Context, field T) (T, error) {
 	}
 	if err := validate.Struct(&field); err != nil {
 		vo.Fail(constant.InvalidError, c)
-		return field, errors.New(constant.InvalidError)
+		return field, fmt.Errorf(constant.InvalidError)
 	}
 	return field, nil
 }
