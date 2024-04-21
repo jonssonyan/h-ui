@@ -1,9 +1,9 @@
 package constant
 
 const (
-	WebServerPort     = "WebServerPort"
-	Hysteria2Port     = "Hysteria2Port"
-	Hysteria2ApiPort  = "Hysteria2ApiPort"
-	Hysteria2CertPath = "Hysteria2CertPath"
-	Hysteria2KeyPath  = "Hysteria2KeyPath"
+	HUIWebPort        = "H_UI_WEB_PORT"
+	Hysteria2Port     = "HYSTERIA2_PORT"
+	Hysteria2ApiPort  = "HYSTERIA2_API_PORT"
+	Hysteria2CertPath = "HYSTERIA2_CERT_PATH"
+	Hysteria2KeyPath  = "HYSTERIA2_KEY_PATH"
 )
