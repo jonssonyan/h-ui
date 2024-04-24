@@ -1,4 +1,4 @@
-package frontend
+package main
 
 import (
 	"embed"
@@ -8,13 +8,13 @@ import (
 	"net/http"
 )
 
-//go:embed build/*
+//go:embed frontend/build/*
 var staticFiles embed.FS
 
 func InitFrontend(router *gin.Engine) {
 
 	router.GET("/", func(c *gin.Context) {
-		indexHTML, err := staticFiles.ReadFile("build/index.html")
+		indexHTML, err := staticFiles.ReadFile("frontend/build/index.html")
 		if err != nil {
 			c.String(http.StatusInternalServerError, "Internal Server Error")
 			return
@@ -36,7 +36,7 @@ func InitFrontend(router *gin.Engine) {
 }
 
 func getStaticFS() fs.FS {
-	staticFs, _ := fs.Sub(staticFiles, "build/static")
+	staticFs, _ := fs.Sub(staticFiles, "frontend/build/static")
 	return staticFs
 }
 
