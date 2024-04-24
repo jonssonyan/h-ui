@@ -41,7 +41,7 @@ func getStaticFS() fs.FS {
 }
 
 func getFileContent(filePath string) ([]byte, error) {
-	fileContent, err := staticFiles.ReadFile(fmt.Sprintf("build%s", filePath))
+	fileContent, err := staticFiles.ReadFile(fmt.Sprintf("frontend/build%s", filePath))
 	if err != nil {
 		return nil, err
 	}
