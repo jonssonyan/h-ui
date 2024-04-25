@@ -7,6 +7,10 @@ import (
 	"h-ui/service"
 )
 
+func Login(c *gin.Context) {
+
+}
+
 func PageAccount(c *gin.Context) {
 	accountPageDto, err := validateField(c, dto.AccountPageDto{})
 	if err != nil {

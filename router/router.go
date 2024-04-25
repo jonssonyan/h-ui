@@ -11,10 +11,17 @@ func Router(router *gin.Engine) {
 
 	frontend.InitFrontend(router)
 
-	api := router.Group("/hui")
+	authApi := router.Group("/hui")
 	{
-		initAccountRouter(api)
-		initConfigRouter(api)
-		initHysteria2Router(api)
+		initAuthRouter(authApi)
+	}
+
+	router.Use(middleware.JWTHandler())
+
+	huiApi := router.Group("/hui")
+	{
+		initAccountRouter(huiApi)
+		initConfigRouter(huiApi)
+		initHysteria2Router(huiApi)
 	}
 }
