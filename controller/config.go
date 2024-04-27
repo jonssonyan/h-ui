@@ -31,3 +31,12 @@ func ListConfig(c *gin.Context) {
 	}
 	vo.Success(configs, c)
 }
+
+func GetHysteria2Config(c *gin.Context) {
+	serverConfig, err := service.GetHysteria2Config()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(serverConfig, c)
+}

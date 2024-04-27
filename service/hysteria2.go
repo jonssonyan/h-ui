@@ -2,9 +2,7 @@ package service
 
 import (
 	"github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v3"
 	"h-ui/dao"
-	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/proxy"
 	"h-ui/util"
@@ -17,18 +15,6 @@ func Hysteria2Auth(pass string) (string, error) {
 		return "", err
 	}
 	return *account.Username, nil
-}
-
-func GetHysteria2Config() (bo.Hysteria2ServerConfig, error) {
-	var serverConfig bo.Hysteria2ServerConfig
-	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
-	if err != nil {
-		return serverConfig, err
-	}
-	if err := yaml.Unmarshal([]byte(*config.Value), &serverConfig); err != nil {
-		return serverConfig, err
-	}
-	return serverConfig, nil
 }
 
 func SetHysteria2ConfigYAML() error {
