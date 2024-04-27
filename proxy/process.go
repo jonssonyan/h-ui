@@ -18,8 +18,8 @@ func (p *process) GetCmdMap() *sync.Map {
 	return p.cmdMap
 }
 
-func (p *process) IsRunning(apiPort string) bool {
-	cmd, ok := p.cmdMap.Load(apiPort)
+func (p *process) IsRunning(port string) bool {
+	cmd, ok := p.cmdMap.Load(port)
 	if ok {
 		if cmd == nil || cmd.(*exec.Cmd).Process == nil {
 			return false
@@ -31,11 +31,11 @@ func (p *process) IsRunning(apiPort string) bool {
 	return false
 }
 
-func (p *process) Stop(apiPort string, removeFile bool) error {
+func (p *process) Stop(port string, removeFile bool) error {
 	defer p.mutex.Unlock()
 	if p.mutex.TryLock() {
-		if !p.IsRunning(apiPort) {
-			logrus.Errorf("process has been stoped. apiPort: %s", apiPort)
+		if !p.IsRunning(port) {
+			logrus.Errorf("process has been stoped. port: %s", port)
 			if removeFile {
 				if err := util.RemoveFile(constant.Hysteria2ConfigPath); err != nil {
 					return err
@@ -43,13 +43,13 @@ func (p *process) Stop(apiPort string, removeFile bool) error {
 			}
 			return nil
 		}
-		cmd, ok := p.cmdMap.Load(apiPort)
+		cmd, ok := p.cmdMap.Load(port)
 		if ok {
 			if err := cmd.(*exec.Cmd).Process.Kill(); err != nil {
-				logrus.Errorf("stop process error. apiPort: %s err: %v", apiPort, err)
+				logrus.Errorf("stop process error. port: %s err: %v", port, err)
 				return errors.New(constant.ProcessStopError)
 			}
-			p.cmdMap.Delete(apiPort)
+			p.cmdMap.Delete(port)
 			if removeFile {
 				if err := util.RemoveFile(constant.Hysteria2ConfigPath); err != nil {
 					return err
@@ -57,7 +57,7 @@ func (p *process) Stop(apiPort string, removeFile bool) error {
 			}
 			return nil
 		}
-		logrus.Errorf("stop process error apiPort: %s err: process not found", apiPort)
+		logrus.Errorf("stop process error port: %s err: process not found", port)
 		return errors.New(constant.ProcessStopError)
 	}
 	logrus.Errorf("stop process error err: lock not acquired")

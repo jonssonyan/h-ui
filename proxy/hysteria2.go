@@ -34,10 +34,10 @@ func (h *Hysteria2Process) StopHysteria2Instance() error {
 	return nil
 }
 
-func (h *Hysteria2Process) StartHysteria2(apiPort string) error {
+func (h *Hysteria2Process) StartHysteria2(port string) error {
 	defer h.mutex.Unlock()
 	if h.mutex.TryLock() {
-		if h.IsRunning(apiPort) {
+		if h.IsRunning(port) {
 			return nil
 		}
 		binaryFilePath := util.GetHysteria2BinPath()
@@ -57,7 +57,7 @@ func (h *Hysteria2Process) StartHysteria2(apiPort string) error {
 			logrus.Errorf("start hysteria2 error err: %v", err)
 			return errors.New(constant.Hysteria2StartError)
 		}
-		h.cmdMap.Store(apiPort, cmd)
+		h.cmdMap.Store(port, cmd)
 
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
@@ -68,11 +68,11 @@ func (h *Hysteria2Process) StartHysteria2(apiPort string) error {
 			case err := <-done:
 				if err != nil {
 					logrus.Errorf("hysteria2 process wait error err: %v", err)
-					h.releaseProcess(apiPort)
+					h.releaseProcess(port)
 				}
 			case <-ctx.Done():
 				logrus.Errorf("hysteria2 process wait timeout")
-				h.releaseProcess(apiPort)
+				h.releaseProcess(port)
 			}
 		}()
 		return nil
@@ -81,12 +81,12 @@ func (h *Hysteria2Process) StartHysteria2(apiPort string) error {
 	return errors.New(constant.Hysteria2StartError)
 }
 
-func (h *Hysteria2Process) releaseProcess(apiPort string) {
-	load, ok := NewHysteria2Instance().GetCmdMap().Load(apiPort)
+func (h *Hysteria2Process) releaseProcess(port string) {
+	load, ok := NewHysteria2Instance().GetCmdMap().Load(port)
 	if ok {
 		cmd := load.(*exec.Cmd)
 		if !cmd.ProcessState.Success() {
-			h.cmdMap.Delete(apiPort)
+			h.cmdMap.Delete(port)
 			if err := cmd.Process.Release(); err != nil {
 				logrus.Errorf("hysteria2 process release error err: %v", err)
 			}
