@@ -59,3 +59,8 @@ func InitHysteria2() {
 		}
 	}
 }
+
+func Hysteria2Kick(usernames []string) error {
+	// todo
+	return nil
+}

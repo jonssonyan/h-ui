@@ -19,3 +19,20 @@ func Hysteria2Auth(c *gin.Context) {
 	}
 	vo.Hysteria2AuthSuccess(username, c)
 }
+
+func ListOnlineUser() {
+
+}
+
+func Hysteria2Kick(c *gin.Context) {
+	hysteria2KickDto, err := validateField(c, dto.Hysteria2KickDto{})
+	if err != nil {
+		return
+	}
+	err = service.Hysteria2Kick(hysteria2KickDto.Usernames)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
+}
