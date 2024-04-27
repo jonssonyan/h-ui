@@ -8,7 +8,16 @@ import (
 )
 
 func Login(c *gin.Context) {
-
+	loginDto, err := validateField(c, dto.LoginDto{})
+	if err != nil {
+		return
+	}
+	token, err := service.Login(*loginDto.Username, *loginDto.Pass)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(token, c)
 }
 
 func PageAccount(c *gin.Context) {
