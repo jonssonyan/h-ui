@@ -3,170 +3,170 @@ package bo
 import "time"
 
 type Hysteria2ServerConfig struct {
-	Listen                string                      `mapstructure:"listen"`
-	Obfs                  serverConfigObfs            `mapstructure:"obfs"`
-	TLS                   *serverConfigTLS            `mapstructure:"tls"`
-	ACME                  *serverConfigACME           `mapstructure:"acme"`
-	QUIC                  serverConfigQUIC            `mapstructure:"quic"`
-	Bandwidth             serverConfigBandwidth       `mapstructure:"bandwidth"`
-	IgnoreClientBandwidth bool                        `mapstructure:"ignoreClientBandwidth"`
-	SpeedTest             bool                        `mapstructure:"speedTest"`
-	DisableUDP            bool                        `mapstructure:"disableUDP"`
-	UDPIdleTimeout        time.Duration               `mapstructure:"udpIdleTimeout"`
-	Auth                  serverConfigAuth            `mapstructure:"auth"`
-	Resolver              serverConfigResolver        `mapstructure:"resolver"`
-	ACL                   serverConfigACL             `mapstructure:"acl"`
-	Outbounds             []serverConfigOutboundEntry `mapstructure:"outbounds"`
-	TrafficStats          serverConfigTrafficStats    `mapstructure:"trafficStats"`
-	Masquerade            serverConfigMasquerade      `mapstructure:"masquerade"`
+	Listen                string                      `yaml:"listen" json:"listen"`
+	Obfs                  serverConfigObfs            `yaml:"obfs" json:"obfs"`
+	TLS                   *serverConfigTLS            `yaml:"tls" json:"tls"`
+	ACME                  *serverConfigACME           `yaml:"acme" json:"acme"`
+	QUIC                  serverConfigQUIC            `yaml:"quic" json:"quic"`
+	Bandwidth             serverConfigBandwidth       `yaml:"bandwidth" json:"bandwidth"`
+	IgnoreClientBandwidth bool                        `yaml:"ignoreClientBandwidth" json:"ignoreClientBandwidth"`
+	SpeedTest             bool                        `yaml:"speedTest" json:"speedTest"`
+	DisableUDP            bool                        `yaml:"disableUDP" json:"disableUDP"`
+	UDPIdleTimeout        time.Duration               `yaml:"udpIdleTimeout" json:"udpIdleTimeout"`
+	Auth                  serverConfigAuth            `yaml:"auth" json:"auth"`
+	Resolver              serverConfigResolver        `yaml:"resolver" json:"resolver"`
+	ACL                   serverConfigACL             `yaml:"acl" json:"acl"`
+	Outbounds             []serverConfigOutboundEntry `yaml:"outbounds" json:"outbounds"`
+	TrafficStats          serverConfigTrafficStats    `yaml:"trafficStats" json:"trafficStats"`
+	Masquerade            serverConfigMasquerade      `yaml:"masquerade" json:"masquerade"`
 }
 
 type serverConfigObfsSalamander struct {
-	Password string `mapstructure:"password"`
+	Password string `yaml:"password" json:"password"`
 }
 
 type serverConfigObfs struct {
-	Type       string                     `mapstructure:"type"`
-	Salamander serverConfigObfsSalamander `mapstructure:"salamander"`
+	Type       string                     `yaml:"type" json:"type"`
+	Salamander serverConfigObfsSalamander `yaml:"salamander" json:"salamander"`
 }
 
 type serverConfigTLS struct {
-	Cert string `mapstructure:"cert"`
-	Key  string `mapstructure:"key"`
+	Cert string `yaml:"cert" json:"cert"`
+	Key  string `yaml:"key"  json:"key"`
 }
 
 type serverConfigACME struct {
-	Domains        []string `mapstructure:"domains"`
-	Email          string   `mapstructure:"email"`
-	CA             string   `mapstructure:"ca"`
-	DisableHTTP    bool     `mapstructure:"disableHTTP"`
-	DisableTLSALPN bool     `mapstructure:"disableTLSALPN"`
-	ListenHost     string   `mapstructure:"listenHost"`
-	AltHTTPPort    int      `mapstructure:"altHTTPPort"`
-	AltTLSALPNPort int      `mapstructure:"altTLSALPNPort"`
-	Dir            string   `mapstructure:"dir"`
+	Domains        []string `yaml:"domains" json:"domains"`
+	Email          string   `yaml:"email" json:"email"`
+	CA             string   `yaml:"ca" json:"ca"`
+	DisableHTTP    bool     `yaml:"disableHTTP" json:"disableHTTP"`
+	DisableTLSALPN bool     `yaml:"disableTLSALPN" json:"disableTLSALPN"`
+	ListenHost     string   `yaml:"listenHost" json:"listenHost"`
+	AltHTTPPort    int      `yaml:"altHTTPPort" json:"altHTTPPort"`
+	AltTLSALPNPort int      `yaml:"altTLSALPNPort" json:"altTLSALPNPort"`
+	Dir            string   `yaml:"dir" json:"dir"`
 }
 
 type serverConfigQUIC struct {
-	InitStreamReceiveWindow     uint64        `mapstructure:"initStreamReceiveWindow"`
-	MaxStreamReceiveWindow      uint64        `mapstructure:"maxStreamReceiveWindow"`
-	InitConnectionReceiveWindow uint64        `mapstructure:"initConnReceiveWindow"`
-	MaxConnectionReceiveWindow  uint64        `mapstructure:"maxConnReceiveWindow"`
-	MaxIdleTimeout              time.Duration `mapstructure:"maxIdleTimeout"`
-	MaxIncomingStreams          int64         `mapstructure:"maxIncomingStreams"`
-	DisablePathMTUDiscovery     bool          `mapstructure:"disablePathMTUDiscovery"`
+	InitStreamReceiveWindow     uint64        `yaml:"initStreamReceiveWindow" json:"initStreamReceiveWindow"`
+	MaxStreamReceiveWindow      uint64        `yaml:"maxStreamReceiveWindow" json:"maxStreamReceiveWindow"`
+	InitConnectionReceiveWindow uint64        `yaml:"initConnReceiveWindow" json:"initConnReceiveWindow"`
+	MaxConnectionReceiveWindow  uint64        `yaml:"maxConnReceiveWindow" json:"maxConnReceiveWindow"`
+	MaxIdleTimeout              time.Duration `yaml:"maxIdleTimeout" json:"maxIdleTimeout"`
+	MaxIncomingStreams          int64         `yaml:"maxIncomingStreams" json:"maxIncomingStreams"`
+	DisablePathMTUDiscovery     bool          `yaml:"disablePathMTUDiscovery" json:"disablePathMTUDiscovery"`
 }
 
 type serverConfigBandwidth struct {
-	Up   string `mapstructure:"up"`
-	Down string `mapstructure:"down"`
+	Up   string `yaml:"up" json:"up"`
+	Down string `yaml:"down" json:"down"`
 }
 
 type serverConfigAuthHTTP struct {
-	URL      string `mapstructure:"url"`
-	Insecure bool   `mapstructure:"insecure"`
+	URL      string `yaml:"url" json:"url"`
+	Insecure bool   `yaml:"insecure" json:"insecure"`
 }
 
 type serverConfigAuth struct {
-	Type     string               `mapstructure:"type"`
-	Password string               `mapstructure:"password"`
-	UserPass map[string]string    `mapstructure:"userpass"`
-	HTTP     serverConfigAuthHTTP `mapstructure:"http"`
-	Command  string               `mapstructure:"command"`
+	Type     string               `yaml:"type" json:"type"`
+	Password string               `yaml:"password" json:"password"`
+	UserPass map[string]string    `yaml:"userpass" json:"userpass"`
+	HTTP     serverConfigAuthHTTP `yaml:"http" json:"http"`
+	Command  string               `yaml:"command" json:"command"`
 }
 
 type serverConfigResolverTCP struct {
-	Addr    string        `mapstructure:"addr"`
-	Timeout time.Duration `mapstructure:"timeout"`
+	Addr    string        `yaml:"addr" json:"addr"`
+	Timeout time.Duration `yaml:"timeout" json:"timeout"`
 }
 
 type serverConfigResolverUDP struct {
-	Addr    string        `mapstructure:"addr"`
-	Timeout time.Duration `mapstructure:"timeout"`
+	Addr    string        `yaml:"addr" json:"addr"`
+	Timeout time.Duration `yaml:"timeout" json:"timeout"`
 }
 
 type serverConfigResolverTLS struct {
-	Addr     string        `mapstructure:"addr"`
-	Timeout  time.Duration `mapstructure:"timeout"`
-	SNI      string        `mapstructure:"sni"`
-	Insecure bool          `mapstructure:"insecure"`
+	Addr     string        `yaml:"addr" json:"addr"`
+	Timeout  time.Duration `yaml:"timeout" json:"timeout"`
+	SNI      string        `yaml:"sni" json:"sni"`
+	Insecure bool          `yaml:"insecure" json:"insecure"`
 }
 
 type serverConfigResolverHTTPS struct {
-	Addr     string        `mapstructure:"addr"`
-	Timeout  time.Duration `mapstructure:"timeout"`
-	SNI      string        `mapstructure:"sni"`
-	Insecure bool          `mapstructure:"insecure"`
+	Addr     string        `yaml:"addr" json:"addr"`
+	Timeout  time.Duration `yaml:"timeout" json:"timeout"`
+	SNI      string        `yaml:"sni" json:"sni"`
+	Insecure bool          `yaml:"insecure" json:"insecure"`
 }
 
 type serverConfigResolver struct {
-	Type  string                    `mapstructure:"type"`
-	TCP   serverConfigResolverTCP   `mapstructure:"tcp"`
-	UDP   serverConfigResolverUDP   `mapstructure:"udp"`
-	TLS   serverConfigResolverTLS   `mapstructure:"tls"`
-	HTTPS serverConfigResolverHTTPS `mapstructure:"https"`
+	Type  string                    `yaml:"type" json:"type"`
+	TCP   serverConfigResolverTCP   `yaml:"tcp" json:"tcp"`
+	UDP   serverConfigResolverUDP   `yaml:"udp" json:"udp"`
+	TLS   serverConfigResolverTLS   `yaml:"tls" json:"tls"`
+	HTTPS serverConfigResolverHTTPS `yaml:"https" json:"https"`
 }
 
 type serverConfigACL struct {
-	File              string        `mapstructure:"file"`
-	Inline            []string      `mapstructure:"inline"`
-	GeoIP             string        `mapstructure:"geoip"`
-	GeoSite           string        `mapstructure:"geosite"`
-	GeoUpdateInterval time.Duration `mapstructure:"geoUpdateInterval"`
+	File              string        `yaml:"file" json:"file"`
+	Inline            []string      `yaml:"inline" json:"inline"`
+	GeoIP             string        `yaml:"geoip" json:"geoip"`
+	GeoSite           string        `yaml:"geosite" json:"geosite"`
+	GeoUpdateInterval time.Duration `yaml:"geoUpdateInterval" json:"geoUpdateInterval"`
 }
 
 type serverConfigOutboundDirect struct {
-	Mode       string `mapstructure:"mode"`
-	BindIPv4   string `mapstructure:"bindIPv4"`
-	BindIPv6   string `mapstructure:"bindIPv6"`
-	BindDevice string `mapstructure:"bindDevice"`
+	Mode       string `yaml:"mode" json:"mode"`
+	BindIPv4   string `yaml:"bindIPv4" json:"bindIPv4"`
+	BindIPv6   string `yaml:"bindIPv6" json:"bindIPv6"`
+	BindDevice string `yaml:"bindDevice" json:"bindDevice"`
 }
 
 type serverConfigOutboundSOCKS5 struct {
-	Addr     string `mapstructure:"addr"`
-	Username string `mapstructure:"username"`
-	Password string `mapstructure:"password"`
+	Addr     string `yaml:"addr" json:"addr"`
+	Username string `yaml:"username" json:"username"`
+	Password string `yaml:"password" json:"password"`
 }
 
 type serverConfigOutboundHTTP struct {
-	URL      string `mapstructure:"url"`
-	Insecure bool   `mapstructure:"insecure"`
+	URL      string `yaml:"url" json:"url"`
+	Insecure bool   `yaml:"insecure" json:"insecure"`
 }
 
 type serverConfigOutboundEntry struct {
-	Name   string                     `mapstructure:"name"`
-	Type   string                     `mapstructure:"type"`
-	Direct serverConfigOutboundDirect `mapstructure:"direct"`
-	SOCKS5 serverConfigOutboundSOCKS5 `mapstructure:"socks5"`
-	HTTP   serverConfigOutboundHTTP   `mapstructure:"http"`
+	Name   string                     `yaml:"name" json:"name"`
+	Type   string                     `yaml:"type" json:"type"`
+	Direct serverConfigOutboundDirect `yaml:"direct" json:"direct"`
+	SOCKS5 serverConfigOutboundSOCKS5 `yaml:"socks5" json:"socks5"`
+	HTTP   serverConfigOutboundHTTP   `yaml:"http" json:"http"`
 }
 
 type serverConfigTrafficStats struct {
-	Listen string `mapstructure:"listen"`
-	Secret string `mapstructure:"secret"`
+	Listen string `yaml:"listen" json:"listen"`
+	Secret string `yaml:"secret" json:"secret"`
 }
 
 type serverConfigMasqueradeFile struct {
-	Dir string `mapstructure:"dir"`
+	Dir string `yaml:"dir" json:"dir"`
 }
 
 type serverConfigMasqueradeProxy struct {
-	URL         string `mapstructure:"url"`
-	RewriteHost bool   `mapstructure:"rewriteHost"`
+	URL         string `yaml:"url" json:"url"`
+	RewriteHost bool   `yaml:"rewriteHost" json:"rewriteHost"`
 }
 
 type serverConfigMasqueradeString struct {
-	Content    string            `mapstructure:"content"`
-	Headers    map[string]string `mapstructure:"headers"`
-	StatusCode int               `mapstructure:"statusCode"`
+	Content    string            `yaml:"content" json:"content"`
+	Headers    map[string]string `yaml:"headers" json:"headers"`
+	StatusCode int               `yaml:"statusCode" json:"statusCode"`
 }
 
 type serverConfigMasquerade struct {
-	Type        string                       `mapstructure:"type"`
-	File        serverConfigMasqueradeFile   `mapstructure:"file"`
-	Proxy       serverConfigMasqueradeProxy  `mapstructure:"proxy"`
-	String      serverConfigMasqueradeString `mapstructure:"string"`
-	ListenHTTP  string                       `mapstructure:"listenHTTP"`
-	ListenHTTPS string                       `mapstructure:"listenHTTPS"`
-	ForceHTTPS  bool                         `mapstructure:"forceHTTPS"`
+	Type        string                       `yaml:"type" json:"type"`
+	File        serverConfigMasqueradeFile   `yaml:"file" json:"file"`
+	Proxy       serverConfigMasqueradeProxy  `yaml:"proxy" json:"proxy"`
+	String      serverConfigMasqueradeString `yaml:"string" json:"string"`
+	ListenHTTP  string                       `yaml:"listenHTTP" json:"listenHTTP"`
+	ListenHTTPS string                       `yaml:"listenHTTPS" json:"listenHTTPS"`
+	ForceHTTPS  bool                         `yaml:"forceHTTPS" json:"forceHTTPS"`
 }
