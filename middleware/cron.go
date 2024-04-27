@@ -9,6 +9,6 @@ import (
 func InitCron() {
 	location, _ := time.LoadLocation("Asia/Shanghai")
 	c := cron.New(cron.WithLocation(location))
-	_, _ = c.AddFunc("@every 30s", service.CronHandlerAccount)
+	_, _ = c.AddFunc("@every 30s", service.CronHandleAccount)
 	c.Start()
 }

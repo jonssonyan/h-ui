@@ -4,6 +4,7 @@ create table account
         primary key autoincrement,
     username    TEXT      default '' not null,
     `pass`      TEXT      default '' not null,
+    con_pass    TEXT      default '' not null,
     quota       INTEGER   default 0  not null,
     download    INTEGER   default 0  not null,
     upload      INTEGER   default 0  not null,
@@ -17,14 +18,18 @@ create table account
 create index account_deleted_index
     on account (deleted);
 
+create index account_con_pass_index
+    on account (con_pass);
+
 create index account_pass_index
     on account (`pass`);
 
 create index account_username_index
     on account (username);
 
-INSERT INTO account (username, `pass`, quota, download, upload, expire_time, is_admin)
-VALUES ('admin', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6', -1, 0, 0, 253370736000000, 1);
+INSERT INTO account (username, `pass`, con_pass, quota, download, upload, expire_time, is_admin)
+VALUES ('admin', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6',
+        'c7591c31adf8af0b6b8ae8cbbccd8d1aaa0c7bb068f576bddb6378d5', -1, 0, 0, 253370736000000, 1);
 
 
 create table config
@@ -49,3 +54,5 @@ INSERT INTO config (key, value, remark)
 VALUES ('HYSTERIA2_ENABLE', '0', 'Hysteria2 开关');
 INSERT INTO config (key, value, remark)
 VALUES ('HYSTERIA2_CONFIG', '{}', 'Hysteria2 配置');
+INSERT INTO config (key, value, remark)
+VALUES ('HYSTERIA2_TRAFFIC_TIME', '1', 'Hysteria2 流量倍数');
