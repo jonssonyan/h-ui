@@ -9,6 +9,7 @@ import (
 	"h-ui/middleware"
 	"h-ui/model/constant"
 	"h-ui/router"
+	"h-ui/service"
 	"h-ui/util"
 	"os"
 )
@@ -31,6 +32,7 @@ func init() {
 	dao.InitSqliteDB()
 	middleware.InitCron()
 	controller.InitValidator()
+	service.InitHysteria2()
 }
 
 func releaseResource() {

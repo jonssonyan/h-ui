@@ -1,65 +1,88 @@
 package proxy
 
 import (
+	"context"
 	"errors"
 	"github.com/sirupsen/logrus"
-	"h-ui/model/constant"
-	"h-ui/util"
 	"os/exec"
 	"sync"
+	"time"
 )
 
-type process struct {
-	mutex  *sync.Mutex
-	cmdMap *sync.Map
+type Process struct {
+	mutex *sync.Mutex
+	cmd   *exec.Cmd
 }
 
-func (p *process) GetCmdMap() *sync.Map {
-	return p.cmdMap
+func (p *Process) IsRunning() bool {
+	return p.cmd != nil && p.cmd.Process != nil
 }
 
-func (p *process) IsRunning(port string) bool {
-	cmd, ok := p.cmdMap.Load(port)
-	if ok {
-		if cmd == nil || cmd.(*exec.Cmd).Process == nil {
-			return false
-		}
-		if cmd.(*exec.Cmd).ProcessState == nil {
-			return true
-		}
-	}
-	return false
-}
-
-func (p *process) Stop(port string, removeFile bool) error {
+func (p *Process) Start(name string, arg ...string) error {
 	defer p.mutex.Unlock()
 	if p.mutex.TryLock() {
-		if !p.IsRunning(port) {
-			logrus.Errorf("process has been stoped. port: %s", port)
-			if removeFile {
-				if err := util.RemoveFile(constant.Hysteria2ConfigPath); err != nil {
-					return err
-				}
-			}
+		if p.IsRunning() {
 			return nil
 		}
-		cmd, ok := p.cmdMap.Load(port)
-		if ok {
-			if err := cmd.(*exec.Cmd).Process.Kill(); err != nil {
-				logrus.Errorf("stop process error. port: %s err: %v", port, err)
-				return errors.New(constant.ProcessStopError)
-			}
-			p.cmdMap.Delete(port)
-			if removeFile {
-				if err := util.RemoveFile(constant.Hysteria2ConfigPath); err != nil {
-					return err
-				}
-			}
-			return nil
+
+		cmd := exec.Command(name, arg...)
+		if cmd.Err != nil {
+			logrus.Errorf("cmd err: %v", cmd.Err)
+			return errors.New("cmd err")
 		}
-		logrus.Errorf("stop process error port: %s err: process not found", port)
-		return errors.New(constant.ProcessStopError)
+		if err := cmd.Start(); err != nil {
+			logrus.Errorf("cmd start err: %v", err)
+			return errors.New("cmd start err")
+		}
+
+		p.cmd = cmd
+
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		done := make(chan error)
+		go func() {
+			done <- cmd.Wait()
+			select {
+			case err := <-done:
+				if err != nil {
+					logrus.Errorf("cmd wait err: %v", err)
+					_ = p.releaseProcess()
+				}
+			case <-ctx.Done():
+				logrus.Errorf("cmd wait timeout")
+				_ = p.releaseProcess()
+			}
+		}()
+		return nil
 	}
-	logrus.Errorf("stop process error err: lock not acquired")
-	return errors.New(constant.ProcessStopError)
+	logrus.Errorf("start cmd err: lock not acquired")
+	return errors.New("start cmd err")
+}
+
+func (p *Process) Stop() error {
+	defer p.mutex.Unlock()
+	if p.mutex.TryLock() {
+		if !p.IsRunning() {
+			return nil
+		}
+		if err := p.cmd.Process.Kill(); err != nil {
+			logrus.Errorf("cmd stop err: %v", err)
+			return errors.New("cmd stop err")
+		}
+		p.cmd = nil
+		return nil
+	}
+	logrus.Errorf("cmd stop err: lock not acquired")
+	return errors.New("cmd stop err")
+}
+
+func (p *Process) releaseProcess() error {
+	if p.cmd != nil && p.cmd.Process != nil {
+		if err := p.cmd.Process.Release(); err != nil {
+			logrus.Errorf("cmd release err: %v", err)
+			return errors.New("cmd release err")
+		}
+		p.cmd = nil
+	}
+	return nil
 }

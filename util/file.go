@@ -2,7 +2,6 @@ package util
 
 import (
 	"errors"
-	"h-ui/model/constant"
 	"os"
 )
 
@@ -20,7 +19,7 @@ func Exists(path string) bool {
 func RemoveFile(fileName string) error {
 	if Exists(fileName) {
 		if err := os.Remove(fileName); err != nil {
-			return errors.New(constant.RemoveFileError)
+			return errors.New("failed to delete file")
 		}
 	}
 	return nil
