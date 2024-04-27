@@ -39,7 +39,7 @@ func releaseResource() {
 
 func initFile() {
 
-	var dirs = []string{constant.LogDir, constant.ProxyDir, constant.SqliteDBDir}
+	var dirs = []string{constant.LogDir, constant.BinDir, constant.SqliteDBDir}
 	for _, item := range dirs {
 		if !util.Exists(item) {
 			if err := os.Mkdir(item, os.ModePerm); err != nil {

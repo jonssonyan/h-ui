@@ -2,8 +2,10 @@ package constant
 
 const (
 	LogDir      = "logs/"
-	ProxyDir    = "proxy/"
+	BinDir      = "bin/"
 	SqliteDBDir = "data/"
 
 	SqliteDBPath = "data/h_ui.db"
+
+	Hysteria2ConfigPath = "bin/hysteria2_server.yaml"
 )

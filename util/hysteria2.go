@@ -9,42 +9,44 @@ import (
 	"runtime"
 )
 
-func GetHysteria2FileName() string {
-	hysteria2FileName := fmt.Sprintf("hysteria-%s-%s", runtime.GOOS, runtime.GOARCH)
+func GetHysteria2BinPath() string {
+	hysteria2FileName := fmt.Sprintf("hysteria2-%s-%s", runtime.GOOS, runtime.GOARCH)
 	if runtime.GOOS == "windows" {
 		hysteria2FileName += ".exe"
 	}
-	return hysteria2FileName
+	return constant.BinDir + hysteria2FileName
 }
 
 func DownloadHysteria2(version string) error {
-	url, err := GetReleaseAssetURL("apernet", "hysteria", version, GetHysteria2FileName())
+	hysteria2Path := GetHysteria2BinPath()
+	// 判断文件是否以及存在
+
+	url, err := GetReleaseAssetURL("apernet", "hysteria", version, hysteria2Path)
 	if err != nil {
 		return err
 	}
-	hysteria2Path := constant.ProxyDir + GetHysteria2FileName()
 
 	resp, err := http.Get(url)
+	defer resp.Body.Close()
 	if err != nil {
 		return fmt.Errorf("failed to download file: %v", err)
 	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("failed to download file, status code: %d", resp.StatusCode)
 	}
 
-	if !Exists(hysteria2Path) {
+	if Exists(hysteria2Path) {
 		if err = os.Remove(hysteria2Path); err != nil {
 			return fmt.Errorf("failed to remove existing file: %v", err)
 		}
 	}
 
 	file, err := os.Create(hysteria2Path)
+	defer file.Close()
 	if err != nil {
 		return fmt.Errorf("failed to create file %s: %v", hysteria2Path, err)
 	}
-	defer file.Close()
 
 	_, err = io.Copy(file, resp.Body)
 	if err != nil {

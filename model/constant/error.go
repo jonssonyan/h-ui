@@ -13,4 +13,10 @@ const (
 
 	AccountNotExist string = "account not exist"
 	ConfigNotExist  string = "config not exist"
+
+	ProcessStopError string = "process suspend failed"
+
+	Hysteria2StartError string = "failed to start hysteria2"
+
+	RemoveFileError string = "failed to delete file"
 )
