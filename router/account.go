@@ -10,6 +10,7 @@ func initAccountRouter(accountApi *gin.RouterGroup) {
 	{
 		account.GET("/pageAccount", controller.PageAccount)
 		account.GET("/saveAccount", controller.SaveAccount)
-		account.GET("/DeleteAccount", controller.DeleteAccount)
+		account.GET("/deleteAccount", controller.DeleteAccount)
+		account.GET("/updateAccount", controller.UpdateAccount)
 	}
 }

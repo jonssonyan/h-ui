@@ -98,3 +98,26 @@ func DeleteAccount(c *gin.Context) {
 	}
 	vo.Success(nil, c)
 }
+
+func UpdateAccount(c *gin.Context) {
+	accountUpdateDto, err := validateField(c, dto.AccountUpdateDto{})
+	if err != nil {
+		return
+	}
+	account := entity.Account{
+		Username:   accountUpdateDto.Username,
+		Pass:       accountUpdateDto.Pass,
+		ConPass:    accountUpdateDto.ConPass,
+		Quota:      accountUpdateDto.Quota,
+		ExpireTime: accountUpdateDto.ExpireTime,
+		Deleted:    accountUpdateDto.Deleted,
+		BaseEntity: entity.BaseEntity{
+			Id: accountUpdateDto.Id,
+		},
+	}
+	if err = service.UpdateAccount(account); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
+}
