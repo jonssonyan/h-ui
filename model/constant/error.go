@@ -9,10 +9,8 @@ const (
 	IllegalTokenError string = "authentication failed"
 	TokenExpiredError string = "token expired"
 
-	AccountDisabled string = "this account has been disabled"
+	AccountDisabled string = ""
 
 	AccountNotExist string = "account not exist"
 	ConfigNotExist  string = "config not exist"
-
-	Hysteria2StartError string = "failed to start cmd"
 )

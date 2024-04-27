@@ -11,7 +11,7 @@ import (
 )
 
 func Login(username string, pass string) (string, error) {
-	account, err := dao.GetAccount("username = ? and pass = ?", username, util.SHA224String(pass))
+	account, err := dao.GetAccount("username = ? and pass = ? and is_admin = 1 and deleted = 0", username, util.SHA224String(pass))
 	if err != nil {
 		return "", err
 	}

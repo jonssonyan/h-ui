@@ -29,7 +29,7 @@ func JWTHandler() gin.HandlerFunc {
 			return
 		}
 		if myClaims.AccountBo.Deleted != 0 {
-			vo.Fail(constant.AccountDisabled, c)
+			vo.Fail("this account has been disabled", c)
 			c.Abort()
 			return
 		}
