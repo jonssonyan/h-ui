@@ -13,5 +13,6 @@ func initAccountRouter(accountApi *gin.RouterGroup) {
 		account.GET("/deleteAccount", controller.DeleteAccount)
 		account.GET("/updateAccount", controller.UpdateAccount)
 		account.GET("/getAccountInfo", controller.GetAccountInfo)
+		account.GET("/getAccount", controller.GetAccount)
 	}
 }

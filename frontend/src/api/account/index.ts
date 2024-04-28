@@ -20,7 +20,7 @@ export function selectAccountByIdApi(
   data: RequiredIdDto
 ): AxiosPromise<AccountVo> {
   return request({
-    url: "/api/account/selectAccountById",
+    url: "/account/getAccount",
     method: "get",
     params: data,
   });
@@ -33,7 +33,7 @@ export function selectAccountByIdApi(
  */
 export function createAccountApi(data: AccountCreateDto): AxiosPromise {
   return request({
-    url: "/api/account/createAccount",
+    url: "/account/createAccount",
     method: "post",
     data,
   });
@@ -44,7 +44,7 @@ export function createAccountApi(data: AccountCreateDto): AxiosPromise {
  */
 export function getAccountInfoApi(): AxiosPromise<AccountInfo> {
   return request({
-    url: "/api/account/getAccountInfo",
+    url: "/account/getAccountInfo",
     method: "get",
   });
 }
@@ -57,7 +57,7 @@ export function selectAccountPageApi(
   data: AccountPageDto
 ): AxiosPromise<AccountPageVo> {
   return request({
-    url: "/api/account/selectAccountPage",
+    url: "/account/selectAccountPage",
     method: "get",
     params: data,
   });
@@ -70,7 +70,7 @@ export function selectAccountPageApi(
  */
 export function deleteAccountByIdApi(data: RequiredIdDto): AxiosPromise {
   return request({
-    url: "/api/account/deleteAccountById",
+    url: "/account/deleteAccountById",
     method: "post",
     data,
   });
@@ -84,7 +84,7 @@ export function updateAccountProfileApi(
   data: AccountUpdateProfileDto
 ): AxiosPromise {
   return request({
-    url: "/api/account/updateAccountProfile",
+    url: "/account/updateAccountProfile",
     method: "post",
     data,
   });
@@ -97,7 +97,7 @@ export function updateAccountProfileApi(
  */
 export function updateAccountByIdApi(data: AccountUpdateDto): AxiosPromise {
   return request({
-    url: "/api/account/updateAccountById",
+    url: "/account/updateAccountById",
     method: "post",
     data,
   });
@@ -108,7 +108,7 @@ export function updateAccountByIdApi(data: AccountUpdateDto): AxiosPromise {
  */
 export function logoutApi(): AxiosPromise {
   return request({
-    url: "/api/account/logout",
+    url: "/account/logout",
     method: "post",
   });
 }
@@ -119,7 +119,7 @@ export function logoutApi(): AxiosPromise {
  */
 export function loginApi(data: AccountLoginDto): AxiosPromise<AccountLoginVo> {
   return request({
-    url: "/api/auth/login",
+    url: "/auth/login",
     method: "post",
     data,
   });
@@ -131,7 +131,7 @@ export function loginApi(data: AccountLoginDto): AxiosPromise<AccountLoginVo> {
  */
 export function registerApi(data: AccountRegisterDto): AxiosPromise {
   return request({
-    url: "/api/auth/register",
+    url: "/auth/register",
     method: "post",
     data,
   });
@@ -142,7 +142,7 @@ export function registerApi(data: AccountRegisterDto): AxiosPromise {
  */
 export function generateCaptchaApi(): AxiosPromise {
   return request({
-    url: "/api/auth/generateCaptcha",
+    url: "/auth/generateCaptcha",
     method: "get",
   });
 }

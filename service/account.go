@@ -75,3 +75,7 @@ func ExistAccountUsername(username string) bool {
 	}
 	return true
 }
+
+func GetAccount(id int64) (entity.Account, error) {
+	return dao.GetAccount("id = ?", id)
+}

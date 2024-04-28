@@ -7,6 +7,7 @@ type AccountVo struct {
 	Download   int64  `json:"download"`
 	Upload     int64  `json:"upload"`
 	ExpireTime int64  `json:"expireTime"`
+	IsAdmin    int64  `json:"isAdmin"`
 	Deleted    int64  `json:"deleted"`
 }
 type AccountPageVo struct {

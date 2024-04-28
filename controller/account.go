@@ -139,3 +139,29 @@ func GetAccountInfo(c *gin.Context) {
 	}
 	vo.Success(accountInfoVo, c)
 }
+
+func GetAccount(c *gin.Context) {
+	idDto, err := validateField(c, dto.IdDto{})
+	if err != nil {
+		return
+	}
+	account, err := service.GetAccount(*idDto.Id)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	accountVo := vo.AccountVo{
+		BaseVo: vo.BaseVo{
+			Id:         *account.Id,
+			CreateTime: *account.CreateTime,
+		},
+		Username:   *account.Username,
+		Quota:      *account.Quota,
+		Download:   *account.Download,
+		Upload:     *account.Upload,
+		ExpireTime: *account.ExpireTime,
+		IsAdmin:    *account.IsAdmin,
+		Deleted:    *account.Deleted,
+	}
+	vo.Success(accountVo, c)
+}

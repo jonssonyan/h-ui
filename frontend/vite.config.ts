@@ -47,7 +47,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           target: "http://127.0.0.1:8081",
           changeOrigin: true,
           rewrite: (path) =>
-            path.replace(new RegExp("^" + env.VITE_APP_BASE_API), ""), // 替换 /dev-api 为 target 接口地址
+            path.replace(new RegExp("^" + env.VITE_APP_BASE_API), "/hui"), // 替换 /dev-api 为 target 接口地址
         },
       },
     },
