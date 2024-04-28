@@ -13,3 +13,9 @@ type AccountPageVo struct {
 	AccountVos []AccountVo `json:"records"`
 	Total      int64       `json:"total"`
 }
+
+type AccountInfoVo struct {
+	Id       int64  `json:"id"`
+	Username string `json:"username"`
+	IsAdmin  int64  `json:"isAdmin"`
+}

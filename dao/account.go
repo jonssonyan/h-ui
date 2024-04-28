@@ -78,7 +78,7 @@ func PageAccount(accountPageDto dto.AccountPageDto) ([]entity.Account, int64, er
 	var total int64
 	tx := sqliteDB.Model(&entity.Account{}).
 		Scopes(Paginate(accountPageDto.PageNum, accountPageDto.PageSize)).
-		Order("create_time desc")
+		Order("is_admin desc,create_time desc")
 	if accountPageDto.Username != nil && *accountPageDto.Username != "" {
 		tx.Where("username like ?", fmt.Sprintf("%%%s%%", *accountPageDto.Username))
 	}

@@ -18,6 +18,7 @@ func Login(username string, pass string) (string, error) {
 	accountBo := bo.AccountBo{
 		Id:       *account.Id,
 		Username: *account.Username,
+		IsAdmin:  *account.IsAdmin,
 		Deleted:  *account.Deleted,
 	}
 	return GenToken(accountBo)

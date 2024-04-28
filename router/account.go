@@ -12,5 +12,6 @@ func initAccountRouter(accountApi *gin.RouterGroup) {
 		account.GET("/saveAccount", controller.SaveAccount)
 		account.GET("/deleteAccount", controller.DeleteAccount)
 		account.GET("/updateAccount", controller.UpdateAccount)
+		account.GET("/getAccountInfo", controller.GetAccountInfo)
 	}
 }

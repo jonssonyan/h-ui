@@ -2,10 +2,12 @@ package service
 
 import (
 	"errors"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
+	"strings"
 	"time"
 )
 
@@ -47,4 +49,12 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 		return claims, nil
 	}
 	return nil, errors.New(constant.TokenExpiredError)
+}
+
+func GetToken(c *gin.Context) string {
+	tokenStr := c.Request.Header.Get("Authorization")
+	if tokenStr == "" {
+		return ""
+	}
+	return strings.SplitN(tokenStr, " ", 2)[1]
 }
