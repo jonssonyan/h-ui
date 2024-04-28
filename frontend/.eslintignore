@@ -1,0 +1,13 @@
+dist
+node_modules
+public
+.vscode
+.idea
+*.sh
+*.md
+
+src/assets
+
+.eslintrc.cjs
+.prettierrc.cjs
+.stylelintrc.cjs
