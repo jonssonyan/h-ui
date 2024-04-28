@@ -1,5 +1,5 @@
 declare global {
-  interface RequiredIdDto {
+  interface IdDto {
     id: number;
   }
 
@@ -10,9 +10,8 @@ declare global {
     endTime?: string;
   }
 
-  interface BaseVoPage {
-    pageNum: number;
-    pageSize: number;
+  interface PageVo<T> {
+    records: T[];
     total: number;
   }
 }

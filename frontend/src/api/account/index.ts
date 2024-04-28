@@ -1,24 +1,19 @@
 import request from "@/utils/request";
 import { AxiosPromise } from "axios";
 import {
-  AccountCreateDto,
+  AccountSaveDto,
   AccountInfo,
   AccountLoginDto,
   AccountLoginVo,
   AccountPageDto,
-  AccountPageVo,
-  AccountRegisterDto,
   AccountUpdateDto,
-  AccountUpdateProfileDto,
   AccountVo,
 } from "./types";
 
 /**
- * 查询单个账户
+ * 查询
  */
-export function selectAccountByIdApi(
-  data: RequiredIdDto
-): AxiosPromise<AccountVo> {
+export function getAccountApi(data: IdDto): AxiosPromise<AccountVo> {
   return request({
     url: "/account/getAccount",
     method: "get",
@@ -27,20 +22,20 @@ export function selectAccountByIdApi(
 }
 
 /**
- * 创建账户
+ * 保存
  *
  * @param data
  */
-export function createAccountApi(data: AccountCreateDto): AxiosPromise {
+export function saveAccountApi(data: AccountSaveDto): AxiosPromise {
   return request({
-    url: "/account/createAccount",
+    url: "/account/saveAccount",
     method: "post",
     data,
   });
 }
 
 /**
- * 获取当前用户信息
+ * 查询当前
  */
 export function getAccountInfoApi(): AxiosPromise<AccountInfo> {
   return request({
@@ -50,54 +45,39 @@ export function getAccountInfoApi(): AxiosPromise<AccountInfo> {
 }
 
 /**
- * 分页查询账户
+ * 分页
  * @param data
  */
-export function selectAccountPageApi(
+export function pageAccountApi(
   data: AccountPageDto
-): AxiosPromise<AccountPageVo> {
+): AxiosPromise<PageVo<AccountVo>> {
   return request({
-    url: "/account/selectAccountPage",
+    url: "/account/pageAccount",
     method: "get",
     params: data,
   });
 }
 
 /**
- * 删除用户
+ * 删除
  *
  * @param data
  */
-export function deleteAccountByIdApi(data: RequiredIdDto): AxiosPromise {
+export function deleteAccountApi(data: IdDto): AxiosPromise {
   return request({
-    url: "/account/deleteAccountById",
+    url: "/account/deleteAccount",
     method: "post",
     data,
   });
 }
 
 /**
- * 修改账户信息
+ * 修改
  * @param data
  */
-export function updateAccountProfileApi(
-  data: AccountUpdateProfileDto
-): AxiosPromise {
+export function updateAccountApi(data: AccountUpdateDto): AxiosPromise {
   return request({
-    url: "/account/updateAccountProfile",
-    method: "post",
-    data,
-  });
-}
-
-/**
- * 修改用户
- *
- * @param data
- */
-export function updateAccountByIdApi(data: AccountUpdateDto): AxiosPromise {
-  return request({
-    url: "/account/updateAccountById",
+    url: "/account/updateAccount",
     method: "post",
     data,
   });
@@ -122,27 +102,5 @@ export function loginApi(data: AccountLoginDto): AxiosPromise<AccountLoginVo> {
     url: "/auth/login",
     method: "post",
     data,
-  });
-}
-
-/**
- * 创建账户
- * @param data
- */
-export function registerApi(data: AccountRegisterDto): AxiosPromise {
-  return request({
-    url: "/auth/register",
-    method: "post",
-    data,
-  });
-}
-
-/**
- * 验证码
- */
-export function generateCaptchaApi(): AxiosPromise {
-  return request({
-    url: "/auth/generateCaptcha",
-    method: "get",
   });
 }

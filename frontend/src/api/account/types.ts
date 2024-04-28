@@ -1,60 +1,40 @@
 export interface AccountPageDto extends BaseDto {
-  username: string;
+  username?: string;
+  deleted?: number;
 }
 
-export interface AccountUpdateProfileDto {
-  username: string;
-  newPass: string;
-  oldPass: string;
-  email: string;
-}
-
-export interface AccountCreateDto {
+export interface AccountUpdateDto extends IdDto {
   username: string;
   pass: string;
-  roleId: number;
-  email: string;
+  conPass: string;
+  quota: number;
   expireTime: number;
   deleted: number;
 }
 
-export interface AccountUpdateDto extends RequiredIdDto {
+export interface AccountSaveDto {
   username: string;
   pass: string;
-  roleId: number;
-  email: string;
+  conPass: string;
+  quota: number;
   expireTime: number;
   deleted: number;
 }
 
-export interface AccountLoginDto extends CaptureDto {
+export interface AccountLoginDto {
   username: string;
   pass: string;
 }
 
-export interface AccountRegisterDto extends CaptureDto {
+export interface AccountVo extends IdDto {
   username: string;
-  pass: string;
-}
-
-export interface CaptureDto {
-  captchaId?: string;
-  captchaCode?: string;
-}
-
-export interface AccountVo {
-  id: number | undefined;
-  username: string;
-  email: string;
-  roleId: number;
+  quota: number;
+  download: number;
+  upload: number;
   expireTime: number;
+  isAdmin: number;
   deleted: number;
   createTime: string;
-  roles: string[];
-}
-
-export interface AccountPageVo extends BaseVoPage {
-  accounts: AccountVo[];
 }
 
 export interface AccountLoginVo {
@@ -65,14 +45,14 @@ export interface AccountLoginVo {
 export interface AccountInfo {
   id: number;
   username: string;
-  roles: string[];
+  isAdmin: number;
 }
 
-export interface AccountForm extends RequiredIdDto {
+export interface AccountForm extends IdDto {
   username: string;
   pass: string;
-  roleId: number;
-  email: string;
+  conPass: string;
+  quota: number;
   expireTime: number;
   deleted: number;
 }

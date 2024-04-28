@@ -37,11 +37,7 @@
     <el-card>
       <template #header>
         <el-form-item style="float: left">
-          <el-button
-            type="success"
-            :icon="Plus"
-            @click="handleAdd"
-            v-hasRole="['sysadmin', 'admin']"
+          <el-button type="success" :icon="Plus" @click="handleAdd"
             >新增
           </el-button>
           <el-button
@@ -49,7 +45,6 @@
             :icon="Delete"
             :disabled="ids.length === 0"
             @click="handleDelete"
-            v-hasRole="['sysadmin', 'admin']"
             >删除
           </el-button>
         </el-form-item>
@@ -57,7 +52,7 @@
 
       <el-table
         v-loading="loading"
-        :data="accounts"
+        :data="records"
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="50" align="center" />
@@ -83,18 +78,10 @@
         ></el-table-column>
         <el-table-column label="操作" align="left" width="200">
           <template #default="scope">
-            <el-button
-              type="primary"
-              link
-              @click="handleUpdate(scope.row)"
-              v-hasRole="['sysadmin', 'admin']"
+            <el-button type="primary" link @click="handleUpdate(scope.row)"
               >编辑
             </el-button>
-            <el-button
-              type="danger"
-              link
-              @click="handleDelete(scope.row)"
-              v-hasRole="['sysadmin', 'admin']"
+            <el-button type="danger" link @click="handleDelete(scope.row)"
               >删除
             </el-button>
           </template>
@@ -171,11 +158,11 @@ import {
   AccountVo,
 } from "@/api/account/types";
 import {
-  createAccountApi,
-  deleteAccountByIdApi,
-  selectAccountByIdApi,
-  selectAccountPageApi,
-  updateAccountByIdApi,
+  saveAccountApi,
+  deleteAccountApi,
+  getAccountApi,
+  pageAccountApi,
+  updateAccountApi,
 } from "@/api/account";
 import { Search, Plus, Refresh, Delete } from "@element-plus/icons-vue";
 
@@ -189,18 +176,20 @@ const state = reactive({
   ids: [] as number[],
   // 总条数
   total: 0,
-  accounts: [] as AccountVo[],
+  records: [] as AccountVo[],
   dialog: {
     visible: false,
   } as DialogType,
   formData: {} as AccountForm,
   queryParams: {
+    username: undefined,
+    deleted: undefined,
     pageNum: 1,
     pageSize: 10,
   } as AccountPageDto,
 });
 
-const { ids, loading, queryParams, accounts, total, formData, dialog } =
+const { ids, loading, queryParams, records, total, formData, dialog } =
   toRefs(state);
 
 /**
@@ -208,8 +197,8 @@ const { ids, loading, queryParams, accounts, total, formData, dialog } =
  */
 function handleQuery() {
   state.loading = true;
-  selectAccountPageApi(state.queryParams).then(({ data }) => {
-    state.accounts = data.accounts;
+  pageAccountApi(state.queryParams).then(({ data }) => {
+    state.records = data.records;
     state.total = data.total;
     state.loading = false;
   });
@@ -231,7 +220,7 @@ function handleSelectionChange(selection: any) {
 }
 
 /**
- * 添加用户
+ * 保存
  **/
 async function handleAdd() {
   state.dialog = {
@@ -241,7 +230,7 @@ async function handleAdd() {
 }
 
 /**
- * 修改用户
+ * 修改
  **/
 async function handleUpdate(row: { [key: string]: any }) {
   dialog.value = {
@@ -250,7 +239,7 @@ async function handleUpdate(row: { [key: string]: any }) {
   };
 
   // const id = row.id || state.ids;
-  selectAccountByIdApi({ id: row.id }).then(({ data }) => {
+  getAccountApi({ id: row.id }).then(({ data }) => {
     Object.assign(formData.value, data);
   });
 }
@@ -261,19 +250,19 @@ async function handleUpdate(row: { [key: string]: any }) {
 function submitForm() {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      const userId = state.formData.id;
-      if (userId) {
-        let accountUpdateDto: AccountUpdateDto = Object.assign(
-          {},
-          state.formData
-        );
-        updateAccountByIdApi(accountUpdateDto).then(() => {
+      const accountId = state.formData.id;
+      let accountUpdateDto: AccountUpdateDto = Object.assign(
+        {},
+        state.formData
+      );
+      if (accountId) {
+        updateAccountApi(accountUpdateDto).then(() => {
           ElMessage.success("修改用户成功");
           closeDialog();
           handleQuery();
         });
       } else {
-        createAccountApi(state.formData).then(() => {
+        saveAccountApi(accountUpdateDto).then(() => {
           ElMessage.success("新增用户成功");
           closeDialog();
           handleQuery();
@@ -284,12 +273,13 @@ function submitForm() {
 }
 
 /**
- * 删除用户
+ * 删除
  */
 function handleDelete(row: { [key: string]: any }) {
   const id = row.id;
+  const username = row.username;
   ElMessageBox.confirm(
-    "是否确认删除用户编号为「" + id + "」的数据项?",
+    "是否确认删除用户名为「" + username + "」的数据项?",
     "警告",
     {
       confirmButtonText: "确定",
@@ -298,7 +288,7 @@ function handleDelete(row: { [key: string]: any }) {
     }
   )
     .then(function () {
-      deleteAccountByIdApi({ id: id }).then(() => {
+      deleteAccountApi({ id: id }).then(() => {
         ElMessage.success("删除成功");
         handleQuery();
       });
