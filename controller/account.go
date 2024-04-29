@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/entity"
 	"h-ui/model/vo"
@@ -20,7 +21,11 @@ func Login(c *gin.Context) {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(token, c)
+	jwtVo := vo.JwtVo{
+		Token:       constant.TokenType,
+		AccessToken: token,
+	}
+	vo.Success(jwtVo, c)
 }
 
 func PageAccount(c *gin.Context) {
