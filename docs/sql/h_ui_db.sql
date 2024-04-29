@@ -28,7 +28,7 @@ create index account_username_index
     on account (username);
 
 INSERT INTO account (username, `pass`, con_pass, quota, download, upload, expire_time, role)
-VALUES ('admin', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6',
+VALUES ('sysadmin', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6',
         'c7591c31adf8af0b6b8ae8cbbccd8d1aaa0c7bb068f576bddb6378d5', -1, 0, 0, 253370736000000, 'admin');
 
 
