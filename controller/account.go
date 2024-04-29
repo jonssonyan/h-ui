@@ -135,7 +135,7 @@ func GetAccountInfo(c *gin.Context) {
 	accountInfoVo := vo.AccountInfoVo{
 		Id:       myClaims.AccountBo.Id,
 		Username: myClaims.AccountBo.Username,
-		IsAdmin:  myClaims.AccountBo.IsAdmin,
+		Roles:    myClaims.AccountBo.Roles,
 	}
 	vo.Success(accountInfoVo, c)
 }
@@ -160,7 +160,7 @@ func GetAccount(c *gin.Context) {
 		Download:   *account.Download,
 		Upload:     *account.Upload,
 		ExpireTime: *account.ExpireTime,
-		IsAdmin:    *account.IsAdmin,
+		Role:       *account.Role,
 		Deleted:    *account.Deleted,
 	}
 	vo.Success(accountVo, c)

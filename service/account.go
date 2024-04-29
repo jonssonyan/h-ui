@@ -11,14 +11,14 @@ import (
 )
 
 func Login(username string, pass string) (string, error) {
-	account, err := dao.GetAccount("username = ? and pass = ? and is_admin = 1 and deleted = 0", username, util.SHA224String(pass))
+	account, err := dao.GetAccount("username = ? and pass = ? and role = 'admin' and deleted = 0", username, util.SHA224String(pass))
 	if err != nil {
 		return "", err
 	}
 	accountBo := bo.AccountBo{
 		Id:       *account.Id,
 		Username: *account.Username,
-		IsAdmin:  *account.IsAdmin,
+		Roles:    []string{*account.Role},
 		Deleted:  *account.Deleted,
 	}
 	return GenToken(accountBo)

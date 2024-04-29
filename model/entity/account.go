@@ -8,7 +8,7 @@ type Account struct {
 	Download   *int64  `gorm:"column:download;default:0"`
 	Upload     *int64  `gorm:"column:upload;default:0"`
 	ExpireTime *int64  `gorm:"column:expire_time;default:0"`
-	IsAdmin    *int64  `gorm:"column:is_admin;default:0"`
+	Role       *string `gorm:"column:role;default:'user'"`
 	Deleted    *int64  `gorm:"column:deleted;default:0"`
 	BaseEntity `gorm:"embedded"`
 }

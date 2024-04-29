@@ -8,13 +8,13 @@ import (
 	"net/http"
 )
 
-//go:embed build/*
+//go:embed dist/*
 var staticFiles embed.FS
 
 func InitFrontend(router *gin.Engine) {
 
 	router.GET("/", func(c *gin.Context) {
-		indexHTML, err := staticFiles.ReadFile("build/index.html")
+		indexHTML, err := staticFiles.ReadFile("dist/index.html")
 		if err != nil {
 			c.String(http.StatusInternalServerError, "Internal Server Error")
 			return
@@ -36,12 +36,12 @@ func InitFrontend(router *gin.Engine) {
 }
 
 func getStaticFS() fs.FS {
-	staticFs, _ := fs.Sub(staticFiles, "build/static")
+	staticFs, _ := fs.Sub(staticFiles, "dist/static")
 	return staticFs
 }
 
 func getFileContent(filePath string) ([]byte, error) {
-	fileContent, err := staticFiles.ReadFile(fmt.Sprintf("build%s", filePath))
+	fileContent, err := staticFiles.ReadFile(fmt.Sprintf("dist%s", filePath))
 	if err != nil {
 		return nil, err
 	}
