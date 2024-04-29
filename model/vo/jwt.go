@@ -1,6 +1,6 @@
 package vo
 
 type JwtVo struct {
-	Token       string `json:"token"`
+	TokenType   string `json:"tokenType"`
 	AccessToken string `json:"accessToken"`
 }

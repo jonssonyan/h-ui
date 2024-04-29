@@ -22,7 +22,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	jwtVo := vo.JwtVo{
-		Token:       constant.TokenType,
+		TokenType:   constant.TokenType,
 		AccessToken: token,
 	}
 	vo.Success(jwtVo, c)

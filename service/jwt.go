@@ -31,7 +31,7 @@ func GenToken(accountBo bo.AccountBo) (string, error) {
 		return "", errors.New(constant.SysError)
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, c)
-	return token.SignedString(*config.Value)
+	return token.SignedString([]byte(*config.Value))
 }
 
 func ParseToken(tokenString string) (*MyClaims, error) {
@@ -40,7 +40,7 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 		return nil, errors.New(constant.SysError)
 	}
 	token, err := jwt.ParseWithClaims(tokenString, &MyClaims{}, func(token *jwt.Token) (i interface{}, err error) {
-		return config.Value, nil
+		return []byte(*config.Value), nil
 	})
 	if err != nil {
 		return nil, errors.New(constant.IllegalTokenError)
