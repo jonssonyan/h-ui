@@ -31,7 +31,7 @@ func GenToken(accountBo bo.AccountBo) (string, error) {
 		return "", errors.New(constant.SysError)
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, c)
-	return token.SignedString(config.Value)
+	return token.SignedString(*config.Value)
 }
 
 func ParseToken(tokenString string) (*MyClaims, error) {
