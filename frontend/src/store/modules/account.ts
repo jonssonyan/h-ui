@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { getAccountInfoApi, loginApi, logoutApi } from "@/api/account";
+import { getAccountInfoApi, loginApi } from "@/api/account";
 import { resetRouter } from "@/router";
 import { store } from "@/store";
 
@@ -57,15 +57,9 @@ export const useAccountStore = defineStore("account", () => {
   // 注销
   function logout() {
     return new Promise<void>((resolve, reject) => {
-      logoutApi()
-        .then(() => {
-          resetRouter();
-          resetToken();
-          resolve();
-        })
-        .catch((error) => {
-          reject(error);
-        });
+		resetRouter();
+		resetToken();
+		resolve();
     });
   }
 

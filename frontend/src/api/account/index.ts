@@ -84,16 +84,6 @@ export function updateAccountApi(data: AccountUpdateDto): AxiosPromise {
 }
 
 /**
- * 注销
- */
-export function logoutApi(): AxiosPromise {
-  return request({
-    url: "/account/logout",
-    method: "post",
-  });
-}
-
-/**
  * 登录
  * @param data
  */
