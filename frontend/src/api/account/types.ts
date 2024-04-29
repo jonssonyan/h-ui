@@ -32,7 +32,7 @@ export interface AccountVo extends IdDto {
   download: number;
   upload: number;
   expireTime: number;
-  isAdmin: number;
+  role: string;
   deleted: number;
   createTime: string;
 }
@@ -45,7 +45,7 @@ export interface AccountLoginVo {
 export interface AccountInfo {
   id: number;
   username: string;
-  isAdmin: number;
+  roles: string[];
 }
 
 export interface AccountForm extends IdDto {

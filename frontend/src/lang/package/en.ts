@@ -11,7 +11,6 @@ export default {
     username: "Username",
     password: "Password",
     login: "Login",
-    captchaCode: "Verify Code",
   },
   // 导航栏国际化
   navbar: {

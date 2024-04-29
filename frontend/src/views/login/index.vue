@@ -53,24 +53,6 @@
         </el-form-item>
       </el-tooltip>
 
-      <!-- 验证码 -->
-      <el-form-item prop="captchaCode">
-        <span class="p-2 text-white">
-          <svg-icon icon-class="verify_code" />
-        </span>
-        <el-input
-          v-model="loginData.captchaCode"
-          auto-complete="off"
-          :placeholder="$t('login.captchaCode')"
-          class="w-[60%]"
-          @keyup.enter="handleLogin"
-        />
-
-        <div class="captcha">
-          <img :src="captchaImgBase64" @click="getCaptcha" alt="captchaImg" />
-        </div>
-      </el-form-item>
-
       <el-button
         size="default"
         :loading="loading"
@@ -93,7 +75,6 @@ import { useAccountStore } from "@/store/modules/account";
 
 // API依赖
 import { LocationQuery, LocationQueryValue, useRoute } from "vue-router";
-import { generateCaptchaApi } from "@/api/account";
 import { AccountLoginDto } from "@/api/account/types";
 
 const accountStore = useAccountStore();
@@ -111,10 +92,6 @@ const isCapslock = ref(false);
  * 密码是否可见
  */
 const passVisible = ref(false);
-/**
- * 验证码图片Base64字符串
- */
-const captchaImgBase64 = ref();
 
 /**
  * 登录表单引用
@@ -124,14 +101,11 @@ const loginFormRef = ref(ElForm);
 const loginData = ref<AccountLoginDto>({
   username: "",
   pass: "",
-  captchaId: "",
-  captchaCode: "",
 });
 
 const loginRules = {
   username: [{ required: true, trigger: "blur" }],
   pass: [{ required: true, trigger: "blur", validator: passValidator }],
-  captchaCode: [{ required: true, trigger: "blur" }],
 };
 
 /**
@@ -151,17 +125,6 @@ function passValidator(rule: any, value: any, callback: any) {
 function checkCapslock(e: any) {
   const { key } = e;
   isCapslock.value = key && key.length === 1 && key >= "A" && key <= "Z";
-}
-
-/**
- * 获取验证码
- */
-function getCaptcha() {
-  generateCaptchaApi().then(({ data }) => {
-    const { captchaId, captchaImg } = data;
-    loginData.value.captchaId = captchaId;
-    captchaImgBase64.value = captchaImg;
-  });
 }
 
 /**
@@ -191,8 +154,6 @@ function handleLogin() {
           router.push({ path: redirect, query: otherQueryParams });
         })
         .catch(() => {
-          // 验证失败，重新生成验证码
-          getCaptcha();
         })
         .finally(() => {
           loading.value = false;
@@ -200,10 +161,6 @@ function handleLogin() {
     }
   });
 }
-
-onMounted(() => {
-  getCaptcha();
-});
 </script>
 
 <style lang="scss" scoped>
@@ -219,18 +176,6 @@ onMounted(() => {
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
-
-    .captcha {
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      img {
-        width: 120px;
-        height: 48px;
-        cursor: pointer;
-      }
-    }
   }
 }
 

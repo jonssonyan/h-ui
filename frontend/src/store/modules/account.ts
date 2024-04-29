@@ -15,7 +15,7 @@ export const useAccountStore = defineStore("account", () => {
   const roles = ref<Array<string>>([]); // 用户角色编码集合 → 判断路由权限
 
   /**
-   * 登录调用
+   * 登录
    *
    * @returns
    */
@@ -33,7 +33,7 @@ export const useAccountStore = defineStore("account", () => {
     });
   }
 
-  // 获取信息(用户昵称、头像、角色集合、权限集合)
+  // 查询当前
   function getAccountInfo() {
     return new Promise<AccountInfo>((resolve, reject) => {
       getAccountInfoApi()
