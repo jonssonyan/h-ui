@@ -40,13 +40,6 @@
           <el-button type="success" :icon="Plus" @click="handleAdd"
             >新增
           </el-button>
-          <el-button
-            type="danger"
-            :icon="Delete"
-            :disabled="ids.length === 0"
-            @click="handleDelete"
-            >删除
-          </el-button>
         </el-form-item>
       </template>
 
@@ -69,13 +62,39 @@
           align="center"
           prop="username"
         />
-
+        <el-table-column key="quota" label="配额" align="center" prop="quota" />
+        <el-table-column
+          key="download"
+          label="下载"
+          align="center"
+          prop="download"
+        />
+        <el-table-column
+          key="upload"
+          label="上传"
+          align="center"
+          prop="upload"
+        />
+        <el-table-column
+          key="expireTime"
+          label="到期时间"
+          align="center"
+          prop="expireTime"
+        />
+        <el-table-column key="role" label="角色" align="center" prop="role" />
+        <el-table-column
+          key="deleted"
+          label="状态"
+          align="center"
+          prop="deleted"
+        />
         <el-table-column
           label="创建时间"
           align="center"
           prop="createTime"
           width="180"
         ></el-table-column>
+
         <el-table-column label="操作" align="left" width="200">
           <template #default="scope">
             <el-button type="primary" link @click="handleUpdate(scope.row)"
@@ -105,12 +124,7 @@
       append-to-body
       @close="closeDialog"
     >
-      <el-form
-        ref="dataFormRef"
-        :model="formData"
-        :rules="rules"
-        label-width="80px"
-      >
+      <el-form ref="dataFormRef" :model="formData" label-width="80px">
         <el-form-item label="用户名" prop="username">
           <el-input
             :readonly="!!formData.id"
@@ -118,11 +132,31 @@
             placeholder="请输入用户名"
           />
         </el-form-item>
-
-        <el-form-item label="邮箱" prop="email">
+        <el-form-item label="登录密码" prop="pass">
           <el-input
-            v-model="formData.email"
-            placeholder="请输入邮箱"
+            v-model="formData.pass"
+            placeholder="请输入登录密码"
+            maxlength="50"
+          />
+        </el-form-item>
+        <el-form-item label="连接密码" prop="conPass">
+          <el-input
+            v-model="formData.conPass"
+            placeholder="请输入连接密码"
+            maxlength="50"
+          />
+        </el-form-item>
+        <el-form-item label="配额" prop="quota">
+          <el-input
+            v-model="formData.quota"
+            placeholder="请输入配额"
+            maxlength="50"
+          />
+        </el-form-item>
+        <el-form-item label="到期时间" prop="expireTime">
+          <el-input
+            v-model="formData.expireTime"
+            placeholder="请输入到期时间"
             maxlength="50"
           />
         </el-form-item>
@@ -164,7 +198,7 @@ import {
   pageAccountApi,
   updateAccountApi,
 } from "@/api/account";
-import { Search, Plus, Refresh, Delete } from "@element-plus/icons-vue";
+import { Search, Plus, Refresh } from "@element-plus/icons-vue";
 
 const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
@@ -238,8 +272,8 @@ async function handleUpdate(row: { [key: string]: any }) {
     visible: true,
   };
 
-  // const id = row.id || state.ids;
-  getAccountApi({ id: row.id }).then(({ data }) => {
+  const id = row.id;
+  getAccountApi({ id: id }).then(({ data }) => {
     Object.assign(formData.value, data);
   });
 }
