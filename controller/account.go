@@ -47,6 +47,7 @@ func PageAccount(c *gin.Context) {
 			Download:   *item.Download,
 			Upload:     *item.Upload,
 			ExpireTime: *item.ExpireTime,
+			Role:       *item.Role,
 			Deleted:    *item.Deleted,
 			BaseVo: vo.BaseVo{
 				Id:         *item.Id,
