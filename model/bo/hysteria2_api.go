@@ -6,7 +6,7 @@ type Hysteria2UserTraffic struct {
 }
 
 type Hysteria2User struct {
-	Pass string `json:"Pass"`
-	Tx   int64  `json:"tx"` // upload
-	Rx   int64  `json:"rx"` // download
+	ConPass string `json:"conPass"`
+	Tx      int64  `json:"tx"` // upload
+	Rx      int64  `json:"rx"` // download
 }

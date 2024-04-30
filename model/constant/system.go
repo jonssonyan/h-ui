@@ -7,7 +7,7 @@ const (
 
 	SqliteDBPath = "data/h_ui.db"
 
-	Hysteria2ConfigPath = "bin/hysteria2_server.yaml"
+	Hysteria2ConfigPath = "bin/hysteria2.yaml"
 
 	TokenType = "Bearer"
 )

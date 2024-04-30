@@ -10,7 +10,7 @@ import (
 )
 
 func UpdateConfig(key string, value string) error {
-	if key == constant.Hysteria2Enable {
+	if key == constant.Hysteria2Enable && value == "1" {
 		config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
 		if err != nil {
 			return err
@@ -32,7 +32,7 @@ func GetHysteria2Config() (bo.Hysteria2ServerConfig, error) {
 	if err != nil {
 		return serverConfig, err
 	}
-	if err := yaml.Unmarshal([]byte(*config.Value), &serverConfig); err != nil {
+	if err = yaml.Unmarshal([]byte(*config.Value), &serverConfig); err != nil {
 		return serverConfig, err
 	}
 	return serverConfig, nil

@@ -33,10 +33,10 @@ func ListConfig(c *gin.Context) {
 }
 
 func GetHysteria2Config(c *gin.Context) {
-	serverConfig, err := service.GetHysteria2Config()
+	config, err := service.GetHysteria2Config()
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(serverConfig, c)
+	vo.Success(config, c)
 }

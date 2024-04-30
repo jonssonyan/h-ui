@@ -40,7 +40,7 @@ func UpdateAccount(ids []int64, updates map[string]interface{}) error {
 	return nil
 }
 
-func UpdateAccountTraffic(pass string, download int64, upload int64) error {
+func UpdateAccountTraffic(conPass string, download int64, upload int64) error {
 	if upload != 0 || download != 0 {
 		var updates map[string]interface{}
 		if download != 0 {
@@ -51,7 +51,7 @@ func UpdateAccountTraffic(pass string, download int64, upload int64) error {
 		}
 		updates["update_time"] = time.Now()
 		if tx := sqliteDB.Model(&entity.Account{}).
-			Where("pass = ?", pass).
+			Where("con_pass = ?", conPass).
 			Updates(updates); tx.Error != nil {
 			logrus.Errorf(fmt.Sprintf("%v", tx.Error))
 			return errors.New(constant.SysError)

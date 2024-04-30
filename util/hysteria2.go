@@ -10,18 +10,23 @@ import (
 )
 
 func GetHysteria2BinPath() string {
+	return constant.BinDir + GetHysteria2BinName()
+}
+
+func GetHysteria2BinName() string {
 	hysteria2FileName := fmt.Sprintf("hysteria2-%s-%s", runtime.GOOS, runtime.GOARCH)
 	if runtime.GOOS == "windows" {
 		hysteria2FileName += ".exe"
 	}
-	return constant.BinDir + hysteria2FileName
+	return hysteria2FileName
 }
 
 func DownloadHysteria2(version string) error {
-	hysteria2Path := GetHysteria2BinPath()
-	// 判断文件是否以及存在
+	hysteria2BinName := GetHysteria2BinName()
+	hysteria2BinPath := GetHysteria2BinPath()
 
-	url, err := GetReleaseAssetURL("apernet", "hysteria", version, hysteria2Path)
+	// 判断文件是否以及存在
+	url, err := GetReleaseAssetURL("apernet", "hysteria", version, hysteria2BinName)
 	if err != nil {
 		return err
 	}
@@ -36,16 +41,16 @@ func DownloadHysteria2(version string) error {
 		return fmt.Errorf("failed to download file, status code: %d", resp.StatusCode)
 	}
 
-	if Exists(hysteria2Path) {
-		if err = os.Remove(hysteria2Path); err != nil {
+	if Exists(hysteria2BinPath) {
+		if err = os.Remove(hysteria2BinPath); err != nil {
 			return fmt.Errorf("failed to remove existing file: %v", err)
 		}
 	}
 
-	file, err := os.Create(hysteria2Path)
+	file, err := os.Create(hysteria2BinPath)
 	defer file.Close()
 	if err != nil {
-		return fmt.Errorf("failed to create file %s: %v", hysteria2Path, err)
+		return fmt.Errorf("failed to create file %s: %v", hysteria2BinPath, err)
 	}
 
 	_, err = io.Copy(file, resp.Body)
@@ -53,7 +58,7 @@ func DownloadHysteria2(version string) error {
 		return fmt.Errorf("failed to write to file: %v", err)
 	}
 
-	if err = os.Chmod(hysteria2Path, 0755); err != nil {
+	if err = os.Chmod(hysteria2BinPath, 0755); err != nil {
 		return fmt.Errorf("failed to change file permissions: %v", err)
 	}
 	return nil

@@ -25,18 +25,18 @@ func CronHandleAccount() {
 			}
 			apiPort, err := strconv.ParseInt(hysteria2Config.TrafficStats.Listen, 10, 64)
 			if err != nil {
-				logrus.Errorf("string conv int64 err: %v", err)
+				logrus.Errorf("apiPort string conv int64 err: %v", err)
 				return
 			}
 
-			config, err := dao.GetConfig("key = ?", constant.Hysteria2TrafficTime)
+			hysteria2TrafficTime, err := dao.GetConfig("key = ?", constant.Hysteria2TrafficTime)
 			if err != nil {
 				logrus.Errorf("get hysteria2 traffic time err: %v", err)
 				return
 			}
-			hysteria2TrafficTime, err := strconv.ParseInt(*config.Value, 10, 64)
+			hysteria2TrafficTimeInt, err := strconv.ParseInt(*hysteria2TrafficTime.Value, 10, 64)
 			if err != nil {
-				logrus.Errorf("string conv int64 err: %v", err)
+				logrus.Errorf("hysteria2TrafficTime string conv int64 err: %v", err)
 				return
 			}
 
@@ -48,7 +48,7 @@ func CronHandleAccount() {
 					go func(users map[string]bo.Hysteria2UserTraffic) {
 						for conPass, traffic := range users {
 							conPassEncrypt := util.SHA224String(conPass)
-							if err = dao.UpdateAccountTraffic(conPassEncrypt, traffic.Rx*hysteria2TrafficTime, traffic.Tx*hysteria2TrafficTime); err != nil {
+							if err = dao.UpdateAccountTraffic(conPassEncrypt, traffic.Rx*hysteria2TrafficTimeInt, traffic.Tx*hysteria2TrafficTimeInt); err != nil {
 								logrus.Errorf("hysteria2 hanle account err apiPort: %d err: %v", apiPort, err)
 								continue
 							}

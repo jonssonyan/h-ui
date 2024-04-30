@@ -30,8 +30,7 @@ func InitSqliteDB() {
 		},
 	)
 
-	var err error
-	sqliteDB, err = gorm.Open(sqlite.Open(constant.SqliteDBPath), &gorm.Config{
+	sqliteDB, err := gorm.Open(sqlite.Open(constant.SqliteDBPath), &gorm.Config{
 		TranslateError: true,
 		Logger:         newLogger,
 		NamingStrategy: schema.NamingStrategy{
@@ -39,18 +38,16 @@ func InitSqliteDB() {
 		},
 	})
 	if err != nil {
-		panic(fmt.Sprintf("sqlite connect err: %v", err))
+		panic(fmt.Sprintf("sqlite open err: %v", err))
 	}
 
 	var count uint
 	if err := sqliteDB.Raw("SELECT count(1) FROM sqlite_master WHERE type='table' AND (name = 'account' or name = 'config')").Scan(&count).Error; err != nil {
-		logrus.Errorf("sqlite query database err: %v", err)
-		panic(err)
+		panic(fmt.Sprintf("sqlite query table err: %v", err))
 	}
 	if count == 0 {
 		if err = sqliteInit(sqlInitStr); err != nil {
-			logrus.Errorf("sqlite database import err: %v", err)
-			panic(err)
+			panic(fmt.Sprintf("sqlite table init err: %v", err))
 		}
 	}
 }
@@ -63,8 +60,7 @@ func sqliteInit(sqlStr string) error {
 			if s != "" {
 				tx := sqliteDB.Exec(s)
 				if tx.Error != nil {
-					logrus.Errorf("sqlite exec err: %v", tx.Error.Error())
-					panic(tx.Error.Error())
+					panic(fmt.Sprintf("sqlite exec err: %v", tx.Error.Error()))
 				}
 			}
 		}
@@ -81,6 +77,7 @@ func CloseSqliteDB() {
 		}
 		if err = db.Close(); err != nil {
 			logrus.Errorf("sqlite close err: %v", err)
+			return
 		}
 	}
 }

@@ -12,23 +12,23 @@ import (
 	"time"
 )
 
-type hysteria2Api struct {
+type Hysteria2Api struct {
 	apiPort int64
 }
 
-func NewHysteria2Api(apiPort int64) *hysteria2Api {
-	return &hysteria2Api{
+func NewHysteria2Api(apiPort int64) *Hysteria2Api {
+	return &Hysteria2Api{
 		apiPort: apiPort,
 	}
 }
 
 func apiClient() *http.Client {
 	return &http.Client{
-		Timeout: 3 * time.Second,
+		Timeout: 5 * time.Second,
 	}
 }
 
-func (n *hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic, error) {
+func (n *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic, error) {
 	client := apiClient()
 	url := fmt.Sprintf("http://127.0.0.1:%d/traffic", n.apiPort)
 	if clear {
@@ -57,15 +57,15 @@ func (n *hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic
 	return users, nil
 }
 
-func (n *hysteria2Api) GetUser(pass string, clear bool) (*bo.Hysteria2User, error) {
+func (n *Hysteria2Api) GetUser(conPass string, clear bool) (*bo.Hysteria2User, error) {
 	users, err := n.ListUsers(clear)
 	if err != nil {
 		return nil, err
 	}
-	user := users[pass]
+	user := users[conPass]
 	return &bo.Hysteria2User{
-		Pass: pass,
-		Tx:   user.Tx,
-		Rx:   user.Rx,
+		ConPass: conPass,
+		Tx:      user.Tx,
+		Rx:      user.Rx,
 	}, nil
 }

@@ -17,8 +17,7 @@ import (
 func main() {
 	config, err := dao.GetConfig("key = ?", constant.HUIWebPort)
 	if err != nil {
-		logrus.Errorf("webServerPort get err: %v", err)
-		panic(err)
+		panic(fmt.Sprintf("webPort get err: %v", err))
 	}
 	r := gin.Default()
 	router.Router(r)

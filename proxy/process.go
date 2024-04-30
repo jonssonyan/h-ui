@@ -9,16 +9,16 @@ import (
 	"time"
 )
 
-type Process struct {
+type process struct {
 	mutex *sync.Mutex
 	cmd   *exec.Cmd
 }
 
-func (p *Process) IsRunning() bool {
+func (p *process) IsRunning() bool {
 	return p.cmd != nil && p.cmd.Process != nil
 }
 
-func (p *Process) Start(name string, arg ...string) error {
+func (p *process) Start(name string, arg ...string) error {
 	defer p.mutex.Unlock()
 	if p.mutex.TryLock() {
 		if p.IsRunning() {
@@ -37,7 +37,7 @@ func (p *Process) Start(name string, arg ...string) error {
 
 		p.cmd = cmd
 
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		done := make(chan error)
 		go func() {
@@ -59,7 +59,7 @@ func (p *Process) Start(name string, arg ...string) error {
 	return errors.New("start cmd err")
 }
 
-func (p *Process) Stop() error {
+func (p *process) Stop() error {
 	defer p.mutex.Unlock()
 	if p.mutex.TryLock() {
 		if !p.IsRunning() {
@@ -76,7 +76,7 @@ func (p *Process) Stop() error {
 	return errors.New("cmd stop err")
 }
 
-func (p *Process) releaseProcess() error {
+func (p *process) releaseProcess() error {
 	if p.cmd != nil && p.cmd.Process != nil {
 		if err := p.cmd.Process.Release(); err != nil {
 			logrus.Errorf("cmd release err: %v", err)
