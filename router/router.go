@@ -11,18 +11,19 @@ func Router(router *gin.Engine) {
 
 	frontend.InitFrontend(router)
 
-	api := router.Group("/hui")
+	authApi := router.Group("/hui")
 	{
-		initAuthRouter(api)
-		initHysteria2AuthRouter(api)
+		initAuthRouter(authApi)
+		initHysteria2AuthRouter(authApi)
 	}
 
 	router.Use(middleware.JWTHandler())
 
-	huiApi := router.Group("/hui")
+	router.Use(middleware.AdminHandler())
+	huiAdminApi := router.Group("/hui")
 	{
-		initAccountRouter(huiApi)
-		initConfigRouter(huiApi)
-		initHysteria2Router(api)
+		initAccountAdminRouter(huiAdminApi)
+		initConfigRouter(huiAdminApi)
+		initHysteria2Router(huiAdminApi)
 	}
 }

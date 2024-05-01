@@ -1,17 +1,15 @@
 package service
 
 import (
-	"fmt"
 	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/entity"
-	"h-ui/util"
 )
 
 func Login(username string, pass string) (string, error) {
-	account, err := dao.GetAccount("username = ? and pass = ? and role = 'admin' and deleted = 0", username, util.SHA224String(pass))
+	account, err := dao.GetAccount("username = ? and pass = ? and role = 'admin' and deleted = 0", username, pass)
 	if err != nil {
 		return "", err
 	}
@@ -43,10 +41,10 @@ func UpdateAccount(account entity.Account) error {
 		updates["username"] = *account.Username
 	}
 	if account.Pass != nil && *account.Pass != "" {
-		updates["pass"] = util.SHA224String(*account.Pass)
+		updates["pass"] = *account.Pass
 	}
 	if account.ConPass != nil && *account.ConPass != "" {
-		updates["con_pass"] = util.SHA224String(fmt.Sprintf("%s@%s", *account.Username, *account.ConPass))
+		updates["con_pass"] = *account.ConPass
 	}
 	if account.Quota != nil {
 		updates["quota"] = *account.Quota

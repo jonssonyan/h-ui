@@ -5,6 +5,7 @@ import (
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/service"
+	"h-ui/util"
 )
 
 func Hysteria2Auth(c *gin.Context) {
@@ -12,7 +13,7 @@ func Hysteria2Auth(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	username, err := service.Hysteria2Auth(*hysteria2AuthDto.Auth)
+	username, err := service.Hysteria2Auth(util.SHA224String(*hysteria2AuthDto.Auth))
 	if err != nil || username != "" {
 		vo.Hysteria2AuthFail("", c)
 		return

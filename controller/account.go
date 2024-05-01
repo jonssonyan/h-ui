@@ -16,7 +16,7 @@ func Login(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	token, err := service.Login(*loginDto.Username, *loginDto.Pass)
+	token, err := service.Login(*loginDto.Username, util.SHA224String(*loginDto.Pass))
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
@@ -97,6 +97,15 @@ func DeleteAccount(c *gin.Context) {
 	if err != nil {
 		return
 	}
+	account, err := service.GetAccount(*idDto.Id)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	if *account.Role == "admin" {
+		vo.Fail("admin 账号不能删除", c)
+		return
+	}
 	err = service.DeleteAccount([]int64{*idDto.Id})
 	if err != nil {
 		vo.Fail(err.Error(), c)
@@ -116,10 +125,33 @@ func UpdateAccount(c *gin.Context) {
 		return
 	}
 
+	var passEncrypt *string
+	if accountUpdateDto.Pass != nil && *accountUpdateDto.Pass != "" {
+		passEncryptSha224 := util.SHA224String(*accountUpdateDto.Pass)
+		passEncrypt = &passEncryptSha224
+	}
+
+	var conPassEncrypt *string
+	if accountUpdateDto.ConPass != nil && *accountUpdateDto.ConPass != "" {
+		var username string
+		if accountUpdateDto.Username != nil && *accountUpdateDto.Username != "" {
+			username = *accountUpdateDto.Username
+		} else {
+			account, err := service.GetAccount(*accountUpdateDto.Id)
+			if err != nil {
+				vo.Fail(err.Error(), c)
+				return
+			}
+			username = *account.Username
+		}
+		conPassSha224 := util.SHA224String(fmt.Sprintf("%s@%s", username, *accountUpdateDto.ConPass))
+		conPassEncrypt = &conPassSha224
+	}
+
 	account := entity.Account{
 		Username:   accountUpdateDto.Username,
-		Pass:       accountUpdateDto.Pass,
-		ConPass:    accountUpdateDto.ConPass,
+		Pass:       passEncrypt,
+		ConPass:    conPassEncrypt,
 		Quota:      accountUpdateDto.Quota,
 		ExpireTime: accountUpdateDto.ExpireTime,
 		Deleted:    accountUpdateDto.Deleted,

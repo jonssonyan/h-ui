@@ -5,13 +5,13 @@ import (
 	"h-ui/controller"
 )
 
-func initAccountRouter(accountApi *gin.RouterGroup) {
+func initAccountAdminRouter(accountApi *gin.RouterGroup) {
 	account := accountApi.Group("/account")
 	{
 		account.GET("/pageAccount", controller.PageAccount)
-		account.GET("/saveAccount", controller.SaveAccount)
-		account.GET("/deleteAccount", controller.DeleteAccount)
-		account.GET("/updateAccount", controller.UpdateAccount)
+		account.POST("/saveAccount", controller.SaveAccount)
+		account.POST("/deleteAccount", controller.DeleteAccount)
+		account.POST("/updateAccount", controller.UpdateAccount)
 		account.GET("/getAccountInfo", controller.GetAccountInfo)
 		account.GET("/getAccount", controller.GetAccount)
 	}
