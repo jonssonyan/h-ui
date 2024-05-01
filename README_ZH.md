@@ -5,5 +5,5 @@
 # 编译
 
 ```shell
-go build -o h-ui -ldflags="-s -w" .
+go build -trimpath -ldflags -o h-ui -ldflags="-s -w"
 ```

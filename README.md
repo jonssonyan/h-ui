@@ -5,5 +5,5 @@ Just the panel of Hysteria2
 # compile
 
 ```shell
-go build -o h-ui -ldflags="-s -w" .
+go build -trimpath -ldflags -o h-ui -ldflags="-s -w"
 ```
