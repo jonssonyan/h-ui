@@ -180,8 +180,9 @@
           />
         </el-form-item>
         <el-form-item :label="$t('account.expireTime')" prop="expireTime">
-          <el-input
+          <el-date-picker
             v-model="formData.expireTime"
+            type="datetime"
             :placeholder="$t('account.expireTime')"
             maxlength="50"
           />
@@ -196,9 +197,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">{{
-            $t("common.confirm")
-          }}</el-button>
+          <el-button type="primary" @click="submitForm"
+            >{{ $t("common.confirm") }}
+          </el-button>
           <el-button @click="closeDialog">{{ $t("common.cancel") }}</el-button>
         </div>
       </template>
