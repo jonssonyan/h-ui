@@ -45,12 +45,7 @@
         </el-form-item>
       </template>
 
-      <el-table
-        v-loading="loading"
-        :data="records"
-        @selection-change="handleSelectionChange"
-      >
-        <el-table-column type="selection" width="50" align="center" />
+      <el-table v-loading="loading" :data="records">
         <el-table-column
           key="id"
           :label="$t('common.id')"
@@ -161,7 +156,6 @@
       <el-form ref="dataFormRef" :model="formData" label-width="80px">
         <el-form-item :label="$t('account.username')" prop="username">
           <el-input
-            :readonly="!!formData.id"
             v-model="formData.username"
             :placeholder="$t('account.username')"
             maxlength="50"
@@ -206,6 +200,7 @@
             type="datetime"
             :placeholder="$t('account.expireTime')"
             value-format="x"
+            :shortcuts="shortcuts"
             clearable
           />
         </el-form-item>
@@ -250,8 +245,13 @@ import {
   updateAccountApi,
 } from "@/api/account";
 import { Search, Plus, Refresh } from "@element-plus/icons-vue";
-import { timestampToDateTime } from "@/utils/time";
-import formatBytes from "@/utils/byte";
+import {
+  timestampToDateTime,
+  getMonthLater,
+  getWeekLater,
+  getYearLater,
+} from "@/utils/time";
+import { formatBytes } from "@/utils/byte";
 
 const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
@@ -259,8 +259,6 @@ const dataFormRef = ref(ElForm); // 用户表单
 const state = reactive({
   // 遮罩层
   loading: true,
-  // 选中数组
-  ids: [] as number[],
   // 总条数
   total: 0,
   records: [] as AccountVo[],
@@ -268,6 +266,7 @@ const state = reactive({
     visible: false,
   } as DialogType,
   formData: {
+    expireTime: getMonthLater(),
     deleted: 0,
   } as AccountForm,
   queryParams: {
@@ -279,18 +278,25 @@ const state = reactive({
   quotaUnit: "GB",
 });
 
-const {
-  ids,
-  loading,
-  queryParams,
-  records,
-  total,
-  formData,
-  dialog,
-  quotaUnit,
-} = toRefs(state);
+const { loading, queryParams, records, total, formData, dialog, quotaUnit } =
+  toRefs(state);
 
 const quotaUnits = ["Bytes", "KB", "MB", "GB", "TB"];
+
+const shortcuts = [
+  {
+    text: "A week later",
+    value: getWeekLater,
+  },
+  {
+    text: "A month later",
+    value: getMonthLater,
+  },
+  {
+    text: "A year later",
+    value: getYearLater,
+  },
+];
 
 /**
  * 查询
@@ -310,13 +316,6 @@ function handleQuery() {
 function resetQuery() {
   queryFormRef.value.resetFields();
   handleQuery();
-}
-
-/**
- * 行选中
- */
-function handleSelectionChange(selection: any) {
-  state.ids = selection.map((item: any) => item.id);
 }
 
 /**

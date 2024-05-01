@@ -59,7 +59,7 @@ export const asyncRoutes: any[] = [
     component: "Layout",
     redirect: "/list",
     name: "Account",
-    meta: { title: "account", icon: "user", roles: ["sysadmin", "admin"] },
+    meta: { title: "account", icon: "user", roles: ["admin"] },
     children: [
       {
         path: "list",
@@ -68,7 +68,7 @@ export const asyncRoutes: any[] = [
         meta: {
           title: "accountList",
           icon: "user",
-          roles: ["sysadmin", "admin"],
+          roles: ["admin"],
         },
       },
     ],

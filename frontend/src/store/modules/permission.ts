@@ -16,7 +16,7 @@ const Layout = () => import("@/layout/index.vue");
 const hasPermission = (roles: string[], route: RouteRecordRaw) => {
   if (route.meta && route.meta.roles) {
     // 角色【超级管理员】拥有所有权限，忽略校验
-    if (roles.includes("sysadmin")) {
+    if (roles.includes("admin")) {
       return true;
     }
     return roles.some((role) => {
