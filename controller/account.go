@@ -70,7 +70,7 @@ func SaveAccount(c *gin.Context) {
 		return
 	}
 
-	if service.ExistAccountUsername(*accountSaveDto.Username) {
+	if service.ExistAccountUsername(*accountSaveDto.Username, 0) {
 		vo.Fail(fmt.Sprintf("用户名%s已存在", *accountSaveDto.Username), c)
 		return
 	}
@@ -121,7 +121,7 @@ func UpdateAccount(c *gin.Context) {
 		return
 	}
 
-	if accountUpdateDto.Username != nil && *accountUpdateDto.Username != "" && service.ExistAccountUsername(*accountUpdateDto.Username) {
+	if accountUpdateDto.Username != nil && *accountUpdateDto.Username != "" && service.ExistAccountUsername(*accountUpdateDto.Username, *accountUpdateDto.Id) {
 		vo.Fail(fmt.Sprintf("用户名%s已存在", *accountUpdateDto.Username), c)
 		return
 	}

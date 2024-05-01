@@ -42,7 +42,7 @@ func UpdateAccount(ids []int64, updates map[string]interface{}) error {
 
 func UpdateAccountTraffic(conPass string, download int64, upload int64) error {
 	if upload != 0 || download != 0 {
-		var updates map[string]interface{}
+		updates := map[string]interface{}{}
 		if download != 0 {
 			updates["download"] = gorm.Expr("download + ?", download)
 		}

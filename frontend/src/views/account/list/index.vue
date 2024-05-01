@@ -413,6 +413,15 @@ function closeDialog() {
   dialog.value.visible = false;
   dataFormRef.value.resetFields();
   dataFormRef.value.clearValidate();
+
+  if (dialog.value.title == "修改用户") {
+    Object.assign(state.formData, {
+      id: undefined,
+      expireTime: getMonthLater(),
+      deleted: 0,
+    });
+  }
+  console.log(state.formData)
 }
 
 /**

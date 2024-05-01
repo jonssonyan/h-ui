@@ -38,7 +38,7 @@ func DeleteAccount(ids []int64) error {
 }
 
 func UpdateAccount(account entity.Account) error {
-	var updates map[string]interface{}
+	updates := map[string]interface{}{}
 	if account.Username != nil && *account.Username != "" {
 		updates["username"] = *account.Username
 	}
@@ -66,8 +66,13 @@ func UpdateAccount(account entity.Account) error {
 	return dao.UpdateAccount([]int64{*account.Id}, updates)
 }
 
-func ExistAccountUsername(username string) bool {
-	_, err := dao.GetAccount("username = ?", username)
+func ExistAccountUsername(username string, id int64) bool {
+	var err error
+	if id != 0 {
+		_, err = dao.GetAccount("username = ? and id != ?", username, id)
+	} else {
+		_, err = dao.GetAccount("username = ?", username)
+	}
 	if err != nil {
 		if err.Error() == constant.AccountNotExist {
 			return false
