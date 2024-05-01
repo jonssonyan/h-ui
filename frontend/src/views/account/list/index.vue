@@ -60,7 +60,7 @@
         />
         <el-table-column
           key="username"
-          :label="$t('common.username')"
+          :label="$t('account.username')"
           align="center"
           prop="username"
         />
@@ -69,24 +69,37 @@
           :label="$t('account.quota')"
           align="center"
           prop="quota"
-        />
+        >
+          <template #default="scope">
+            {{ formatBytes(scope.row.quota) }}
+          </template>
+        </el-table-column>
         <el-table-column
           key="download"
           :label="$t('account.download')"
           align="center"
           prop="download"
-        />
+        >
+          <template #default="scope">
+            {{ formatBytes(scope.row.download) }}
+          </template>
+        </el-table-column>
         <el-table-column
           key="upload"
           :label="$t('account.upload')"
           align="center"
           prop="upload"
-        />
+        >
+          <template #default="scope">
+            {{ formatBytes(scope.row.download) }}
+          </template>
+        </el-table-column>
         <el-table-column
           key="expireTime"
           :label="$t('account.expireTime')"
           align="center"
           prop="expireTime"
+          width="180"
         >
           <template #default="scope">
             {{ timestampToDateTime(scope.row.expireTime) }}
@@ -98,11 +111,7 @@
           align="center"
           prop="role"
         />
-        <el-table-column
-          :label="$t('common.deleted')"
-          align="center"
-          width="100"
-        >
+        <el-table-column :label="$t('common.deleted')" align="center">
           <template #default="scope">
             <el-tag v-if="scope.row.deleted === 0" type="success"
               >{{ $t("common.enable") }}
@@ -114,7 +123,6 @@
           :label="$t('common.createTime')"
           align="center"
           prop="createTime"
-          width="180"
         >
           <template #default="scope">
             {{ timestampToDateTime(scope.row.createTime) }}
@@ -153,9 +161,11 @@
       <el-form ref="dataFormRef" :model="formData" label-width="80px">
         <el-form-item :label="$t('account.username')" prop="username">
           <el-input
-            :readonly="!formData.id"
+            :readonly="!!formData.id"
             v-model="formData.username"
             :placeholder="$t('account.username')"
+            maxlength="50"
+            clearable
           />
         </el-form-item>
         <el-form-item :label="$t('account.pass')" prop="pass">
@@ -163,6 +173,7 @@
             v-model="formData.pass"
             :placeholder="$t('account.pass')"
             maxlength="50"
+            clearable
           />
         </el-form-item>
         <el-form-item :label="$t('account.conPass')" prop="conPass">
@@ -170,6 +181,7 @@
             v-model="formData.conPass"
             :placeholder="$t('account.conPass')"
             maxlength="50"
+            clearable
           />
         </el-form-item>
         <el-form-item :label="$t('account.quota')" prop="quota">
@@ -177,14 +189,24 @@
             v-model="formData.quota"
             :placeholder="$t('account.quota')"
             maxlength="50"
+            clearable
           />
+          <el-select v-model="quotaUnit" placeholder="单位" style="width: 80px">
+            <el-option
+              v-for="item in quotaUnits"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item :label="$t('account.expireTime')" prop="expireTime">
           <el-date-picker
             v-model="formData.expireTime"
             type="datetime"
             :placeholder="$t('account.expireTime')"
-            maxlength="50"
+            value-format="x"
+            clearable
           />
         </el-form-item>
 
@@ -229,6 +251,7 @@ import {
 } from "@/api/account";
 import { Search, Plus, Refresh } from "@element-plus/icons-vue";
 import { timestampToDateTime } from "@/utils/time";
+import formatBytes from "@/utils/byte";
 
 const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
@@ -244,17 +267,30 @@ const state = reactive({
   dialog: {
     visible: false,
   } as DialogType,
-  formData: {} as AccountForm,
+  formData: {
+    deleted: 0,
+  } as AccountForm,
   queryParams: {
     username: undefined,
     deleted: undefined,
     pageNum: 1,
     pageSize: 10,
   } as AccountPageDto,
+  quotaUnit: "GB",
 });
 
-const { ids, loading, queryParams, records, total, formData, dialog } =
-  toRefs(state);
+const {
+  ids,
+  loading,
+  queryParams,
+  records,
+  total,
+  formData,
+  dialog,
+  quotaUnit,
+} = toRefs(state);
+
+const quotaUnits = ["Bytes", "KB", "MB", "GB", "TB"];
 
 /**
  * 查询
