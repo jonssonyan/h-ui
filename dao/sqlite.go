@@ -30,7 +30,8 @@ func InitSqliteDB() {
 		},
 	)
 
-	sqliteDB, err := gorm.Open(sqlite.Open(constant.SqliteDBPath), &gorm.Config{
+	var err error
+	sqliteDB, err = gorm.Open(sqlite.Open(constant.SqliteDBPath), &gorm.Config{
 		TranslateError: true,
 		Logger:         newLogger,
 		NamingStrategy: schema.NamingStrategy{
