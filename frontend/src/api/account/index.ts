@@ -97,9 +97,8 @@ export function loginApi(data: AccountLoginDto): AxiosPromise<AccountLoginVo> {
 
 /**
  * 导出
- * @param data
  */
-export function exportAccountApi(): AxiosPromise<AccountLoginVo> {
+export function exportAccountApi(): AxiosPromise {
   return request({
     url: "/account/exportAccount",
     method: "post",
