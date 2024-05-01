@@ -110,6 +110,12 @@ func UpdateAccount(c *gin.Context) {
 	if err != nil {
 		return
 	}
+
+	if accountUpdateDto.Username != nil && *accountUpdateDto.Username != "" && service.ExistAccountUsername(*accountUpdateDto.Username) {
+		vo.Fail(fmt.Sprintf("用户名%s已存在", *accountUpdateDto.Username), c)
+		return
+	}
+
 	account := entity.Account{
 		Username:   accountUpdateDto.Username,
 		Pass:       accountUpdateDto.Pass,
