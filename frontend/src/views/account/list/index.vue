@@ -3,33 +3,35 @@
     <!-- 用户数据 -->
     <div class="search">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-        <el-form-item label="用户名" prop="username">
+        <el-form-item :label="$t('account.username')" prop="username">
           <el-input
             v-model="queryParams.username"
-            placeholder="用户名"
+            :placeholder="$t('account.username')"
             clearable
             style="width: 200px"
             @keyup.enter="handleQuery"
           />
         </el-form-item>
 
-        <el-form-item label="状态" prop="deleted">
+        <el-form-item :label="$t('common.deleted')" prop="deleted">
           <el-select
             v-model="queryParams.deleted"
-            placeholder="全部"
+            :placeholder="$t('common.all')"
             clearable
             style="width: 200px"
           >
-            <el-option label="启用" value="0" />
-            <el-option label="禁用" value="1" />
+            <el-option :label="$t('common.enable')" value="0" />
+            <el-option :label="$t('common.disable')" value="1" />
           </el-select>
         </el-form-item>
 
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleQuery"
-            >搜索
+            >{{ $t("common.search") }}
           </el-button>
-          <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
+          <el-button :icon="Refresh" @click="resetQuery"
+            >{{ $t("common.reset") }}
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -38,7 +40,7 @@
       <template #header>
         <el-form-item style="float: left">
           <el-button type="success" :icon="Plus" @click="handleAdd"
-            >新增
+            >{{ $t("common.add") }}
           </el-button>
         </el-form-item>
       </template>
@@ -51,57 +53,81 @@
         <el-table-column type="selection" width="50" align="center" />
         <el-table-column
           key="id"
-          label="编号"
+          :label="$t('common.id')"
           align="center"
           prop="id"
           width="100"
         />
         <el-table-column
           key="username"
-          label="用户名"
+          :label="$t('common.username')"
           align="center"
           prop="username"
         />
-        <el-table-column key="quota" label="配额" align="center" prop="quota" />
+        <el-table-column
+          key="quota"
+          :label="$t('account.quota')"
+          align="center"
+          prop="quota"
+        />
         <el-table-column
           key="download"
-          label="下载"
+          :label="$t('account.download')"
           align="center"
           prop="download"
         />
         <el-table-column
           key="upload"
-          label="上传"
+          :label="$t('account.upload')"
           align="center"
           prop="upload"
         />
         <el-table-column
           key="expireTime"
-          label="到期时间"
+          :label="$t('account.expireTime')"
           align="center"
           prop="expireTime"
-        />
-        <el-table-column key="role" label="角色" align="center" prop="role" />
+        >
+          <template #default="scope">
+            {{ timestampToDateTime(scope.row.expireTime) }}
+          </template>
+        </el-table-column>
         <el-table-column
-          key="deleted"
-          label="状态"
+          key="role"
+          :label="$t('account.role')"
           align="center"
-          prop="deleted"
+          prop="role"
         />
         <el-table-column
-          label="创建时间"
+          :label="$t('common.deleted')"
+          align="center"
+          width="100"
+        >
+          <template #default="scope">
+            <el-tag v-if="scope.row.deleted === 0" type="success"
+              >{{ $t("common.enable") }}
+            </el-tag>
+            <el-tag v-else type="info">{{ $t("common.disable") }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          :label="$t('common.createTime')"
           align="center"
           prop="createTime"
           width="180"
-        ></el-table-column>
+        >
+          <template #default="scope">
+            {{ timestampToDateTime(scope.row.createTime) }}
+          </template>
+        </el-table-column>
 
-        <el-table-column label="操作" align="left" width="200">
+        <el-table-column :label="$t('common.operate')" align="left" width="200">
           <template #default="scope">
             <el-button type="primary" link @click="handleUpdate(scope.row)"
-              >编辑
+              >{{ $t("common.edit") }}
             </el-button>
             <el-button type="danger" link @click="handleDelete(scope.row)"
-              >删除
+              >{{ $t("common.delete") }}
             </el-button>
           </template>
         </el-table-column>
@@ -125,53 +151,55 @@
       @close="closeDialog"
     >
       <el-form ref="dataFormRef" :model="formData" label-width="80px">
-        <el-form-item label="用户名" prop="username">
+        <el-form-item :label="$t('account.username')" prop="username">
           <el-input
-            :readonly="!!formData.id"
+            :readonly="!formData.id"
             v-model="formData.username"
-            placeholder="请输入用户名"
+            :placeholder="$t('account.username')"
           />
         </el-form-item>
-        <el-form-item label="登录密码" prop="pass">
+        <el-form-item :label="$t('account.pass')" prop="pass">
           <el-input
             v-model="formData.pass"
-            placeholder="请输入登录密码"
+            :placeholder="$t('account.pass')"
             maxlength="50"
           />
         </el-form-item>
-        <el-form-item label="连接密码" prop="conPass">
+        <el-form-item :label="$t('account.conPass')" prop="conPass">
           <el-input
             v-model="formData.conPass"
-            placeholder="请输入连接密码"
+            :placeholder="$t('account.conPass')"
             maxlength="50"
           />
         </el-form-item>
-        <el-form-item label="配额" prop="quota">
+        <el-form-item :label="$t('account.quota')" prop="quota">
           <el-input
             v-model="formData.quota"
-            placeholder="请输入配额"
+            :placeholder="$t('account.quota')"
             maxlength="50"
           />
         </el-form-item>
-        <el-form-item label="到期时间" prop="expireTime">
+        <el-form-item :label="$t('account.expireTime')" prop="expireTime">
           <el-input
             v-model="formData.expireTime"
-            placeholder="请输入到期时间"
+            :placeholder="$t('account.expireTime')"
             maxlength="50"
           />
         </el-form-item>
 
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="$t('common.deleted')" prop="status">
           <el-radio-group v-model="formData.deleted">
-            <el-radio :label="0">正常</el-radio>
-            <el-radio :label="1">禁用</el-radio>
+            <el-radio :label="0">{{ $t("common.enable") }}</el-radio>
+            <el-radio :label="1">{{ $t("common.disable") }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="closeDialog">取 消</el-button>
+          <el-button type="primary" @click="submitForm">{{
+            $t("common.confirm")
+          }}</el-button>
+          <el-button @click="closeDialog">{{ $t("common.cancel") }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -199,6 +227,7 @@ import {
   updateAccountApi,
 } from "@/api/account";
 import { Search, Plus, Refresh } from "@element-plus/icons-vue";
+import { timestampToDateTime } from "@/utils/time";
 
 const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
