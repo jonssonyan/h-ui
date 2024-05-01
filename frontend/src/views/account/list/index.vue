@@ -36,13 +36,23 @@
       </el-form>
     </div>
 
-    <el-card>
+    <el-card shadow="never">
       <template #header>
-        <el-form-item style="float: left">
-          <el-button type="success" :icon="Plus" @click="handleAdd"
-            >{{ $t("common.add") }}
-          </el-button>
-        </el-form-item>
+        <div class="flex justify-between">
+          <div>
+            <el-button type="success" :icon="Plus" @click="handleAdd"
+              >{{ $t("common.add") }}
+            </el-button>
+          </div>
+          <div>
+            <el-button @click="handleExport">
+              <template #icon>
+                <i-ep-download />
+              </template>
+              导出
+            </el-button>
+          </div>
+        </div>
       </template>
 
       <el-table v-loading="loading" :data="records">
@@ -243,6 +253,7 @@ import {
   getAccountApi,
   pageAccountApi,
   updateAccountApi,
+  exportAccountApi,
 } from "@/api/account";
 import { Search, Plus, Refresh } from "@element-plus/icons-vue";
 import {
@@ -278,7 +289,7 @@ const state = reactive({
   quotaUnit: "GB",
 });
 
-const { loading, queryParams, records, total, formData, dialog, quotaUnit } =
+const { loading, total, records, dialog, formData, queryParams, quotaUnit } =
   toRefs(state);
 
 const quotaUnits = ["Bytes", "KB", "MB", "GB", "TB"];
@@ -402,6 +413,27 @@ function closeDialog() {
   dialog.value.visible = false;
   dataFormRef.value.resetFields();
   dataFormRef.value.clearValidate();
+}
+
+/**
+ * 导出
+ */
+function handleExport() {
+  exportAccountApi().then((res) => {
+    const blob = new Blob([res.data], {
+      type: "application/octet-stream",
+    });
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement("a");
+    document.body.appendChild(a);
+    a.href = url;
+    let dis = res.headers["content-disposition"];
+    a.download = dis.split("attachment; filename=")[1];
+    // 模拟点击下载
+    a.click();
+    window.URL.revokeObjectURL(url);
+    ElMessage.success("导出成功");
+  });
 }
 
 onMounted(() => {

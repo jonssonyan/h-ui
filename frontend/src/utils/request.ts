@@ -29,8 +29,8 @@ service.interceptors.response.use(
     if (code === 20000) {
       return response.data;
     }
-    // 响应数据为二进制流处理(Excel导出)
-    if (response.data instanceof ArrayBuffer) {
+    // 响应数据为二进制流处理(文件导出)
+    if (response.data instanceof ArrayBuffer || response.data instanceof Blob) {
       return response;
     }
 

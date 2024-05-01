@@ -94,3 +94,15 @@ export function loginApi(data: AccountLoginDto): AxiosPromise<AccountLoginVo> {
     data,
   });
 }
+
+/**
+ * 导出
+ * @param data
+ */
+export function exportAccountApi(): AxiosPromise<AccountLoginVo> {
+  return request({
+    url: "/account/exportAccount",
+    method: "post",
+    responseType: "blob",
+  });
+}
