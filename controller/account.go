@@ -9,6 +9,7 @@ import (
 	"h-ui/model/vo"
 	"h-ui/service"
 	"h-ui/util"
+	"time"
 )
 
 func Login(c *gin.Context) {
@@ -208,4 +209,30 @@ func GetAccount(c *gin.Context) {
 		Deleted:    *account.Deleted,
 	}
 	vo.Success(accountVo, c)
+}
+
+func ExportAccount(c *gin.Context) {
+	accountExports, err := service.ListExportAccount()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
+	fileName := fmt.Sprintf("AccountExport-%s.json", time.Now().Format("20060102150405"))
+	filePath := constant.ExportPathDir + fileName
+
+	if err = util.ExportJson(filePath, accountExports); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
+	// 下载
+	if !util.Exists(filePath) {
+		vo.Fail("file not exist", c)
+		return
+	}
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Transfer-Encoding", "binary")
+	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName))
+	c.File(filePath)
 }

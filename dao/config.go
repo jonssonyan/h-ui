@@ -47,7 +47,7 @@ func GetConfig(query interface{}, args ...interface{}) (entity.Config, error) {
 func ListConfig(query interface{}, args ...interface{}) ([]entity.Config, error) {
 	var configs []entity.Config
 	if tx := sqliteDB.Model(&entity.Config{}).
-		Where(query, args...).Find(&configs); tx.Error != nil {
+		Where(query, args...).Order("create_time desc").Find(&configs); tx.Error != nil {
 		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
 		return configs, errors.New(constant.SysError)
 	}

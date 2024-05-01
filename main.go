@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"h-ui/controller"
 	"h-ui/dao"
 	"h-ui/middleware"
 	"h-ui/model/constant"
@@ -30,7 +29,6 @@ func init() {
 	middleware.InitLog()
 	dao.InitSqliteDB()
 	middleware.InitCron()
-	controller.InitValidator()
 	service.InitHysteria2()
 }
 
@@ -40,7 +38,7 @@ func releaseResource() {
 
 func initFile() {
 
-	var dirs = []string{constant.LogDir, constant.BinDir, constant.SqliteDBDir}
+	var dirs = []string{constant.LogDir, constant.SqliteDBDir, constant.BinDir, constant.ExportPathDir}
 	for _, item := range dirs {
 		if !util.Exists(item) {
 			if err := os.Mkdir(item, os.ModePerm); err != nil {

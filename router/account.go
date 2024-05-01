@@ -14,5 +14,6 @@ func initAccountAdminRouter(accountApi *gin.RouterGroup) {
 		account.POST("/updateAccount", controller.UpdateAccount)
 		account.GET("/getAccountInfo", controller.GetAccountInfo)
 		account.GET("/getAccount", controller.GetAccount)
+		account.POST("/exportAccount", controller.ExportAccount)
 	}
 }

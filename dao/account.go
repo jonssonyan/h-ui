@@ -92,3 +92,13 @@ func PageAccount(accountPageDto dto.AccountPageDto) ([]entity.Account, int64, er
 	}
 	return accounts, total, nil
 }
+
+func ListAccount(query interface{}, args ...interface{}) ([]entity.Account, error) {
+	var accounts []entity.Account
+	if tx := sqliteDB.Model(&entity.Account{}).
+		Where(query, args...).Order("role,create_time desc").Find(&accounts); tx.Error != nil {
+		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		return accounts, errors.New(constant.SysError)
+	}
+	return accounts, nil
+}

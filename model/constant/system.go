@@ -1,9 +1,10 @@
 package constant
 
 const (
-	LogDir      = "logs/"
-	BinDir      = "bin/"
-	SqliteDBDir = "data/"
+	LogDir        = "logs/"
+	SqliteDBDir   = "data/"
+	BinDir        = "bin/"
+	ExportPathDir = "export/"
 
 	SqliteDBPath = "data/h_ui.db"
 
