@@ -178,6 +178,8 @@
             :placeholder="$t('account.pass')"
             maxlength="50"
             clearable
+            type="password"
+            show-password
           />
         </el-form-item>
         <el-form-item :label="$t('account.conPass')" prop="conPass">
@@ -186,6 +188,8 @@
             :placeholder="$t('account.conPass')"
             maxlength="50"
             clearable
+            type="password"
+            show-password
           />
         </el-form-item>
         <el-form-item :label="$t('account.quota')" prop="quota">

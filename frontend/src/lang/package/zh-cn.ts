@@ -2,8 +2,17 @@ export default {
   // 路由国际化
   route: {
     dashboard: "首页",
-    account: "用户管理",
-    accountList: "用户列表",
+    account: "用户",
+    accountList: "用户管理",
+    hysteria: "Hysteria",
+    hysteriaList: "Hysteria 管理",
+    config: "系统",
+    configList: "系统设置",
+    monitor: "监控",
+    monitorSystem: "系统监控",
+    log: "日志",
+    logSystem: "系统日志",
+    logHysteria: "Hysteria 日志",
   },
   // 登录页面国际化
   login: {

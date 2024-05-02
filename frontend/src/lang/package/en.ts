@@ -3,7 +3,16 @@ export default {
   route: {
     dashboard: "Dashboard",
     account: "Account",
-    accountList: "Account List",
+    accountList: "Account Manage",
+    hysteria: "Hysteria",
+    hysteriaList: "Hysteria Manage",
+    config: "System",
+    configList: "System Config",
+    monitor: "Monitor",
+    monitorSystem: "System Monitor",
+    log: "Log",
+    logSystem: "System Log",
+    logHysteria: "Hysteria Log",
   },
   // 登录页面国际化
   login: {

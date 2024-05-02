@@ -73,6 +73,101 @@ export const asyncRoutes: any[] = [
       },
     ],
   },
+  {
+    path: "/hysteria",
+    component: "Layout",
+    redirect: "/list",
+    name: "Hysteria",
+    meta: { title: "hysteria", icon: "hysteria", roles: ["admin"] },
+    children: [
+      {
+        path: "list",
+        component: "hysteria/list/index",
+        name: "HysteriaList",
+        meta: {
+          title: "hysteriaList",
+          icon: "hysteria",
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/config",
+    component: "Layout",
+    redirect: "/list",
+    name: "Config",
+    meta: { title: "config", icon: "config", roles: ["admin"] },
+    children: [
+      {
+        path: "list",
+        component: "config/list/index",
+        name: "ConfigList",
+        meta: {
+          title: "configList",
+          icon: "config",
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/monitor",
+    component: "Layout",
+    redirect: "/monitor",
+    name: "Monitor",
+    meta: { title: "monitor", icon: "monitor", roles: ["admin"] },
+    children: [
+      {
+        path: "system",
+        component: "monitor/system/index",
+        name: "MonitorSystem",
+        meta: {
+          title: "monitorSystem",
+          icon: "monitor",
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/log",
+    component: "Layout",
+    redirect: "/system",
+    name: "Log",
+    meta: { title: "log", icon: "log-system", roles: ["admin"] },
+    children: [
+      {
+        path: "system",
+        component: "log/system/index",
+        name: "LogSystem",
+        meta: {
+          title: "logSystem",
+          icon: "log-system",
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/log",
+    component: "Layout",
+    redirect: "/hysteria",
+    name: "Log",
+    meta: { title: "log", icon: "log-hysteria", roles: ["admin"] },
+    children: [
+      {
+        path: "hysteria",
+        component: "log/hysteria/index",
+        name: "LogHysteria",
+        meta: {
+          title: "logHysteria",
+          icon: "log-hysteria",
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
 ];
 
 /**
