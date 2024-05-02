@@ -168,6 +168,25 @@ export const asyncRoutes: any[] = [
       },
     ],
   },
+  {
+    path: "/info",
+    component: "Layout",
+    redirect: "/account",
+    name: "Info",
+    meta: { title: "info", icon: "info-account", roles: ["user", "admin"] },
+    children: [
+      {
+        path: "account",
+        component: "info/account/index",
+        name: "AccountInfo",
+        meta: {
+          title: "infoAccount",
+          icon: "info-account",
+          roles: ["user", "admin"],
+        },
+      },
+    ],
+  },
 ];
 
 /**

@@ -13,6 +13,8 @@ export default {
     log: "Log",
     logSystem: "System Log",
     logHysteria: "Hysteria Log",
+    info: "Info",
+    infoAccount: "Account Info",
   },
   // 登录页面国际化
   login: {
