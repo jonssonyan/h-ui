@@ -44,5 +44,6 @@ export default {
     upload: "上传",
     expireTime: "过期时间",
     role: "角色",
+    unit: "单位",
   },
 };

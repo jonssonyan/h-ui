@@ -189,20 +189,10 @@
           />
         </el-form-item>
         <el-form-item :label="$t('account.quota')" prop="quota">
-          <el-input
-            v-model="formData.quota"
-            :placeholder="$t('account.quota')"
-            maxlength="50"
-            clearable
+          <unit-select
+            v-model:quota="formData.quota"
+            v-model:quotaTmp="quotaTmp"
           />
-          <el-select v-model="quotaUnit" placeholder="单位" style="width: 80px">
-            <el-option
-              v-for="item in quotaUnits"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
         </el-form-item>
         <el-form-item :label="$t('account.expireTime')" prop="expireTime">
           <el-date-picker
@@ -277,6 +267,7 @@ const state = reactive({
     visible: false,
   } as DialogType,
   formData: {
+    quota: 0,
     expireTime: getMonthLater(),
     deleted: 0,
   } as AccountForm,
@@ -286,13 +277,11 @@ const state = reactive({
     pageNum: 1,
     pageSize: 10,
   } as AccountPageDto,
-  quotaUnit: "GB",
+  quotaTmp: 0,
 });
 
-const { loading, total, records, dialog, formData, queryParams, quotaUnit } =
+const { loading, total, records, dialog, formData, queryParams, quotaTmp } =
   toRefs(state);
-
-const quotaUnits = ["Bytes", "KB", "MB", "GB", "TB"];
 
 const shortcuts = [
   {
@@ -308,6 +297,16 @@ const shortcuts = [
     value: getYearLater,
   },
 ];
+
+function resetFormData() {
+  Object.assign(state.formData, {
+    id: undefined,
+    quota: 0,
+    expireTime: getMonthLater(),
+    deleted: 0,
+  });
+  quotaTmp.value = 0;
+}
 
 /**
  * 查询
@@ -343,15 +342,16 @@ async function handleAdd() {
  * 修改
  **/
 async function handleUpdate(row: { [key: string]: any }) {
+  const id = row.id;
+  getAccountApi({ id: id }).then(({ data }) => {
+    Object.assign(formData.value, data);
+    quotaTmp.value = data.quota;
+  });
+
   dialog.value = {
     title: "修改用户",
     visible: true,
   };
-
-  const id = row.id;
-  getAccountApi({ id: id }).then(({ data }) => {
-    Object.assign(formData.value, data);
-  });
 }
 
 /**
@@ -415,13 +415,8 @@ function closeDialog() {
   dataFormRef.value.clearValidate();
 
   if (dialog.value.title == "修改用户") {
-    Object.assign(state.formData, {
-      id: undefined,
-      expireTime: getMonthLater(),
-      deleted: 0,
-    });
+    resetFormData();
   }
-  console.log(state.formData)
 }
 
 /**

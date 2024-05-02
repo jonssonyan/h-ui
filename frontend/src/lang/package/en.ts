@@ -44,5 +44,6 @@ export default {
     upload: "Upload",
     expireTime: "ExpireTime",
     role: "Role",
+    unit: "Unit",
   },
 };
