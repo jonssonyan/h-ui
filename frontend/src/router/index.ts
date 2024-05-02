@@ -55,6 +55,25 @@ export const constantRoutes: RouteRecordRaw[] = [
 
 export const asyncRoutes: any[] = [
   {
+    path: "/info",
+    component: "Layout",
+    redirect: "/account",
+    name: "Info",
+    meta: { title: "info", icon: "info-account", roles: ["user", "admin"] },
+    children: [
+      {
+        path: "account",
+        component: "info/account/index",
+        name: "AccountInfo",
+        meta: {
+          title: "infoAccount",
+          icon: "info-account",
+          roles: ["user", "admin"],
+        },
+      },
+    ],
+  },
+  {
     path: "/account",
     component: "Layout",
     redirect: "/list",
@@ -87,6 +106,25 @@ export const asyncRoutes: any[] = [
         meta: {
           title: "hysteriaList",
           icon: "hysteria",
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/log",
+    component: "Layout",
+    redirect: "/hysteria",
+    name: "Log",
+    meta: { title: "log", icon: "log-hysteria", roles: ["admin"] },
+    children: [
+      {
+        path: "hysteria",
+        component: "log/hysteria/index",
+        name: "LogHysteria",
+        meta: {
+          title: "logHysteria",
+          icon: "log-hysteria",
           roles: ["admin"],
         },
       },
@@ -145,44 +183,6 @@ export const asyncRoutes: any[] = [
           title: "logSystem",
           icon: "log-system",
           roles: ["admin"],
-        },
-      },
-    ],
-  },
-  {
-    path: "/log",
-    component: "Layout",
-    redirect: "/hysteria",
-    name: "Log",
-    meta: { title: "log", icon: "log-hysteria", roles: ["admin"] },
-    children: [
-      {
-        path: "hysteria",
-        component: "log/hysteria/index",
-        name: "LogHysteria",
-        meta: {
-          title: "logHysteria",
-          icon: "log-hysteria",
-          roles: ["admin"],
-        },
-      },
-    ],
-  },
-  {
-    path: "/info",
-    component: "Layout",
-    redirect: "/account",
-    name: "Info",
-    meta: { title: "info", icon: "info-account", roles: ["user", "admin"] },
-    children: [
-      {
-        path: "account",
-        component: "info/account/index",
-        name: "AccountInfo",
-        meta: {
-          title: "infoAccount",
-          icon: "info-account",
-          roles: ["user", "admin"],
         },
       },
     ],
