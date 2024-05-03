@@ -35,6 +35,7 @@ declare module '@vue/runtime-core' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    GithubCorner: typeof import('./../components/GithubCorner/index.vue')['default']
     Hamburger: typeof import('./../components/Hamburger/index.vue')['default']
     IEpCaretBottom: typeof import('~icons/ep/caret-bottom')['default']
     IEpClose: typeof import('~icons/ep/close')['default']

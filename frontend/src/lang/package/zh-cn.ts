@@ -56,5 +56,6 @@ export default {
     expireTime: "过期时间",
     role: "角色",
     unit: "单位",
+    createTime: "注册时间",
   },
 };

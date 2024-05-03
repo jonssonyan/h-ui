@@ -56,5 +56,6 @@ export default {
     expireTime: "ExpireTime",
     role: "Role",
     unit: "Unit",
+    createTime: "Create Time",
   },
 };
