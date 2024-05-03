@@ -31,14 +31,8 @@ export const constantRoutes: RouteRecordRaw[] = [
   {
     path: "/",
     component: Layout,
-    redirect: "/dashboard",
+    redirect: "/info/account",
     children: [
-      {
-        path: "dashboard",
-        component: () => import("@/views/dashboard/index.vue"),
-        name: "Dashboard",
-        meta: { title: "dashboard", icon: "homepage", affix: true },
-      },
       {
         path: "401",
         component: () => import("@/views/error-page/401.vue"),
@@ -59,7 +53,12 @@ export const asyncRoutes: any[] = [
     component: "Layout",
     redirect: "/account",
     name: "Info",
-    meta: { title: "info", icon: "info-account", roles: ["user", "admin"] },
+    meta: {
+      title: "info",
+      icon: "home",
+      roles: ["user", "admin"],
+      affix: true,
+    },
     children: [
       {
         path: "account",
@@ -67,8 +66,9 @@ export const asyncRoutes: any[] = [
         name: "AccountInfo",
         meta: {
           title: "infoAccount",
-          icon: "info-account",
+          icon: "home",
           roles: ["user", "admin"],
+          affix: true,
         },
       },
     ],
@@ -135,7 +135,7 @@ export const asyncRoutes: any[] = [
     component: "Layout",
     redirect: "/list",
     name: "Config",
-    meta: { title: "config", icon: "config", roles: ["admin"] },
+    meta: { title: "config", icon: "setting", roles: ["admin"] },
     children: [
       {
         path: "list",
@@ -143,7 +143,7 @@ export const asyncRoutes: any[] = [
         name: "ConfigList",
         meta: {
           title: "configList",
-          icon: "config",
+          icon: "setting",
           roles: ["admin"],
         },
       },
@@ -154,7 +154,7 @@ export const asyncRoutes: any[] = [
     component: "Layout",
     redirect: "/monitor",
     name: "Monitor",
-    meta: { title: "monitor", icon: "monitor", roles: ["admin"] },
+    meta: { title: "monitor", icon: "report", roles: ["admin"] },
     children: [
       {
         path: "system",
@@ -162,7 +162,7 @@ export const asyncRoutes: any[] = [
         name: "MonitorSystem",
         meta: {
           title: "monitorSystem",
-          icon: "monitor",
+          icon: "report",
           roles: ["admin"],
         },
       },
@@ -173,7 +173,7 @@ export const asyncRoutes: any[] = [
     component: "Layout",
     redirect: "/system",
     name: "Log",
-    meta: { title: "log", icon: "log-system", roles: ["admin"] },
+    meta: { title: "log", icon: "error", roles: ["admin"] },
     children: [
       {
         path: "system",
@@ -181,7 +181,7 @@ export const asyncRoutes: any[] = [
         name: "LogSystem",
         meta: {
           title: "logSystem",
-          icon: "log-system",
+          icon: "error",
           roles: ["admin"],
         },
       },
