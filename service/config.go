@@ -23,6 +23,10 @@ func UpdateConfig(key string, value string) error {
 	return dao.UpdateConfig([]string{key}, map[string]interface{}{"value": value})
 }
 
+func GetConfig(key string) (entity.Config, error) {
+	return dao.GetConfig("key = ?", key)
+}
+
 func ListConfig(keys []string) ([]entity.Config, error) {
 	return dao.ListConfig("key in ?", keys)
 }

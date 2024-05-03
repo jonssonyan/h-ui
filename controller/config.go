@@ -20,17 +20,21 @@ func UpdateConfig(c *gin.Context) {
 	vo.Success(nil, c)
 }
 
-func ListConfig(c *gin.Context) {
+func GetConfig(c *gin.Context) {
 	configDto, err := validateField(c, dto.ConfigDto{})
 	if err != nil {
 		return
 	}
-	configs, err := service.ListConfig(configDto.Keys)
+	config, err := service.GetConfig(*configDto.Key)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(configs, c)
+	configVo := vo.ConfigVo{
+		Key:   *config.Key,
+		Value: *config.Value,
+	}
+	vo.Success(configVo, c)
 }
 
 func GetHysteria2Config(c *gin.Context) {

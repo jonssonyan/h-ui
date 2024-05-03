@@ -1,10 +1,10 @@
 package dto
 
 type ConfigDto struct {
-	Keys []string `json:"keys" form:"keys" validate:"required"`
+	Key *string `json:"key" form:"key" validate:"required,min=1,max=128"`
 }
 
 type ConfigUpdateDto struct {
-	Key   *string `json:"username" form:"username" validate:"required,min=1,max=128"`
+	Key   *string `json:"key" form:"key" validate:"required,min=1,max=128"`
 	Value *string `json:"value" form:"value" validate:"required,min=1,max=128"`
 }
