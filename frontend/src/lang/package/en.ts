@@ -1,7 +1,6 @@
 export default {
   // 路由国际化
   route: {
-    dashboard: "Dashboard",
     account: "Account",
     accountList: "Account Manage",
     hysteria: "Hysteria",
@@ -15,6 +14,8 @@ export default {
     logHysteria: "Hysteria Log",
     info: "Info",
     infoAccount: "Account Info",
+    telegram: "Telegram",
+    telegramList: "Telegram Manage",
   },
   // 登录页面国际化
   login: {
@@ -25,9 +26,6 @@ export default {
   },
   // 导航栏国际化
   navbar: {
-    dashboard: "Dashboard",
-    account: "Account",
-    accountList: "Account List",
     logout: "Logout",
   },
   common: {
@@ -45,6 +43,9 @@ export default {
     add: "Add",
     confirm: "Confirm",
     cancel: "Cancel",
+  },
+  info: {
+    expireTime: "y-M-d H:m:s",
   },
   account: {
     username: "Username",

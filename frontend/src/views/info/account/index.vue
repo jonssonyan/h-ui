@@ -95,7 +95,7 @@
               <span class="text-[var(--el-text-color-secondary)]">
                 {{ $t("account.expireTime") }}
               </span>
-              <el-tag type="success">年-月-日 时:分:秒</el-tag>
+              <el-tag type="success">{{ $t('info.expireTime')}}</el-tag>
             </div>
           </template>
           <div class="flex items-center justify-between mt-5">

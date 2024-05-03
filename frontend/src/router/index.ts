@@ -55,7 +55,7 @@ export const asyncRoutes: any[] = [
     name: "Info",
     meta: {
       title: "info",
-      icon: "home",
+      icon: "user",
       roles: ["user", "admin"],
       affix: true,
     },
@@ -66,7 +66,7 @@ export const asyncRoutes: any[] = [
         name: "AccountInfo",
         meta: {
           title: "infoAccount",
-          icon: "home",
+          icon: "user",
           roles: ["user", "admin"],
           affix: true,
         },
@@ -78,7 +78,7 @@ export const asyncRoutes: any[] = [
     component: "Layout",
     redirect: "/list",
     name: "Account",
-    meta: { title: "account", icon: "user", roles: ["admin"] },
+    meta: { title: "account", icon: "users", roles: ["admin"] },
     children: [
       {
         path: "list",
@@ -86,7 +86,26 @@ export const asyncRoutes: any[] = [
         name: "AccountList",
         meta: {
           title: "accountList",
-          icon: "user",
+          icon: "users",
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
+  {
+    path: "/telegram",
+    component: "Layout",
+    redirect: "/list",
+    name: "Telegram",
+    meta: { title: "telegram", icon: "telegram", roles: ["admin"] },
+    children: [
+      {
+        path: "list",
+        component: "telegram/list/index",
+        name: "TelegramList",
+        meta: {
+          title: "telegramList",
+          icon: "telegram",
           roles: ["admin"],
         },
       },
