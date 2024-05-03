@@ -29,7 +29,7 @@ func DeleteAccount(ids []int64) error {
 
 func UpdateAccount(ids []int64, updates map[string]interface{}) error {
 	if len(updates) > 0 {
-		updates["update_time"] = time.Now()
+		updates["update_time"] = time.Now().Format("2006-01-02 15:04:05")
 		if tx := sqliteDB.Model(&entity.Account{}).
 			Where("id in ?", ids).
 			Updates(updates); tx.Error != nil {
@@ -49,7 +49,7 @@ func UpdateAccountTraffic(conPass string, download int64, upload int64) error {
 		if upload != 0 {
 			updates["upload"] = gorm.Expr("upload + ?", upload)
 		}
-		updates["update_time"] = time.Now()
+		updates["update_time"] = time.Now().Format("2006-01-02 15:04:05")
 		if tx := sqliteDB.Model(&entity.Account{}).
 			Where("con_pass = ?", conPass).
 			Updates(updates); tx.Error != nil {

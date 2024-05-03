@@ -20,7 +20,7 @@ func SaveConfig(config entity.Config) (int64, error) {
 
 func UpdateConfig(keys []string, updates map[string]interface{}) error {
 	if len(updates) > 0 {
-		updates["update_time"] = time.Now()
+		updates["update_time"] = time.Now().Format("2006-01-02 15:04:05")
 		if tx := sqliteDB.Model(&entity.Config{}).
 			Where("key in ?", keys).
 			Updates(updates); tx.Error != nil {
