@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/bo"
@@ -36,4 +37,19 @@ func GetHysteria2Config() (bo.Hysteria2ServerConfig, error) {
 		return serverConfig, err
 	}
 	return serverConfig, nil
+}
+
+func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error {
+	getConfig, err := dao.GetConfig("key = ?", constant.HUIWebPort)
+	if err != nil {
+		return err
+	}
+	hysteria2ServerConfig.Auth.Type = "http"
+	hysteria2ServerConfig.Auth.HTTP.URL = fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
+	hysteria2ServerConfig.Auth.HTTP.Insecure = true
+	config, err := yaml.Marshal(hysteria2ServerConfig)
+	if err != nil {
+		return err
+	}
+	return dao.UpdateConfig([]string{constant.Hysteria2Config}, map[string]interface{}{"value": string(config)})
 }
