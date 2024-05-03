@@ -131,25 +131,6 @@ export const asyncRoutes: any[] = [
     ],
   },
   {
-    path: "/log",
-    component: "Layout",
-    redirect: "/hysteria",
-    name: "Log",
-    meta: { title: "log", icon: "log-hysteria", roles: ["admin"] },
-    children: [
-      {
-        path: "hysteria",
-        component: "log/hysteria/index",
-        name: "LogHysteria",
-        meta: {
-          title: "logHysteria",
-          icon: "log-hysteria",
-          roles: ["admin"],
-        },
-      },
-    ],
-  },
-  {
     path: "/config",
     component: "Layout",
     redirect: "/list",
@@ -200,7 +181,15 @@ export const asyncRoutes: any[] = [
         name: "LogSystem",
         meta: {
           title: "logSystem",
-          icon: "error",
+          roles: ["admin"],
+        },
+      },
+      {
+        path: "hysteria",
+        component: "log/hysteria/index",
+        name: "LogHysteria",
+        meta: {
+          title: "logHysteria",
           roles: ["admin"],
         },
       },
