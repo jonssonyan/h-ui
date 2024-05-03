@@ -26,6 +26,10 @@ interface DefaultSettings {
    */
   layout: string;
   /**
+   * 主题颜色
+   */
+  themeColor: string;
+  /**
    * 主题模式
    */
   theme: string;
@@ -48,6 +52,7 @@ const defaultSettings: DefaultSettings = {
   fixedHeader: false,
   sidebarLogo: true,
   layout: "left",
+  themeColor: "#409EFF",
   /**
    *  主题模式
    *

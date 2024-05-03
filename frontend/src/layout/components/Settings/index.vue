@@ -33,12 +33,13 @@ const themeColors = ref<string[]>([
  * 切换主题颜色
  */
 function changeThemeColor(color: string) {
-  document.documentElement.style.setProperty("--el-color-primary", color);
-  settingsStore.changeSetting({ key: "layout", value: color });
+  settingsStore.changeSetting({ key: "themeColor", value: color });
+  document.documentElement.style.setProperty("--el-color-primary", settingsStore.themeColor);
 }
 
 onMounted(() => {
-  window.document.body.setAttribute("layout", settingsStore.layout);
+	window.document.body.setAttribute("layout", settingsStore.layout);
+	document.documentElement.style.setProperty("--el-color-primary", settingsStore.themeColor);
 });
 </script>
 
@@ -85,47 +86,6 @@ onMounted(() => {
         :style="{ background: color }"
         @click="changeThemeColor(color)"
       ></li>
-    </ul>
-
-    <el-divider>导航设置</el-divider>
-
-    <ul class="layout">
-      <el-tooltip content="左侧模式" placement="bottom">
-        <li
-          :class="
-            'layout-item layout-left ' +
-            (settingsStore.layout == 'left' ? 'is-active' : '')
-          "
-          @click="changeLayout('left')"
-        >
-          <div />
-          <div />
-        </li>
-      </el-tooltip>
-      <el-tooltip content="顶部模式" placement="bottom">
-        <li
-          :class="
-            'layout-item layout-top ' +
-            (settingsStore.layout == 'top' ? 'is-active' : '')
-          "
-          @click="changeLayout('top')"
-        >
-          <div />
-          <div />
-        </li>
-      </el-tooltip>
-      <el-tooltip content="混合模式" placement="bottom">
-        <li
-          :class="
-            'layout-item layout-mix ' +
-            (settingsStore.layout == 'mix' ? 'is-active' : '')
-          "
-          @click="changeLayout('mix')"
-        >
-          <div />
-          <div />
-        </li>
-      </el-tooltip>
     </ul>
   </div>
 </template>
