@@ -44,7 +44,7 @@
             <div class="text-lg text-right">
               {{ formatBytes(account.quota) }}
             </div>
-            <svg-icon icon-class="visit" size="2em" />
+            <svg-icon icon-class="quota" size="2em" />
           </div>
         </el-card>
       </el-col>
@@ -102,7 +102,7 @@
             <div class="text-lg text-right">
               {{ timestampToDateTime(account.expireTime) }}
             </div>
-            <svg-icon icon-class="visit" size="2em" />
+            <svg-icon icon-class="expire-time" size="2em" />
           </div>
         </el-card>
       </el-col>
