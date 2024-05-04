@@ -59,4 +59,8 @@ export default {
     unit: "Unit",
     createTime: "Create Time",
   },
+  config: {
+    huiWebPort: "H UI Web Port",
+    hysteria2TrafficTime: "Hysteria2 Traffic Time",
+  },
 };

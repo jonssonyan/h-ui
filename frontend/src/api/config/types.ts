@@ -2,9 +2,22 @@ export interface ConfigDto {
   key: string;
 }
 
+export interface ConfigsDto {
+  keys: Array<string>;
+}
+
 export interface ConfigVo {
   key: string;
   value: string;
+}
+
+export interface ConfigsUpdateDto {
+  key: string;
+  value: string;
+}
+
+export interface ConfigUpdateDto {
+  configUpdateDtos: Array<ConfigsUpdateDto>;
 }
 
 export interface Hysteria2ServerConfig {
@@ -131,106 +144,106 @@ export interface Hysteria2ServerConfig {
 }
 
 export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
-	listen: "443",
-	obfs: {
-		type: "",
-		salamander: {
-			password: "",
-		},
-	},
-	tls: {
-		cert: "",
-		key: "",
-	},
-	acme: {
-		domains: [],
-		email: "",
-		ca: "",
-		disableHTTP: false,
-		disableTLSALPN: false,
-		listenHost: "",
-		altHTTPPort: 0,
-		altTLSALPNPort: 0,
-		dir: "",
-	},
-	quic: {
-		initStreamReceiveWindow: 0,
-		maxStreamReceiveWindow: 0,
-		initConnectionReceiveWindow: 0,
-		maxConnectionReceiveWindow: 0,
-		maxIdleTimeout: 0,
-		maxIncomingStreams: 0,
-		disablePathMTUDiscovery: false,
-	},
-	bandwidth: {
-		up: "",
-		down: "",
-	},
-	ignoreClientBandwidth: false,
-	speedTest: false,
-	disableUDP: false,
-	udpIdleTimeout: 0,
-	auth: {
-		type: "",
-		password: "",
-		userpass: {},
-		http: {
-			url: "",
-			insecure: false,
-		},
-		command: "",
-	},
-	resolver: {
-		type: "",
-		tcp: {
-			addr: "",
-			timeout: 0,
-		},
-		udp: {
-			addr: "",
-			timeout: 0,
-		},
-		tls: {
-			addr: "",
-			timeout: 0,
-			sni: "",
-			insecure: false,
-		},
-		https: {
-			addr: "",
-			timeout: 0,
-			sni: "",
-			insecure: false,
-		},
-	},
-	acl: {
-		file: "",
-		inline: [],
-		geoip: "",
-		geosite: "",
-		geoUpdateInterval: 0,
-	},
-	outbounds: [],
-	trafficStats: {
-		listen: "",
-		secret: "",
-	},
-	masquerade: {
-		type: "",
-		file: {
-			dir: "",
-		},
-		proxy: {
-			url: "",
-			rewriteHost: false,
-		},
-		string: {
-			content: "",
-			headers: {},
-			statusCode: 0,
-		},
-		listenHTTP: "",
-		listenHTTPS: "",
-		forceHTTPS: false,
-	},
+  listen: "443",
+  obfs: {
+    type: "",
+    salamander: {
+      password: "",
+    },
+  },
+  tls: {
+    cert: "",
+    key: "",
+  },
+  acme: {
+    domains: [],
+    email: "",
+    ca: "",
+    disableHTTP: false,
+    disableTLSALPN: false,
+    listenHost: "",
+    altHTTPPort: 0,
+    altTLSALPNPort: 0,
+    dir: "",
+  },
+  quic: {
+    initStreamReceiveWindow: 0,
+    maxStreamReceiveWindow: 0,
+    initConnectionReceiveWindow: 0,
+    maxConnectionReceiveWindow: 0,
+    maxIdleTimeout: 0,
+    maxIncomingStreams: 0,
+    disablePathMTUDiscovery: false,
+  },
+  bandwidth: {
+    up: "",
+    down: "",
+  },
+  ignoreClientBandwidth: false,
+  speedTest: false,
+  disableUDP: false,
+  udpIdleTimeout: 0,
+  auth: {
+    type: "",
+    password: "",
+    userpass: {},
+    http: {
+      url: "",
+      insecure: false,
+    },
+    command: "",
+  },
+  resolver: {
+    type: "",
+    tcp: {
+      addr: "",
+      timeout: 0,
+    },
+    udp: {
+      addr: "",
+      timeout: 0,
+    },
+    tls: {
+      addr: "",
+      timeout: 0,
+      sni: "",
+      insecure: false,
+    },
+    https: {
+      addr: "",
+      timeout: 0,
+      sni: "",
+      insecure: false,
+    },
+  },
+  acl: {
+    file: "",
+    inline: [],
+    geoip: "",
+    geosite: "",
+    geoUpdateInterval: 0,
+  },
+  outbounds: [],
+  trafficStats: {
+    listen: "",
+    secret: "",
+  },
+  masquerade: {
+    type: "",
+    file: {
+      dir: "",
+    },
+    proxy: {
+      url: "",
+      rewriteHost: false,
+    },
+    string: {
+      content: "",
+      headers: {},
+      statusCode: 0,
+    },
+    listenHTTP: "",
+    listenHTTPS: "",
+    forceHTTPS: false,
+  },
 };

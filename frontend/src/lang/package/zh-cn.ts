@@ -59,4 +59,8 @@ export default {
     unit: "单位",
     createTime: "注册时间",
   },
+  config: {
+    huiWebPort: "H UI Web 端口",
+    hysteria2TrafficTime: "Hysteria2 流量倍数",
+  },
 };

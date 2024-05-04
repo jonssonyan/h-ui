@@ -34,13 +34,13 @@
           />
         </el-form-item>
       </el-form>
-      <el-form ref="dataFormRef" inline :model="formDate">
+      <el-form ref="dataFormRef" inline :model="formData">
         <el-form-item label="listen" prop="listen">
-          <el-input v-model="formDate.listen" placeholder="listen" clearable />
+          <el-input v-model="formData.listen" placeholder="listen" clearable />
         </el-form-item>
         <el-form-item label="obfs.type" prop="obfs.type">
           <el-input
-            v-model="formDate.obfs.type"
+            v-model="formData.obfs.type"
             placeholder="obfs.type"
             clearable
           />
@@ -50,84 +50,84 @@
           prop="obfs.salamander.password"
         >
           <el-input
-            v-model="formDate.obfs.salamander.password"
+            v-model="formData.obfs.salamander.password"
             placeholder="obfs.salamander.password"
             clearable
           />
         </el-form-item>
         <el-form-item label="tls.cert" prop="tls.cert">
           <el-input
-            v-model="formDate.tls.cert"
+            v-model="formData.tls.cert"
             placeholder="tls.cert"
             clearable
           />
         </el-form-item>
         <el-form-item label="tls.key" prop="tls.key">
           <el-input
-            v-model="formDate.tls.key"
+            v-model="formData.tls.key"
             placeholder="tls.key"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.domains" prop="acme.domains">
           <el-input
-            v-model="formDate.acme.domains"
+            v-model="formData.acme.domains"
             placeholder="acme.domains"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.email" prop="acme.email">
           <el-input
-            v-model="formDate.acme.email"
+            v-model="formData.acme.email"
             placeholder="acme.email"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.ca" prop="acme.ca">
           <el-input
-            v-model="formDate.acme.ca"
+            v-model="formData.acme.ca"
             placeholder="acme.ca"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.disableHTTP" prop="acme.disableHTTP">
           <el-input
-            v-model="formDate.acme.disableHTTP"
+            v-model="formData.acme.disableHTTP"
             placeholder="acme.disableHTTP"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.disableTLSALPN" prop="acme.disableTLSALPN">
           <el-input
-            v-model="formDate.acme.disableTLSALPN"
+            v-model="formData.acme.disableTLSALPN"
             placeholder="acme.disableTLSALPN"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.listenHost" prop="acme.listenHost">
           <el-input
-            v-model="formDate.acme.listenHost"
+            v-model="formData.acme.listenHost"
             placeholder="acme.listenHost"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.altHTTPPort" prop="acme.altHTTPPort">
           <el-input
-            v-model="formDate.acme.altHTTPPort"
+            v-model="formData.acme.altHTTPPort"
             placeholder="acme.altHTTPPort"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.altTLSALPNPort" prop="acme.altTLSALPNPort">
           <el-input
-            v-model="formDate.acme.altTLSALPNPort"
+            v-model="formData.acme.altTLSALPNPort"
             placeholder="acme.altTLSALPNPort"
             clearable
           />
         </el-form-item>
         <el-form-item label="acme.dir" prop="acme.dir">
           <el-input
-            v-model="formDate.acme.dir"
+            v-model="formData.acme.dir"
             placeholder="acme.dir"
             clearable
           />
@@ -137,7 +137,7 @@
           prop="quic.initStreamReceiveWindow"
         >
           <el-input
-            v-model="formDate.quic.initStreamReceiveWindow"
+            v-model="formData.quic.initStreamReceiveWindow"
             placeholder="quic.initStreamReceiveWindow"
             clearable
           />
@@ -158,10 +158,10 @@ import { getConfig, getHysteria2Config } from "@/api/config";
 const state = reactive({
   enableKey: "HYSTERIA2_ENABLE",
   enableValue: "0",
-  formDate: defaultHysteria2ServerConfig as Hysteria2ServerConfig,
+  formData: defaultHysteria2ServerConfig as Hysteria2ServerConfig,
 });
 
-const { enableValue, formDate } = toRefs(state);
+const { enableValue, formData } = toRefs(state);
 
 const handleImport = () => {};
 const handleExport = () => {};
@@ -177,7 +177,7 @@ onMounted(() => {
     }
   });
   getHysteria2Config().then((response) => {
-    Object.assign(state.formDate, response.data);
+    Object.assign(state.formData, response.data);
   });
 });
 </script>
