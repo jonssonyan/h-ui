@@ -51,6 +51,7 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 	hysteria2ServerConfig.Auth.Type = "http"
 	hysteria2ServerConfig.Auth.HTTP.URL = fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
 	hysteria2ServerConfig.Auth.HTTP.Insecure = true
+	hysteria2ServerConfig.TrafficStats.Secret = ""
 	config, err := yaml.Marshal(hysteria2ServerConfig)
 	if err != nil {
 		return err

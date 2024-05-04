@@ -5,8 +5,8 @@ import "time"
 type Hysteria2ServerConfig struct {
 	Listen                string                      `yaml:"listen" json:"listen"`
 	Obfs                  serverConfigObfs            `yaml:"obfs" json:"obfs"`
-	TLS                   *serverConfigTLS            `yaml:"tls" json:"tls"`
-	ACME                  *serverConfigACME           `yaml:"acme" json:"acme"`
+	TLS                   serverConfigTLS             `yaml:"tls" json:"tls"`
+	ACME                  serverConfigACME            `yaml:"acme" json:"acme"`
 	QUIC                  serverConfigQUIC            `yaml:"quic" json:"quic"`
 	Bandwidth             serverConfigBandwidth       `yaml:"bandwidth" json:"bandwidth"`
 	IgnoreClientBandwidth bool                        `yaml:"ignoreClientBandwidth" json:"ignoreClientBandwidth"`
