@@ -4,7 +4,8 @@
       v-model="capacity"
       :placeholder="$t('account.quota')"
       :min="-1"
-      controls-position="right"
+      :controls="false"
+      :precision="0"
       clearable
       style="width: 214px"
     />

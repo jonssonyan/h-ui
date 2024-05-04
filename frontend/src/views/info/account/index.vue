@@ -4,7 +4,7 @@
 
     <el-card shadow="never">
       <el-row justify="space-between">
-        <el-col :span="18" :xs="24">
+        <el-col :span="20" :xs="24">
           <div class="flex h-full items-center">
             <img
               class="w-20 h-20 mr-5 rounded-full"
@@ -19,9 +19,29 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="6" :xs="24">
+
+        <el-col :span="4" :xs="24">
           <div class="flex h-full items-center justify-around">
-            <el-button>订阅链接</el-button>
+            <el-dropdown>
+              <el-button size="large" type="success">
+                订 阅 链 接
+                <el-icon class="el-icon--right">
+                  <svg-icon icon-class="share" />
+                </el-icon>
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>Shadowrocket</el-dropdown-item>
+                  <el-dropdown-item>v2rayN</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+            <el-button size="large" type="success">
+              节 点 URL
+              <el-icon class="el-icon--right">
+                <svg-icon icon-class="share" />
+              </el-icon>
+            </el-button>
           </div>
         </el-col>
       </el-row>
@@ -95,7 +115,7 @@
               <span class="text-[var(--el-text-color-secondary)]">
                 {{ $t("account.expireTime") }}
               </span>
-              <el-tag type="success">{{ $t('info.expireTime')}}</el-tag>
+              <el-tag type="success">{{ $t("info.expireTime") }}</el-tag>
             </div>
           </template>
           <div class="flex items-center justify-between mt-5">

@@ -57,7 +57,6 @@ export const asyncRoutes: any[] = [
       title: "info",
       icon: "user",
       roles: ["user", "admin"],
-      affix: true,
     },
     children: [
       {
@@ -68,7 +67,6 @@ export const asyncRoutes: any[] = [
           title: "infoAccount",
           icon: "user",
           roles: ["user", "admin"],
-          affix: true,
         },
       },
     ],
@@ -181,6 +179,7 @@ export const asyncRoutes: any[] = [
         name: "LogSystem",
         meta: {
           title: "logSystem",
+          icon: "log-system",
           roles: ["admin"],
         },
       },
@@ -190,6 +189,7 @@ export const asyncRoutes: any[] = [
         name: "LogHysteria",
         meta: {
           title: "logHysteria",
+          icon: "log-hysteria",
           roles: ["admin"],
         },
       },
