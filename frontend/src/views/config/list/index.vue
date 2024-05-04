@@ -11,31 +11,28 @@
           </div>
         </div>
       </template>
-      <el-form ref="dataFormRef" :model="formData" label-width="150px">
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-form-item :label="$t('config.huiWebPort')" prop="huiWebPort">
-              <el-input
-                v-model="formData.huiWebPort"
-                :placeholder="$t('config.huiWebPort')"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              :label="$t('config.hysteria2TrafficTime')"
-              prop="hysteria2TrafficTime"
-            >
-              <el-input
-                v-model="formData.hysteria2TrafficTime"
-                :placeholder="$t('config.hysteria2TrafficTime')"
-                clearable
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="8"></el-col>
-          <el-col :span="8"></el-col>
-        </el-row>
-      </el-form>
+
+      <div class="config-container">
+        <el-form ref="dataFormRef" label-position="top">
+          <el-form-item :label="$t('config.huiWebPort')" prop="huiWebPort">
+            <el-input
+              v-model="huiWebPortVal"
+              :placeholder="$t('config.huiWebPort')"
+              clearable
+            />
+          </el-form-item>
+          <el-form-item
+            :label="$t('config.hysteria2TrafficTime')"
+            prop="hysteria2TrafficTime"
+          >
+            <el-input
+              v-model="hysteria2TrafficTimeVal"
+              :placeholder="$t('config.hysteria2TrafficTime')"
+              clearable
+            />
+          </el-form-item>
+        </el-form>
+      </div>
     </el-card>
   </div>
 </template>
@@ -46,25 +43,24 @@ import { listConfig, updateConfigs } from "@/api/config";
 import { ConfigsUpdateDto } from "@/api/config/types";
 
 const state = reactive({
-  huiWebPort: "H_UI_WEB_PORT",
-  hysteria2TrafficTime: "HYSTERIA2_TRAFFIC_TIME",
-  formData: {
-    huiWebPort: "8081",
-    hysteria2TrafficTime: "1",
-  },
+  huiWebPortVal: "8081",
+  hysteria2TrafficTimeVal: "1",
 });
 
-const { formData } = toRefs(state);
+const { huiWebPortVal, hysteria2TrafficTimeVal } = toRefs(state);
+
+const huiWebPortKey = "H_UI_WEB_PORT";
+const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 
 const submitForm = () => {
   let configs: Array<ConfigsUpdateDto> = [
     {
-      key: state.huiWebPort,
-      value: state.formData.huiWebPort,
+      key: huiWebPortKey,
+      value: state.huiWebPortVal,
     },
     {
-      key: state.hysteria2TrafficTime,
-      value: state.formData.hysteria2TrafficTime,
+      key: hysteria2TrafficTimeKey,
+      value: state.hysteria2TrafficTimeVal,
     },
   ];
   updateConfigs({ configUpdateDtos: configs }).then(() => {
@@ -73,19 +69,24 @@ const submitForm = () => {
 };
 
 onMounted(() => {
-  listConfig({ keys: [state.huiWebPort, state.hysteria2TrafficTime] }).then(
-    (response) => {
-      const configVos = response.data;
-      configVos.forEach((configVo) => {
-        if (configVo.key === state.huiWebPort) {
-          state.formData.huiWebPort = configVo.value;
-        } else if (configVo.key === state.hysteria2TrafficTime) {
-          state.formData.hysteria2TrafficTime = configVo.value;
-        }
-      });
-    }
-  );
+  listConfig({
+    keys: [huiWebPortKey, hysteria2TrafficTimeKey],
+  }).then((response) => {
+    const configVos = response.data;
+    configVos.forEach((configVo) => {
+      if (configVo.key === huiWebPortKey) {
+        state.huiWebPortVal = configVo.value;
+      } else if (configVo.key === hysteria2TrafficTimeKey) {
+        state.hysteria2TrafficTimeVal = configVo.value;
+      }
+    });
+  });
 });
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="scss" scoped>
+.config-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+</style>
