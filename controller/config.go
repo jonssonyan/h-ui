@@ -20,6 +20,20 @@ func UpdateConfig(c *gin.Context) {
 	vo.Success(nil, c)
 }
 
+func UpdateConfigs(c *gin.Context) {
+	configsUpdateDto, err := validateField(c, dto.ConfigsUpdateDto{})
+	if err != nil {
+		return
+	}
+	for _, item := range configsUpdateDto.ConfigUpdateDtos {
+		if err = service.UpdateConfig(*item.Key, *item.Value); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
+	}
+	vo.Success(nil, c)
+}
+
 func GetConfig(c *gin.Context) {
 	configDto, err := validateField(c, dto.ConfigDto{})
 	if err != nil {
@@ -35,6 +49,27 @@ func GetConfig(c *gin.Context) {
 		Value: *config.Value,
 	}
 	vo.Success(configVo, c)
+}
+
+func ListConfig(c *gin.Context) {
+	configsDto, err := validateField(c, dto.ConfigsDto{})
+	if err != nil {
+		return
+	}
+	configs, err := service.ListConfig(configsDto.Keys)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	var configVos []vo.ConfigVo
+	for _, item := range configs {
+		configVo := vo.ConfigVo{
+			Key:   *item.Key,
+			Value: *item.Value,
+		}
+		configVos = append(configVos, configVo)
+	}
+	vo.Success(configVos, c)
 }
 
 func GetHysteria2Config(c *gin.Context) {
