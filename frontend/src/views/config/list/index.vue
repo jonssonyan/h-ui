@@ -10,27 +10,25 @@
       </el-form>
     </div>
     <el-card shadow="never">
-      <div class="config-container">
-        <el-form ref="dataFormRef" label-position="top">
-          <el-form-item :label="$t('config.huiWebPort')" prop="huiWebPort">
-            <el-input
-              v-model="huiWebPortVal"
-              :placeholder="$t('config.huiWebPort')"
-              clearable
-            />
-          </el-form-item>
-          <el-form-item
-            :label="$t('config.hysteria2TrafficTime')"
-            prop="hysteria2TrafficTime"
-          >
-            <el-input
-              v-model="hysteria2TrafficTimeVal"
-              :placeholder="$t('config.hysteria2TrafficTime')"
-              clearable
-            />
-          </el-form-item>
-        </el-form>
-      </div>
+      <el-form ref="dataFormRef" label-position="top">
+        <el-form-item :label="$t('config.huiWebPort')" prop="huiWebPort">
+          <el-input
+            v-model="huiWebPortVal"
+            :placeholder="$t('config.huiWebPort')"
+            clearable
+          />
+        </el-form-item>
+        <el-form-item
+          :label="$t('config.hysteria2TrafficTime')"
+          prop="hysteria2TrafficTime"
+        >
+          <el-input
+            v-model="hysteria2TrafficTimeVal"
+            :placeholder="$t('config.hysteria2TrafficTime')"
+            clearable
+          />
+        </el-form-item>
+      </el-form>
     </el-card>
   </div>
 </template>
@@ -83,7 +81,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.config-container {
+.el-card .el-form {
   max-width: 800px;
   margin: 0 auto;
 }
