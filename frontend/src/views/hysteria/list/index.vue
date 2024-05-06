@@ -687,7 +687,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .el-card .el-form {
-  max-width: 100px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
