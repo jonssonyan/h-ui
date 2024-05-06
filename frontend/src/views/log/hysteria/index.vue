@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <el-card shadow="never">
-      <el-form label-position="top">
+    <div class="search">
+      <el-form inline>
         <el-form-item label="自动刷新" prop="autoRefresh">
           <el-switch
             v-model="autoRefresh"
@@ -10,12 +10,13 @@
             @change="handleChange"
           />
         </el-form-item>
-        <el-form-item label="过滤" prop="filter" style="width: 300px">
+        <el-form-item label="过滤" prop="filter">
           <el-input v-model="filter" placeholder="过滤" clearable />
         </el-form-item>
       </el-form>
-      <el-card shadow="never"> </el-card>
-    </el-card>
+    </div>
+
+    <el-card shadow="never"></el-card>
   </div>
 </template>
 

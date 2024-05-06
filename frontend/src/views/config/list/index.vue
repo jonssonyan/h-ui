@@ -1,17 +1,15 @@
 <template>
   <div class="app-container">
+    <div class="search">
+      <el-form inline>
+        <el-form-item>
+          <el-button type="success" @click="submitForm" :icon="Select"
+            >保存
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
     <el-card shadow="never">
-      <template #header>
-        <div class="flex justify-between">
-          <div></div>
-          <div>
-            <el-button type="success" @click="submitForm" :icon="Select"
-              >保存
-            </el-button>
-          </div>
-        </div>
-      </template>
-
       <div class="config-container">
         <el-form ref="dataFormRef" label-position="top">
           <el-form-item :label="$t('config.huiWebPort')" prop="huiWebPort">

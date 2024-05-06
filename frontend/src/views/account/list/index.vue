@@ -29,32 +29,29 @@
           <el-button type="primary" :icon="Search" @click="handleQuery"
             >{{ $t("common.search") }}
           </el-button>
+        </el-form-item>
+        <el-form-item>
           <el-button :icon="Refresh" @click="resetQuery"
             >{{ $t("common.reset") }}
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="success" :icon="Plus" @click="handleAdd"
+            >{{ $t("common.add") }}
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="handleExport">
+            <template #icon>
+              <i-ep-download />
+            </template>
+            导出
           </el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <el-card shadow="never">
-      <template #header>
-        <div class="flex justify-between">
-          <div>
-            <el-button type="success" :icon="Plus" @click="handleAdd"
-              >{{ $t("common.add") }}
-            </el-button>
-          </div>
-          <div>
-            <el-button @click="handleExport">
-              <template #icon>
-                <i-ep-download />
-              </template>
-              导出
-            </el-button>
-          </div>
-        </div>
-      </template>
-
       <el-table v-loading="loading" :data="records">
         <el-table-column
           key="id"
