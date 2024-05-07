@@ -27,12 +27,12 @@
     </div>
 
     <el-card shadow="never">
-      <el-form ref="dataFormRef" label-position="top" :model="formData">
-        <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
+      <el-form ref="formDataRef" label-position="top" :model="formData">
+        <el-tabs v-model="activeName" class="tabs">
           <el-tab-pane label="base" name="base">
             <el-form-item label="enable" prop="enable">
               <el-switch
-                v-model="enableVal"
+                v-model="hysteria2Enable"
                 active-value="1"
                 inactive-value="0"
                 @change="handleChange"
@@ -655,14 +655,15 @@ import {
 import { Select } from "@element-plus/icons-vue";
 import { getConfig, getHysteria2Config } from "@/api/config";
 
+const hysteria2EnableKey = "HYSTERIA2_ENABLE";
+
 const state = reactive({
   activeName: "base",
-  enableKey: "HYSTERIA2_ENABLE",
-  enableVal: "0",
+  hysteria2Enable: "0",
   formData: defaultHysteria2ServerConfig as Hysteria2ServerConfig,
 });
 
-const { activeName, enableVal, formData } = toRefs(state);
+const { activeName, hysteria2Enable, formData } = toRefs(state);
 
 const handleImport = () => {};
 const handleExport = () => {};
@@ -670,18 +671,22 @@ const handleExport = () => {};
 const handleChange = () => {};
 const submitForm = () => {};
 
-const handleClick = () => {};
-
-onMounted(() => {
-  getConfig({ key: state.enableKey }).then((response) => {
+const setConfig = () => {
+  getConfig({ key: hysteria2EnableKey }).then((response) => {
     if (response.data) {
       const { value } = response.data;
-      state.enableVal = value;
+      state.hysteria2Enable = value;
     }
   });
   getHysteria2Config().then((response) => {
-    Object.assign(state.formData, response.data);
+    if (response.data) {
+      Object.assign(state.formData, response.data);
+    }
   });
+};
+
+onMounted(() => {
+  setConfig();
 });
 </script>
 
