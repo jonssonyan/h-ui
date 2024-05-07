@@ -3,17 +3,26 @@
     <div class="search">
       <el-form inline>
         <el-form-item>
-          <el-button type="success" @click="submitForm" :icon="Select"
+          <el-button
+            type="success"
+            @click="submitForm(formDataRef)"
+            :icon="Select"
             >保存
           </el-button>
         </el-form-item>
       </el-form>
     </div>
+
     <el-card shadow="never">
-      <el-form ref="dataFormRef" label-position="top">
+      <el-form
+        ref="formDataRef"
+        :rules="rules"
+        :model="formData"
+        label-position="top"
+      >
         <el-form-item :label="$t('config.huiWebPort')" prop="huiWebPort">
           <el-input
-            v-model="huiWebPortVal"
+            v-model="formData.huiWebPort"
             :placeholder="$t('config.huiWebPort')"
             clearable
           />
@@ -23,7 +32,7 @@
           prop="hysteria2TrafficTime"
         >
           <el-input
-            v-model="hysteria2TrafficTimeVal"
+            v-model="formData.hysteria2TrafficTime"
             :placeholder="$t('config.hysteria2TrafficTime')"
             clearable
           />
@@ -37,46 +46,71 @@
 import { Select } from "@element-plus/icons-vue";
 import { listConfig, updateConfigs } from "@/api/config";
 import { ConfigsUpdateDto } from "@/api/config/types";
-
-const state = reactive({
-  huiWebPortVal: "8081",
-  hysteria2TrafficTimeVal: "1",
-});
-
-const { huiWebPortVal, hysteria2TrafficTimeVal } = toRefs(state);
+import type { FormInstance, FormRules } from "element-plus";
+import { validateNumberStr } from "@/utils/validate";
 
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 
-const submitForm = () => {
-  let configs: Array<ConfigsUpdateDto> = [
+const formDataRef = ref<FormInstance>();
+const rules = reactive<FormRules>({
+  huiWebPort: [
     {
-      key: huiWebPortKey,
-      value: state.huiWebPortVal,
+      validator: validateNumberStr,
+      trigger: ["change", "blur"],
     },
+  ],
+  hysteria2TrafficTime: [
     {
-      key: hysteria2TrafficTimeKey,
-      value: state.hysteria2TrafficTimeVal,
+      validator: validateNumberStr,
+      trigger: ["change", "blur"],
     },
-  ];
-  updateConfigs({ configUpdateDtos: configs }).then(() => {
-    ElMessage.success("修改配置成功");
+  ],
+});
+
+const formData = reactive({
+  huiWebPort: "8081",
+  hysteria2TrafficTime: "1",
+});
+
+const submitForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.validate((valid) => {
+    if (valid) {
+      let configs: Array<ConfigsUpdateDto> = [
+        {
+          key: huiWebPortKey,
+          value: formData.huiWebPort,
+        },
+        {
+          key: hysteria2TrafficTimeKey,
+          value: formData.hysteria2TrafficTime,
+        },
+      ];
+      updateConfigs({ configUpdateDtos: configs }).then(() => {
+        ElMessage.success("修改配置成功");
+      });
+    }
   });
 };
 
-onMounted(() => {
+const setConfig = () => {
   listConfig({
     keys: [huiWebPortKey, hysteria2TrafficTimeKey],
   }).then((response) => {
     const configVos = response.data;
     configVos.forEach((configVo) => {
       if (configVo.key === huiWebPortKey) {
-        state.huiWebPortVal = configVo.value;
+        formData.huiWebPort = configVo.value;
       } else if (configVo.key === hysteria2TrafficTimeKey) {
-        state.hysteria2TrafficTimeVal = configVo.value;
+        formData.hysteria2TrafficTime = configVo.value;
       }
     });
   });
+};
+
+onMounted(() => {
+  setConfig();
 });
 </script>
 
