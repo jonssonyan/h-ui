@@ -27,417 +27,488 @@
     </div>
 
     <el-card shadow="never">
+      <el-form
+        ref="enableFormDataRef"
+        label-position="top"
+        :model="enableFormData"
+      >
+        <el-tooltip :content="$t('hysteria.config.enable')" placement="bottom">
+          <el-form-item :label="$t('hysteria.enable')" prop="enable">
+            <el-switch
+              v-model="enableFormData.enable"
+              active-value="1"
+              inactive-value="0"
+              @change="handleChangeEnable"
+            />
+          </el-form-item>
+        </el-tooltip>
+      </el-form>
+
       <el-form ref="formDataRef" label-position="top" :model="formData">
         <el-tabs v-model="activeName" class="tabs">
-          <el-tab-pane label="base" name="base">
-            <el-form-item label="enable" prop="enable">
-              <el-switch
-                v-model="hysteria2Enable"
-                active-value="1"
-                inactive-value="0"
-                @change="handleChange"
-              />
-            </el-form-item>
-            <el-form-item label="listen" prop="listen">
-              <el-input
-                v-model="formData.listen"
-                placeholder="listen"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="trafficStats.listen"
-              prop="trafficStats.listen"
+          <el-tab-pane :label="$t('hysteria.listen')" name="listen">
+            <el-tooltip
+              :content="$t('hysteria.config.listen')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.trafficStats.listen"
-                placeholder="trafficStats.listen"
-                clearable
-              />
-            </el-form-item>
+              <el-form-item label="listen" prop="listen">
+                <el-input v-model="formData.listen" clearable />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="obfs" name="obfs">
-            <el-form-item label="obfs.type" prop="obfs.type">
-              <el-input
-                v-model="formData.obfs.type"
-                placeholder="obfs.type"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="obfs.salamander.password"
-              prop="obfs.salamander.password"
+          <el-tab-pane :label="$t('hysteria.tls')" name="tls">
+            <el-tooltip
+              :content="$t('hysteria.config.tls.cert')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.obfs.salamander.password"
-                placeholder="obfs.salamander.password"
-                clearable
-              />
-            </el-form-item>
+              <el-form-item label="cert" prop="tls.cert">
+                <el-input v-model="formData.tls.cert" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.tls.key')"
+              placement="bottom"
+            >
+              <el-form-item label="key" prop="tls.key">
+                <el-input v-model="formData.tls.key" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.domains')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.domains" prop="acme.domains">
+                <el-input v-model="formData.acme.domains" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.email')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.email" prop="acme.email">
+                <el-input v-model="formData.acme.email" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.ca')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.ca" prop="acme.ca">
+                <el-input v-model="formData.acme.ca" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.disableHTTP')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.disableHTTP" prop="acme.disableHTTP">
+                <el-input v-model="formData.acme.disableHTTP" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.disableTLSALPN')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="acme.disableTLSALPN"
+                prop="acme.disableTLSALPN"
+              >
+                <el-input v-model="formData.acme.disableTLSALPN" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.altHTTPPort')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.altHTTPPort" prop="acme.altHTTPPort">
+                <el-input v-model="formData.acme.altHTTPPort" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.altTLSALPNPort')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="acme.altTLSALPNPort"
+                prop="acme.altTLSALPNPort"
+              >
+                <el-input v-model="formData.acme.altTLSALPNPort" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.dir')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.dir" prop="acme.dir">
+                <el-input v-model="formData.acme.dir" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acme.listenHost')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.listenHost" prop="acme.listenHost">
+                <el-input v-model="formData.acme.listenHost" clearable />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="tls" name="tls">
-            <el-form-item label="tls.cert" prop="tls.cert">
-              <el-input
-                v-model="formData.tls.cert"
-                placeholder="tls.cert"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="tls.key" prop="tls.key">
-              <el-input
-                v-model="formData.tls.key"
-                placeholder="tls.key"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acme.domains" prop="acme.domains">
-              <el-input
-                v-model="formData.acme.domains"
-                placeholder="acme.domains"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acme.email" prop="acme.email">
-              <el-input
-                v-model="formData.acme.email"
-                placeholder="acme.email"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acme.ca" prop="acme.ca">
-              <el-input
-                v-model="formData.acme.ca"
-                placeholder="acme.ca"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acme.disableHTTP" prop="acme.disableHTTP">
-              <el-input
-                v-model="formData.acme.disableHTTP"
-                placeholder="acme.disableHTTP"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="acme.disableTLSALPN"
-              prop="acme.disableTLSALPN"
+          <el-tab-pane :label="$t('hysteria.obfs')" name="obfs">
+            <el-tooltip
+              :content="$t('hysteria.config.obfs.type')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.acme.disableTLSALPN"
-                placeholder="acme.disableTLSALPN"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acme.listenHost" prop="acme.listenHost">
-              <el-input
-                v-model="formData.acme.listenHost"
-                placeholder="acme.listenHost"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acme.altHTTPPort" prop="acme.altHTTPPort">
-              <el-input
-                v-model="formData.acme.altHTTPPort"
-                placeholder="acme.altHTTPPort"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="acme.altTLSALPNPort"
-              prop="acme.altTLSALPNPort"
+              <el-form-item label="obfs.type" prop="obfs.type">
+                <el-input v-model="formData.obfs.type" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.obfs.salamander.password')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.acme.altTLSALPNPort"
-                placeholder="acme.altTLSALPNPort"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acme.dir" prop="acme.dir">
-              <el-input
-                v-model="formData.acme.dir"
-                placeholder="acme.dir"
-                clearable
-              />
-            </el-form-item>
+              <el-form-item
+                label="obfs.salamander.password"
+                prop="obfs.salamander.password"
+              >
+                <el-input
+                  v-model="formData.obfs.salamander.password"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="quic" name="quic">
-            <el-form-item
-              label="quic.initStreamReceiveWindow"
-              prop="quic.initStreamReceiveWindow"
+          <el-tab-pane :label="$t('hysteria.quic')" name="quic">
+            <el-tooltip
+              :content="$t('hysteria.config.quic.initStreamReceiveWindow')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.quic.initStreamReceiveWindow"
-                placeholder="quic.initStreamReceiveWindow"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="quic.maxStreamReceiveWindow"
-              prop="quic.maxStreamReceiveWindow"
+              <el-form-item
+                label="quic.initStreamReceiveWindow"
+                prop="quic.initStreamReceiveWindow"
+              >
+                <el-input
+                  v-model="formData.quic.initStreamReceiveWindow"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.quic.maxStreamReceiveWindow')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.quic.maxStreamReceiveWindow"
-                placeholder="quic.maxStreamReceiveWindow"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="quic.initConnectionReceiveWindow"
-              prop="quic.initConnectionReceiveWindow"
+              <el-form-item
+                label="quic.maxStreamReceiveWindow"
+                prop="quic.maxStreamReceiveWindow"
+              >
+                <el-input
+                  v-model="formData.quic.maxStreamReceiveWindow"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.quic.initConnReceiveWindow')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.quic.initConnectionReceiveWindow"
-                placeholder="quic.initConnectionReceiveWindow"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="quic.maxConnectionReceiveWindow"
-              prop="quic.maxConnectionReceiveWindow"
+              <el-form-item
+                label="quic.initConnReceiveWindow"
+                prop="quic.initConnReceiveWindow"
+              >
+                <el-input
+                  v-model="formData.quic.initConnReceiveWindow"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.quic.maxConnReceiveWindow')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.quic.maxConnectionReceiveWindow"
-                placeholder="quic.maxConnectionReceiveWindow"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="quic.maxIdleTimeout"
-              prop="quic.maxIdleTimeout"
+              <el-form-item
+                label="quic.maxConnReceiveWindow"
+                prop="quic.maxConnReceiveWindow"
+              >
+                <el-input
+                  v-model="formData.quic.maxConnReceiveWindow"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.quic.maxIdleTimeout')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.quic.maxIdleTimeout"
-                placeholder="quic.maxIdleTimeout"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="quic.maxIncomingStreams"
-              prop="quic.maxIncomingStreams"
+              <el-form-item
+                label="quic.maxIdleTimeout"
+                prop="quic.maxIdleTimeout"
+              >
+                <el-input v-model="formData.quic.maxIdleTimeout" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.quic.maxIncomingStreams')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.quic.maxIncomingStreams"
-                placeholder="quic.maxIncomingStreams"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="quic.disablePathMTUDiscovery"
-              prop="quic.disablePathMTUDiscovery"
+              <el-form-item
+                label="quic.maxIncomingStreams"
+                prop="quic.maxIncomingStreams"
+              >
+                <el-input
+                  v-model="formData.quic.maxIncomingStreams"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.quic.disablePathMTUDiscovery')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.quic.disablePathMTUDiscovery"
-                placeholder="quic.disablePathMTUDiscovery"
-                clearable
-              />
-            </el-form-item>
+              <el-form-item
+                label="quic.disablePathMTUDiscovery"
+                prop="quic.disablePathMTUDiscovery"
+              >
+                <el-input
+                  v-model="formData.quic.disablePathMTUDiscovery"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="bandwidth" name="bandwidth">
-            <el-form-item label="bandwidth.up" prop="bandwidth.up">
-              <el-input
-                v-model="formData.bandwidth.up"
-                placeholder="bandwidth.up"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="bandwidth.down" prop="bandwidth.down">
-              <el-input
-                v-model="formData.bandwidth.down"
-                placeholder="bandwidth.down"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="ignoreClientBandwidth"
-              prop="ignoreClientBandwidth"
+          <el-tab-pane :label="$t('hysteria.bandwidth')" name="bandwidth">
+            <el-tooltip
+              :content="$t('hysteria.config.bandwidth.up')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.ignoreClientBandwidth"
-                placeholder="ignoreClientBandwidth"
-                clearable
-              />
-            </el-form-item>
+              <el-form-item label="bandwidth.up" prop="bandwidth.up">
+                <el-input v-model="formData.bandwidth.up" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.bandwidth.down')"
+              placement="bottom"
+            >
+              <el-form-item label="bandwidth.down" prop="bandwidth.down">
+                <el-input v-model="formData.bandwidth.down" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.ignoreClientBandwidth')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="ignoreClientBandwidth"
+                prop="ignoreClientBandwidth"
+              >
+                <el-input v-model="formData.ignoreClientBandwidth" clearable />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="speedTest" name="speedTest">
-            <el-form-item label="speedTest" prop="speedTest">
-              <el-input
-                v-model="formData.speedTest"
-                placeholder="speedTest"
-                clearable
-              />
-            </el-form-item>
+          <el-tab-pane :label="$t('hysteria.speedTest')" name="speedTest">
+            <el-tooltip
+              :content="$t('hysteria.config.speedTest')"
+              placement="bottom"
+            >
+              <el-form-item label="speedTest" prop="speedTest">
+                <el-input v-model="formData.speedTest" clearable />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="udp" name="udp">
-            <el-form-item label="disableUDP" prop="disableUDP">
-              <el-input
-                v-model="formData.disableUDP"
-                placeholder="disableUDP"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="udpIdleTimeout" prop="udpIdleTimeout">
-              <el-input
-                v-model="formData.udpIdleTimeout"
-                placeholder="udpIdleTimeout"
-                clearable
-              />
-            </el-form-item>
+          <el-tab-pane :label="$t('hysteria.udp')" name="udp">
+            <el-tooltip
+              :content="$t('hysteria.config.disableUDP')"
+              placement="bottom"
+            >
+              <el-form-item label="disableUDP" prop="disableUDP">
+                <el-input v-model="formData.disableUDP" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.udpIdleTimeout')"
+              placement="bottom"
+            >
+              <el-form-item label="udpIdleTimeout" prop="udpIdleTimeout">
+                <el-input v-model="formData.udpIdleTimeout" clearable />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="resolver" name="resolver">
-            <el-form-item label="resolver.type" prop="resolver.type">
-              <el-input
-                v-model="formData.resolver.type"
-                placeholder="resolver.type"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="resolver.tcp.addr" prop="resolver.tcp.addr">
-              <el-input
-                v-model="formData.resolver.tcp.addr"
-                placeholder="resolver.tcp.addr"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="resolver.tcp.timeout"
-              prop="resolver.tcp.timeout"
+          <el-tab-pane :label="$t('hysteria.resolver')" name="resolver">
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.type')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.resolver.tcp.timeout"
-                placeholder="resolver.tcp.timeout"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="resolver.udp.addr" prop="resolver.udp.addr">
-              <el-input
-                v-model="formData.resolver.udp.addr"
-                placeholder="resolver.udp.addr"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="resolver.udp.timeout"
-              prop="resolver.udp.timeout"
+              <el-form-item label="resolver.type" prop="resolver.type">
+                <el-input v-model="formData.resolver.type" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.tcp.addr')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.resolver.udp.timeout"
-                placeholder="resolver.udp.timeout"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="resolver.tls.addr" prop="resolver.tls.addr">
-              <el-input
-                v-model="formData.resolver.tls.addr"
-                placeholder="resolver.tls.addr"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="resolver.tls.timeout"
-              prop="resolver.tls.timeout"
+              <el-form-item label="resolver.tcp.addr" prop="resolver.tcp.addr">
+                <el-input v-model="formData.resolver.tcp.addr" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.tcp.timeout')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.resolver.tls.timeout"
-                placeholder="resolver.tls.timeout"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="resolver.tls.sni" prop="resolver.tls.sni">
-              <el-input
-                v-model="formData.resolver.tls.sni"
-                placeholder="resolver.tls.sni"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="resolver.tls.insecure"
-              prop="resolver.tls.insecure"
+              <el-form-item
+                label="resolver.tcp.timeout"
+                prop="resolver.tcp.timeout"
+              >
+                <el-input v-model="formData.resolver.tcp.timeout" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.udp.addr')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.resolver.tls.insecure"
-                placeholder="resolver.tls.insecure"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="resolver.https.addr"
-              prop="resolver.https.addr"
+              <el-form-item label="resolver.udp.addr" prop="resolver.udp.addr">
+                <el-input v-model="formData.resolver.udp.addr" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.udp.timeout')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.resolver.https.addr"
-                placeholder="resolver.https.addr"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="resolver.https.timeout"
-              prop="resolver.https.timeout"
+              <el-form-item
+                label="resolver.udp.timeout"
+                prop="resolver.udp.timeout"
+              >
+                <el-input v-model="formData.resolver.udp.timeout" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.tls.addr')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.resolver.https.timeout"
-                placeholder="resolver.https.timeout"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="resolver.https.sni" prop="resolver.https.sni">
-              <el-input
-                v-model="formData.resolver.https.sni"
-                placeholder="resolver.https.sni"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="resolver.https.insecure"
-              prop="resolver.https.insecure"
+              <el-form-item label="resolver.tls.addr" prop="resolver.tls.addr">
+                <el-input v-model="formData.resolver.tls.addr" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.tls.timeout')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.resolver.https.insecure"
-                placeholder="resolver.https.insecure"
-                clearable
-              />
-            </el-form-item>
+              <el-form-item
+                label="resolver.tls.timeout"
+                prop="resolver.tls.timeout"
+              >
+                <el-input v-model="formData.resolver.tls.timeout" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.tls.sni')"
+              placement="bottom"
+            >
+              <el-form-item label="resolver.tls.sni" prop="resolver.tls.sni">
+                <el-input v-model="formData.resolver.tls.sni" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.tls.insecure')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="resolver.tls.insecure"
+                prop="resolver.tls.insecure"
+              >
+                <el-input v-model="formData.resolver.tls.insecure" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.https.addr')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="resolver.https.addr"
+                prop="resolver.https.addr"
+              >
+                <el-input v-model="formData.resolver.https.addr" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.https.timeout')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="resolver.https.timeout"
+                prop="resolver.https.timeout"
+              >
+                <el-input v-model="formData.resolver.https.timeout" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.https.sni')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="resolver.https.sni"
+                prop="resolver.https.sni"
+              >
+                <el-input v-model="formData.resolver.https.sni" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.resolver.https.insecure')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="resolver.https.insecure"
+                prop="resolver.https.insecure"
+              >
+                <el-input
+                  v-model="formData.resolver.https.insecure"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="acl" name="acl">
-            <el-form-item label="acl.file" prop="acl.file">
-              <el-input
-                v-model="formData.acl.file"
-                placeholder="acl.file"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acl.inline" prop="acl.inline">
-              <el-input
-                v-model="formData.acl.inline"
-                placeholder="acl.inline"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acl.geoip" prop="acl.geoip">
-              <el-input
-                v-model="formData.acl.geoip"
-                placeholder="acl.geoip"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item label="acl.geosite" prop="acl.geosite">
-              <el-input
-                v-model="formData.acl.geosite"
-                placeholder="acl.geosite"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="acl.geoUpdateInterval"
-              prop="acl.geoUpdateInterval"
+          <el-tab-pane :label="$t('hysteria.acl')" name="acl">
+            <el-tooltip
+              :content="$t('hysteria.config.acl.file')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.acl.geoUpdateInterval"
-                placeholder="acl.geoUpdateInterval"
-                clearable
-              />
-            </el-form-item>
+              <el-form-item label="acl.file" prop="acl.file">
+                <el-input v-model="formData.acl.file" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acl.inline')"
+              placement="bottom"
+            >
+              <el-form-item label="acl.inline" prop="acl.inline">
+                <el-input v-model="formData.acl.inline" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acl.geoip')"
+              placement="bottom"
+            >
+              <el-form-item label="acl.geoip" prop="acl.geoip">
+                <el-input v-model="formData.acl.geoip" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acl.geosite')"
+              placement="bottom"
+            >
+              <el-form-item label="acl.geosite" prop="acl.geosite">
+                <el-input v-model="formData.acl.geosite" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.acl.geoUpdateInterval')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="acl.geoUpdateInterval"
+                prop="acl.geoUpdateInterval"
+              >
+                <el-input v-model="formData.acl.geoUpdateInterval" clearable />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane label="outbounds" name="outbounds">
+          <el-tab-pane :label="$t('hysteria.outbounds')" name="outbounds">
             <!--          <el-col :xs="24" :sm="8">-->
             <!--            <el-form-item label="outbounds.name" prop="outbounds.name">-->
             <!--              <el-input-->
@@ -542,104 +613,139 @@
             <!--            </el-form-item>-->
             <!--          </el-col>-->
           </el-tab-pane>
-          <el-tab-pane label="masquerade" name="masquerade">
-            <el-form-item label="masquerade.type" prop="masquerade.type">
-              <el-input
-                v-model="formData.masquerade.type"
-                placeholder="masquerade.type"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.file.dir"
-              prop="masquerade.file.dir"
+          <el-tab-pane :label="$t('hysteria.http')" name="http">
+            <el-tooltip
+              :content="$t('hysteria.config.trafficStats.listen')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.file.dir"
-                placeholder="masquerade.file.dir"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.proxy.url"
-              prop="masquerade.proxy.url"
+              <el-form-item
+                :label="$t('hysteria.config.trafficStats.listen')"
+                prop="trafficStats.listen"
+              >
+                <el-input v-model="formData.trafficStats.listen" clearable />
+              </el-form-item>
+            </el-tooltip>
+          </el-tab-pane>
+          <el-tab-pane :label="$t('hysteria.masquerade')" name="masquerade">
+            <el-tooltip
+              :content="$t('hysteria.config.masquerade.type')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.proxy.url"
-                placeholder="masquerade.proxy.url"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.proxy.rewriteHost"
-              prop="masquerade.proxy.rewriteHost"
+              <el-form-item label="masquerade.type" prop="masquerade.type">
+                <el-input v-model="formData.masquerade.type" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.masquerade.file.dir')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.proxy.rewriteHost"
-                placeholder="masquerade.proxy.rewriteHost"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.string.content"
-              prop="masquerade.string.content"
+              <el-form-item
+                label="masquerade.file.dir"
+                prop="masquerade.file.dir"
+              >
+                <el-input v-model="formData.masquerade.file.dir" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.proxy.url')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.string.content"
-                placeholder="masquerade.string.content"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.string.headers"
-              prop="masquerade.string.headers"
+              <el-form-item
+                label="masquerade.proxy.url"
+                prop="masquerade.proxy.url"
+              >
+                <el-input v-model="formData.masquerade.proxy.url" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.proxy.rewriteHost')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.string.headers"
-                placeholder="masquerade.string.headers"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.string.statusCode"
-              prop="masquerade.string.statusCode"
+              <el-form-item
+                label="masquerade.proxy.rewriteHost"
+                prop="masquerade.proxy.rewriteHost"
+              >
+                <el-input
+                  v-model="formData.masquerade.proxy.rewriteHost"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.proxy.string.content')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.string.statusCode"
-                placeholder="masquerade.string.statusCode"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.listenHTTP"
-              prop="masquerade.listenHTTP"
+              <el-form-item
+                label="masquerade.string.content"
+                prop="masquerade.string.content"
+              >
+                <el-input
+                  v-model="formData.masquerade.string.content"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.proxy.string.headers')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.listenHTTP"
-                placeholder="masquerade.listenHTTP"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.listenHTTPS"
-              prop="masquerade.listenHTTPS"
+              <el-form-item
+                label="masquerade.string.headers"
+                prop="masquerade.string.headers"
+              >
+                <el-input
+                  v-model="formData.masquerade.string.headers"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.proxy.string.statusCode')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.listenHTTPS"
-                placeholder="masquerade.listenHTTPS"
-                clearable
-              />
-            </el-form-item>
-            <el-form-item
-              label="masquerade.forceHTTPS"
-              prop="masquerade.forceHTTPS"
+              <el-form-item
+                label="masquerade.string.statusCode"
+                prop="masquerade.string.statusCode"
+              >
+                <el-input
+                  v-model="formData.masquerade.string.statusCode"
+                  clearable
+                />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.proxy.listenHTTP')"
+              placement="bottom"
             >
-              <el-input
-                v-model="formData.masquerade.forceHTTPS"
-                placeholder="masquerade.forceHTTPS"
-                clearable
-              />
-            </el-form-item>
+              <el-form-item
+                label="masquerade.listenHTTP"
+                prop="masquerade.listenHTTP"
+              >
+                <el-input v-model="formData.masquerade.listenHTTP" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.proxy.listenHTTPS')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="masquerade.listenHTTPS"
+                prop="masquerade.listenHTTPS"
+              >
+                <el-input v-model="formData.masquerade.listenHTTPS" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.proxy.forceHTTPS')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="masquerade.forceHTTPS"
+                prop="masquerade.forceHTTPS"
+              >
+                <el-input v-model="formData.masquerade.forceHTTPS" clearable />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -658,24 +764,26 @@ import { getConfig, getHysteria2Config } from "@/api/config";
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
 
 const state = reactive({
-  activeName: "base",
-  hysteria2Enable: "0",
+  activeName: "listen",
   formData: defaultHysteria2ServerConfig as Hysteria2ServerConfig,
+  enableFormData: {
+    enable: "0",
+  },
 });
 
-const { activeName, hysteria2Enable, formData } = toRefs(state);
+const { activeName, formData, enableFormData } = toRefs(state);
 
 const handleImport = () => {};
 const handleExport = () => {};
 
-const handleChange = () => {};
+const handleChangeEnable = () => {};
 const submitForm = () => {};
 
 const setConfig = () => {
   getConfig({ key: hysteria2EnableKey }).then((response) => {
     if (response.data) {
       const { value } = response.data;
-      state.hysteria2Enable = value;
+      state.enableFormData.enable = value;
     }
   });
   getHysteria2Config().then((response) => {
@@ -694,12 +802,5 @@ onMounted(() => {
 .el-card .el-form {
   max-width: 1000px;
   margin: 0 auto;
-}
-
-.tabs > .el-tabs__content {
-  padding: 32px;
-  color: #6b778c;
-  font-size: 32px;
-  font-weight: 600;
 }
 </style>

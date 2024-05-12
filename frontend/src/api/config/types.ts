@@ -46,8 +46,8 @@ export interface Hysteria2ServerConfig {
   quic: {
     initStreamReceiveWindow: number;
     maxStreamReceiveWindow: number;
-    initConnectionReceiveWindow: number;
-    maxConnectionReceiveWindow: number;
+    initConnReceiveWindow: number;
+    maxConnReceiveWindow: number;
     maxIdleTimeout: number;
     maxIncomingStreams: number;
     disablePathMTUDiscovery: boolean;
@@ -169,8 +169,8 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
   quic: {
     initStreamReceiveWindow: 0,
     maxStreamReceiveWindow: 0,
-    initConnectionReceiveWindow: 0,
-    maxConnectionReceiveWindow: 0,
+    initConnReceiveWindow: 0,
+    maxConnReceiveWindow: 0,
     maxIdleTimeout: 0,
     maxIncomingStreams: 0,
     disablePathMTUDiscovery: false,
