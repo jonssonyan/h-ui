@@ -30,10 +30,10 @@ export interface Hysteria2ServerConfig {
     domains: string[];
     email: string;
     ca: string;
-    disableHTTP: string;
-    disableTLSALPN: string;
-    altHTTPPort: string;
-    altTLSALPNPort: string;
+    disableHTTP: boolean;
+    disableTLSALPN: boolean;
+    altHTTPPort: number;
+    altTLSALPNPort: number;
     dir: string;
     listenHost: string;
   };
@@ -44,21 +44,21 @@ export interface Hysteria2ServerConfig {
     };
   };
   quic: {
-    initStreamReceiveWindow: string;
-    maxStreamReceiveWindow: string;
-    initConnReceiveWindow: string;
-    maxConnReceiveWindow: string;
+    initStreamReceiveWindow: number;
+    maxStreamReceiveWindow: number;
+    initConnReceiveWindow: number;
+    maxConnReceiveWindow: number;
     maxIdleTimeout: string;
-    maxIncomingStreams: string;
-    disablePathMTUDiscovery: string;
+    maxIncomingStreams: number;
+    disablePathMTUDiscovery: boolean;
   };
   bandwidth: {
     up: string;
     down: string;
   };
-  ignoreClientBandwidth: string;
-  speedTest: string;
-  disableUDP: string;
+  ignoreClientBandwidth: boolean;
+  speedTest: boolean;
+  disableUDP: boolean;
   udpIdleTimeout: string;
   auth: {
     type: string;
@@ -66,7 +66,7 @@ export interface Hysteria2ServerConfig {
     userpass: { [key: string]: string };
     http: {
       url: string;
-      insecure: string;
+      insecure: boolean;
     };
     command: string;
   };
@@ -84,13 +84,13 @@ export interface Hysteria2ServerConfig {
       addr: string;
       timeout: string;
       sni: string;
-      insecure: string;
+      insecure: boolean;
     };
     https: {
       addr: string;
       timeout: string;
       sni: string;
-      insecure: string;
+      insecure: boolean;
     };
   };
   acl: {
@@ -110,7 +110,7 @@ export interface Hysteria2ServerConfig {
     };
     http: {
       url: string;
-      insecure: string;
+      insecure: boolean;
     };
     direct: {
       mode: string;
@@ -130,21 +130,21 @@ export interface Hysteria2ServerConfig {
     };
     proxy: {
       url: string;
-      rewriteHost: string;
+      rewriteHost: boolean;
     };
     string: {
       content: string;
       headers: { [key: string]: string };
-      statusCode: string;
+      statusCode: number;
     };
     listenHTTP: string;
     listenHTTPS: string;
-    forceHTTPS: string;
+    forceHTTPS: boolean;
   };
 }
 
 export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
-  listen: "",
+  listen: ":443",
   tls: {
     cert: "",
     key: "",
@@ -152,76 +152,81 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
   acme: {
     domains: [],
     email: "",
-    ca: "",
-    disableHTTP: "",
-    disableTLSALPN: "",
-    altHTTPPort: "",
-    altTLSALPNPort: "",
+    ca: "zerossl",
+    disableHTTP: false,
+    disableTLSALPN: false,
+    altHTTPPort: 80,
+    altTLSALPNPort: 443,
     dir: "",
-    listenHost: "",
+    listenHost: "0.0.0.0",
   },
   obfs: {
-    type: "",
+    type: "salamander",
     salamander: {
       password: "",
     },
   },
   quic: {
-    initStreamReceiveWindow: "",
-    maxStreamReceiveWindow: "",
-    initConnReceiveWindow: "",
-    maxConnReceiveWindow: "",
-    maxIdleTimeout: "",
-    maxIncomingStreams: "",
-    disablePathMTUDiscovery: "",
+    initStreamReceiveWindow: 8388608,
+    maxStreamReceiveWindow: 8388608,
+    initConnReceiveWindow: 20971520,
+    maxConnReceiveWindow: 20971520,
+    maxIdleTimeout: "30s",
+    maxIncomingStreams: 1024,
+    disablePathMTUDiscovery: false,
   },
   bandwidth: {
-    up: "",
-    down: "",
+    up: "1 gbps",
+    down: "1 gbps",
   },
-  ignoreClientBandwidth: "",
-  speedTest: "",
-  disableUDP: "",
-  udpIdleTimeout: "",
+  ignoreClientBandwidth: false,
+  speedTest: false,
+  disableUDP: false,
+  udpIdleTimeout: "60s",
   auth: {
     type: "",
     password: "",
     userpass: {},
     http: {
       url: "",
-      insecure: "",
+      insecure: false,
     },
     command: "",
   },
   resolver: {
-    type: "",
+    type: "udp",
     tcp: {
-      addr: "",
-      timeout: "",
+      addr: "8.8.8.8:53",
+      timeout: "4s",
     },
     udp: {
-      addr: "",
-      timeout: "",
+      addr: "8.8.4.4:53",
+      timeout: "4s",
     },
     tls: {
-      addr: "",
-      timeout: "",
-      sni: "",
-      insecure: "",
+      addr: "1.1.1.1:853",
+      timeout: "10s",
+      sni: "cloudflare-dns.com",
+      insecure: false,
     },
     https: {
-      addr: "",
-      timeout: "",
-      sni: "",
-      insecure: "",
+      addr: "1.1.1.1:443",
+      timeout: "10s",
+      sni: "cloudflare-dns.com",
+      insecure: false,
     },
   },
   acl: {
     file: "",
-    inline: [],
+    inline: [
+      "reject(suffix:v2ex.com)",
+      "reject(all, udp/443)",
+      "reject(geoip:cn)",
+      "reject(geosite:netflix)",
+    ],
     geoip: "",
     geosite: "",
-    geoUpdateInterval: "",
+    geoUpdateInterval: "168h",
   },
   outbounds: [
     {
@@ -234,10 +239,10 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
       },
       http: {
         url: "",
-        insecure: "",
+        insecure: true,
       },
       direct: {
-        mode: "",
+        mode: "auto",
         bindIPv4: "",
         bindIPv6: "",
         bindDevice: "",
@@ -245,7 +250,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     },
   ],
   trafficStats: {
-    listen: "",
+    listen: "9999",
     secret: "",
   },
   masquerade: {
@@ -255,15 +260,15 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     },
     proxy: {
       url: "",
-      rewriteHost: "",
+      rewriteHost: true,
     },
     string: {
       content: "",
       headers: {},
-      statusCode: "",
+      statusCode: 200,
     },
-    listenHTTP: "",
-    listenHTTPS: "",
-    forceHTTPS: "",
+    listenHTTP: ":80",
+    listenHTTPS: ":443",
+    forceHTTPS: true,
   },
 };
