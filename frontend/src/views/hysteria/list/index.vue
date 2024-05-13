@@ -509,109 +509,87 @@
             </el-tooltip>
           </el-tab-pane>
           <el-tab-pane :label="$t('hysteria.outbounds')" name="outbounds">
-            <!--          <el-col :xs="24" :sm="8">-->
-            <!--            <el-form-item label="outbounds.name" prop="outbounds.name">-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.name"-->
-            <!--                placeholder="outbounds.name"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item label="outbounds.type" prop="outbounds.type">-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.type"-->
-            <!--                placeholder="outbounds.type"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              label="outbounds.direct.mode"-->
-            <!--              prop="outbounds.direct.mode"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.direct.mode"-->
-            <!--                placeholder="outbounds.direct.mode"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              label="outbounds.direct.bindIPv4"-->
-            <!--              prop="outbounds.direct.bindIPv4"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.direct.bindIPv4"-->
-            <!--                placeholder="outbounds.direct.bindIPv4"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              label="outbounds.direct.bindIPv6"-->
-            <!--              prop="outbounds.direct.bindIPv6"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.direct.bindIPv6"-->
-            <!--                placeholder="outbounds.direct.bindIPv6"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              label="outbounds.direct.bindDevice"-->
-            <!--              prop="outbounds.direct.bindDevice"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.direct.bindDevice"-->
-            <!--                placeholder="outbounds.direct.bindDevice"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              label="outbounds.socks5.addr"-->
-            <!--              prop="outbounds.socks5.addr"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.socks5.addr"-->
-            <!--                placeholder="outbounds.socks5.addr"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              label="outbounds.socks5.username"-->
-            <!--              prop="outbounds.socks5.username"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.socks5.username"-->
-            <!--                placeholder="outbounds.socks5.username"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              label="outbounds.socks5.password"-->
-            <!--              prop="outbounds.socks5.password"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.socks5.password"-->
-            <!--                placeholder="outbounds.socks5.password"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item label="outbounds.http.url" prop="outbounds.http.url">-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.http.url"-->
-            <!--                placeholder="outbounds.http.url"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              label="outbounds.http.insecure"-->
-            <!--              prop="outbounds.http.insecure"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.http.insecure"-->
-            <!--                placeholder="outbounds.http.insecure"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--          </el-col>-->
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.name')"
+              prop="outbounds.name"
+            >
+              <el-input v-model="formData.outbounds.name" clearable />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.type')"
+              prop="outbounds.type"
+            >
+              <el-input v-model="formData.outbounds.type" clearable />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.socks5.addr')"
+              prop="outbounds.socks5.addr"
+            >
+              <el-input v-model="formData.outbounds.socks5.addr" clearable />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.socks5.username')"
+              prop="outbounds.socks5.username"
+            >
+              <el-input
+                v-model="formData.outbounds.socks5.username"
+                clearable
+              />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.socks5.password')"
+              prop="outbounds.socks5.password"
+            >
+              <el-input
+                v-model="formData.outbounds.socks5.password"
+                clearable
+              />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.http.url')"
+              prop="outbounds.http.url"
+            >
+              <el-input v-model="formData.outbounds.http.url" clearable />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.http.insecure')"
+              prop="outbounds.http.insecure"
+            >
+              <el-input v-model="formData.outbounds.http.insecure" clearable />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.direct.mode')"
+              prop="outbounds.direct.mode"
+            >
+              <el-input v-model="formData.outbounds.direct.mode" clearable />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.direct.bindIPv4')"
+              prop="outbounds.direct.bindIPv4"
+            >
+              <el-input
+                v-model="formData.outbounds.direct.bindIPv4"
+                clearable
+              />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.direct.bindIPv6')"
+              prop="outbounds.direct.bindIPv6"
+            >
+              <el-input
+                v-model="formData.outbounds.direct.bindIPv6"
+                clearable
+              />
+            </el-form-item>
+            <el-form-item
+              :label="$t('hysteria.config.outbounds.direct.bindDevice')"
+              prop="outbounds.direct.bindDevice"
+            >
+              <el-input
+                v-model="formData.outbounds.direct.bindDevice"
+                clearable
+              />
+            </el-form-item>
           </el-tab-pane>
           <el-tab-pane :label="$t('hysteria.http')" name="http">
             <el-tooltip
