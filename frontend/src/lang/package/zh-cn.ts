@@ -99,9 +99,6 @@ export default {
         listenHost:
           "用于 ACME 服务器验证的监听地址（不含端口）。默认监听所有可用的地址。",
       },
-      trafficStats: {
-        listen: "流量统计监听地址",
-      },
       obfs: {
         type: "类型",
         salamander: {
@@ -178,29 +175,29 @@ export default {
           bindIPv6: "要绑定的本地 IPv6 地址。",
           bindDevice: "要绑定的本地网卡。",
         },
-        trafficStats: {
-          listen: "监听地址。",
+      },
+      trafficStats: {
+        listen: "监听地址。",
+      },
+      masquerade: {
+        type: "类型",
+        file: {
+          dir: "用于提供文件的目录。",
         },
-        masquerade: {
-          type: "类型",
-          file: {
-            dir: "用于提供文件的目录。",
-          },
-          proxy: {
-            url: "要代理的网站的 URL。",
-            rewriteHost:
-              "是否重写 Host 头以匹配被代理的网站。如果目标网站通过 Host 识别请求的网站，这个选项是必须的。",
-          },
-          string: {
-            content: "要返回的字符串。",
-            headers: "可选。要返回的 HTTP 头列表。",
-            statusCode: "可选。要返回的 HTTP 状态码。默认为 200。",
-          },
-          listenHTTP: "HTTP (TCP) 监听地址。",
-          listenHTTPS: "HTTPS (TCP) 监听地址。",
-          forceHTTPS:
-            "是否强制使用 HTTPS。如果启用，HTTP 请求将被重定向到 HTTPS。",
+        proxy: {
+          url: "要代理的网站的 URL。",
+          rewriteHost:
+            "是否重写 Host 头以匹配被代理的网站。如果目标网站通过 Host 识别请求的网站，这个选项是必须的。",
         },
+        string: {
+          content: "要返回的字符串。",
+          headers: "可选。要返回的 HTTP 头列表。",
+          statusCode: "可选。要返回的 HTTP 状态码。默认为 200。",
+        },
+        listenHTTP: "HTTP (TCP) 监听地址。",
+        listenHTTPS: "HTTPS (TCP) 监听地址。",
+        forceHTTPS:
+          "是否强制使用 HTTPS。如果启用，HTTP 请求将被重定向到 HTTPS。",
       },
     },
   },
