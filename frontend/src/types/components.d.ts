@@ -46,6 +46,7 @@ declare module '@vue/runtime-core' {
     IEpDownload: typeof import('~icons/ep/download')['default']
     IEpSetting: typeof import('~icons/ep/setting')['default']
     IEpUpload: typeof import('~icons/ep/upload')['default']
+    ImputMultiple: typeof import('./../components/ImputMultiple/index.vue')['default']
     LangSelect: typeof import('./../components/LangSelect/index.vue')['default']
     Pagination: typeof import('./../components/Pagination/index.vue')['default']
     RightPanel: typeof import('./../components/RightPanel/index.vue')['default']
