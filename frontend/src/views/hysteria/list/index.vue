@@ -102,7 +102,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.disableHTTP" prop="acme.disableHTTP">
-                <el-input v-model="formData.acme.disableHTTP" clearable />
+                <el-switch v-model="formData.acme.disableHTTP" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -113,7 +113,7 @@
                 label="acme.disableTLSALPN"
                 prop="acme.disableTLSALPN"
               >
-                <el-input v-model="formData.acme.disableTLSALPN" clearable />
+                <el-switch v-model="formData.acme.disableTLSALPN" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -266,10 +266,7 @@
                 label="quic.disablePathMTUDiscovery"
                 prop="quic.disablePathMTUDiscovery"
               >
-                <el-input
-                  v-model="formData.quic.disablePathMTUDiscovery"
-                  clearable
-                />
+                <el-switch v-model="formData.quic.disablePathMTUDiscovery" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -298,7 +295,7 @@
                 label="ignoreClientBandwidth"
                 prop="ignoreClientBandwidth"
               >
-                <el-input v-model="formData.ignoreClientBandwidth" clearable />
+                <el-switch v-model="formData.ignoreClientBandwidth" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -308,7 +305,7 @@
               placement="bottom"
             >
               <el-form-item label="speedTest" prop="speedTest">
-                <el-input v-model="formData.speedTest" clearable />
+                <el-switch v-model="formData.speedTest" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -318,7 +315,7 @@
               placement="bottom"
             >
               <el-form-item label="disableUDP" prop="disableUDP">
-                <el-input v-model="formData.disableUDP" clearable />
+                <el-switch v-model="formData.disableUDP" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -412,7 +409,7 @@
                 label="resolver.tls.insecure"
                 prop="resolver.tls.insecure"
               >
-                <el-input v-model="formData.resolver.tls.insecure" clearable />
+                <el-switch v-model="formData.resolver.tls.insecure" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -456,10 +453,7 @@
                 label="resolver.https.insecure"
                 prop="resolver.https.insecure"
               >
-                <el-input
-                  v-model="formData.resolver.https.insecure"
-                  clearable
-                />
+                <el-switch v-model="formData.resolver.https.insecure" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -508,89 +502,89 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-<!--          <el-tab-pane :label="$t('hysteria.outbounds')" name="outbounds">-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.name')"-->
-<!--              prop="outbounds.name"-->
-<!--            >-->
-<!--              <el-input v-model="formData.outbounds.name" clearable />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.type')"-->
-<!--              prop="outbounds.type"-->
-<!--            >-->
-<!--              <el-input v-model="formData.outbounds.type" clearable />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.socks5.addr')"-->
-<!--              prop="outbounds.socks5.addr"-->
-<!--            >-->
-<!--              <el-input v-model="formData.outbounds.socks5.addr" clearable />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.socks5.username')"-->
-<!--              prop="outbounds.socks5.username"-->
-<!--            >-->
-<!--              <el-input-->
-<!--                v-model="formData.outbounds.socks5.username"-->
-<!--                clearable-->
-<!--              />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.socks5.password')"-->
-<!--              prop="outbounds.socks5.password"-->
-<!--            >-->
-<!--              <el-input-->
-<!--                v-model="formData.outbounds.socks5.password"-->
-<!--                clearable-->
-<!--              />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.http.url')"-->
-<!--              prop="outbounds.http.url"-->
-<!--            >-->
-<!--              <el-input v-model="formData.outbounds.http.url" clearable />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.http.insecure')"-->
-<!--              prop="outbounds.http.insecure"-->
-<!--            >-->
-<!--              <el-input v-model="formData.outbounds.http.insecure" clearable />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.direct.mode')"-->
-<!--              prop="outbounds.direct.mode"-->
-<!--            >-->
-<!--              <el-input v-model="formData.outbounds.direct.mode" clearable />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.direct.bindIPv4')"-->
-<!--              prop="outbounds.direct.bindIPv4"-->
-<!--            >-->
-<!--              <el-input-->
-<!--                v-model="formData.outbounds.direct.bindIPv4"-->
-<!--                clearable-->
-<!--              />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.direct.bindIPv6')"-->
-<!--              prop="outbounds.direct.bindIPv6"-->
-<!--            >-->
-<!--              <el-input-->
-<!--                v-model="formData.outbounds.direct.bindIPv6"-->
-<!--                clearable-->
-<!--              />-->
-<!--            </el-form-item>-->
-<!--            <el-form-item-->
-<!--              :label="$t('hysteria.config.outbounds.direct.bindDevice')"-->
-<!--              prop="outbounds.direct.bindDevice"-->
-<!--            >-->
-<!--              <el-input-->
-<!--                v-model="formData.outbounds.direct.bindDevice"-->
-<!--                clearable-->
-<!--              />-->
-<!--            </el-form-item>-->
-<!--          </el-tab-pane>-->
+          <!--          <el-tab-pane :label="$t('hysteria.outbounds')" name="outbounds">-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.name')"-->
+          <!--              prop="outbounds.name"-->
+          <!--            >-->
+          <!--              <el-input v-model="formData.outbounds.name" clearable />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.type')"-->
+          <!--              prop="outbounds.type"-->
+          <!--            >-->
+          <!--              <el-input v-model="formData.outbounds.type" clearable />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.socks5.addr')"-->
+          <!--              prop="outbounds.socks5.addr"-->
+          <!--            >-->
+          <!--              <el-input v-model="formData.outbounds.socks5.addr" clearable />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.socks5.username')"-->
+          <!--              prop="outbounds.socks5.username"-->
+          <!--            >-->
+          <!--              <el-input-->
+          <!--                v-model="formData.outbounds.socks5.username"-->
+          <!--                clearable-->
+          <!--              />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.socks5.password')"-->
+          <!--              prop="outbounds.socks5.password"-->
+          <!--            >-->
+          <!--              <el-input-->
+          <!--                v-model="formData.outbounds.socks5.password"-->
+          <!--                clearable-->
+          <!--              />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.http.url')"-->
+          <!--              prop="outbounds.http.url"-->
+          <!--            >-->
+          <!--              <el-input v-model="formData.outbounds.http.url" clearable />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.http.insecure')"-->
+          <!--              prop="outbounds.http.insecure"-->
+          <!--            >-->
+          <!--              <el-input v-model="formData.outbounds.http.insecure" clearable />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.direct.mode')"-->
+          <!--              prop="outbounds.direct.mode"-->
+          <!--            >-->
+          <!--              <el-input v-model="formData.outbounds.direct.mode" clearable />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.direct.bindIPv4')"-->
+          <!--              prop="outbounds.direct.bindIPv4"-->
+          <!--            >-->
+          <!--              <el-input-->
+          <!--                v-model="formData.outbounds.direct.bindIPv4"-->
+          <!--                clearable-->
+          <!--              />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.direct.bindIPv6')"-->
+          <!--              prop="outbounds.direct.bindIPv6"-->
+          <!--            >-->
+          <!--              <el-input-->
+          <!--                v-model="formData.outbounds.direct.bindIPv6"-->
+          <!--                clearable-->
+          <!--              />-->
+          <!--            </el-form-item>-->
+          <!--            <el-form-item-->
+          <!--              :label="$t('hysteria.config.outbounds.direct.bindDevice')"-->
+          <!--              prop="outbounds.direct.bindDevice"-->
+          <!--            >-->
+          <!--              <el-input-->
+          <!--                v-model="formData.outbounds.direct.bindDevice"-->
+          <!--                clearable-->
+          <!--              />-->
+          <!--            </el-form-item>-->
+          <!--          </el-tab-pane>-->
           <el-tab-pane :label="$t('hysteria.http')" name="http">
             <el-tooltip
               :content="$t('hysteria.config.trafficStats.listen')"
@@ -643,10 +637,7 @@
                 label="masquerade.proxy.rewriteHost"
                 prop="masquerade.proxy.rewriteHost"
               >
-                <el-input
-                  v-model="formData.masquerade.proxy.rewriteHost"
-                  clearable
-                />
+                <el-switch v-model="formData.masquerade.proxy.rewriteHost" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -685,10 +676,7 @@
                 label="masquerade.string.statusCode"
                 prop="masquerade.string.statusCode"
               >
-                <el-input
-                  v-model="formData.masquerade.string.statusCode"
-                  clearable
-                />
+                <el-switch v-model="formData.masquerade.string.statusCode" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -721,7 +709,7 @@
                 label="masquerade.forceHTTPS"
                 prop="masquerade.forceHTTPS"
               >
-                <el-input v-model="formData.masquerade.forceHTTPS" clearable />
+                <el-switch v-model="formData.masquerade.forceHTTPS" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
