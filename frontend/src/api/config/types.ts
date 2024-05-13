@@ -250,7 +250,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     },
   ],
   trafficStats: {
-    listen: "9999",
+    listen: ":9999",
     secret: "",
   },
   masquerade: {
