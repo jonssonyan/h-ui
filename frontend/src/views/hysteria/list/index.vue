@@ -625,7 +625,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              :content="$t('hysteria.config.proxy.url')"
+              :content="$t('hysteria.config.masquerade.proxy.url')"
               placement="bottom"
             >
               <el-form-item
@@ -636,7 +636,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              :content="$t('hysteria.config.proxy.rewriteHost')"
+              :content="$t('hysteria.config.masquerade.proxy.rewriteHost')"
               placement="bottom"
             >
               <el-form-item
@@ -650,7 +650,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              :content="$t('hysteria.config.proxy.string.content')"
+              :content="$t('hysteria.config.masquerade.string.content')"
               placement="bottom"
             >
               <el-form-item
@@ -664,7 +664,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              :content="$t('hysteria.config.proxy.string.headers')"
+              :content="$t('hysteria.config.masquerade.string.headers')"
               placement="bottom"
             >
               <el-form-item
@@ -678,7 +678,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              :content="$t('hysteria.config.proxy.string.statusCode')"
+              :content="$t('hysteria.config.masquerade.string.statusCode')"
               placement="bottom"
             >
               <el-form-item
@@ -692,7 +692,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              :content="$t('hysteria.config.proxy.listenHTTP')"
+              :content="$t('hysteria.config.masquerade.listenHTTP')"
               placement="bottom"
             >
               <el-form-item
@@ -703,7 +703,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              :content="$t('hysteria.config.proxy.listenHTTPS')"
+              :content="$t('hysteria.config.masquerade.listenHTTPS')"
               placement="bottom"
             >
               <el-form-item
@@ -714,7 +714,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              :content="$t('hysteria.config.proxy.forceHTTPS')"
+              :content="$t('hysteria.config.masquerade.forceHTTPS')"
               placement="bottom"
             >
               <el-form-item
