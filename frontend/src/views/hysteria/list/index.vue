@@ -61,11 +61,28 @@
               :content="$t('hysteria.config.tls.cert')"
               placement="bottom"
             >
+              <el-form-item label="tls.type" prop="tls.type">
+                <el-select v-model="tlsType" style="width: 100%" clearable>
+                  <el-option
+                    v-for="item in tlsTypes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="tlsType === 'tls'"
+              :content="$t('hysteria.config.tls.cert')"
+              placement="bottom"
+            >
               <el-form-item label="cert" prop="tls.cert">
                 <el-input v-model="formData.tls.cert" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'tls'"
               :content="$t('hysteria.config.tls.key')"
               placement="bottom"
             >
@@ -74,6 +91,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.domains')"
               placement="bottom"
             >
@@ -82,6 +100,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.email')"
               placement="bottom"
             >
@@ -90,11 +109,16 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.ca')"
               placement="bottom"
             >
               <el-form-item label="acme.ca" prop="acme.ca">
-                <el-select v-model="formData.acme.ca" style="width: 100%">
+                <el-select
+                  v-model="formData.acme.ca"
+                  style="width: 100%"
+                  clearable
+                >
                   <el-option
                     v-for="item in acmeCas"
                     :key="item"
@@ -105,6 +129,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.disableHTTP')"
               placement="bottom"
             >
@@ -113,6 +138,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.disableTLSALPN')"
               placement="bottom"
             >
@@ -124,6 +150,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.altHTTPPort')"
               placement="bottom"
             >
@@ -132,6 +159,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.altTLSALPNPort')"
               placement="bottom"
             >
@@ -143,6 +171,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.dir')"
               placement="bottom"
             >
@@ -151,6 +180,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.listenHost')"
               placement="bottom"
             >
@@ -779,6 +809,7 @@ import { getConfig, getHysteria2Config } from "@/api/config";
 
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
 
+const tlsTypes = ref<string[]>(["tls", "acme"]);
 const acmeCas = ref<string[]>(["zerossl", "letsencrypt"]);
 const obfsTypes = ref<string[]>(["salamander"]);
 const resolverTypes = ref<string[]>(["tcp", "udp", "tls", "https"]);
@@ -790,9 +821,10 @@ const state = reactive({
   enableFormData: {
     enable: "0",
   },
+  tlsType: "acme",
 });
 
-const { activeName, formData, enableFormData } = toRefs(state);
+const { activeName, formData, enableFormData, tlsType } = toRefs(state);
 
 const handleImport = () => {};
 const handleExport = () => {};

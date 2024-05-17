@@ -152,7 +152,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
   acme: {
     domains: [],
     email: "",
-    ca: "zerossl",
+    ca: "",
     disableHTTP: false,
     disableTLSALPN: false,
     altHTTPPort: 80,
