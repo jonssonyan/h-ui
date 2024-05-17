@@ -1,7 +1,5 @@
 package bo
 
-import "time"
-
 type Hysteria2ServerConfig struct {
 	Listen                string                      `yaml:"listen" json:"listen"`
 	Obfs                  serverConfigObfs            `yaml:"obfs" json:"obfs"`
@@ -12,7 +10,7 @@ type Hysteria2ServerConfig struct {
 	IgnoreClientBandwidth bool                        `yaml:"ignoreClientBandwidth" json:"ignoreClientBandwidth"`
 	SpeedTest             bool                        `yaml:"speedTest" json:"speedTest"`
 	DisableUDP            bool                        `yaml:"disableUDP" json:"disableUDP"`
-	UDPIdleTimeout        time.Duration               `yaml:"udpIdleTimeout" json:"udpIdleTimeout"`
+	UDPIdleTimeout        string                      `yaml:"udpIdleTimeout" json:"udpIdleTimeout"`
 	Auth                  serverConfigAuth            `yaml:"auth" json:"auth"`
 	Resolver              serverConfigResolver        `yaml:"resolver" json:"resolver"`
 	ACL                   serverConfigACL             `yaml:"acl" json:"acl"`
@@ -48,13 +46,13 @@ type serverConfigACME struct {
 }
 
 type serverConfigQUIC struct {
-	InitStreamReceiveWindow     uint64        `yaml:"initStreamReceiveWindow" json:"initStreamReceiveWindow"`
-	MaxStreamReceiveWindow      uint64        `yaml:"maxStreamReceiveWindow" json:"maxStreamReceiveWindow"`
-	InitConnectionReceiveWindow uint64        `yaml:"initConnReceiveWindow" json:"initConnReceiveWindow"`
-	MaxConnectionReceiveWindow  uint64        `yaml:"maxConnReceiveWindow" json:"maxConnReceiveWindow"`
-	MaxIdleTimeout              time.Duration `yaml:"maxIdleTimeout" json:"maxIdleTimeout"`
-	MaxIncomingStreams          int64         `yaml:"maxIncomingStreams" json:"maxIncomingStreams"`
-	DisablePathMTUDiscovery     bool          `yaml:"disablePathMTUDiscovery" json:"disablePathMTUDiscovery"`
+	InitStreamReceiveWindow     uint64 `yaml:"initStreamReceiveWindow" json:"initStreamReceiveWindow"`
+	MaxStreamReceiveWindow      uint64 `yaml:"maxStreamReceiveWindow" json:"maxStreamReceiveWindow"`
+	InitConnectionReceiveWindow uint64 `yaml:"initConnReceiveWindow" json:"initConnReceiveWindow"`
+	MaxConnectionReceiveWindow  uint64 `yaml:"maxConnReceiveWindow" json:"maxConnReceiveWindow"`
+	MaxIdleTimeout              string `yaml:"maxIdleTimeout" json:"maxIdleTimeout"`
+	MaxIncomingStreams          int64  `yaml:"maxIncomingStreams" json:"maxIncomingStreams"`
+	DisablePathMTUDiscovery     bool   `yaml:"disablePathMTUDiscovery" json:"disablePathMTUDiscovery"`
 }
 
 type serverConfigBandwidth struct {
@@ -76,27 +74,27 @@ type serverConfigAuth struct {
 }
 
 type serverConfigResolverTCP struct {
-	Addr    string        `yaml:"addr" json:"addr"`
-	Timeout time.Duration `yaml:"timeout" json:"timeout"`
+	Addr    string `yaml:"addr" json:"addr"`
+	Timeout string `yaml:"timeout" json:"timeout"`
 }
 
 type serverConfigResolverUDP struct {
-	Addr    string        `yaml:"addr" json:"addr"`
-	Timeout time.Duration `yaml:"timeout" json:"timeout"`
+	Addr    string `yaml:"addr" json:"addr"`
+	Timeout string `yaml:"timeout" json:"timeout"`
 }
 
 type serverConfigResolverTLS struct {
-	Addr     string        `yaml:"addr" json:"addr"`
-	Timeout  time.Duration `yaml:"timeout" json:"timeout"`
-	SNI      string        `yaml:"sni" json:"sni"`
-	Insecure bool          `yaml:"insecure" json:"insecure"`
+	Addr     string `yaml:"addr" json:"addr"`
+	Timeout  string `yaml:"timeout" json:"timeout"`
+	SNI      string `yaml:"sni" json:"sni"`
+	Insecure bool   `yaml:"insecure" json:"insecure"`
 }
 
 type serverConfigResolverHTTPS struct {
-	Addr     string        `yaml:"addr" json:"addr"`
-	Timeout  time.Duration `yaml:"timeout" json:"timeout"`
-	SNI      string        `yaml:"sni" json:"sni"`
-	Insecure bool          `yaml:"insecure" json:"insecure"`
+	Addr     string `yaml:"addr" json:"addr"`
+	Timeout  string `yaml:"timeout" json:"timeout"`
+	SNI      string `yaml:"sni" json:"sni"`
+	Insecure bool   `yaml:"insecure" json:"insecure"`
 }
 
 type serverConfigResolver struct {
@@ -108,11 +106,11 @@ type serverConfigResolver struct {
 }
 
 type serverConfigACL struct {
-	File              string        `yaml:"file" json:"file"`
-	Inline            []string      `yaml:"inline" json:"inline"`
-	GeoIP             string        `yaml:"geoip" json:"geoip"`
-	GeoSite           string        `yaml:"geosite" json:"geosite"`
-	GeoUpdateInterval time.Duration `yaml:"geoUpdateInterval" json:"geoUpdateInterval"`
+	File              string   `yaml:"file" json:"file"`
+	Inline            []string `yaml:"inline" json:"inline"`
+	GeoIP             string   `yaml:"geoip" json:"geoip"`
+	GeoSite           string   `yaml:"geosite" json:"geosite"`
+	GeoUpdateInterval string   `yaml:"geoUpdateInterval" json:"geoUpdateInterval"`
 }
 
 type serverConfigOutboundDirect struct {
