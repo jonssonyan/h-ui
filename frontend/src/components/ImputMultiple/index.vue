@@ -1,38 +1,77 @@
 <template>
-  <div>
-    <el-tag :key="tag" v-for="tag in tags" closable @close="handleClose(tag)">
+  <div class="flex gap-2">
+    <el-tag
+      :key="item"
+      v-for="item in tags"
+      closable
+      @close="handleClose(item)"
+      size="large"
+    >
       {{ item }}
     </el-tag>
     <el-input
-      v-model="item"
+      v-if="inputVisible"
+      ref="inputRef"
+      v-model="tag"
+      class="w-50"
       @keyup.enter="handleConfirm"
       @blur="handleConfirm"
     />
+    <el-button v-else @click="showInput">+</el-button>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { ElInput } from "element-plus";
+
+const props = defineProps({
   tags: {
     required: false,
     type: Array,
     default: () => [],
   },
-  handleConfirm: {
-    required: false,
-    type: Function,
-  },
-  handleClose: {
-    required: false,
-    type: Function,
-  },
 });
+
+const emit = defineEmits<{
+  (event: "update:tags", value: Array<string>): void;
+}>();
+
+const tags = useVModel(props, "tags", emit);
+
+const inputRef = ref(ElInput);
 
 const state = reactive({
-  item: "",
+  tag: "",
+  inputVisible: false,
 });
 
-const { item } = toRefs(state);
+const { tag, inputVisible } = toRefs(state);
+
+const showInput = () => {
+  state.inputVisible = true;
+  nextTick(() => {
+    inputRef.value!.input!.focus();
+  });
+};
+const handleConfirm = (): void => {
+  const newTag = state.tag.trim();
+  if (newTag && !tags.value?.includes(newTag)) {
+    tags.value?.push(newTag);
+    state.tag = "";
+  }
+  state.inputVisible = false;
+};
+
+const handleClose = (tag: string): void => {
+  const index = tags.value?.indexOf(tag.trim());
+  if (index !== -1) {
+    tags.value?.splice(index, 1);
+  }
+};
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.flex.gap-2 {
+  flex-wrap: wrap;
+}
+</style>

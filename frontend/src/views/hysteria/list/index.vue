@@ -78,7 +78,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.domains" prop="acme.domains">
-                <el-input v-model="formData.acme.domains" clearable />
+                <imputMultiple :tags="formData.acme.domains" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -94,7 +94,14 @@
               placement="bottom"
             >
               <el-form-item label="acme.ca" prop="acme.ca">
-                <el-input v-model="formData.acme.ca" clearable />
+                <el-select v-model="formData.acme.ca" style="width: 100%">
+                  <el-option
+                    v-for="item in acmeCas"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -735,9 +742,10 @@ const state = reactive({
   enableFormData: {
     enable: "0",
   },
+  acmeCas: ["zerossl", "letsencrypt"],
 });
 
-const { activeName, formData, enableFormData } = toRefs(state);
+const { activeName, formData, enableFormData, acmeCas } = toRefs(state);
 
 const handleImport = () => {};
 const handleExport = () => {};
