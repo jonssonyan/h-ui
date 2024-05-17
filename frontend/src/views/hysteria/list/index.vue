@@ -165,7 +165,14 @@
               placement="bottom"
             >
               <el-form-item label="obfs.type" prop="obfs.type">
-                <el-input v-model="formData.obfs.type" clearable />
+                <el-select v-model="formData.obfs.type" style="width: 100%">
+                  <el-option
+                    v-for="item in obfsTypes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -340,10 +347,18 @@
               placement="bottom"
             >
               <el-form-item label="resolver.type" prop="resolver.type">
-                <el-input v-model="formData.resolver.type" clearable />
+                <el-select v-model="formData.resolver.type" style="width: 100%">
+                  <el-option
+                    v-for="item in resolverTypes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'tcp'"
               :content="$t('hysteria.config.resolver.tcp.addr')"
               placement="bottom"
             >
@@ -352,6 +367,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'tcp'"
               :content="$t('hysteria.config.resolver.tcp.timeout')"
               placement="bottom"
             >
@@ -363,6 +379,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'udp'"
               :content="$t('hysteria.config.resolver.udp.addr')"
               placement="bottom"
             >
@@ -371,6 +388,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'udp'"
               :content="$t('hysteria.config.resolver.udp.timeout')"
               placement="bottom"
             >
@@ -382,6 +400,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'tls'"
               :content="$t('hysteria.config.resolver.tls.addr')"
               placement="bottom"
             >
@@ -390,6 +409,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'tls'"
               :content="$t('hysteria.config.resolver.tls.timeout')"
               placement="bottom"
             >
@@ -401,6 +421,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'tls'"
               :content="$t('hysteria.config.resolver.tls.sni')"
               placement="bottom"
             >
@@ -409,6 +430,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'tls'"
               :content="$t('hysteria.config.resolver.tls.insecure')"
               placement="bottom"
             >
@@ -420,6 +442,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'https'"
               :content="$t('hysteria.config.resolver.https.addr')"
               placement="bottom"
             >
@@ -431,6 +454,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'https'"
               :content="$t('hysteria.config.resolver.https.timeout')"
               placement="bottom"
             >
@@ -442,6 +466,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'https'"
               :content="$t('hysteria.config.resolver.https.sni')"
               placement="bottom"
             >
@@ -453,6 +478,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.resolver.type === 'https'"
               :content="$t('hysteria.config.resolver.https.insecure')"
               placement="bottom"
             >
@@ -478,7 +504,7 @@
               placement="bottom"
             >
               <el-form-item label="acl.inline" prop="acl.inline">
-                <el-input v-model="formData.acl.inline" clearable />
+                <imputMultiple :tags="formData.acl.inline" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -611,10 +637,22 @@
               placement="bottom"
             >
               <el-form-item label="masquerade.type" prop="masquerade.type">
-                <el-input v-model="formData.masquerade.type" clearable />
+                <el-select
+                  v-model="formData.masquerade.type"
+                  style="width: 100%"
+                  clearable
+                >
+                  <el-option
+                    v-for="item in masqueradeTypes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.masquerade.type === 'file'"
               :content="$t('hysteria.config.masquerade.file.dir')"
               placement="bottom"
             >
@@ -626,6 +664,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.masquerade.type === 'proxy'"
               :content="$t('hysteria.config.masquerade.proxy.url')"
               placement="bottom"
             >
@@ -637,6 +676,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.masquerade.type === 'proxy'"
               :content="$t('hysteria.config.masquerade.proxy.rewriteHost')"
               placement="bottom"
             >
@@ -648,6 +688,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.masquerade.type === 'string'"
               :content="$t('hysteria.config.masquerade.string.content')"
               placement="bottom"
             >
@@ -662,6 +703,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.masquerade.type === 'string'"
               :content="$t('hysteria.config.masquerade.string.headers')"
               placement="bottom"
             >
@@ -676,6 +718,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.masquerade.type === 'string'"
               :content="$t('hysteria.config.masquerade.string.statusCode')"
               placement="bottom"
             >
@@ -736,16 +779,20 @@ import { getConfig, getHysteria2Config } from "@/api/config";
 
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
 
+const acmeCas = ref<string[]>(["zerossl", "letsencrypt"]);
+const obfsTypes = ref<string[]>(["salamander"]);
+const resolverTypes = ref<string[]>(["tcp", "udp", "tls", "https"]);
+const masqueradeTypes = ref<string[]>(["file", "proxy", "string"]);
+
 const state = reactive({
   activeName: "listen",
   formData: defaultHysteria2ServerConfig as Hysteria2ServerConfig,
   enableFormData: {
     enable: "0",
   },
-  acmeCas: ["zerossl", "letsencrypt"],
 });
 
-const { activeName, formData, enableFormData, acmeCas } = toRefs(state);
+const { activeName, formData, enableFormData } = toRefs(state);
 
 const handleImport = () => {};
 const handleExport = () => {};
