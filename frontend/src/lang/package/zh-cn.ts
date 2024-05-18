@@ -65,6 +65,7 @@ export default {
   },
   hysteria: {
     enable: "开启",
+    addConfigItem: "添加配置项",
     listen: "监听地址",
     tls: "TLS",
     obfs: "混淆",
@@ -81,6 +82,7 @@ export default {
       enable: "开启/关闭",
       listen:
         "当只有端口没有 IP 地址时，服务器将监听所有可用的 IPv4 和 IPv6 地址。要仅监听 IPv4，可以使用 0.0.0.0:443。要仅监听 IPv6，可以使用 [::]:443。",
+      tlsType: "TLS 类型",
       tls: {
         cert: "CERT 路径",
         key: "KEY 路径",
@@ -147,6 +149,7 @@ export default {
           insecure: "禁用 TLS 证书验证。",
         },
       },
+      aclType: "ACL 类型",
       acl: {
         file: "ACL 文件的路径。",
         inline: "内联 ACL 规则的列表。",

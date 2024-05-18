@@ -27,11 +27,7 @@
     </div>
 
     <el-card shadow="never">
-      <el-form
-        ref="enableFormDataRef"
-        label-position="top"
-        :model="enableFormData"
-      >
+      <el-form ref="enableFormDataRef" :model="enableFormData" inline>
         <el-tooltip :content="$t('hysteria.config.enable')" placement="bottom">
           <el-form-item :label="$t('hysteria.enable')" prop="enable">
             <el-switch
@@ -42,10 +38,54 @@
             />
           </el-form-item>
         </el-tooltip>
+        <el-form-item>
+          <el-dropdown @command="handleDropdownClick">
+            <el-button type="primary">
+              {{ $t("hysteria.addConfigItem") }}
+              <el-icon class="el-icon--right"> +</el-icon>
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item command="obfs"
+                  >{{ $t("hysteria.obfs") }}
+                </el-dropdown-item>
+                <el-dropdown-item command="quic"
+                  >{{ $t("hysteria.quic") }}
+                </el-dropdown-item>
+                <el-dropdown-item command="bandwidth"
+                  >{{ $t("hysteria.bandwidth") }}
+                </el-dropdown-item>
+                <el-dropdown-item command="speedTest"
+                  >{{ $t("hysteria.speedTest") }}
+                </el-dropdown-item>
+                <el-dropdown-item command="udp"
+                  >{{ $t("hysteria.udp") }}
+                </el-dropdown-item>
+                <el-dropdown-item command="resolver"
+                  >{{ $t("hysteria.resolver") }}
+                </el-dropdown-item>
+                <el-dropdown-item command="acl"
+                  >{{ $t("hysteria.acl") }}
+                </el-dropdown-item>
+                <el-dropdown-item command="outbounds"
+                  >{{ $t("hysteria.outbounds") }}
+                </el-dropdown-item>
+                <el-dropdown-item command="masquerade"
+                  >{{ $t("hysteria.masquerade") }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </el-form-item>
       </el-form>
 
       <el-form ref="formDataRef" label-position="top" :model="formData">
-        <el-tabs v-model="activeName" class="tabs">
+        <el-tabs
+          v-model="activeName"
+          class="tabs"
+          closable
+          @tab-remove="closeTabPane"
+        >
           <el-tab-pane :label="$t('hysteria.listen')" name="listen">
             <el-tooltip
               :content="$t('hysteria.config.listen')"
@@ -58,11 +98,11 @@
           </el-tab-pane>
           <el-tab-pane :label="$t('hysteria.tls')" name="tls">
             <el-tooltip
-              :content="$t('hysteria.config.tls.cert')"
+              :content="$t('hysteria.config.tlsType')"
               placement="bottom"
             >
               <el-form-item label="tls.type" prop="tls.type">
-                <el-select v-model="tlsType" style="width: 100%" clearable>
+                <el-select v-model="tlsType" style="width: 100%">
                   <el-option
                     v-for="item in tlsTypes"
                     :key="item"
@@ -114,11 +154,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.ca" prop="acme.ca">
-                <el-select
-                  v-model="formData.acme.ca"
-                  style="width: 100%"
-                  clearable
-                >
+                <el-select v-model="formData.acme.ca" style="width: 100%">
                   <el-option
                     v-for="item in acmeCas"
                     :key="item"
@@ -189,13 +225,17 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane :label="$t('hysteria.obfs')" name="obfs">
+          <el-tab-pane :label="$t('hysteria.obfs')" name="obfs" v-if="obfs">
             <el-tooltip
               :content="$t('hysteria.config.obfs.type')"
               placement="bottom"
             >
               <el-form-item label="obfs.type" prop="obfs.type">
-                <el-select v-model="formData.obfs.type" style="width: 100%">
+                <el-select
+                  v-model="formData.obfs.type"
+                  style="width: 100%"
+                  clearable
+                >
                   <el-option
                     v-for="item in obfsTypes"
                     :key="item"
@@ -206,6 +246,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="formData.obfs.type === 'salamander'"
               :content="$t('hysteria.config.obfs.salamander.password')"
               placement="bottom"
             >
@@ -220,7 +261,7 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane :label="$t('hysteria.quic')" name="quic">
+          <el-tab-pane :label="$t('hysteria.quic')" name="quic" v-if="quic">
             <el-tooltip
               :content="$t('hysteria.config.quic.initStreamReceiveWindow')"
               placement="bottom"
@@ -314,7 +355,11 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane :label="$t('hysteria.bandwidth')" name="bandwidth">
+          <el-tab-pane
+            :label="$t('hysteria.bandwidth')"
+            name="bandwidth"
+            v-if="bandwidth"
+          >
             <el-tooltip
               :content="$t('hysteria.config.bandwidth.up')"
               placement="bottom"
@@ -343,7 +388,11 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane :label="$t('hysteria.speedTest')" name="speedTest">
+          <el-tab-pane
+            :label="$t('hysteria.speedTest')"
+            name="speedTest"
+            v-if="speedTest"
+          >
             <el-tooltip
               :content="$t('hysteria.config.speedTest')"
               placement="bottom"
@@ -353,7 +402,7 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane :label="$t('hysteria.udp')" name="udp">
+          <el-tab-pane :label="$t('hysteria.udp')" name="udp" v-if="udp">
             <el-tooltip
               :content="$t('hysteria.config.disableUDP')"
               placement="bottom"
@@ -371,7 +420,11 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane :label="$t('hysteria.resolver')" name="resolver">
+          <el-tab-pane
+            :label="$t('hysteria.resolver')"
+            name="resolver"
+            v-if="resolver"
+          >
             <el-tooltip
               :content="$t('hysteria.config.resolver.type')"
               placement="bottom"
@@ -520,8 +573,24 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane :label="$t('hysteria.acl')" name="acl">
+          <el-tab-pane :label="$t('hysteria.acl')" name="acl" v-if="acl">
             <el-tooltip
+              :content="$t('hysteria.config.aclType')"
+              placement="bottom"
+            >
+              <el-form-item label="acl.type" prop="acl.type">
+                <el-select v-model="aclType" style="width: 100%" clearable>
+                  <el-option
+                    v-for="item in aclTypes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="aclTypes === 'file'"
               :content="$t('hysteria.config.acl.file')"
               placement="bottom"
             >
@@ -530,6 +599,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="aclTypes === 'inline'"
               :content="$t('hysteria.config.acl.inline')"
               placement="bottom"
             >
@@ -661,7 +731,11 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
-          <el-tab-pane :label="$t('hysteria.masquerade')" name="masquerade">
+          <el-tab-pane
+            :label="$t('hysteria.masquerade')"
+            name="masquerade"
+            v-if="masquerade"
+          >
             <el-tooltip
               :content="$t('hysteria.config.masquerade.type')"
               placement="bottom"
@@ -810,6 +884,7 @@ import { getConfig, getHysteria2Config } from "@/api/config";
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
 
 const tlsTypes = ref<string[]>(["tls", "acme"]);
+const aclTypes = ref<string[]>(["file", "inline"]);
 const acmeCas = ref<string[]>(["zerossl", "letsencrypt"]);
 const obfsTypes = ref<string[]>(["salamander"]);
 const resolverTypes = ref<string[]>(["tcp", "udp", "tls", "https"]);
@@ -822,9 +897,34 @@ const state = reactive({
     enable: "0",
   },
   tlsType: "acme",
+  aclType: undefined,
+  obfs: false,
+  quic: false,
+  bandwidth: false,
+  speedTest: false,
+  udp: false,
+  resolver: false,
+  acl: false,
+  outbounds: false,
+  masquerade: false,
 });
 
-const { activeName, formData, enableFormData, tlsType } = toRefs(state);
+const {
+  activeName,
+  formData,
+  enableFormData,
+  tlsType,
+  aclType,
+  obfs,
+  quic,
+  bandwidth,
+  speedTest,
+  udp,
+  resolver,
+  acl,
+  outbounds,
+  masquerade,
+} = toRefs(state);
 
 const handleImport = () => {};
 const handleExport = () => {};
@@ -844,6 +944,52 @@ const setConfig = () => {
       Object.assign(state.formData, response.data);
     }
   });
+};
+
+const closeTabPane = (tabPaneName: string) => {
+  if (tabPaneName === "obfs") {
+    state.obfs = false;
+  } else if (tabPaneName === "quic") {
+    state.quic = false;
+  } else if (tabPaneName === "bandwidth") {
+    state.bandwidth = false;
+  } else if (tabPaneName === "speedTest") {
+    state.speedTest = true;
+  } else if (tabPaneName === "udp") {
+    state.udp = false;
+  } else if (tabPaneName === "resolver") {
+    state.resolver = false;
+  } else if (tabPaneName === "acl") {
+    state.acl = false;
+  } else if (tabPaneName === "outbounds") {
+    state.outbounds = false;
+  } else if (tabPaneName === "masquerade") {
+    state.masquerade = false;
+  }
+  state.activeName = "listen";
+};
+
+const handleDropdownClick = (command: string) => {
+  if (command === "obfs") {
+    state.obfs = true;
+  } else if (command === "quic") {
+    state.quic = true;
+  } else if (command === "bandwidth") {
+    state.bandwidth = true;
+  } else if (command === "speedTest") {
+    state.speedTest = true;
+  } else if (command === "udp") {
+    state.udp = true;
+  } else if (command === "resolver") {
+    state.resolver = true;
+  } else if (command === "acl") {
+    state.acl = true;
+  } else if (command === "outbounds") {
+    state.outbounds = true;
+  } else if (command === "masquerade") {
+    state.masquerade = true;
+  }
+  state.activeName = command;
 };
 
 onMounted(() => {

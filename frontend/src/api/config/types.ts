@@ -22,11 +22,11 @@ export interface ConfigUpdateDto {
 
 export interface Hysteria2ServerConfig {
   listen: string;
-  tls: {
+  tls?: {
     cert: string;
     key: string;
   };
-  acme: {
+  acme?: {
     domains: string[];
     email: string;
     ca: string;
@@ -37,82 +37,82 @@ export interface Hysteria2ServerConfig {
     dir: string;
     listenHost: string;
   };
-  obfs: {
-    type: string;
-    salamander: {
+  obfs?: {
+    type?: string;
+    salamander?: {
       password: string;
     };
   };
-  quic: {
-    initStreamReceiveWindow: number;
-    maxStreamReceiveWindow: number;
-    initConnReceiveWindow: number;
-    maxConnReceiveWindow: number;
-    maxIdleTimeout: string;
-    maxIncomingStreams: number;
-    disablePathMTUDiscovery: boolean;
+  quic?: {
+    initStreamReceiveWindow?: number;
+    maxStreamReceiveWindow?: number;
+    initConnReceiveWindow?: number;
+    maxConnReceiveWindow?: number;
+    maxIdleTimeout?: string;
+    maxIncomingStreams?: number;
+    disablePathMTUDiscovery?: boolean;
   };
-  bandwidth: {
+  bandwidth?: {
     up: string;
     down: string;
   };
-  ignoreClientBandwidth: boolean;
-  speedTest: boolean;
-  disableUDP: boolean;
-  udpIdleTimeout: string;
-  auth: {
-    type: string;
-    password: string;
-    userpass: { [key: string]: string };
-    http: {
+  ignoreClientBandwidth?: boolean;
+  speedTest?: boolean;
+  disableUDP?: boolean;
+  udpIdleTimeout?: string;
+  auth?: {
+    type?: string;
+    password?: string;
+    userpass?: { [key: string]: string };
+    http?: {
       url: string;
       insecure: boolean;
     };
-    command: string;
+    command?: string;
   };
-  resolver: {
-    type: string;
-    tcp: {
+  resolver?: {
+    type?: string;
+    tcp?: {
       addr: string;
       timeout: string;
     };
-    udp: {
+    udp?: {
       addr: string;
       timeout: string;
     };
-    tls: {
+    tls?: {
       addr: string;
       timeout: string;
       sni: string;
       insecure: boolean;
     };
-    https: {
+    https?: {
       addr: string;
       timeout: string;
       sni: string;
       insecure: boolean;
     };
   };
-  acl: {
-    file: string;
-    inline: string[];
-    geoip: string;
-    geosite: string;
-    geoUpdateInterval: string;
+  acl?: {
+    file?: string;
+    inline?: string[];
+    geoip?: string;
+    geosite?: string;
+    geoUpdateInterval?: string;
   };
-  outbounds: {
+  outbounds?: {
     name: string;
-    type: string;
-    socks5: {
+    type?: string;
+    socks5?: {
       addr: string;
-      username: string;
-      password: string;
+      username?: string;
+      password?: string;
     };
-    http: {
+    http?: {
       url: string;
       insecure: boolean;
     };
-    direct: {
+    direct?: {
       mode: string;
       bindIPv4: string;
       bindIPv6: string;
@@ -121,25 +121,25 @@ export interface Hysteria2ServerConfig {
   }[];
   trafficStats: {
     listen: string;
-    secret: string;
+    secret?: string;
   };
-  masquerade: {
-    type: string;
-    file: {
+  masquerade?: {
+    type?: string;
+    file?: {
       dir: string;
     };
-    proxy: {
+    proxy?: {
       url: string;
       rewriteHost: boolean;
     };
-    string: {
+    string?: {
       content: string;
-      headers: { [key: string]: string };
-      statusCode: number;
+      headers?: { [key: string]: string };
+      statusCode?: number;
     };
-    listenHTTP: string;
-    listenHTTPS: string;
-    forceHTTPS: boolean;
+    listenHTTP?: string;
+    listenHTTPS?: string;
+    forceHTTPS?: boolean;
   };
 }
 
@@ -152,7 +152,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
   acme: {
     domains: [],
     email: "",
-    ca: "",
+    ca: "zerossl",
     disableHTTP: false,
     disableTLSALPN: false,
     altHTTPPort: 80,
@@ -161,40 +161,30 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     listenHost: "0.0.0.0",
   },
   obfs: {
-    type: "salamander",
+    type: undefined,
     salamander: {
       password: "",
     },
   },
   quic: {
-    initStreamReceiveWindow: 8388608,
-    maxStreamReceiveWindow: 8388608,
-    initConnReceiveWindow: 20971520,
-    maxConnReceiveWindow: 20971520,
-    maxIdleTimeout: "30s",
-    maxIncomingStreams: 1024,
-    disablePathMTUDiscovery: false,
+    initStreamReceiveWindow: undefined,
+    maxStreamReceiveWindow: undefined,
+    initConnReceiveWindow: undefined,
+    maxConnReceiveWindow: undefined,
+    maxIdleTimeout: undefined,
+    maxIncomingStreams: undefined,
+    disablePathMTUDiscovery: undefined,
   },
   bandwidth: {
     up: "1 gbps",
     down: "1 gbps",
   },
-  ignoreClientBandwidth: false,
-  speedTest: false,
-  disableUDP: false,
-  udpIdleTimeout: "60s",
-  auth: {
-    type: "",
-    password: "",
-    userpass: {},
-    http: {
-      url: "",
-      insecure: false,
-    },
-    command: "",
-  },
+  ignoreClientBandwidth: undefined,
+  speedTest: undefined,
+  disableUDP: undefined,
+  udpIdleTimeout: undefined,
   resolver: {
-    type: "udp",
+    type: undefined,
     tcp: {
       addr: "8.8.8.8:53",
       timeout: "4s",
@@ -217,25 +207,20 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     },
   },
   acl: {
-    file: "",
-    inline: [
-      "reject(suffix:v2ex.com)",
-      "reject(all, udp/443)",
-      "reject(geoip:cn)",
-      "reject(geosite:netflix)",
-    ],
-    geoip: "",
-    geosite: "",
-    geoUpdateInterval: "168h",
+    file: undefined,
+    inline: undefined,
+    geoip: undefined,
+    geosite: undefined,
+    geoUpdateInterval: undefined,
   },
   outbounds: [
     {
       name: "",
-      type: "",
+      type: undefined,
       socks5: {
         addr: "",
-        username: "",
-        password: "",
+        username: undefined,
+        password: undefined,
       },
       http: {
         url: "",
@@ -251,10 +236,10 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
   ],
   trafficStats: {
     listen: ":9999",
-    secret: "",
+    secret: undefined,
   },
   masquerade: {
-    type: "",
+    type: undefined,
     file: {
       dir: "",
     },
@@ -264,11 +249,11 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     },
     string: {
       content: "",
-      headers: {},
-      statusCode: 200,
+      headers: undefined,
+      statusCode: undefined,
     },
-    listenHTTP: ":80",
-    listenHTTPS: ":443",
-    forceHTTPS: true,
+    listenHTTP: undefined,
+    listenHTTPS: undefined,
+    forceHTTPS: undefined,
   },
 };
