@@ -48,6 +48,7 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 	if err != nil {
 		return err
 	}
+	// API 默认值
 	hysteria2ServerConfig.Auth.Type = "http"
 	hysteria2ServerConfig.Auth.HTTP.URL = fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
 	hysteria2ServerConfig.Auth.HTTP.Insecure = true
