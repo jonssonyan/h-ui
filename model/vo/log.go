@@ -1,5 +1,10 @@
 package vo
 
+type LogSystemPage struct {
+	LogSystemVos []LogSystemVo `json:"records"`
+	Total        int64         `json:"total"`
+}
+
 type LogSystemVo struct {
 	ClientIP    string `json:"clientIp"`
 	LatencyTime int64  `json:"latencyTime"`
