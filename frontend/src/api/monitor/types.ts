@@ -1,5 +1,5 @@
 export interface SystemMonitorVo {
-	cpuPercent: number;
-	diskPercent: number;
-	memPercent: number;
+  cpuPercent: number;
+  diskPercent: number;
+  memPercent: number;
 }

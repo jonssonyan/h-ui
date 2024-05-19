@@ -68,6 +68,9 @@ export default {
     memPercent: "内存使用率",
     diskPercent: "磁盘使用率",
   },
+  log: {
+    numLine: "显示行数",
+  },
   hysteria: {
     enable: "开启",
     addConfigItem: "添加配置项",
