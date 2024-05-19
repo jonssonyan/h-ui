@@ -12,7 +12,7 @@ func Router(router *gin.Engine) {
 
 	frontend.InitFrontend(router)
 
-	// 不需要鉴权
+	// 开放接口
 	authApi := router.Group("/hui")
 	{
 		initAuthRouter(authApi)
@@ -31,5 +31,6 @@ func Router(router *gin.Engine) {
 		initConfigRouter(huiAdminApi)
 		initHysteria2Router(huiAdminApi)
 		initLogRouter(huiAdminApi)
+		initMonitorRouter(huiAdminApi)
 	}
 }

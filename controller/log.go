@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func SystemLog(c *gin.Context) {
+func LogSystem(c *gin.Context) {
 	logData, err := os.ReadFile("logs/h-ui.log")
 	if err != nil {
 		vo.Fail("Unable to read log file", c)
@@ -17,7 +17,7 @@ func SystemLog(c *gin.Context) {
 	vo.Success(logLines, c)
 }
 
-func HysteriaLog2(c *gin.Context) {
+func LogHysteria2(c *gin.Context) {
 	logData, err := os.ReadFile("logs/hysteria2.log")
 	if err != nil {
 		vo.Fail("Unable to read log file", c)

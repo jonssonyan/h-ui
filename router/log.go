@@ -8,7 +8,7 @@ import (
 func initLogRouter(accountApi *gin.RouterGroup) {
 	account := accountApi.Group("/log")
 	{
-		account.GET("/system", controller.SystemLog)
-		account.GET("/hysteria2", controller.HysteriaLog2)
+		account.GET("/system", controller.LogSystem)
+		account.GET("/hysteria2", controller.LogHysteria2)
 	}
 }
