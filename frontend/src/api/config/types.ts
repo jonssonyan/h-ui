@@ -38,8 +38,8 @@ export interface Hysteria2ServerConfig {
     listenHost: string;
   };
   obfs?: {
-    type?: string;
-    salamander?: {
+    type: string;
+    salamander: {
       password: string;
     };
   };
@@ -60,18 +60,8 @@ export interface Hysteria2ServerConfig {
   speedTest?: boolean;
   disableUDP?: boolean;
   udpIdleTimeout?: string;
-  auth?: {
-    type?: string;
-    password?: string;
-    userpass?: { [key: string]: string };
-    http?: {
-      url: string;
-      insecure: boolean;
-    };
-    command?: string;
-  };
   resolver?: {
-    type?: string;
+    type: string;
     tcp?: {
       addr: string;
       timeout: string;
@@ -102,7 +92,7 @@ export interface Hysteria2ServerConfig {
   };
   outbounds?: {
     name: string;
-    type?: string;
+    type: string;
     socks5?: {
       addr: string;
       username?: string;
@@ -121,10 +111,9 @@ export interface Hysteria2ServerConfig {
   }[];
   trafficStats: {
     listen: string;
-    secret?: string;
   };
   masquerade?: {
-    type?: string;
+    type: string;
     file?: {
       dir: string;
     };
@@ -157,34 +146,34 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     disableTLSALPN: false,
     altHTTPPort: 80,
     altTLSALPNPort: 443,
-    dir: "",
+    dir: "my_acme_dir",
     listenHost: "0.0.0.0",
   },
   obfs: {
-    type: undefined,
+    type: "salamander",
     salamander: {
-      password: "",
+      password: "cry_me_a_r1ver",
     },
   },
   quic: {
-    initStreamReceiveWindow: undefined,
-    maxStreamReceiveWindow: undefined,
-    initConnReceiveWindow: undefined,
-    maxConnReceiveWindow: undefined,
-    maxIdleTimeout: undefined,
-    maxIncomingStreams: undefined,
-    disablePathMTUDiscovery: undefined,
+    initStreamReceiveWindow: 8388608,
+    maxStreamReceiveWindow: 8388608,
+    initConnReceiveWindow: 20971520,
+    maxConnReceiveWindow: 20971520,
+    maxIdleTimeout: "30s",
+    maxIncomingStreams: 1024,
+    disablePathMTUDiscovery: false,
   },
   bandwidth: {
     up: "1 gbps",
     down: "1 gbps",
   },
-  ignoreClientBandwidth: undefined,
-  speedTest: undefined,
-  disableUDP: undefined,
-  udpIdleTimeout: undefined,
+  ignoreClientBandwidth: false,
+  speedTest: false,
+  disableUDP: false,
+  udpIdleTimeout: "60s",
   resolver: {
-    type: undefined,
+    type: "",
     tcp: {
       addr: "8.8.8.8:53",
       timeout: "4s",
@@ -213,33 +202,12 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     geosite: undefined,
     geoUpdateInterval: undefined,
   },
-  outbounds: [
-    {
-      name: "",
-      type: undefined,
-      socks5: {
-        addr: "",
-        username: undefined,
-        password: undefined,
-      },
-      http: {
-        url: "",
-        insecure: true,
-      },
-      direct: {
-        mode: "auto",
-        bindIPv4: "",
-        bindIPv6: "",
-        bindDevice: "",
-      },
-    },
-  ],
+  outbounds: [],
   trafficStats: {
     listen: ":9999",
-    secret: undefined,
   },
   masquerade: {
-    type: undefined,
+    type: "",
     file: {
       dir: "",
     },
@@ -248,12 +216,12 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
       rewriteHost: true,
     },
     string: {
-      content: "",
+      content: "hello stupid world",
       headers: undefined,
-      statusCode: undefined,
+      statusCode: 200 ,
     },
-    listenHTTP: undefined,
-    listenHTTPS: undefined,
-    forceHTTPS: undefined,
+    listenHTTP: ":80",
+    listenHTTPS: ":443",
+    forceHTTPS: true,
   },
 };
