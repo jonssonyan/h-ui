@@ -66,6 +66,7 @@ export default {
   hysteria: {
     enable: "开启",
     addConfigItem: "添加配置项",
+    addOutbound: "添加出站规则",
     listen: "监听地址",
     tls: "TLS",
     obfs: "混淆",
