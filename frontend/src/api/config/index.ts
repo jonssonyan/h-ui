@@ -8,7 +8,7 @@ import {
   Hysteria2ServerConfig,
 } from "@/api/config/types";
 
-export function getHysteria2Config(): AxiosPromise<Hysteria2ServerConfig> {
+export function getHysteria2ConfigApi(): AxiosPromise<Hysteria2ServerConfig> {
   return request({
     url: "/config/getHysteria2Config",
     method: "get",
@@ -25,7 +25,7 @@ export function updateHysteria2ConfigApi(
   });
 }
 
-export function getConfig(data: ConfigDto): AxiosPromise<ConfigVo> {
+export function getConfigApi(data: ConfigDto): AxiosPromise<ConfigVo> {
   return request({
     url: "/config/getConfig",
     method: "get",
@@ -33,7 +33,7 @@ export function getConfig(data: ConfigDto): AxiosPromise<ConfigVo> {
   });
 }
 
-export function listConfig(data: ConfigsDto): AxiosPromise<Array<ConfigVo>> {
+export function listConfigApi(data: ConfigsDto): AxiosPromise<Array<ConfigVo>> {
   return request({
     url: "/config/listConfig",
     method: "post",
@@ -41,7 +41,7 @@ export function listConfig(data: ConfigsDto): AxiosPromise<Array<ConfigVo>> {
   });
 }
 
-export function updateConfigs(data: ConfigUpdateDto): AxiosPromise {
+export function updateConfigsApi(data: ConfigUpdateDto): AxiosPromise {
   return request({
     url: "/config/updateConfigs",
     method: "post",

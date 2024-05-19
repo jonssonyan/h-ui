@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { Select } from "@element-plus/icons-vue";
-import { listConfig, updateConfigs } from "@/api/config";
+import { listConfigApi, updateConfigsApi } from "@/api/config";
 import { ConfigsUpdateDto } from "@/api/config/types";
 import type { FormInstance, FormRules } from "element-plus";
 import { validateNumberStr } from "@/utils/validate";
@@ -87,7 +87,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           value: formData.hysteria2TrafficTime,
         },
       ];
-      updateConfigs({ configUpdateDtos: configs }).then(() => {
+      updateConfigsApi({ configUpdateDtos: configs }).then(() => {
         ElMessage.success("修改配置成功");
       });
     }
@@ -95,7 +95,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 };
 
 const setConfig = () => {
-  listConfig({
+  listConfigApi({
     keys: [huiWebPortKey, hysteria2TrafficTimeKey],
   }).then((response) => {
     const configVos = response.data;

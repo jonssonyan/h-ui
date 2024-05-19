@@ -884,7 +884,7 @@ import {
   Hysteria2ServerConfig,
 } from "@/api/config/types";
 import { Select } from "@element-plus/icons-vue";
-import { getConfig, getHysteria2Config } from "@/api/config";
+import { getConfigApi, getHysteria2ConfigApi } from "@/api/config";
 
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
 
@@ -938,13 +938,13 @@ const handleChangeEnable = () => {};
 const submitForm = () => {};
 
 const setConfig = () => {
-  getConfig({ key: hysteria2EnableKey }).then((response) => {
+  getConfigApi({ key: hysteria2EnableKey }).then((response) => {
     if (response.data) {
       const { value } = response.data;
       state.enableFormData.enable = value;
     }
   });
-  getHysteria2Config().then((response) => {
+  getHysteria2ConfigApi().then((response) => {
     if (response.data) {
       Object.assign(state.formData, response.data);
       if (state.formData?.tls?.cert && state.formData?.tls?.key) {

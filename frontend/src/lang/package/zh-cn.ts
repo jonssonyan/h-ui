@@ -63,6 +63,11 @@ export default {
     huiWebPort: "H UI Web 端口",
     hysteria2TrafficTime: "Hysteria2 流量倍数",
   },
+  monitor: {
+    cpuPercent: "CPU 使用率",
+    memPercent: "内存使用率",
+    diskPercent: "磁盘使用率",
+  },
   hysteria: {
     enable: "开启",
     addConfigItem: "添加配置项",
