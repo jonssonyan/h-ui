@@ -3,7 +3,6 @@ package bo
 type Hysteria2ServerConfig struct {
 	Listen                string                      `yaml:"listen" json:"listen" validate:"required"`
 	Obfs                  serverConfigObfs            `yaml:"obfs" json:"obfs" validate:"omitempty"`
-	TlsType               string                      `yaml:"tlsType" json:"tlsType" validate:"required"`
 	TLS                   serverConfigTLS             `yaml:"tls" json:"tls" validate:"omitempty"`
 	ACME                  serverConfigACME            `yaml:"acme" json:"acme" validate:"omitempty"`
 	QUIC                  serverConfigQUIC            `yaml:"quic" json:"quic" validate:"omitempty"`
@@ -14,7 +13,6 @@ type Hysteria2ServerConfig struct {
 	UDPIdleTimeout        string                      `yaml:"udpIdleTimeout" json:"udpIdleTimeout" validate:"omitempty"`
 	Auth                  serverConfigAuth            `yaml:"auth" json:"auth" validate:"omitempty"`
 	Resolver              serverConfigResolver        `yaml:"resolver" json:"resolver" validate:"omitempty"`
-	AclType               string                      `yaml:"aclType" json:"aclType" validate:"omitempty"`
 	ACL                   serverConfigACL             `yaml:"acl" json:"acl" validate:"omitempty"`
 	Outbounds             []serverConfigOutboundEntry `yaml:"outbounds" json:"outbounds" validate:"omitempty"`
 	TrafficStats          serverConfigTrafficStats    `yaml:"trafficStats" json:"trafficStats" validate:"required"`
