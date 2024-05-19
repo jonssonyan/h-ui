@@ -1,14 +1,14 @@
 package constant
 
 const (
-	SysError          string = "system error"
-	UnauthorizedError string = "unauthorized"
-	ForbiddenError    string = "permission denied"
-	InvalidError      string = "invalid"
+	SysError          string = "System Error"
+	UnauthorizedError string = "Unauthorized"
+	ForbiddenError    string = "Permission Denied"
+	InvalidError      string = "Invalid"
 
-	IllegalTokenError string = "authentication failed"
-	TokenExpiredError string = "token expired"
+	IllegalTokenError string = "Authentication Failed"
+	TokenExpiredError string = "Token Expired"
 
-	AccountNotExist string = "account not exist"
-	ConfigNotExist  string = "config not exist"
+	AccountNotExist string = "Account not exist"
+	ConfigNotExist  string = "Config not exist"
 )
