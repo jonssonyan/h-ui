@@ -1,28 +1,46 @@
 package controller
 
 import (
+	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"h-ui/model/vo"
-	"os"
-	"strings"
+	"h-ui/util"
 )
 
 func LogSystem(c *gin.Context) {
-	logData, err := os.ReadFile("logs/h-ui.log")
+	exists := util.Exists("logs/h-ui.log")
+	logSystemVos := make([]vo.LogSystemVo, 0)
+	if !exists {
+		vo.Success(logSystemVos, c)
+		return
+	}
+
+	logLines, err := util.ReadLinesFromBottom("logs/h-ui.log")
 	if err != nil {
 		vo.Fail("Unable to read log file", c)
 		return
 	}
-	logLines := strings.Split(string(logData), "\n")
-	vo.Success(logLines, c)
+
+	for _, line := range logLines {
+		if line == "" {
+			continue
+		}
+		logSystemVo := vo.LogSystemVo{}
+		err := json.Unmarshal([]byte(line), &logSystemVo)
+		if err != nil {
+			vo.Fail("Unable to unmarshal log data", c)
+			continue
+		}
+		logSystemVos = append(logSystemVos, logSystemVo)
+	}
+	vo.Success(logSystemVos, c)
 }
 
 func LogHysteria2(c *gin.Context) {
-	logData, err := os.ReadFile("logs/hysteria2.log")
+	logLines, err := util.ReadLinesFromBottom("logs/h-ui.log")
 	if err != nil {
 		vo.Fail("Unable to read log file", c)
 		return
 	}
-	logLines := strings.Split(string(logData), "\n")
 	vo.Success(logLines, c)
 }

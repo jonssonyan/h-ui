@@ -31,11 +31,11 @@ func LogHandler() gin.HandlerFunc {
 		reqUri := c.Request.RequestURI
 
 		logrus.WithFields(logrus.Fields{
-			"status_code":  statusCode,
-			"latency_time": latencyTime,
-			"client_ip":    clientIP,
-			"req_method":   reqMethod,
-			"req_uri":      reqUri,
+			"statusCode":  statusCode,
+			"latencyTime": latencyTime,
+			"clientIP":    clientIP,
+			"reqMethod":   reqMethod,
+			"reqUri":      reqUri,
 		}).Info()
 		c.Next()
 	}
