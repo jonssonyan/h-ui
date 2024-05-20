@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/constant"
@@ -43,18 +44,7 @@ func InitHysteria2() {
 	}
 
 	if *config.Value == "1" {
-		hysteria2Config, err := GetHysteria2Config()
-		if err != nil {
-			logrus.Errorf("get hysteria2 config err: %v", err)
-			return
-		}
-		if err = SetHysteria2ConfigYAML(); err != nil {
-			logrus.Errorf("set hysteria2 config.yaml err: %v", err)
-			return
-		}
-		hysteria2Instance := proxy.NewHysteria2Instance(hysteria2Config.Listen, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
-		if err = hysteria2Instance.StartHysteria2(); err != nil {
-			logrus.Errorf("start hysteria2 err: %v", err)
+		if err := StartHysteria2(); err != nil {
 			return
 		}
 	}
@@ -62,5 +52,23 @@ func InitHysteria2() {
 
 func Hysteria2Kick(usernames []string) error {
 	// todo
+	return nil
+}
+
+func StartHysteria2() error {
+	hysteria2Config, err := GetHysteria2Config()
+	if err != nil {
+		logrus.Errorf("get hysteria2 config err: %v", err)
+		return errors.New("get hysteria2 config err")
+	}
+	if err = SetHysteria2ConfigYAML(); err != nil {
+		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
+		return errors.New("set hysteria2 config.yaml err")
+	}
+	hysteria2Instance := proxy.NewHysteria2Instance(hysteria2Config.Listen, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
+	if err = hysteria2Instance.StartHysteria2(); err != nil {
+		logrus.Errorf("start hysteria2 err: %v", err)
+		return errors.New("start hysteria2 err")
+	}
 	return nil
 }

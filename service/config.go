@@ -19,6 +19,10 @@ func UpdateConfig(key string, value string) error {
 		if config.Value == nil || *config.Value == "" {
 			return errors.New("hysteria2 config is empty")
 		}
+		// 启动Hysteria2
+		if err = StartHysteria2(); err != nil {
+			return err
+		}
 	}
 	return dao.UpdateConfig([]string{key}, map[string]interface{}{"value": value})
 }
