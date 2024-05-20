@@ -4,7 +4,7 @@
       <el-form inline>
         <el-form-item>
           <el-button
-            type="success"
+            type="primary"
             @click="submitForm(formDataRef)"
             :icon="Select"
             >保存

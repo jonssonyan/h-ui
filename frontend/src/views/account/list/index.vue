@@ -36,7 +36,7 @@
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="success" :icon="Plus" @click="handleAdd"
+          <el-button :icon="Plus" @click="handleAdd"
             >{{ $t("common.add") }}
           </el-button>
         </el-form-item>

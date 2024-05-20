@@ -3,7 +3,7 @@
     <div class="search">
       <el-form :inline="true">
         <el-form-item>
-          <el-button type="success" @click="submitForm" :icon="Select"
+          <el-button type="primary" @click="submitForm" :icon="Select"
             >保存
           </el-button>
         </el-form-item>

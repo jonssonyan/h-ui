@@ -23,7 +23,7 @@
         <el-col :span="4" :xs="24">
           <div class="flex h-full items-center justify-around">
             <el-dropdown>
-              <el-button type="success">
+              <el-button type="primary">
                 订 阅 链 接
                 <el-icon class="el-icon--right">
                   <svg-icon icon-class="share" />
@@ -37,7 +37,7 @@
               </template>
             </el-dropdown>
 
-            <el-button type="success">
+            <el-button type="primary">
               节 点 URL
               <el-icon class="el-icon--right">
                 <svg-icon icon-class="share" />
