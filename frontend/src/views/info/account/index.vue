@@ -200,7 +200,7 @@ onMounted(() => {
 
 .flex.h-full.items-center {
   .el-button {
-    margin: 5px;
+    margin: 10px;
   }
 }
 
