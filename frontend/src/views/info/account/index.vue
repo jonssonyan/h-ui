@@ -210,7 +210,7 @@ onMounted(() => {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 375px) {
   .flex.h-full.items-center {
     flex-direction: column;
   }
