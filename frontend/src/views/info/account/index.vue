@@ -1,10 +1,8 @@
 <template>
   <div class="dashboard-container">
-    <github-corner class="github-corner" />
-
     <el-card shadow="never">
       <el-row justify="space-between">
-        <el-col :span="20" :xs="24">
+        <el-col :span="8" :xs="24">
           <div class="flex h-full items-center">
             <img
               class="w-20 h-20 mr-5 rounded-full"
@@ -23,12 +21,7 @@
         <el-col :span="4" :xs="24">
           <div class="flex h-full items-center justify-around">
             <el-dropdown>
-              <el-button type="primary">
-                订 阅 链 接
-                <el-icon class="el-icon--right">
-                  <svg-icon icon-class="share" />
-                </el-icon>
-              </el-button>
+              <el-button type="primary" :icon="Share"> 订 阅 链 接</el-button>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>Shadowrocket</el-dropdown-item>
@@ -37,12 +30,7 @@
               </template>
             </el-dropdown>
 
-            <el-button type="primary">
-              节 点 URL
-              <el-icon class="el-icon--right">
-                <svg-icon icon-class="share" />
-              </el-icon>
-            </el-button>
+            <el-button type="primary" :icon="Share"> 节 点 URL</el-button>
           </div>
         </el-col>
       </el-row>
@@ -137,6 +125,7 @@ import { AccountVo } from "@/api/account/types";
 import { useAccountStore } from "@/store/modules/account";
 import { timestampToDateTime } from "@/utils/time";
 import { formatBytes, formatStorageUnit } from "@/utils/byte";
+import { Share } from "@element-plus/icons-vue";
 
 const accountStore = useAccountStore();
 

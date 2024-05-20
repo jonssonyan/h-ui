@@ -40,9 +40,8 @@
         </el-tooltip>
         <el-form-item>
           <el-dropdown @command="handleDropdownClick">
-            <el-button type="primary">
+            <el-button type="primary" :icon="CirclePlusFilled">
               {{ $t("hysteria.addConfigItem") }}
-              <el-icon class="el-icon--right">+</el-icon>
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
@@ -883,7 +882,7 @@ import {
   defaultHysteria2ServerConfig,
   Hysteria2ServerConfig,
 } from "@/api/config/types";
-import { Select } from "@element-plus/icons-vue";
+import { CirclePlusFilled, Select } from "@element-plus/icons-vue";
 import { getConfigApi, getHysteria2ConfigApi } from "@/api/config";
 
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";

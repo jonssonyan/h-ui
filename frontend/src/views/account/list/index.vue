@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <github-corner class="github-corner" />
     <!-- 用户数据 -->
     <div class="search">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
@@ -447,4 +448,12 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.github-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  border: 0;
+}
+</style>
