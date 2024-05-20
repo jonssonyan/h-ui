@@ -18,10 +18,12 @@
           </div>
         </el-col>
 
-        <el-col :span="4" :xs="24">
-          <div class="flex h-full items-center justify-around">
+        <el-col :span="16" :xs="24">
+          <div class="flex h-full items-center">
             <el-dropdown>
-              <el-button type="primary" :icon="Share"> 订 阅 链 接</el-button>
+              <el-button size="large" type="primary" :icon="Share">
+                订 阅 链 接
+              </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item>Shadowrocket</el-dropdown-item>
@@ -30,7 +32,9 @@
               </template>
             </el-dropdown>
 
-            <el-button type="primary" :icon="Share"> 节 点 URL</el-button>
+            <el-button size="large" type="primary" :icon="Share">
+              节 点 URL
+            </el-button>
           </div>
         </el-col>
       </el-row>
@@ -191,6 +195,24 @@ onMounted(() => {
 
   .svg-icon {
     fill: currentcolor !important;
+  }
+}
+
+.flex.h-full.items-center {
+  .el-button {
+    margin: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .flex.h-full.items-center {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 400px) {
+  .flex.h-full.items-center {
+    flex-direction: column;
   }
 }
 </style>
