@@ -61,6 +61,13 @@ func StartHysteria2() error {
 		logrus.Errorf("get hysteria2 config err: %v", err)
 		return errors.New("get hysteria2 config err")
 	}
+	// 初始化 bin
+	if !util.Exists(util.GetHysteria2BinPath()) {
+		if err := util.DownloadHysteria2("app/v2.4.4"); err != nil {
+			return err
+		}
+	}
+	// 初始化配置文件
 	if err = SetHysteria2ConfigYAML(); err != nil {
 		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
 		return errors.New("set hysteria2 config.yaml err")
