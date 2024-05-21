@@ -48,6 +48,7 @@ declare module '@vue/runtime-core' {
     IEpUpload: typeof import('~icons/ep/upload')['default']
     ImputMultiple: typeof import('./../components/ImputMultiple/index.vue')['default']
     LangSelect: typeof import('./../components/LangSelect/index.vue')['default']
+    Outbounds: typeof import('./../components/Outbounds/index.vue')['default']
     Pagination: typeof import('./../components/Pagination/index.vue')['default']
     RightPanel: typeof import('./../components/RightPanel/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -90,25 +90,7 @@ export interface Hysteria2ServerConfig {
     geosite?: string;
     geoUpdateInterval?: string;
   };
-  outbounds?: {
-    name: string;
-    type: string;
-    socks5?: {
-      addr: string;
-      username?: string;
-      password?: string;
-    };
-    http?: {
-      url: string;
-      insecure: boolean;
-    };
-    direct?: {
-      mode: string;
-      bindIPv4: string;
-      bindIPv6: string;
-      bindDevice: string;
-    };
-  }[];
+  outbounds?: Hysteria2ServerConfigOutbound[];
   trafficStats: {
     listen: string;
   };
@@ -218,10 +200,30 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     string: {
       content: "hello stupid world",
       headers: undefined,
-      statusCode: 200 ,
+      statusCode: 200,
     },
     listenHTTP: ":80",
     listenHTTPS: ":443",
     forceHTTPS: true,
   },
 };
+
+export interface Hysteria2ServerConfigOutbound {
+  name: string;
+  type: string;
+  socks5?: {
+    addr: string;
+    username?: string;
+    password?: string;
+  };
+  http?: {
+    url: string;
+    insecure: boolean;
+  };
+  direct?: {
+    mode: string;
+    bindIPv4: string;
+    bindIPv6: string;
+    bindDevice: string;
+  };
+}
