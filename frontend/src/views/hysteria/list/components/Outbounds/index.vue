@@ -35,11 +35,7 @@
             placement="bottom"
           >
             <el-form-item label="type" prop="type">
-              <el-select
-                v-model="formData.type"
-                style="width: 100%"
-                @change="typeChange"
-              >
+              <el-select v-model="formData.type" style="width: 100%">
                 <el-option
                   v-for="item in outboundTypes"
                   :key="item"
@@ -220,13 +216,7 @@ const outboundTypes = ["socks5", "http", "direct"];
 const outboundDirectModes = ["auto", "64", "46", "6", "4"];
 
 function resetFormData() {
-  Object.assign(state.formData, {
-    name: "",
-    type: "",
-    socks5: undefined,
-    http: undefined,
-    direct: undefined,
-  });
+  Object.assign(state.formData, defaultHysteria2ServerConfigOutbound);
 }
 
 const handleAdd = () => {
@@ -256,9 +246,26 @@ const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
       const title = state.dialog.title;
+
+      // 精简 美化 最终配置文件
+      if (state.formData.type === "socks5") {
+        state.formData.http = undefined;
+        state.formData.direct = undefined;
+      } else if (state.formData.type === "http") {
+        state.formData.socks5 = undefined;
+        state.formData.direct = undefined;
+      } else if (state.formData.type === "direct") {
+        state.formData.socks5 = undefined;
+        state.formData.http = undefined;
+      }
+
       const outbound = { ...state.formData };
+
+      console.log(state.formData);
+      console.log(outbound);
+
       if (title == "Update Outbound") {
-        console.log(state.formData);
+        console.log("update outbound");
       } else {
         outbounds.value?.push(outbound);
       }
@@ -273,34 +280,6 @@ const closeDialog = (): void => {
 
   if (state.dialog.title == "Update Outbound") {
     resetFormData();
-  }
-};
-
-const typeChange = () => {
-  if (state.formData.type === "socks5") {
-    state.formData.socks5 = {
-      addr: "",
-      username: "",
-      password: "",
-    };
-    state.formData.http = undefined;
-    state.formData.direct = undefined;
-  } else if (state.formData.type === "http") {
-    state.formData.http = {
-      url: "",
-      insecure: false,
-    };
-    state.formData.socks5 = undefined;
-    state.formData.direct = undefined;
-  } else if (state.formData.type === "direct") {
-    state.formData.direct = {
-      mode: "auto",
-      bindIPv4: "",
-      bindIPv6: "",
-      bindDevice: "",
-    };
-    state.formData.socks5 = undefined;
-    state.formData.http = undefined;
   }
 };
 </script>

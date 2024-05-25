@@ -160,8 +160,20 @@ export const defaultHysteria2ServerConfigOutbound: Hysteria2ServerConfigOutbound
   {
     name: "",
     type: "",
+    socks5: {
+      addr: "",
+      username: undefined,
+      password: undefined,
+    },
+    http: {
+      url: "",
+      insecure: false,
+    },
     direct: {
       mode: "auto",
+      bindIPv4: undefined,
+      bindIPv6: undefined,
+      bindDevice: undefined,
     },
   };
 

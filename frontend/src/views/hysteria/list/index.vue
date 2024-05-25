@@ -896,7 +896,9 @@ const handleImport = () => {};
 const handleExport = () => {};
 
 const handleChangeEnable = () => {};
-const submitForm = () => {};
+const submitForm = () => {
+  console.log(state.formData);
+};
 
 const setConfig = () => {
   getConfigApi({ key: hysteria2EnableKey }).then((response) => {
@@ -950,7 +952,6 @@ const setConfig = () => {
 };
 
 const closeTabPane = (tabPaneName: string) => {
-  console.log(tabPaneName);
   if (
     tabPaneName === "listen" ||
     tabPaneName === "tls" ||
