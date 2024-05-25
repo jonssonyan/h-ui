@@ -45,32 +45,11 @@
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item command="obfs"
-                  >{{ $t("hysteria.obfs") }}
-                </el-dropdown-item>
-                <el-dropdown-item command="quic"
-                  >{{ $t("hysteria.quic") }}
-                </el-dropdown-item>
-                <el-dropdown-item command="bandwidth"
-                  >{{ $t("hysteria.bandwidth") }}
-                </el-dropdown-item>
-                <el-dropdown-item command="speedTest"
-                  >{{ $t("hysteria.speedTest") }}
-                </el-dropdown-item>
-                <el-dropdown-item command="udp"
-                  >{{ $t("hysteria.udp") }}
-                </el-dropdown-item>
-                <el-dropdown-item command="resolver"
-                  >{{ $t("hysteria.resolver") }}
-                </el-dropdown-item>
-                <el-dropdown-item command="acl"
-                  >{{ $t("hysteria.acl") }}
-                </el-dropdown-item>
-                <el-dropdown-item command="outbounds"
-                  >{{ $t("hysteria.outbounds") }}
-                </el-dropdown-item>
-                <el-dropdown-item command="masquerade"
-                  >{{ $t("hysteria.masquerade") }}
+                <el-dropdown-item
+                  :key="item"
+                  v-for="item in tabs"
+                  :command="item.name"
+                  >{{ item.desc }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -640,87 +619,6 @@
             v-if="outbounds"
           >
             <Outbounds :outbounds="formData.outbounds" />
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.name')"-->
-            <!--              prop="outbounds.name"-->
-            <!--            >-->
-            <!--              <el-input v-model="formData.outbounds.name" clearable />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.type')"-->
-            <!--              prop="outbounds.type"-->
-            <!--            >-->
-            <!--              <el-input v-model="formData.outbounds.type" clearable />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.socks5.addr')"-->
-            <!--              prop="outbounds.socks5.addr"-->
-            <!--            >-->
-            <!--              <el-input v-model="formData.outbounds.socks5.addr" clearable />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.socks5.username')"-->
-            <!--              prop="outbounds.socks5.username"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.socks5.username"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.socks5.password')"-->
-            <!--              prop="outbounds.socks5.password"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.socks5.password"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.http.url')"-->
-            <!--              prop="outbounds.http.url"-->
-            <!--            >-->
-            <!--              <el-input v-model="formData.outbounds.http.url" clearable />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.http.insecure')"-->
-            <!--              prop="outbounds.http.insecure"-->
-            <!--            >-->
-            <!--              <el-input v-model="formData.outbounds.http.insecure" clearable />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.direct.mode')"-->
-            <!--              prop="outbounds.direct.mode"-->
-            <!--            >-->
-            <!--              <el-input v-model="formData.outbounds.direct.mode" clearable />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.direct.bindIPv4')"-->
-            <!--              prop="outbounds.direct.bindIPv4"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.direct.bindIPv4"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.direct.bindIPv6')"-->
-            <!--              prop="outbounds.direct.bindIPv6"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.direct.bindIPv6"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
-            <!--            <el-form-item-->
-            <!--              :label="$t('hysteria.config.outbounds.direct.bindDevice')"-->
-            <!--              prop="outbounds.direct.bindDevice"-->
-            <!--            >-->
-            <!--              <el-input-->
-            <!--                v-model="formData.outbounds.direct.bindDevice"-->
-            <!--                clearable-->
-            <!--              />-->
-            <!--            </el-form-item>-->
           </el-tab-pane>
           <el-tab-pane :label="$t('hysteria.http')" name="http">
             <el-tooltip
@@ -881,7 +779,9 @@
 import {
   defaultHysteria2ServerConfig,
   Hysteria2ServerConfig,
+  Tab,
 } from "@/api/config/types";
+import Outbounds from "./components/Outbounds/index.vue";
 import { CirclePlusFilled, Select } from "@element-plus/icons-vue";
 import { getConfigApi, getHysteria2ConfigApi } from "@/api/config";
 
@@ -929,6 +829,65 @@ const {
   outbounds,
   masquerade,
 } = toRefs(state);
+
+const tabs = computed(() => {
+  let tabs: Tab[] = [];
+  if (!state.obfs) {
+    tabs.push({
+      name: "obfs",
+      desc: "obfs",
+    });
+  }
+  if (!state.quic) {
+    tabs.push({
+      name: "quic",
+      desc: "quic",
+    });
+  }
+  if (!state.bandwidth) {
+    tabs.push({
+      name: "bandwidth",
+      desc: "bandwidth",
+    });
+  }
+  if (!state.speedTest) {
+    tabs.push({
+      name: "speedTest",
+      desc: "speedTest",
+    });
+  }
+  if (!state.udp) {
+    tabs.push({
+      name: "udp",
+      desc: "udp",
+    });
+  }
+  if (!state.resolver) {
+    tabs.push({
+      name: "resolver",
+      desc: "resolver",
+    });
+  }
+  if (!state.acl) {
+    tabs.push({
+      name: "acl",
+      desc: "acl",
+    });
+  }
+  if (!state.outbounds) {
+    tabs.push({
+      name: "outbounds",
+      desc: "outbounds",
+    });
+  }
+  if (!state.masquerade) {
+    tabs.push({
+      name: "masquerade",
+      desc: "masquerade",
+    });
+  }
+  return tabs;
+});
 
 const handleImport = () => {};
 const handleExport = () => {};
@@ -988,23 +947,43 @@ const setConfig = () => {
 };
 
 const closeTabPane = (tabPaneName: string) => {
+  console.log(tabPaneName);
+  if (
+    tabPaneName === "listen" ||
+    tabPaneName === "tls" ||
+    tabPaneName === "http"
+  ) {
+    ElMessage.error("This tab is required");
+  }
+
   if (tabPaneName === "obfs") {
+    state.formData.obfs = undefined;
     state.obfs = false;
   } else if (tabPaneName === "quic") {
+    state.formData.quic = undefined;
     state.quic = false;
   } else if (tabPaneName === "bandwidth") {
+    state.formData.bandwidth = undefined;
+    state.formData.ignoreClientBandwidth = undefined;
     state.bandwidth = false;
   } else if (tabPaneName === "speedTest") {
+    state.formData.speedTest = undefined;
     state.speedTest = true;
   } else if (tabPaneName === "udp") {
+    state.formData.disableUDP = undefined;
+    state.formData.udpIdleTimeout = undefined;
     state.udp = false;
   } else if (tabPaneName === "resolver") {
+    state.formData.resolver = undefined;
     state.resolver = false;
   } else if (tabPaneName === "acl") {
+    state.formData.acl = undefined;
     state.acl = false;
   } else if (tabPaneName === "outbounds") {
+    state.formData.outbounds = undefined;
     state.outbounds = false;
   } else if (tabPaneName === "masquerade") {
+    state.formData.masquerade = undefined;
     state.masquerade = false;
   }
   state.activeName = "listen";
@@ -1012,22 +991,94 @@ const closeTabPane = (tabPaneName: string) => {
 
 const handleDropdownClick = (command: string) => {
   if (command === "obfs") {
+    state.formData.obfs = {
+      type: "salamander",
+      salamander: {
+        password: "cry_me_a_r1ver",
+      },
+    };
     state.obfs = true;
   } else if (command === "quic") {
+    state.formData.quic = {
+      initStreamReceiveWindow: 8388608,
+      maxStreamReceiveWindow: 8388608,
+      initConnReceiveWindow: 20971520,
+      maxConnReceiveWindow: 20971520,
+      maxIdleTimeout: "30s",
+      maxIncomingStreams: 1024,
+      disablePathMTUDiscovery: false,
+    };
     state.quic = true;
   } else if (command === "bandwidth") {
+    state.formData.bandwidth = {
+      up: "1 gbps",
+      down: "1 gbps",
+    };
+    state.formData.ignoreClientBandwidth = false;
     state.bandwidth = true;
   } else if (command === "speedTest") {
+    state.formData.speedTest = false;
     state.speedTest = true;
   } else if (command === "udp") {
+    state.formData.disableUDP = false;
+    state.formData.udpIdleTimeout = "60s";
     state.udp = true;
   } else if (command === "resolver") {
+    state.formData.resolver = {
+      type: "",
+      tcp: {
+        addr: "8.8.8.8:53",
+        timeout: "4s",
+      },
+      udp: {
+        addr: "8.8.4.4:53",
+        timeout: "4s",
+      },
+      tls: {
+        addr: "1.1.1.1:853",
+        timeout: "10s",
+        sni: "cloudflare-dns.com",
+        insecure: false,
+      },
+      https: {
+        addr: "1.1.1.1:443",
+        timeout: "10s",
+        sni: "cloudflare-dns.com",
+        insecure: false,
+      },
+    };
     state.resolver = true;
   } else if (command === "acl") {
+    state.formData.acl = {
+      file: undefined,
+      inline: undefined,
+      geoip: undefined,
+      geosite: undefined,
+      geoUpdateInterval: undefined,
+    };
     state.acl = true;
   } else if (command === "outbounds") {
+    state.formData.outbounds = [];
     state.outbounds = true;
   } else if (command === "masquerade") {
+    state.formData.masquerade = {
+      type: "",
+      file: {
+        dir: "",
+      },
+      proxy: {
+        url: "",
+        rewriteHost: true,
+      },
+      string: {
+        content: "hello stupid world",
+        headers: undefined,
+        statusCode: 200,
+      },
+      listenHTTP: ":80",
+      listenHTTPS: ":443",
+      forceHTTPS: true,
+    };
     state.masquerade = true;
   }
   state.activeName = command;

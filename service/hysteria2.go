@@ -63,6 +63,7 @@ func StartHysteria2() error {
 	}
 	// 初始化 bin
 	if !util.Exists(util.GetHysteria2BinPath()) {
+		// 指定版本防止 api 不兼容
 		if err := util.DownloadHysteria2("app/v2.4.4"); err != nil {
 			return err
 		}
@@ -72,7 +73,7 @@ func StartHysteria2() error {
 		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
 		return errors.New("set hysteria2 config.yaml err")
 	}
-	hysteria2Instance := proxy.NewHysteria2Instance(hysteria2Config.Listen, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
+	hysteria2Instance := proxy.NewHysteria2Instance(*hysteria2Config.Listen, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
 	if err = hysteria2Instance.StartHysteria2(); err != nil {
 		logrus.Errorf("start hysteria2 err: %v", err)
 		return errors.New("start hysteria2 err")

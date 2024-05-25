@@ -23,7 +23,7 @@ func CronHandleAccount() {
 				logrus.Errorf("get hysteria2 config err: %v", err)
 				return
 			}
-			apiPort, err := strconv.ParseInt(hysteria2Config.TrafficStats.Listen, 10, 64)
+			apiPort, err := strconv.ParseInt(*hysteria2Config.TrafficStats.Listen, 10, 64)
 			if err != nil {
 				logrus.Errorf("apiPort string conv int64 err: %v", err)
 				return

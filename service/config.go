@@ -53,10 +53,14 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 		return err
 	}
 	// API 默认值
-	hysteria2ServerConfig.Auth.Type = "http"
-	hysteria2ServerConfig.Auth.HTTP.URL = fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
-	hysteria2ServerConfig.Auth.HTTP.Insecure = true
-	hysteria2ServerConfig.TrafficStats.Secret = ""
+	authType := "http"
+	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
+	authHttpInsecure := true
+	trafficStatsSecret := ""
+	hysteria2ServerConfig.Auth.Type = &authType
+	hysteria2ServerConfig.Auth.HTTP.URL = &authHttpUrl
+	hysteria2ServerConfig.Auth.HTTP.Insecure = &authHttpInsecure
+	hysteria2ServerConfig.TrafficStats.Secret = &trafficStatsSecret
 	config, err := yaml.Marshal(hysteria2ServerConfig)
 	if err != nil {
 		return err
