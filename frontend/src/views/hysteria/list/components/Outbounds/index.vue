@@ -1,52 +1,56 @@
 <template>
   <div>
-    <el-tag
-      :key="item"
-      v-for="item in outbounds"
-      @close="handleClose(item)"
-      @click="handleUpdate(item)"
-      size="large"
-      closable
-    >
-      {{ item.name }}
-    </el-tag>
+    <div class="flex gap-2">
+      <el-tag
+        :key="item"
+        v-for="item in outbounds"
+        @close="handleClose(item)"
+        @click="handleUpdate(item)"
+        size="large"
+        closable
+      >
+        {{ item.name }}
+      </el-tag>
 
-    <el-button @click="handleAdd">+</el-button>
+      <el-button @click="handleAdd">+</el-button>
 
-    <el-dialog
-      :title="dialog.title"
-      v-model="dialog.visible"
-      width="600px"
-      append-to-body
-      @close="closeDialog"
-    >
-      <el-form ref="dataFormRef" label-position="top" :model="formData">
-        <el-tooltip
-          :content="$t('hysteria.config.outbounds.name')"
-          placement="bottom"
-        >
-          <el-form-item label="name" prop="name">
-            <el-input v-model="formData.name" clearable />
-          </el-form-item>
-        </el-tooltip>
-        <el-tooltip
-          :content="$t('hysteria.config.outbounds.type')"
-          placement="bottom"
-        >
-          <el-form-item label="type" prop="type">
-            <el-input v-model="formData.type" clearable />
-          </el-form-item>
-        </el-tooltip>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm"
-            >{{ $t("common.confirm") }}
-          </el-button>
-          <el-button @click="closeDialog">{{ $t("common.cancel") }}</el-button>
-        </div>
-      </template>
-    </el-dialog>
+      <el-dialog
+        :title="dialog.title"
+        v-model="dialog.visible"
+        width="600px"
+        append-to-body
+        @close="closeDialog"
+      >
+        <el-form ref="dataFormRef" label-position="top" :model="formData">
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.name')"
+            placement="bottom"
+          >
+            <el-form-item label="name" prop="name">
+              <el-input v-model="formData.name" clearable />
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.type')"
+            placement="bottom"
+          >
+            <el-form-item label="type" prop="type">
+              <el-input v-model="formData.type" clearable />
+            </el-form-item>
+          </el-tooltip>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button type="primary" @click="submitForm"
+              >{{ $t("common.confirm") }}
+            </el-button>
+            <el-button @click="closeDialog">{{
+								$t("common.cancel")
+                }}</el-button>
+          </div>
+        </template>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -146,4 +150,8 @@ const closeDialog = (): void => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.flex.gap-2 {
+  flex-wrap: wrap;
+}
+</style>

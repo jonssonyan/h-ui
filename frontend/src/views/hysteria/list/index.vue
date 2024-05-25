@@ -784,6 +784,9 @@ import {
 import Outbounds from "./components/Outbounds/index.vue";
 import { CirclePlusFilled, Select } from "@element-plus/icons-vue";
 import { getConfigApi, getHysteria2ConfigApi } from "@/api/config";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
 
@@ -835,55 +838,55 @@ const tabs = computed(() => {
   if (!state.obfs) {
     tabs.push({
       name: "obfs",
-      desc: "obfs",
+      desc: t("hysteria.obfs"),
     });
   }
   if (!state.quic) {
     tabs.push({
       name: "quic",
-      desc: "quic",
+      desc: t("hysteria.quic"),
     });
   }
   if (!state.bandwidth) {
     tabs.push({
       name: "bandwidth",
-      desc: "bandwidth",
+      desc: t("hysteria.bandwidth"),
     });
   }
   if (!state.speedTest) {
     tabs.push({
       name: "speedTest",
-      desc: "speedTest",
+      desc: t("hysteria.speedTest"),
     });
   }
   if (!state.udp) {
     tabs.push({
       name: "udp",
-      desc: "udp",
+      desc: t("hysteria.udp"),
     });
   }
   if (!state.resolver) {
     tabs.push({
       name: "resolver",
-      desc: "resolver",
+      desc: t("hysteria.resolver"),
     });
   }
   if (!state.acl) {
     tabs.push({
       name: "acl",
-      desc: "acl",
+      desc: t("hysteria.acl"),
     });
   }
   if (!state.outbounds) {
     tabs.push({
       name: "outbounds",
-      desc: "outbounds",
+      desc: t("hysteria.outbounds"),
     });
   }
   if (!state.masquerade) {
     tabs.push({
       name: "masquerade",
-      desc: "masquerade",
+      desc: t("hysteria.masquerade"),
     });
   }
   return tabs;
@@ -954,6 +957,7 @@ const closeTabPane = (tabPaneName: string) => {
     tabPaneName === "http"
   ) {
     ElMessage.error("This tab is required");
+    return;
   }
 
   if (tabPaneName === "obfs") {
