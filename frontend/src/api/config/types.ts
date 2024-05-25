@@ -150,11 +150,20 @@ export interface Hysteria2ServerConfigOutbound {
   };
   direct?: {
     mode: string;
-    bindIPv4: string;
-    bindIPv6: string;
-    bindDevice: string;
+    bindIPv4?: string;
+    bindIPv6?: string;
+    bindDevice?: string;
   };
 }
+
+export const defaultHysteria2ServerConfigOutbound: Hysteria2ServerConfigOutbound =
+  {
+    name: "",
+    type: "",
+    direct: {
+      mode: "auto",
+    },
+  };
 
 export interface Tab {
   name: string;
