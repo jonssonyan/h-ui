@@ -5,5 +5,6 @@ type Hysteria2AuthDto struct {
 }
 
 type Hysteria2KickDto struct {
-	Usernames []string `json:"usernames" form:"usernames" validate:"required"`
+	Ids          []int64 `json:"ids" form:"ids" validate:"required"`
+	KickUtilTime int64   `json:"kickUtilTime" form:"kickUtilTime" validate:"required"` // 解禁时间
 }

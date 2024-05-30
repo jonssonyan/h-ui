@@ -1,18 +1,20 @@
 create table account
 (
-    id          INTEGER                  not null
+    id             INTEGER                  not null
         primary key autoincrement,
-    username    TEXT      default ''     not null,
-    `pass`      TEXT      default ''     not null,
-    con_pass    TEXT      default ''     not null,
-    quota       INTEGER   default 0      not null,
-    download    INTEGER   default 0      not null,
-    upload      INTEGER   default 0      not null,
-    expire_time INTEGER   default 0      not null,
-    role        TEXT      default 'user' not null,
-    deleted     INTEGER   default 0      not null,
-    create_time TIMESTAMP default CURRENT_TIMESTAMP,
-    update_time TIMESTAMP default CURRENT_TIMESTAMP
+    username       TEXT      default ''     not null,
+    `pass`         TEXT      default ''     not null,
+    con_pass       TEXT      default ''     not null,
+    quota          INTEGER   default 0      not null,
+    download       INTEGER   default 0      not null,
+    upload         INTEGER   default 0      not null,
+    expire_time    INTEGER   default 0      not null,
+    kick_util_time INTEGER   default 0      not null,
+    device_no      INTEGER   default 3      not null,
+    role           TEXT      default 'user' not null,
+    deleted        INTEGER   default 0      not null,
+    create_time    TIMESTAMP default CURRENT_TIMESTAMP,
+    update_time    TIMESTAMP default CURRENT_TIMESTAMP
 );
 
 create index account_deleted_index
@@ -27,9 +29,9 @@ create index account_pass_index
 create index account_username_index
     on account (username);
 
-INSERT INTO account (username, `pass`, con_pass, quota, download, upload, expire_time, role)
+INSERT INTO account (username, `pass`, con_pass, quota, download, upload, expire_time, device_no, role)
 VALUES ('sysadmin', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6',
-        'c7591c31adf8af0b6b8ae8cbbccd8d1aaa0c7bb068f576bddb6378d5', -1, 0, 0, 253370736000000, 'admin');
+        'c7591c31adf8af0b6b8ae8cbbccd8d1aaa0c7bb068f576bddb6378d5', -1, 0, 0, 253370736000000, 6, 'admin');
 
 
 create table config

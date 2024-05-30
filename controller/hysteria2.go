@@ -58,7 +58,7 @@ func Hysteria2Kick(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	err = service.Hysteria2Kick(hysteria2KickDto.Usernames)
+	err = service.Hysteria2Kick(hysteria2KickDto.Ids, hysteria2KickDto.KickUtilTime)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return

@@ -49,13 +49,15 @@ func PageAccount(c *gin.Context) {
 	var accountVos []vo.AccountVo
 	for _, item := range accounts {
 		accountVo := vo.AccountVo{
-			Username:   *item.Username,
-			Quota:      *item.Quota,
-			Download:   *item.Download,
-			Upload:     *item.Upload,
-			ExpireTime: *item.ExpireTime,
-			Role:       *item.Role,
-			Deleted:    *item.Deleted,
+			Username:     *item.Username,
+			Quota:        *item.Quota,
+			Download:     *item.Download,
+			Upload:       *item.Upload,
+			ExpireTime:   *item.ExpireTime,
+			KickUtilTime: *item.KickUtilTime,
+			DeviceNo:     *item.DeviceNo,
+			Role:         *item.Role,
+			Deleted:      *item.Deleted,
 			BaseVo: vo.BaseVo{
 				Id:         *item.Id,
 				CreateTime: *item.CreateTime,
@@ -63,7 +65,7 @@ func PageAccount(c *gin.Context) {
 		}
 		if value, exists := onlineUsers[*item.ConPass]; exists {
 			accountVo.Online = true
-			accountVo.DeviceNo = value
+			accountVo.Device = value
 			delete(onlineUsers, *item.ConPass)
 		}
 		accountVos = append(accountVos, accountVo)
@@ -94,6 +96,7 @@ func SaveAccount(c *gin.Context) {
 		ConPass:    &conPassEncrypt,
 		Quota:      accountSaveDto.Quota,
 		ExpireTime: accountSaveDto.ExpireTime,
+		DeviceNo:   accountSaveDto.DeviceNo,
 		Deleted:    accountSaveDto.Deleted,
 	}
 	err = service.SaveAccount(account)
@@ -137,6 +140,18 @@ func UpdateAccount(c *gin.Context) {
 		return
 	}
 
+	if accountUpdateDto.Deleted != nil && *accountUpdateDto.Deleted == 1 {
+		account, err := service.GetAccount(*accountUpdateDto.Id)
+		if err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
+		if *account.Role == "admin" {
+			vo.Fail("admin 账号不能删除", c)
+			return
+		}
+	}
+
 	var passEncrypt *string
 	if accountUpdateDto.Pass != nil && *accountUpdateDto.Pass != "" {
 		passEncryptSha224 := util.SHA224String(*accountUpdateDto.Pass)
@@ -166,6 +181,7 @@ func UpdateAccount(c *gin.Context) {
 		ConPass:    conPassEncrypt,
 		Quota:      accountUpdateDto.Quota,
 		ExpireTime: accountUpdateDto.ExpireTime,
+		DeviceNo:   accountUpdateDto.DeviceNo,
 		Deleted:    accountUpdateDto.Deleted,
 		BaseEntity: entity.BaseEntity{
 			Id: accountUpdateDto.Id,
@@ -216,6 +232,7 @@ func GetAccount(c *gin.Context) {
 		Download:   *account.Download,
 		Upload:     *account.Upload,
 		ExpireTime: *account.ExpireTime,
+		DeviceNo:   *account.DeviceNo,
 		Role:       *account.Role,
 		Deleted:    *account.Deleted,
 	}
@@ -246,4 +263,16 @@ func ExportAccount(c *gin.Context) {
 	c.Header("Content-Transfer-Encoding", "binary")
 	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName))
 	c.File(filePath)
+}
+
+func ReleaseKickAccount(c *gin.Context) {
+	idDto, err := validateField(c, dto.IdDto{})
+	if err != nil {
+		return
+	}
+	if err = service.ReleaseKickAccount(*idDto.Id); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
 }

@@ -94,20 +94,26 @@ func ListExportAccount() ([]bo.AccountExport, error) {
 	var accountExports []bo.AccountExport
 	for _, item := range accounts {
 		accountExport := bo.AccountExport{
-			Id:         *item.Id,
-			Username:   *item.Username,
-			Pass:       *item.Pass,
-			ConPass:    *item.ConPass,
-			Quota:      *item.Quota,
-			Download:   *item.Download,
-			Upload:     *item.Upload,
-			ExpireTime: *item.ExpireTime,
-			Role:       *item.Role,
-			Deleted:    *item.Deleted,
-			CreateTime: *item.CreateTime,
-			UpdateTime: *item.UpdateTime,
+			Id:           *item.Id,
+			Username:     *item.Username,
+			Pass:         *item.Pass,
+			ConPass:      *item.ConPass,
+			Quota:        *item.Quota,
+			Download:     *item.Download,
+			Upload:       *item.Upload,
+			ExpireTime:   *item.ExpireTime,
+			DeviceNo:     *item.DeviceNo,
+			KickUtilTime: *item.KickUtilTime,
+			Role:         *item.Role,
+			Deleted:      *item.Deleted,
+			CreateTime:   *item.CreateTime,
+			UpdateTime:   *item.UpdateTime,
 		}
 		accountExports = append(accountExports, accountExport)
 	}
 	return accountExports, nil
+}
+
+func ReleaseKickAccount(id int64) error {
+	return dao.UpdateAccount([]int64{id}, map[string]interface{}{"kick_util_time": 0})
 }
