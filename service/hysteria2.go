@@ -8,7 +8,6 @@ import (
 	"h-ui/proxy"
 	"h-ui/util"
 	"os"
-	"strconv"
 )
 
 func InitHysteria2() {
@@ -67,59 +66,4 @@ func StartHysteria2() error {
 		return errors.New("start hysteria2 err")
 	}
 	return nil
-}
-
-func Hysteria2Auth(conPass string) (string, error) {
-	account, err := dao.GetAccount("deleted = 0 and pass = ? and CURRENT_TIMESTAMP < expire_time and (quota < 0 or quota > download + upload) ", conPass)
-	if err != nil {
-		return "", err
-	}
-	return *account.Username, nil
-}
-
-func Hysteria2Online() (map[string]int64, error) {
-	apiPort, err := GetHysteria2ApiPort()
-	if err != nil {
-		return nil, errors.New("get hysteria2 apiPort err")
-	}
-	hysteria2Api := proxy.NewHysteria2Api(apiPort)
-	onlineUsers, err := hysteria2Api.OnlineUsers()
-	if err != nil {
-		return nil, err
-	}
-	return onlineUsers, nil
-}
-
-func Hysteria2Kick(usernames []string) error {
-	accounts, err := dao.ListAccount("username in ?", usernames)
-	if err != nil {
-		return err
-	}
-	var keys []string
-	for _, item := range accounts {
-		keys = append(keys, *item.ConPass)
-	}
-	apiPort, err := GetHysteria2ApiPort()
-	if err != nil {
-		return errors.New("get hysteria2 apiPort err")
-	}
-	hysteria2Api := proxy.NewHysteria2Api(apiPort)
-	if err = hysteria2Api.KickUsers(keys); err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetHysteria2ApiPort() (int64, error) {
-	hysteria2Config, err := GetHysteria2Config()
-	if err != nil {
-		logrus.Errorf("get hysteria2 config err: %v", err)
-		return 0, err
-	}
-	apiPort, err := strconv.ParseInt(*hysteria2Config.TrafficStats.Listen, 10, 64)
-	if err != nil {
-		logrus.Errorf("apiPort string conv int64 err: %v", err)
-		return 0, err
-	}
-	return apiPort, nil
 }

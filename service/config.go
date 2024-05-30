@@ -3,11 +3,13 @@ package service
 import (
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/model/entity"
+	"strconv"
 )
 
 func UpdateConfig(key string, value string) error {
@@ -66,4 +68,18 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 		return err
 	}
 	return dao.UpdateConfig([]string{constant.Hysteria2Config}, map[string]interface{}{"value": string(config)})
+}
+
+func GetHysteria2ApiPort() (int64, error) {
+	hysteria2Config, err := GetHysteria2Config()
+	if err != nil {
+		logrus.Errorf("get hysteria2 config err: %v", err)
+		return 0, err
+	}
+	apiPort, err := strconv.ParseInt(*hysteria2Config.TrafficStats.Listen, 10, 64)
+	if err != nil {
+		logrus.Errorf("apiPort string conv int64 err: %v", err)
+		return 0, err
+	}
+	return apiPort, nil
 }
