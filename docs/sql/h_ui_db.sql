@@ -11,7 +11,7 @@ create table account
     expire_time    INTEGER   default 0      not null,
     kick_util_time INTEGER   default 0      not null,
     device_no      INTEGER   default 3      not null,
-    role           TEXT      default 'user' not null,
+    `role`         TEXT      default 'user' not null,
     deleted        INTEGER   default 0      not null,
     create_time    TIMESTAMP default CURRENT_TIMESTAMP,
     update_time    TIMESTAMP default CURRENT_TIMESTAMP
