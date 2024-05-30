@@ -18,14 +18,9 @@ func CronHandleAccount() {
 			return
 		}
 		if hysteriaEnable.Value != nil && *hysteriaEnable.Value == "1" {
-			hysteria2Config, err := GetHysteria2Config()
+			apiPort, err := GetHysteria2ApiPort()
 			if err != nil {
-				logrus.Errorf("get hysteria2 config err: %v", err)
-				return
-			}
-			apiPort, err := strconv.ParseInt(*hysteria2Config.TrafficStats.Listen, 10, 64)
-			if err != nil {
-				logrus.Errorf("apiPort string conv int64 err: %v", err)
+				logrus.Errorf("get hysteria2 apiPort err: %v", err)
 				return
 			}
 

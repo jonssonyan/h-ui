@@ -40,6 +40,12 @@ func PageAccount(c *gin.Context) {
 		return
 	}
 
+	onlineUsers, err := service.Hysteria2Online()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
 	var accountVos []vo.AccountVo
 	for _, item := range accounts {
 		accountVo := vo.AccountVo{
@@ -54,6 +60,11 @@ func PageAccount(c *gin.Context) {
 				Id:         *item.Id,
 				CreateTime: *item.CreateTime,
 			},
+		}
+		if value, exists := onlineUsers[*item.ConPass]; exists {
+			accountVo.Online = true
+			accountVo.DeviceNo = value
+			delete(onlineUsers, *item.ConPass)
 		}
 		accountVos = append(accountVos, accountVo)
 	}

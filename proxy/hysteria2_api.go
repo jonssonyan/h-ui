@@ -74,8 +74,8 @@ func (n *Hysteria2Api) GetUser(conPass string, clear bool) (*bo.Hysteria2User, e
 }
 
 // KickUsers 踢下线
-func (n *Hysteria2Api) KickUsers(usernames []string) error {
-	usernamesByte, err := json.Marshal(usernames)
+func (n *Hysteria2Api) KickUsers(keys []string) error {
+	usernamesByte, err := json.Marshal(keys)
 	if err != nil {
 		logrus.Errorf("Hysteria2 KickUsers Marshal err: %v", err)
 		return errors.New(constant.SysError)

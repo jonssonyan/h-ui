@@ -9,6 +9,9 @@ type AccountVo struct {
 	ExpireTime int64  `json:"expireTime"`
 	Role       string `json:"role"`
 	Deleted    int64  `json:"deleted"`
+
+	Online   bool  `json:"online"`   // 是否在线
+	DeviceNo int64 `json:"deviceNo"` // 在线设备数
 }
 type AccountPageVo struct {
 	AccountVos []AccountVo `json:"records"`
