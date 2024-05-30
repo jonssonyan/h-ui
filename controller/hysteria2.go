@@ -7,6 +7,30 @@ import (
 	"h-ui/service"
 )
 
+func StartHysteria2(c *gin.Context) {
+	if err := service.StartHysteria2(); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
+}
+
+func StopHysteria2(c *gin.Context) {
+	if err := service.StopHysteria2(); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
+}
+
+func RestartHysteria2(c *gin.Context) {
+	if err := service.RestartHysteria2(); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
+}
+
 func Hysteria2Auth(c *gin.Context) {
 	hysteria2AuthDto, err := validateField(c, dto.Hysteria2AuthDto{})
 	if err != nil {

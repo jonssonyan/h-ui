@@ -11,13 +11,12 @@ var cmdHysteria2 exec.Cmd
 
 type Hysteria2Process struct {
 	process
-	port       string
 	binPath    string
 	configPath string
 }
 
-func NewHysteria2Instance(port string, binPath string, configPath string) *Hysteria2Process {
-	return &Hysteria2Process{process{mutex: &mutexHysteria2, cmd: &cmdHysteria2}, port, binPath, configPath}
+func NewHysteria2Instance(binPath string, configPath string) *Hysteria2Process {
+	return &Hysteria2Process{process{mutex: &mutexHysteria2, cmd: &cmdHysteria2}, binPath, configPath}
 }
 
 func (h *Hysteria2Process) StartHysteria2() error {

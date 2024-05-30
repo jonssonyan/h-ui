@@ -43,11 +43,6 @@ func SetHysteria2ConfigYAML() error {
 }
 
 func StartHysteria2() error {
-	hysteria2Config, err := GetHysteria2Config()
-	if err != nil {
-		logrus.Errorf("get hysteria2 config err: %v", err)
-		return errors.New("get hysteria2 config err")
-	}
 	// 初始化 bin
 	if !util.Exists(util.GetHysteria2BinPath()) {
 		// 指定版本防止 api 不兼容
@@ -56,14 +51,44 @@ func StartHysteria2() error {
 		}
 	}
 	// 初始化配置文件
-	if err = SetHysteria2ConfigYAML(); err != nil {
+	if err := SetHysteria2ConfigYAML(); err != nil {
 		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
 		return errors.New("set hysteria2 config.yaml err")
 	}
-	hysteria2Instance := proxy.NewHysteria2Instance(*hysteria2Config.Listen, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
-	if err = hysteria2Instance.StartHysteria2(); err != nil {
+	hysteria2Instance := proxy.NewHysteria2Instance(util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
+	if err := hysteria2Instance.StartHysteria2(); err != nil {
 		logrus.Errorf("start hysteria2 err: %v", err)
 		return errors.New("start hysteria2 err")
+	}
+	return nil
+}
+
+func StopHysteria2() error {
+	hysteria2Instance := proxy.NewHysteria2Instance("", constant.Hysteria2ConfigPath)
+	if err := hysteria2Instance.StopHysteria2(); err != nil {
+		logrus.Errorf("stop hysteria2 err: %v", err)
+		return errors.New("stop hysteria2 err")
+	}
+	return nil
+}
+
+func RestartHysteria2() error {
+	// 初始化 bin
+	if !util.Exists(util.GetHysteria2BinPath()) {
+		// 指定版本防止 api 不兼容
+		if err := util.DownloadHysteria2("app/v2.4.4"); err != nil {
+			return err
+		}
+	}
+	// 初始化配置文件
+	if err := SetHysteria2ConfigYAML(); err != nil {
+		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
+		return errors.New("set hysteria2 config.yaml err")
+	}
+	hysteria2Instance := proxy.NewHysteria2Instance(util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
+	if err := hysteria2Instance.RestartHysteria2(); err != nil {
+		logrus.Errorf("restart hysteria2 err: %v", err)
+		return errors.New("restart hysteria2 err")
 	}
 	return nil
 }
