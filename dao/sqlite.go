@@ -42,8 +42,12 @@ func InitSqliteDB() {
 		panic(fmt.Sprintf("sqlite open err: %v", err))
 	}
 
+	if _, err = os.Stat(constant.SqliteDBPath); os.IsNotExist(err) {
+		panic("sqlite database file not found")
+	}
+
 	var count uint
-	if err := sqliteDB.Raw("SELECT count(1) FROM sqlite_master WHERE type='table' AND (name = 'account' or name = 'config')").Scan(&count).Error; err != nil {
+	if err = sqliteDB.Raw("SELECT count(1) FROM sqlite_master WHERE type='table' AND (name = 'account' or name = 'config')").Scan(&count).Error; err != nil {
 		panic(fmt.Sprintf("sqlite query table err: %v", err))
 	}
 	if count == 0 {

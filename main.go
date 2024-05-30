@@ -47,18 +47,4 @@ func initFile() {
 			}
 		}
 	}
-
-	var files = []string{constant.SqliteDBPath}
-	for _, item := range files {
-		if !util.Exists(item) {
-			func() {
-				file, err := os.Create(item)
-				if err != nil {
-					logrus.Errorf("%s file create err: %v", item, err)
-					panic(err)
-				}
-				defer file.Close()
-			}()
-		}
-	}
 }
