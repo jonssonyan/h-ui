@@ -11,24 +11,35 @@ import (
 	"h-ui/model/constant"
 	"io"
 	"net/http"
+	"os/exec"
 	"time"
 )
 
 type Hysteria2Api struct {
 	apiPort int64
+	cmd     *exec.Cmd
 }
 
 func NewHysteria2Api(apiPort int64) *Hysteria2Api {
 	return &Hysteria2Api{
 		apiPort: apiPort,
+		cmd:     &cmdHysteria2,
 	}
 }
 
+func (h *Hysteria2Api) IsRunning() bool {
+	return h.cmd != nil && h.cmd.Process != nil
+}
+
 // ListUsers 每个用户的流量信息
-func (n *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic, error) {
+func (h *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic, error) {
+	var users map[string]bo.Hysteria2UserTraffic
+	if !h.IsRunning() {
+		return users, nil
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	url := fmt.Sprintf("http://127.0.0.1:%d/traffic", n.apiPort)
+	url := fmt.Sprintf("http://127.0.0.1:%d/traffic", h.apiPort)
 	if clear {
 		url = fmt.Sprintf("%s?clear=1", url)
 	}
@@ -52,7 +63,6 @@ func (n *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic
 		logrus.Errorf("Hysteria2 io read err: %v", err)
 		return nil, errors.New("http connection error")
 	}
-	var users map[string]bo.Hysteria2UserTraffic
 	if err = json.Unmarshal(body, &users); err != nil {
 		logrus.Errorf("Hysteria2 ListUsers Unmarshal err: %v", err)
 		return nil, errors.New(constant.SysError)
@@ -60,21 +70,11 @@ func (n *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic
 	return users, nil
 }
 
-func (n *Hysteria2Api) GetUser(conPass string, clear bool) (*bo.Hysteria2User, error) {
-	users, err := n.ListUsers(clear)
-	if err != nil {
-		return nil, err
-	}
-	user := users[conPass]
-	return &bo.Hysteria2User{
-		ConPass: conPass,
-		Tx:      user.Tx,
-		Rx:      user.Rx,
-	}, nil
-}
-
 // KickUsers 踢下线
-func (n *Hysteria2Api) KickUsers(keys []string) error {
+func (h *Hysteria2Api) KickUsers(keys []string) error {
+	if !h.IsRunning() {
+		return nil
+	}
 	usernamesByte, err := json.Marshal(keys)
 	if err != nil {
 		logrus.Errorf("Hysteria2 KickUsers Marshal err: %v", err)
@@ -82,7 +82,7 @@ func (n *Hysteria2Api) KickUsers(keys []string) error {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	url := fmt.Sprintf("http://127.0.0.1:%d/kick", n.apiPort)
+	url := fmt.Sprintf("http://127.0.0.1:%d/kick", h.apiPort)
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url,
 		bytes.NewBuffer(usernamesByte))
 	if err != nil {
@@ -104,10 +104,14 @@ func (n *Hysteria2Api) KickUsers(keys []string) error {
 }
 
 // OnlineUsers 在线用户
-func (n *Hysteria2Api) OnlineUsers() (map[string]int64, error) {
+func (h *Hysteria2Api) OnlineUsers() (map[string]int64, error) {
+	var onlineUsers map[string]int64
+	if !h.IsRunning() {
+		return onlineUsers, nil
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
-	url := fmt.Sprintf("http://127.0.0.1:%d/online", n.apiPort)
+	url := fmt.Sprintf("http://127.0.0.1:%d/online", h.apiPort)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		logrus.Errorf("Hysteria2 OnlineUsers NewRequest err: %v", err)
@@ -128,7 +132,6 @@ func (n *Hysteria2Api) OnlineUsers() (map[string]int64, error) {
 		logrus.Errorf("Hysteria2 io read err: %v", err)
 		return nil, errors.New("http connection error")
 	}
-	var onlineUsers map[string]int64
 	if err = json.Unmarshal(body, &onlineUsers); err != nil {
 		logrus.Errorf("Hysteria2 OnlineUsers Unmarshal err: %v", err)
 		return nil, errors.New(constant.SysError)
