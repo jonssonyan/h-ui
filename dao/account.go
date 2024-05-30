@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/entity"
@@ -36,6 +37,17 @@ func UpdateAccount(ids []int64, updates map[string]interface{}) error {
 			logrus.Errorf(fmt.Sprintf("%v", tx.Error))
 			return errors.New(constant.SysError)
 		}
+	}
+	return nil
+}
+
+func UpsertAccount(accounts []entity.Account) error {
+	if tx := sqliteDB.Model(&entity.Account{}).Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "username"}},
+		DoUpdates: clause.AssignmentColumns([]string{"pass", "con_pass", "quota", "download", "upload", "expire_time", "kick_util_time", "device_no", "role", "deleted", "create_time", "update_time"}),
+	}).Create(accounts); tx.Error != nil {
+		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		return errors.New(constant.SysError)
 	}
 	return nil
 }

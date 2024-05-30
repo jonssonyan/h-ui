@@ -117,3 +117,7 @@ func ListExportAccount() ([]bo.AccountExport, error) {
 func ReleaseKickAccount(id int64) error {
 	return dao.UpdateAccount([]int64{id}, map[string]interface{}{"kick_util_time": 0})
 }
+
+func UpsertAccount(accounts []entity.Account) error {
+	return dao.UpsertAccount(accounts)
+}

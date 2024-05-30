@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"h-ui/model/constant"
@@ -9,6 +10,8 @@ import (
 	"h-ui/model/vo"
 	"h-ui/service"
 	"h-ui/util"
+	"io"
+	"strings"
 	"time"
 )
 
@@ -237,6 +240,39 @@ func GetAccount(c *gin.Context) {
 		Deleted:    *account.Deleted,
 	}
 	vo.Success(accountVo, c)
+}
+
+func ImportAccount(c *gin.Context) {
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		vo.Fail(constant.SysError, c)
+		return
+	}
+	// 文件大小 2MB
+	if header.Size > 1024*1024*2 {
+		vo.Fail("the file is too big", c)
+		return
+	}
+	// 文件后缀.json
+	if !strings.HasSuffix(header.Filename, ".json") {
+		vo.Fail("file format not supported", c)
+		return
+	}
+	content, err := io.ReadAll(file)
+	if err != nil {
+		vo.Fail("json file read err", c)
+		return
+	}
+	var accounts []entity.Account
+	if err = json.Unmarshal(content, &accounts); err != nil {
+		vo.Fail("content Unmarshal err", c)
+		return
+	}
+	if err = service.UpsertAccount(accounts); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
 }
 
 func ExportAccount(c *gin.Context) {
