@@ -15,6 +15,7 @@ func initHysteria2AuthRouter(hysteria2Api *gin.RouterGroup) {
 func initHysteria2Router(hysteria2Api *gin.RouterGroup) {
 	hysteria2 := hysteria2Api.Group("/hysteria2")
 	{
+		hysteria2.POST("/online", controller.ListOnline)
 		hysteria2.POST("/kick", controller.Hysteria2Kick)
 	}
 }

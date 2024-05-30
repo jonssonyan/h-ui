@@ -23,3 +23,8 @@ func Hysteria2AuthFail(id string, c *gin.Context) {
 		Id: id,
 	})
 }
+
+type Hysteria2OnlineVo struct {
+	Username string `json:"username"` // 用户名
+	DeviceNo int64  `json:"deviceNo"` // 设备数
+}

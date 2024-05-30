@@ -21,8 +21,13 @@ func Hysteria2Auth(c *gin.Context) {
 	vo.Hysteria2AuthSuccess(username, c)
 }
 
-func ListOnlineUser() {
-
+func ListOnline(c *gin.Context) {
+	online, err := service.Hysteria2Online()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(online, c)
 }
 
 func Hysteria2Kick(c *gin.Context) {

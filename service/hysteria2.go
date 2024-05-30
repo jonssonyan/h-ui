@@ -5,17 +5,24 @@ import (
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/constant"
+	"h-ui/model/vo"
 	"h-ui/proxy"
 	"h-ui/util"
 	"os"
 )
 
-func Hysteria2Auth(conPass string) (string, error) {
-	account, err := dao.GetAccount("deleted = 0 and pass = ? and CURRENT_TIMESTAMP < expire_time and (quota < 0 or quota > download + upload) ", conPass)
+func InitHysteria2() {
+	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
 	if err != nil {
-		return "", err
+		logrus.Errorf("get hysteria2 enable config err: %v", err)
+		return
 	}
-	return *account.Username, nil
+
+	if *config.Value == "1" {
+		if err := StartHysteria2(); err != nil {
+			return
+		}
+	}
 }
 
 func SetHysteria2ConfigYAML() error {
@@ -33,25 +40,6 @@ func SetHysteria2ConfigYAML() error {
 		logrus.Errorf("hysteria2 config.json file write err: %v", err)
 		return err
 	}
-	return nil
-}
-
-func InitHysteria2() {
-	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
-	if err != nil {
-		logrus.Errorf("get hysteria2 enable config err: %v", err)
-		return
-	}
-
-	if *config.Value == "1" {
-		if err := StartHysteria2(); err != nil {
-			return
-		}
-	}
-}
-
-func Hysteria2Kick(usernames []string) error {
-	// todo
 	return nil
 }
 
@@ -78,5 +66,23 @@ func StartHysteria2() error {
 		logrus.Errorf("start hysteria2 err: %v", err)
 		return errors.New("start hysteria2 err")
 	}
+	return nil
+}
+
+func Hysteria2Auth(conPass string) (string, error) {
+	account, err := dao.GetAccount("deleted = 0 and pass = ? and CURRENT_TIMESTAMP < expire_time and (quota < 0 or quota > download + upload) ", conPass)
+	if err != nil {
+		return "", err
+	}
+	return *account.Username, nil
+}
+
+func Hysteria2Online() ([]vo.Hysteria2OnlineVo, error) {
+	// todo
+	return nil, nil
+}
+
+func Hysteria2Kick(usernames []string) error {
+	// todo
 	return nil
 }
