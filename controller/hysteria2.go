@@ -5,7 +5,6 @@ import (
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/service"
-	"h-ui/util"
 )
 
 func Hysteria2Auth(c *gin.Context) {
@@ -13,21 +12,21 @@ func Hysteria2Auth(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	username, err := service.Hysteria2Auth(util.SHA224String(*hysteria2AuthDto.Auth))
-	if err != nil || username != "" {
+	username, err := service.Hysteria2Auth(*hysteria2AuthDto.Auth)
+	if err != nil || username == "" {
 		vo.Hysteria2AuthFail("", c)
 		return
 	}
 	vo.Hysteria2AuthSuccess(username, c)
 }
 
-func ListOnline(c *gin.Context) {
+func CountOnline(c *gin.Context) {
 	online, err := service.Hysteria2Online()
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(online, c)
+	vo.Success(len(online), c)
 }
 
 func Hysteria2Kick(c *gin.Context) {
