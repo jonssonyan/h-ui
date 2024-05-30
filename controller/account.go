@@ -76,7 +76,7 @@ func SaveAccount(c *gin.Context) {
 	}
 
 	passEncrypt := util.SHA224String(*accountSaveDto.Pass)
-	conPassEncrypt := util.SHA224String(fmt.Sprintf("%s@%s", *accountSaveDto.Username, *accountSaveDto.ConPass))
+	conPassEncrypt := util.SHA224String(fmt.Sprintf("%s %s", *accountSaveDto.Username, *accountSaveDto.ConPass))
 	account := entity.Account{
 		Username:   accountSaveDto.Username,
 		Pass:       &passEncrypt,
@@ -145,7 +145,7 @@ func UpdateAccount(c *gin.Context) {
 			}
 			username = *account.Username
 		}
-		conPassSha224 := util.SHA224String(fmt.Sprintf("%s@%s", username, *accountUpdateDto.ConPass))
+		conPassSha224 := util.SHA224String(fmt.Sprintf("%s %s", username, *accountUpdateDto.ConPass))
 		conPassEncrypt = &conPassSha224
 	}
 
