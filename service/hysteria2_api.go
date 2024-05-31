@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"h-ui/dao"
+	"h-ui/model/constant"
 	"h-ui/proxy"
 )
 
@@ -26,19 +27,33 @@ func Hysteria2Auth(conPass string) (string, error) {
 }
 
 func Hysteria2Online() (map[string]int64, error) {
-	apiPort, err := GetHysteria2ApiPort()
-	if err != nil {
-		return nil, errors.New("get hysteria2 apiPort err")
-	}
-	hysteria2Api := proxy.NewHysteria2Api(apiPort)
-	onlineUsers, err := hysteria2Api.OnlineUsers()
+	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
 	if err != nil {
 		return nil, err
 	}
-	return onlineUsers, nil
+	if *config.Value == "1" {
+		apiPort, err := GetHysteria2ApiPort()
+		if err != nil {
+			return nil, errors.New("get hysteria2 apiPort err")
+		}
+		hysteria2Api := proxy.NewHysteria2Api(apiPort)
+		onlineUsers, err := hysteria2Api.OnlineUsers()
+		if err != nil {
+			return nil, err
+		}
+		return onlineUsers, nil
+	}
+	return map[string]int64{}, nil
 }
 
 func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
+	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
+	if err != nil {
+		return err
+	}
+	if *config.Value != "1" {
+		return errors.New("hysteria2 not enable")
+	}
 	if err := dao.UpdateAccount(ids, map[string]interface{}{"kick_util_time": kickUtilTime}); err != nil {
 		return err
 	}
