@@ -32,6 +32,8 @@ export interface AccountVo extends IdDto {
   download: number;
   upload: number;
   expireTime: number;
+  kickUtilTime: number;
+  deviceNo: number;
   role: string;
   deleted: number;
   createTime: string;

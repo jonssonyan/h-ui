@@ -15,6 +15,41 @@ export const timestampToDateTime = (timestamp: number): string => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
+export const calculateTimeDifference = (timestamp: number): string => {
+  const now = Date.now();
+  const diff = timestamp - now;
+
+  if (diff <= 0) {
+    return "-";
+  }
+
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  const remainingHours = hours % 24;
+  const remainingMinutes = minutes % 60;
+  const remainingSeconds = seconds % 60;
+
+  const parts: string[] = [];
+
+  if (days > 0) {
+    parts.push(`${days}天`);
+  }
+  if (remainingHours > 0) {
+    parts.push(`${remainingHours}小时`);
+  }
+  if (remainingMinutes > 0) {
+    parts.push(`${remainingMinutes}分钟`);
+  }
+  if (remainingSeconds > 0) {
+    parts.push(`${remainingSeconds}秒`);
+  }
+
+  return parts.join(" ");
+};
+
 /**
  * 获取一周后的时间戳
  * @returns 一周后的时间戳

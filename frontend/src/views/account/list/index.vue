@@ -109,6 +109,38 @@
           </template>
         </el-table-column>
         <el-table-column
+          key="kickUtilTime"
+          :label="$t('account.kickUtilTime')"
+          align="center"
+          prop="kickUtilTime"
+          width="180"
+        >
+          <template #default="scope">
+            {{ calculateTimeDifference(scope.row.kickUtilTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          key="deviceNo"
+          :label="$t('account.deviceNo')"
+          align="center"
+          prop="deviceNo"
+          width="180"
+        />
+        <el-table-column
+          key="online"
+          :label="$t('account.online')"
+          align="center"
+          prop="online"
+          width="180"
+        />
+        <el-table-column
+          key="device"
+          :label="$t('account.device')"
+          align="center"
+          prop="device"
+          width="180"
+        />
+        <el-table-column
           key="role"
           :label="$t('account.role')"
           align="center"
@@ -253,6 +285,7 @@ import {
   getMonthLater,
   getWeekLater,
   getYearLater,
+  calculateTimeDifference,
 } from "@/utils/time";
 import { formatBytes } from "@/utils/byte";
 
