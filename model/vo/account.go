@@ -7,12 +7,12 @@ type AccountVo struct {
 	Download     int64  `json:"download"`
 	Upload       int64  `json:"upload"`
 	ExpireTime   int64  `json:"expireTime"`
-	KickUtilTime int64  `json:"kickUtilTime"`
-	DeviceNo     int64  `json:"deviceNo"` // 限制设备数
+	KickUtilTime int64  `json:"kickUtilTime"` // 下线剩余时间
+	DeviceNo     int64  `json:"deviceNo"`     // 限制设备数
 	Role         string `json:"role"`
 	Deleted      int64  `json:"deleted"`
 
-	Online bool  `json:"online"` // 是否在线
+	Online bool  `json:"online"` // 在线状态
 	Device int64 `json:"device"` // 在线设备数
 }
 type AccountPageVo struct {
