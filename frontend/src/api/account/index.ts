@@ -96,6 +96,17 @@ export function loginApi(data: AccountLoginDto): AxiosPromise<AccountLoginVo> {
 }
 
 /**
+ * 导入
+ */
+export function importAccountApi(): AxiosPromise {
+  return request({
+    url: "/account/importAccount",
+    method: "post",
+    responseType: "blob",
+  });
+}
+
+/**
  * 导出
  */
 export function exportAccountApi(): AxiosPromise {
