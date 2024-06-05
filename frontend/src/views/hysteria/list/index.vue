@@ -23,6 +23,30 @@
             导出
           </el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button @click="startHysteria2">
+            <template #icon>
+              <i-ep-circle-check />
+            </template>
+            启动
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="stopHysteria2">
+            <template #icon>
+              <i-ep-circle-close />
+            </template>
+            停止
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="restartHysteria2">
+            <template #icon>
+              <i-ep-refresh-right />
+            </template>
+            重启
+          </el-button>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -895,6 +919,9 @@ const tabs = computed(() => {
 
 const handleImport = () => {};
 const handleExport = () => {};
+const startHysteria2 = () => {};
+const stopHysteria2 = () => {};
+const restartHysteria2 = () => {};
 
 const handleChangeEnable = () => {};
 const submitForm = () => {
