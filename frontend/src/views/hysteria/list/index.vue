@@ -79,6 +79,9 @@
             </template>
           </el-dropdown>
         </el-form-item>
+        <el-form-item>
+          <el-tag type="success" size="large"> Hysteria2 状态: {{ '正常'}}</el-tag>
+        </el-form-item>
       </el-form>
 
       <el-form ref="formDataRef" label-position="top" :model="formData">
