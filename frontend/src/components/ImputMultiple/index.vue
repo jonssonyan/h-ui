@@ -23,11 +23,12 @@
 
 <script setup lang="ts">
 import { ElInput } from "element-plus";
+import { PropType } from "vue";
 
 const props = defineProps({
   tags: {
     required: false,
-    type: Array,
+    type: Array as PropType<string[]>,
     default: () => [],
   },
 });

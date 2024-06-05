@@ -785,6 +785,7 @@ import Outbounds from "./components/Outbounds/index.vue";
 import { CirclePlusFilled, Select } from "@element-plus/icons-vue";
 import { getConfigApi, getHysteria2ConfigApi } from "@/api/config";
 import { useI18n } from "vue-i18n";
+import { assignIgnoringNull } from "@/utils/object";
 
 const { t } = useI18n();
 
@@ -909,7 +910,7 @@ const setConfig = () => {
   });
   getHysteria2ConfigApi().then((response) => {
     if (response.data) {
-      Object.assign(state.formData, response.data);
+      assignIgnoringNull(state.formData, response.data);
       if (state.formData?.tls?.cert && state.formData?.tls?.key) {
         state.tlsType = "tls";
       } else {
