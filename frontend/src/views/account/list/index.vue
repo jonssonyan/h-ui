@@ -128,11 +128,18 @@
         />
         <el-table-column
           key="online"
-          :label="$t('account.online')"
+          :label="$t('account.onlineStatus')"
           align="center"
           prop="online"
           width="180"
-        />
+        >
+          <template #default="scope">
+            <el-tag v-if="scope.row.online" type="success"
+              >{{ $t("account.online") }}
+            </el-tag>
+            <el-tag v-else type="info">{{ $t("account.offline") }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column
           key="device"
           :label="$t('account.device')"
@@ -146,7 +153,12 @@
           align="center"
           prop="role"
         />
-        <el-table-column :label="$t('common.deleted')" align="center">
+        <el-table-column
+          key="deleted"
+          :label="$t('common.deleted')"
+          align="center"
+          prop="deleted"
+        >
           <template #default="scope">
             <el-tag v-if="scope.row.deleted === 0" type="success"
               >{{ $t("common.enable") }}
@@ -239,7 +251,7 @@
           />
         </el-form-item>
 
-        <el-form-item :label="$t('common.deleted')" prop="status">
+        <el-form-item :label="$t('common.deleted')" prop="deleted">
           <el-radio-group v-model="formData.deleted">
             <el-radio :label="0">{{ $t("common.enable") }}</el-radio>
             <el-radio :label="1">{{ $t("common.disable") }}</el-radio>
