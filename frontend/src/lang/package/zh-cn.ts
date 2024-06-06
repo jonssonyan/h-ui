@@ -78,6 +78,8 @@ export default {
     cpuPercent: "CPU 使用率",
     memPercent: "内存使用率",
     diskPercent: "磁盘使用率",
+    userTotal: "在线用户数",
+    deviceTotal: "在线设备数",
   },
   log: {
     numLine: "显示行数",
