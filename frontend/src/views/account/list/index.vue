@@ -67,7 +67,6 @@
           :label="$t('common.id')"
           align="center"
           prop="id"
-          width="100"
         />
         <el-table-column
           key="username"
@@ -110,7 +109,6 @@
           :label="$t('account.expireTime')"
           align="center"
           prop="expireTime"
-          width="180"
         >
           <template #default="scope">
             {{ timestampToDateTime(scope.row.expireTime) }}
@@ -121,7 +119,6 @@
           :label="$t('account.kickUtilTime')"
           align="center"
           prop="kickUtilTime"
-          width="180"
         >
           <template #default="scope">
             {{ calculateTimeDifference(scope.row.kickUtilTime) }}
@@ -132,14 +129,12 @@
           :label="$t('account.deviceNo')"
           align="center"
           prop="deviceNo"
-          width="180"
         />
         <el-table-column
           key="online"
           :label="$t('account.onlineStatus')"
           align="center"
           prop="online"
-          width="180"
         >
           <template #default="scope">
             <el-tag v-if="scope.row.online" type="success"
@@ -153,7 +148,6 @@
           :label="$t('account.device')"
           align="center"
           prop="device"
-          width="180"
         />
         <el-table-column
           key="role"
@@ -184,7 +178,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="$t('common.operate')" align="left" width="200">
+        <el-table-column :label="$t('common.operate')" align="left">
           <template #default="scope">
             <el-button type="primary" link @click="handleUpdate(scope.row)"
               >{{ $t("common.edit") }}
