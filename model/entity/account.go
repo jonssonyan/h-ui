@@ -1,7 +1,7 @@
 package entity
 
 type Account struct {
-	Username     *string `gorm:"column:username;default:''" json:"id"`
+	Username     *string `gorm:"column:username;default:''" json:"username"`
 	Pass         *string `gorm:"column:pass;default:''" json:"pass"`
 	ConPass      *string `gorm:"column:con_pass;default:''" json:"conPass"`
 	Quota        *int64  `gorm:"column:quota;default:0" json:"quota"`
