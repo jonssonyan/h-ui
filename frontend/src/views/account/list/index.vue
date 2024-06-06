@@ -178,7 +178,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="$t('common.operate')" align="left" width="150">
+        <el-table-column :label="$t('common.operate')" align="left" width="200">
           <template #default="scope">
             <el-button type="primary" link @click="handleUpdate(scope.row)"
               >{{ $t("common.edit") }}
@@ -186,9 +186,27 @@
             <el-button type="danger" link @click="handleDelete(scope.row)"
               >{{ $t("common.delete") }}
             </el-button>
-            <el-button type="danger" link @click="handleKick(scope.row)"
-              >{{ $t("common.kick") }}
-            </el-button>
+            <el-tooltip :content="$t('common.kickTip')" placement="bottom">
+              <el-button
+                type="danger"
+                link
+                @click="handleKick(scope.row)"
+                v-if="scope.online"
+                >{{ $t("common.kick") }}
+              </el-button>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('common.releaseKickTip')"
+              placement="bottom"
+            >
+              <el-button
+                type="danger"
+                link
+                @click="releaseKickAccount(scope.row)"
+                v-if="calculateTimeDifference(scope.row.kickUtilTime) !== '-'"
+                >{{ $t("common.releaseKick") }}
+              </el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -459,10 +477,16 @@ function handleDelete(row: { [key: string]: any }) {
 }
 
 /**
- * 下线
+ * 强制用户下线
  * @param row
  */
 function handleKick(row: { [key: string]: any }) {}
+
+/**
+ * 解除下线状态
+ * @param row
+ */
+function releaseKickAccount(row: { [key: string]: any }) {}
 
 /**
  * 关闭用户弹窗
