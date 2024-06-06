@@ -24,13 +24,6 @@ export function restartHysteria2Api(): AxiosPromise<Hysteria2ServerConfig> {
   });
 }
 
-export function countOnlineApi(): AxiosPromise<Hysteria2ServerConfig> {
-  return request({
-    url: "/hysteria2/countOnline",
-    method: "get",
-  });
-}
-
 export function hysteria2KickApi(
   data: Hysteria2KickDto
 ): AxiosPromise<Hysteria2ServerConfig> {

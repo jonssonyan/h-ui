@@ -3,3 +3,8 @@ export interface SystemMonitorVo {
   diskPercent: number;
   memPercent: number;
 }
+
+export interface Hysteria2MonitorVo {
+  userTotal: number;
+  deviceTotal: number;
+}

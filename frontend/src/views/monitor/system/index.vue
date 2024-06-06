@@ -60,6 +60,27 @@
           </div>
         </el-card>
       </el-col>
+      <el-col :xs="24" :sm="12" :lg="6">
+        <el-card shadow="never">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <span class="text-[var(--el-text-color-secondary)]">
+                {{ $t("monitor.diskPercent") }}
+              </span>
+              <el-tag type="success">%</el-tag>
+            </div>
+          </template>
+          <div class="flex items-center justify-between mt-5">
+            <div class="text-lg text-right">
+              {{
+                systemMonitor.diskPercent
+                  ? systemMonitor.diskPercent + "%"
+                  : "-"
+              }}
+            </div>
+          </div>
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
