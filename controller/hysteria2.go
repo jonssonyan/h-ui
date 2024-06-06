@@ -44,15 +44,6 @@ func Hysteria2Auth(c *gin.Context) {
 	vo.Hysteria2AuthSuccess(username, c)
 }
 
-func CountOnline(c *gin.Context) {
-	online, err := service.Hysteria2Online()
-	if err != nil {
-		vo.Fail(err.Error(), c)
-		return
-	}
-	vo.Success(len(online), c)
-}
-
 func Hysteria2Kick(c *gin.Context) {
 	hysteria2KickDto, err := validateField(c, dto.Hysteria2KickDto{})
 	if err != nil {

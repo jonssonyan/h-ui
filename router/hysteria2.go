@@ -18,7 +18,6 @@ func initHysteria2Router(hysteria2Api *gin.RouterGroup) {
 		hysteria2.POST("/startHysteria2", controller.StartHysteria2)
 		hysteria2.POST("/stopHysteria2", controller.StopHysteria2)
 		hysteria2.POST("/restartHysteria2", controller.RestartHysteria2)
-		hysteria2.GET("/countOnline", controller.CountOnline)
 		hysteria2.POST("/hysteria2Kick", controller.Hysteria2Kick)
 	}
 }

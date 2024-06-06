@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"h-ui/model/vo"
+	"h-ui/service"
 	"h-ui/util"
 )
 
@@ -27,4 +28,23 @@ func MonitorSystem(c *gin.Context) {
 		MemPercent:  memPercent,
 		DiskPercent: diskPercent,
 	}, c)
+}
+
+func MonitorHysteria2(c *gin.Context) {
+	onlineUsers, err := service.Hysteria2Online()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	var hysteria2MonitorVo vo.Hysteria2MonitorVo
+	if len(onlineUsers) > 0 {
+		hysteria2MonitorVo.UserTotal = int64(len(onlineUsers))
+		var deviceTotal int64 = 0
+		for _, value := range onlineUsers {
+			deviceTotal += value
+		}
+		hysteria2MonitorVo.DeviceTotal = deviceTotal
+	}
+	vo.Success(hysteria2MonitorVo, c)
+	return
 }
