@@ -38,6 +38,7 @@ declare module '@vue/runtime-core' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     GithubCorner: typeof import('./../components/GithubCorner/index.vue')['default']
     Hamburger: typeof import('./../components/Hamburger/index.vue')['default']
     IEpCaretBottom: typeof import('~icons/ep/caret-bottom')['default']

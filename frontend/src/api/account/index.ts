@@ -98,11 +98,14 @@ export function loginApi(data: AccountLoginDto): AxiosPromise<AccountLoginVo> {
 /**
  * 导入
  */
-export function importAccountApi(): AxiosPromise {
+export function importAccountApi(data: FormData): AxiosPromise {
   return request({
     url: "/account/importAccount",
     method: "post",
-    responseType: "blob",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data,
   });
 }
 

@@ -42,12 +42,20 @@
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleImport">
-            <template #icon>
-              <i-ep-upload />
-            </template>
-            导入
-          </el-button>
+          <el-upload
+            v-model:file-list="fileList"
+            :http-request="handleImport"
+            :show-file-list="false"
+            accept=".json"
+            :limit="1"
+          >
+            <el-button>
+              <template #icon>
+                <i-ep-upload />
+              </template>
+              导入
+            </el-button>
+          </el-upload>
         </el-form-item>
         <el-form-item>
           <el-button @click="handleExport">
@@ -340,6 +348,7 @@ import {
   updateAccountApi,
   exportAccountApi,
   releaseKickAccountApi,
+  importAccountApi,
 } from "@/api/account";
 import { Search, Plus, Refresh } from "@element-plus/icons-vue";
 import {
@@ -354,6 +363,12 @@ import {
 import { formatBytes } from "@/utils/byte";
 import i18n from "@/lang";
 import { hysteria2KickApi } from "@/api/hysteria2";
+import { UploadUserFile } from "element-plus";
+import {
+  UploadFile,
+  UploadFiles,
+  UploadRequestOptions,
+} from "element-plus/lib/components";
 
 const { t } = i18n.global;
 const queryFormRef = ref(ElForm); // 查询表单
@@ -387,6 +402,7 @@ const state = reactive({
     pageSize: 10,
   } as AccountPageDto,
   quotaTmp: 0,
+  fileList: [] as UploadFile[],
 });
 
 const {
@@ -399,6 +415,7 @@ const {
   dataFormKick,
   queryParams,
   quotaTmp,
+  fileList,
 } = toRefs(state);
 
 const shortcuts = [
@@ -599,7 +616,16 @@ function closeDialogKick() {
 /**
  * 导入
  */
-function handleImport() {}
+function handleImport(params: UploadRequestOptions) {
+  if (state.fileList.length > 0) {
+    let formData = new FormData();
+    formData.append("file", params.file);
+    importAccountApi(formData).then(() => {
+      ElMessage.success("导入成功");
+    });
+    state.fileList = [];
+  }
+}
 
 /**
  * 导出
