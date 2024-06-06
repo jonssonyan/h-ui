@@ -75,6 +75,12 @@
           prop="username"
         />
         <el-table-column
+          key="role"
+          :label="$t('account.role')"
+          align="center"
+          prop="role"
+        />
+        <el-table-column
           key="quota"
           :label="$t('account.quota')"
           align="center"
@@ -105,32 +111,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          key="expireTime"
-          :label="$t('account.expireTime')"
-          align="center"
-          prop="expireTime"
-        >
-          <template #default="scope">
-            {{ timestampToDateTime(scope.row.expireTime) }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          key="kickUtilTime"
-          :label="$t('account.kickUtilTime')"
-          align="center"
-          prop="kickUtilTime"
-        >
-          <template #default="scope">
-            {{ calculateTimeDifference(scope.row.kickUtilTime) }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          key="deviceNo"
-          :label="$t('account.deviceNo')"
-          align="center"
-          prop="deviceNo"
-        />
-        <el-table-column
           key="online"
           :label="$t('account.onlineStatus')"
           align="center"
@@ -144,17 +124,37 @@
           </template>
         </el-table-column>
         <el-table-column
+          key="deviceNo"
+          :label="$t('account.deviceNo')"
+          align="center"
+          prop="deviceNo"
+        />
+        <el-table-column
           key="device"
           :label="$t('account.device')"
           align="center"
           prop="device"
         />
         <el-table-column
-          key="role"
-          :label="$t('account.role')"
+          key="kickUtilTime"
+          :label="$t('account.kickUtilTime')"
           align="center"
-          prop="role"
-        />
+          prop="kickUtilTime"
+        >
+          <template #default="scope">
+            {{ calculateTimeDifference(scope.row.kickUtilTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          key="expireTime"
+          :label="$t('account.expireTime')"
+          align="center"
+          prop="expireTime"
+        >
+          <template #default="scope">
+            {{ timestampToDateTime(scope.row.expireTime) }}
+          </template>
+        </el-table-column>
         <el-table-column
           key="deleted"
           :label="$t('common.deleted')"
