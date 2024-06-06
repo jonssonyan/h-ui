@@ -37,6 +37,9 @@ export interface AccountVo extends IdDto {
   role: string;
   deleted: number;
   createTime: string;
+
+  online: boolean;
+  device: number;
 }
 
 export interface AccountLoginVo {
@@ -57,4 +60,9 @@ export interface AccountForm extends IdDto {
   quota: number;
   expireTime: number;
   deleted: number;
+}
+
+export interface KickAccountForm {
+  ids: number[];
+  kickUtilTime: number;
 }

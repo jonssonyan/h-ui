@@ -116,3 +116,14 @@ export function exportAccountApi(): AxiosPromise {
     responseType: "blob",
   });
 }
+
+/**
+ * 解除下线状态
+ */
+export function releaseKickAccountApi(data: IdDto): AxiosPromise {
+  return request({
+    url: "/account/releaseKickAccount",
+    method: "post",
+    data,
+  });
+}

@@ -137,7 +137,7 @@
         />
         <el-table-column
           key="kickUtilTime"
-          :label="$t('account.kickUtilTime')"
+          :label="$t('account.kickUtilTimeLast')"
           align="center"
           prop="kickUtilTime"
         >
@@ -186,27 +186,20 @@
             <el-button type="danger" link @click="handleDelete(scope.row)"
               >{{ $t("common.delete") }}
             </el-button>
-            <el-tooltip :content="$t('common.kickTip')" placement="bottom">
-              <el-button
-                type="danger"
-                link
-                @click="handleKick(scope.row)"
-                v-if="scope.online"
-                >{{ $t("common.kick") }}
-              </el-button>
-            </el-tooltip>
-            <el-tooltip
-              :content="$t('common.releaseKickTip')"
-              placement="bottom"
+            <el-button type="danger" link @click="handleKick(scope.row)"
+              >{{ $t("common.kick") }}
+            </el-button>
+            <el-popconfirm
+              :title="$t('common.releaseKickTip')"
+              @confirm="confirmReleaseKick(scope.row)"
+              v-if="calculateTimeDifference(scope.row.kickUtilTime) !== '-'"
             >
-              <el-button
-                type="danger"
-                link
-                @click="releaseKickAccount(scope.row)"
-                v-if="calculateTimeDifference(scope.row.kickUtilTime) !== '-'"
-                >{{ $t("common.releaseKick") }}
-              </el-button>
-            </el-tooltip>
+              <template #reference>
+                <el-button type="danger" link
+                  >{{ $t("common.releaseKick") }}
+                </el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -290,6 +283,38 @@
         </div>
       </template>
     </el-dialog>
+
+    <!-- 下线表单 -->
+    <el-dialog
+      :title="dialogKick.title"
+      v-model="dialogKick.visible"
+      width="600px"
+      append-to-body
+      @close="closeDialogKick"
+    >
+      <el-form ref="dataFormKickRef" :model="dataFormKick" label-width="100px">
+        <el-form-item :label="$t('account.kickUtilTime')" prop="kickUtilTime">
+          <el-date-picker
+            v-model="dataFormKick.kickUtilTime"
+            type="datetime"
+            :placeholder="$t('account.kickUtilTime')"
+            value-format="x"
+            :shortcuts="shortcutsKick"
+            clearable
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitKickForm"
+            >{{ $t("common.confirm") }}
+          </el-button>
+          <el-button @click="closeDialogKick"
+            >{{ $t("common.cancel") }}
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -305,6 +330,7 @@ import {
   AccountPageDto,
   AccountUpdateDto,
   AccountVo,
+  KickAccountForm,
 } from "@/api/account/types";
 import {
   saveAccountApi,
@@ -313,6 +339,7 @@ import {
   pageAccountApi,
   updateAccountApi,
   exportAccountApi,
+  releaseKickAccountApi,
 } from "@/api/account";
 import { Search, Plus, Refresh } from "@element-plus/icons-vue";
 import {
@@ -321,11 +348,17 @@ import {
   getWeekLater,
   getYearLater,
   calculateTimeDifference,
+  getHourLater,
+  getDayLater,
 } from "@/utils/time";
 import { formatBytes } from "@/utils/byte";
+import i18n from "@/lang";
+import { hysteria2KickApi } from "@/api/hysteria2";
 
+const { t } = i18n.global;
 const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
+const dataFormKickRef = ref(ElForm); // 下线表单
 
 const state = reactive({
   // 遮罩层
@@ -336,11 +369,17 @@ const state = reactive({
   dialog: {
     visible: false,
   } as DialogType,
+  dialogKick: {
+    visible: false,
+  } as DialogType,
   formData: {
     quota: 0,
     expireTime: getMonthLater(),
     deleted: 0,
   } as AccountForm,
+  dataFormKick: {
+    kickUtilTime: getHourLater(),
+  } as KickAccountForm,
   queryParams: {
     username: undefined,
     deleted: undefined,
@@ -350,8 +389,17 @@ const state = reactive({
   quotaTmp: 0,
 });
 
-const { loading, total, records, dialog, formData, queryParams, quotaTmp } =
-  toRefs(state);
+const {
+  loading,
+  total,
+  records,
+  dialog,
+  dialogKick,
+  formData,
+  dataFormKick,
+  queryParams,
+  quotaTmp,
+} = toRefs(state);
 
 const shortcuts = [
   {
@@ -365,6 +413,17 @@ const shortcuts = [
   {
     text: "A year later",
     value: getYearLater,
+  },
+];
+
+const shortcutsKick = [
+  {
+    text: "A Hour later",
+    value: getHourLater,
+  },
+  {
+    text: "A day later",
+    value: getDayLater,
   },
 ];
 
@@ -453,6 +512,22 @@ function submitForm() {
 }
 
 /**
+ * 下线表单提交
+ */
+function submitKickForm() {
+  dataFormKickRef.value.validate((valid: any) => {
+    if (valid) {
+      const params = { ...state.dataFormKick };
+      hysteria2KickApi(params).then(() => {
+        ElMessage.success("下线成功");
+        closeDialogKick();
+        handleQuery();
+      });
+    }
+  });
+}
+
+/**
  * 删除
  */
 function handleDelete(row: { [key: string]: any }) {
@@ -480,13 +555,24 @@ function handleDelete(row: { [key: string]: any }) {
  * 强制用户下线
  * @param row
  */
-function handleKick(row: { [key: string]: any }) {}
+function handleKick(row: { [key: string]: any }) {
+  state.dataFormKick.ids = [row.id];
+  dialogKick.value = {
+    title: t("common.kickTip"),
+    visible: true,
+  };
+}
 
 /**
  * 解除下线状态
  * @param row
  */
-function releaseKickAccount(row: { [key: string]: any }) {}
+function confirmReleaseKick(row: { [key: string]: any }) {
+  releaseKickAccountApi({ id: row.id }).then(() => {
+    ElMessage.success("解除成功");
+    handleQuery();
+  });
+}
 
 /**
  * 关闭用户弹窗
@@ -499,6 +585,15 @@ function closeDialog() {
   if (dialog.value.title == "修改用户") {
     resetFormData();
   }
+}
+
+/**
+ * 关闭下线弹窗
+ */
+function closeDialogKick() {
+  dialogKick.value.visible = false;
+  dataFormKickRef.value.resetFields();
+  dataFormKickRef.value.clearValidate();
 }
 
 /**

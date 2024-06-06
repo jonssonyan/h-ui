@@ -51,6 +51,26 @@ export const calculateTimeDifference = (timestamp: number): string => {
 };
 
 /**
+ * 获取一小时后的时间戳
+ * @returns 一周后的时间戳
+ */
+export const getHourLater = (): number => {
+  const date = new Date();
+  date.setHours(date.getHours() + 1);
+  return date.getTime();
+};
+
+/**
+ * 获取一天后的时间戳
+ * @returns 一周后的时间戳
+ */
+export const getDayLater = (): number => {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  return date.getTime();
+};
+
+/**
  * 获取一周后的时间戳
  * @returns 一周后的时间戳
  */
