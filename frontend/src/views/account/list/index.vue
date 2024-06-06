@@ -48,6 +48,7 @@
             :show-file-list="false"
             accept=".json"
             :limit="1"
+            :before-upload="beforeImport"
           >
             <el-button>
               <template #icon>
@@ -367,6 +368,7 @@ import { UploadUserFile } from "element-plus";
 import {
   UploadFile,
   UploadFiles,
+  UploadRawFile,
   UploadRequestOptions,
 } from "element-plus/lib/components";
 
@@ -624,6 +626,17 @@ function handleImport(params: UploadRequestOptions) {
       ElMessage.success("导入成功");
     });
     state.fileList = [];
+  }
+}
+
+function beforeImport(file: UploadRawFile) {
+  if (!file.name.endsWith(".json")) {
+    ElMessage.error("file format not supported");
+    return false;
+  }
+  if (file.size / 1024 / 1024 > 2) {
+    ElMessage.error("the file is too big, less than 2 MB");
+    return false;
   }
 }
 
