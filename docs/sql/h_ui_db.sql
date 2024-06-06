@@ -2,7 +2,8 @@ create table account
 (
     id             INTEGER                  not null
         primary key autoincrement,
-    username       TEXT      default ''     not null,
+    username       TEXT      default ''     not null
+        unique,
     `pass`         TEXT      default ''     not null,
     con_pass       TEXT      default ''     not null,
     quota          INTEGER   default 0      not null,
