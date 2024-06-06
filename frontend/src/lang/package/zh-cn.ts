@@ -34,6 +34,7 @@ export default {
     operate: "操作",
     edit: "编辑",
     delete: "删除",
+    kick: "下线",
     deleted: "状态",
     all: "全部",
     enable: "正常",

@@ -178,13 +178,16 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="$t('common.operate')" align="left">
+        <el-table-column :label="$t('common.operate')" align="left" width="150">
           <template #default="scope">
             <el-button type="primary" link @click="handleUpdate(scope.row)"
               >{{ $t("common.edit") }}
             </el-button>
             <el-button type="danger" link @click="handleDelete(scope.row)"
               >{{ $t("common.delete") }}
+            </el-button>
+            <el-button type="danger" link @click="handleKick(scope.row)"
+              >{{ $t("common.kick") }}
             </el-button>
           </template>
         </el-table-column>
@@ -454,6 +457,12 @@ function handleDelete(row: { [key: string]: any }) {
     })
     .catch(() => ElMessage.info("已取消删除"));
 }
+
+/**
+ * 下线
+ * @param row
+ */
+function handleKick(row: { [key: string]: any }) {}
 
 /**
  * 关闭用户弹窗
