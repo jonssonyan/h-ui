@@ -86,7 +86,7 @@
           <template #header>
             <div class="flex items-center justify-between">
               <span class="text-[var(--el-text-color-secondary)]">
-                {{ $t("monitor.userTotal") }}
+                {{ $t("monitor.hysteria2UserTotal") }}
               </span>
               <el-tag type="success">account</el-tag>
             </div>
@@ -103,7 +103,7 @@
           <template #header>
             <div class="flex items-center justify-between">
               <span class="text-[var(--el-text-color-secondary)]">
-                {{ $t("monitor.deviceTotal") }}
+                {{ $t("monitor.hysteria2DeviceTotal") }}
               </span>
               <el-tag type="success">device</el-tag>
             </div>
@@ -111,6 +111,49 @@
           <div class="flex items-center justify-between mt-5">
             <div class="text-lg text-right">
               {{ hysteria2Monitor.deviceTotal }}
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :lg="6">
+        <el-card shadow="never">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <span class="text-[var(--el-text-color-secondary)]">
+                {{ $t("monitor.hysteria2Version") }}
+              </span>
+              <el-tag type="success">version</el-tag>
+            </div>
+          </template>
+          <div class="flex items-center justify-between mt-5">
+            <div class="text-lg text-right">
+              {{ hysteria2Monitor.version }}
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :lg="6">
+        <el-card shadow="never">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <span class="text-[var(--el-text-color-secondary)]">
+                {{ $t("monitor.hysteria2Running") }}
+              </span>
+              <el-tag type="success">running</el-tag>
+            </div>
+          </template>
+          <div class="flex items-center justify-between mt-5">
+            <div
+              class="text-lg text-right"
+              :style="
+                hysteria2Monitor.running ? 'color: #2ecc71' : 'color: #e74c3c'
+              "
+            >
+              {{
+                hysteria2Monitor.running
+                  ? $t("monitor.hysteria2RunningTrue")
+                  : $t("monitor.hysteria2RunningFalse")
+              }}
             </div>
           </div>
         </el-card>
@@ -131,12 +174,14 @@ const state = reactive({
   hysteria2Monitor: {
     userTotal: 0,
     deviceTotal: 0,
+    version: "",
+    running: false,
   },
 });
 
 const { systemMonitor, hysteria2Monitor } = toRefs(state);
 
-const setSystemMonitor = () => {
+const setMonitor = () => {
   monitorSystemApi().then((response) => {
     const { data } = response;
     Object.assign(state.systemMonitor, data);
@@ -148,7 +193,7 @@ const setSystemMonitor = () => {
 };
 
 onMounted(() => {
-  setSystemMonitor();
+  setMonitor();
 });
 </script>
 
@@ -159,6 +204,10 @@ onMounted(() => {
 
   .svg-icon {
     fill: currentcolor !important;
+  }
+
+  .el-col {
+    margin-top: 10px;
   }
 }
 </style>
