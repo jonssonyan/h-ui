@@ -7,6 +7,8 @@ type SystemMonitorVo struct {
 }
 
 type Hysteria2MonitorVo struct {
-	UserTotal   int64 `json:"userTotal"`   // 在线用户数
-	DeviceTotal int64 `json:"deviceTotal"` // 在线设备数
+	UserTotal   int64  `json:"userTotal"`   // 在线用户数
+	DeviceTotal int64  `json:"deviceTotal"` // 在线设备数
+	Version     string `json:"version"`     // 版本
+	Running     bool   `json:"running"`     // 运行状态
 }
