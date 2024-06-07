@@ -7,6 +7,7 @@ import (
 	"h-ui/model/vo"
 	"h-ui/service"
 	"h-ui/util"
+	"regexp"
 )
 
 func StartHysteria2(c *gin.Context) {
@@ -60,12 +61,21 @@ func Hysteria2Kick(c *gin.Context) {
 }
 
 func GetHysteria2Version(c *gin.Context) {
-	version, err := util.Exec(fmt.Sprintf("%s version", util.GetHysteria2BinPath()))
+	content, err := util.Exec(fmt.Sprintf("%s version", util.GetHysteria2BinPath()))
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(version, c)
+
+	pattern := `v\d+\.\d+\.\d+`
+	re := regexp.MustCompile(pattern)
+	matches := re.FindAllString(content, -1)
+
+	for _, match := range matches {
+		vo.Success(match, c)
+		return
+	}
+	vo.Fail("get hysteria2 version failed", c)
 }
 
 func GetHysteria2Status(c *gin.Context) {
