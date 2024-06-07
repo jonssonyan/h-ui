@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
+	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
@@ -130,6 +131,28 @@ func ExportHysteria2Config(c *gin.Context) {
 		vo.Fail(err.Error(), c)
 		return
 	}
+
+	// 默认值
+	getConfig, err := dao.GetConfig("key = ?", constant.HUIWebPort)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	authType := "http"
+	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
+	authHttpInsecure := true
+	trafficStatsSecret := ""
+	var auth bo.ServerConfigAuth
+	auth.Type = &authType
+	var http bo.ServerConfigAuthHTTP
+	http.URL = &authHttpUrl
+	http.Insecure = &authHttpInsecure
+	auth.HTTP = &http
+	var trafficStats bo.ServerConfigTrafficStats
+	trafficStats.Secret = &trafficStatsSecret
+	hysteria2ServerConfig.Auth = &auth
+	hysteria2ServerConfig.TrafficStats = &trafficStats
+
 	fileName := fmt.Sprintf("Hysteria2Config-%s.yaml", time.Now().Format("20060102150405"))
 	filePath := constant.ExportPathDir + fileName
 
@@ -172,6 +195,28 @@ func ImportHysteria2Config(c *gin.Context) {
 		vo.Fail("content Unmarshal err", c)
 		return
 	}
+
+	// 默认值
+	getConfig, err := dao.GetConfig("key = ?", constant.HUIWebPort)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	authType := "http"
+	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
+	authHttpInsecure := true
+	trafficStatsSecret := ""
+	var auth bo.ServerConfigAuth
+	auth.Type = &authType
+	var http bo.ServerConfigAuthHTTP
+	http.URL = &authHttpUrl
+	http.Insecure = &authHttpInsecure
+	auth.HTTP = &http
+	var trafficStats bo.ServerConfigTrafficStats
+	trafficStats.Secret = &trafficStatsSecret
+	hysteria2ServerConfig.Auth = &auth
+	hysteria2ServerConfig.TrafficStats = &trafficStats
+
 	if err = service.SetHysteria2Config(hysteria2ServerConfig); err != nil {
 		vo.Fail(err.Error(), c)
 		return

@@ -11,11 +11,11 @@ type Hysteria2ServerConfig struct {
 	SpeedTest             *bool                       `yaml:"speedTest" json:"speedTest" validate:"omitempty"`
 	DisableUDP            *bool                       `yaml:"disableUDP" json:"disableUDP" validate:"omitempty"`
 	UDPIdleTimeout        *string                     `yaml:"udpIdleTimeout" json:"udpIdleTimeout" validate:"omitempty"`
-	Auth                  *serverConfigAuth           `yaml:"auth" json:"auth" validate:"omitempty"`
+	Auth                  *ServerConfigAuth           `yaml:"auth" json:"auth" validate:"omitempty"`
 	Resolver              *serverConfigResolver       `yaml:"resolver" json:"resolver" validate:"omitempty"`
 	ACL                   *serverConfigACL            `yaml:"acl" json:"acl" validate:"omitempty"`
 	Outbounds             []serverConfigOutboundEntry `yaml:"outbounds" json:"outbounds" validate:"omitempty"`
-	TrafficStats          *serverConfigTrafficStats   `yaml:"trafficStats" json:"trafficStats" validate:"required"`
+	TrafficStats          *ServerConfigTrafficStats   `yaml:"trafficStats" json:"trafficStats" validate:"required"`
 	Masquerade            *serverConfigMasquerade     `yaml:"masquerade" json:"masquerade" validate:"omitempty"`
 }
 
@@ -60,16 +60,16 @@ type serverConfigBandwidth struct {
 	Down *string `yaml:"down" json:"down" validate:"required"`
 }
 
-type serverConfigAuthHTTP struct {
+type ServerConfigAuthHTTP struct {
 	URL      *string `yaml:"url" json:"url" validate:"required"`
 	Insecure *bool   `yaml:"insecure" json:"insecure" validate:"required"`
 }
 
-type serverConfigAuth struct {
+type ServerConfigAuth struct {
 	Type     *string               `yaml:"type" json:"type" validate:"omitempty"`
 	Password *string               `yaml:"password" json:"password" validate:"omitempty"`
 	UserPass map[string]string     `yaml:"userpass" json:"userpass" validate:"omitempty"`
-	HTTP     *serverConfigAuthHTTP `yaml:"http" json:"http" validate:"omitempty"`
+	HTTP     *ServerConfigAuthHTTP `yaml:"http" json:"http" validate:"omitempty"`
 	Command  *string               `yaml:"command" json:"command" validate:"omitempty"`
 }
 
@@ -139,7 +139,7 @@ type serverConfigOutboundEntry struct {
 	HTTP   *serverConfigOutboundHTTP   `yaml:"http" json:"http" validate:"omitempty"`
 }
 
-type serverConfigTrafficStats struct {
+type ServerConfigTrafficStats struct {
 	Listen *string `yaml:"listen" json:"listen" validate:"required"`
 	Secret *string `yaml:"secret" json:"secret" validate:"omitempty"`
 }
