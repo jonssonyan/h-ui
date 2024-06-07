@@ -14,6 +14,14 @@
             <el-option label="300" value="300" />
           </el-select>
         </el-form-item>
+        <el-form-item prop="export">
+          <el-button @click="handleExport">
+            <template #icon>
+              <i-ep-download />
+            </template>
+            导出
+          </el-button>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -33,8 +41,8 @@
 </template>
 
 <script setup lang="ts">
-import { LogSystemDto, LogSystemVo } from "@/api/log/types";
-import { logSystemApi } from "@/api/log";
+import { LogDto, LogSystemVo } from "@/api/log/types";
+import { exportLogApi, logSystemApi } from "@/api/log";
 
 const state = reactive({
   loading: true,
@@ -42,7 +50,7 @@ const state = reactive({
   records: [] as LogSystemVo[],
   queryParams: {
     numLine: 100,
-  } as LogSystemDto,
+  } as LogDto,
 });
 
 const { loading, records, queryParams } = toRefs(state);
@@ -55,6 +63,27 @@ const setRecords = () => {
     state.total = data.total;
     state.loading = false;
   });
+};
+
+const handleExport = async () => {
+  let response = await exportLogApi({ option: 0 });
+  try {
+    const blob = new Blob([response.data], {
+      type: "application/octet-stream",
+    });
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement("a");
+    document.body.appendChild(a);
+    a.href = url;
+    let dis = response.headers["content-disposition"];
+    a.download = dis.split("attachment; filename=")[1];
+    // 模拟点击下载
+    a.click();
+    window.URL.revokeObjectURL(url);
+    ElMessage.success("导出成功");
+  } catch (err) {
+    ElMessage.error("导出失败");
+  }
 };
 
 onMounted(() => {

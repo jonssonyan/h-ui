@@ -87,6 +87,7 @@ export default {
   },
   log: {
     numLine: "显示行数",
+    export: "导出",
   },
   hysteria: {
     enable: "开启",
