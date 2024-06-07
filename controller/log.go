@@ -12,7 +12,7 @@ import (
 )
 
 func LogSystem(c *gin.Context) {
-	logSystemDto, err := validateField(c, dto.LogSystemDto{})
+	logSystemDto, err := validateField(c, dto.LogDto{})
 	if err != nil {
 		return
 	}
@@ -51,7 +51,7 @@ func LogSystem(c *gin.Context) {
 }
 
 func LogHysteria2(c *gin.Context) {
-	logSystemDto, err := validateField(c, dto.LogSystemDto{})
+	logSystemDto, err := validateField(c, dto.LogDto{})
 	if err != nil {
 		return
 	}
