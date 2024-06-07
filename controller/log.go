@@ -86,3 +86,11 @@ func LogHysteria2(c *gin.Context) {
 		Total:        int64(total),
 	}, c)
 }
+
+func ExportSystemLog(c *gin.Context) {
+	return
+}
+
+func ExportHysteria2Log(c *gin.Context) {
+	return
+}

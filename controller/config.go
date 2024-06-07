@@ -92,3 +92,19 @@ func UpdateHysteria2Config(c *gin.Context) {
 	}
 	vo.Success(nil, c)
 }
+
+func ExportConfig(c *gin.Context) {
+	return
+}
+
+func ImportConfig(c *gin.Context) {
+	return
+}
+
+func ExportHysteria2Config(c *gin.Context) {
+	return
+}
+
+func ImportHysteria2Config(c *gin.Context) {
+	return
+}
