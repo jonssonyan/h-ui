@@ -56,3 +56,7 @@ func Hysteria2Kick(c *gin.Context) {
 	}
 	vo.Success(nil, c)
 }
+
+func GetHysteria2Version(c *gin.Context) {
+
+}

@@ -8,7 +8,7 @@ import (
 func initMonitorRouter(accountApi *gin.RouterGroup) {
 	account := accountApi.Group("/monitor")
 	{
-		account.GET("/system", controller.MonitorSystem)
-		account.GET("/hysteria2", controller.MonitorHysteria2)
+		account.GET("/monitorSystem", controller.MonitorSystem)
+		account.GET("/monitorHysteria2", controller.MonitorHysteria2)
 	}
 }
