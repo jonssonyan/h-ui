@@ -11,6 +11,15 @@ import (
 )
 
 func InitHysteria2() {
+	// 初始化 bin
+	if !util.Exists(util.GetHysteria2BinPath()) {
+		// 指定版本防止 api 不兼容
+		if err := util.DownloadHysteria2(constant.Hysteria2Version); err != nil {
+			logrus.Errorf("download hysteris2 bin err: %v", err)
+			return
+		}
+	}
+
 	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
 	if err != nil {
 		logrus.Errorf("get hysteria2 enable config err: %v", err)
@@ -43,13 +52,6 @@ func SetHysteria2ConfigYAML() error {
 }
 
 func StartHysteria2() error {
-	// 初始化 bin
-	if !util.Exists(util.GetHysteria2BinPath()) {
-		// 指定版本防止 api 不兼容
-		if err := util.DownloadHysteria2("app/v2.4.4"); err != nil {
-			return err
-		}
-	}
 	// 初始化配置文件
 	if err := SetHysteria2ConfigYAML(); err != nil {
 		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
@@ -73,13 +75,6 @@ func StopHysteria2() error {
 }
 
 func RestartHysteria2() error {
-	// 初始化 bin
-	if !util.Exists(util.GetHysteria2BinPath()) {
-		// 指定版本防止 api 不兼容
-		if err := util.DownloadHysteria2("app/v2.4.4"); err != nil {
-			return err
-		}
-	}
 	// 初始化配置文件
 	if err := SetHysteria2ConfigYAML(); err != nil {
 		logrus.Errorf("set hysteria2 config.yaml err: %v", err)

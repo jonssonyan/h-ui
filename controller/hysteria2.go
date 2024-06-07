@@ -60,7 +60,7 @@ func Hysteria2Kick(c *gin.Context) {
 }
 
 func GetHysteria2Version(c *gin.Context) {
-	version, err := util.Exec(fmt.Sprintf("%s -version", util.GetHysteria2BinPath()))
+	version, err := util.Exec(fmt.Sprintf("%s version", util.GetHysteria2BinPath()))
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
