@@ -21,7 +21,7 @@ export function updateHysteria2ConfigApi(
   return request({
     url: "/config/updateHysteria2Config",
     method: "post",
-    data,
+    data: data,
   });
 }
 
@@ -37,7 +37,7 @@ export function listConfigApi(data: ConfigsDto): AxiosPromise<Array<ConfigVo>> {
   return request({
     url: "/config/listConfig",
     method: "post",
-    data,
+    data: data,
   });
 }
 
@@ -45,7 +45,7 @@ export function updateConfigsApi(data: ConfigUpdateDto): AxiosPromise {
   return request({
     url: "/config/updateConfigs",
     method: "post",
-    data,
+    data: data,
   });
 }
 
@@ -64,7 +64,7 @@ export function importConfigApi(data: FormData): AxiosPromise {
     headers: {
       "Content-Type": "multipart/form-data",
     },
-    data,
+    data: data,
   });
 }
 
@@ -83,6 +83,6 @@ export function importHysteria2ConfigApi(data: FormData): AxiosPromise {
     headers: {
       "Content-Type": "multipart/form-data",
     },
-    data,
+    data: data,
   });
 }

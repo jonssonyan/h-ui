@@ -30,7 +30,7 @@ export function saveAccountApi(data: AccountSaveDto): AxiosPromise {
   return request({
     url: "/account/saveAccount",
     method: "post",
-    data,
+    data: data,
   });
 }
 
@@ -67,7 +67,7 @@ export function deleteAccountApi(data: IdDto): AxiosPromise {
   return request({
     url: "/account/deleteAccount",
     method: "post",
-    data,
+    data: data,
   });
 }
 
@@ -79,7 +79,7 @@ export function updateAccountApi(data: AccountUpdateDto): AxiosPromise {
   return request({
     url: "/account/updateAccount",
     method: "post",
-    data,
+    data: data,
   });
 }
 
@@ -91,7 +91,7 @@ export function loginApi(data: AccountLoginDto): AxiosPromise<AccountLoginVo> {
   return request({
     url: "/auth/login",
     method: "post",
-    data,
+    data: data,
   });
 }
 
@@ -105,7 +105,7 @@ export function importAccountApi(data: FormData): AxiosPromise {
     headers: {
       "Content-Type": "multipart/form-data",
     },
-    data,
+    data: data,
   });
 }
 
@@ -127,6 +127,6 @@ export function releaseKickAccountApi(data: IdDto): AxiosPromise {
   return request({
     url: "/account/releaseKickAccount",
     method: "post",
-    data,
+    data: data,
   });
 }

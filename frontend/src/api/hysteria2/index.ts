@@ -9,6 +9,6 @@ export function hysteria2KickApi(
   return request({
     url: "/hysteria2/hysteria2Kick",
     method: "post",
-    data,
+    data: data,
   });
 }

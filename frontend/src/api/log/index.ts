@@ -1,37 +1,35 @@
 import { AxiosPromise } from "axios";
 import request from "@/utils/request";
 import {
+  LogDto,
   LogExportDto,
   LogHysteria2Vo,
-  LogSystemDto,
   LogSystemVo,
 } from "@/api/log/types";
 
-export function logSystemApi(
-  params: LogSystemDto
-): AxiosPromise<PageVo<LogSystemVo>> {
+export function logSystemApi(data: LogDto): AxiosPromise<PageVo<LogSystemVo>> {
   return request({
     url: "/log/logSystem",
     method: "get",
-    params: params,
+    params: data,
   });
 }
 
 export function logHysteria2Api(
-  params: LogSystemDto
+  data: LogDto
 ): AxiosPromise<PageVo<LogHysteria2Vo>> {
   return request({
     url: "/log/logHysteria2",
     method: "get",
-    params: params,
+    params: data,
   });
 }
 
-export function exportLogApi(params: LogExportDto): AxiosPromise {
+export function exportLogApi(data: LogExportDto): AxiosPromise {
   return request({
     url: "/log/exportLog",
     method: "post",
-    params,
+    data: data,
     responseType: "blob",
   });
 }
