@@ -1,11 +1,15 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"h-ui/model/bo"
+	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/service"
+	"h-ui/util"
+	"time"
 )
 
 func UpdateConfig(c *gin.Context) {
@@ -93,18 +97,58 @@ func UpdateHysteria2Config(c *gin.Context) {
 	vo.Success(nil, c)
 }
 
-func ExportConfig(c *gin.Context) {
-	return
-}
-
-func ImportConfig(c *gin.Context) {
-	return
-}
-
 func ExportHysteria2Config(c *gin.Context) {
-	return
+	hysteria2ServerConfig, err := service.GetHysteria2Config()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	fileName := fmt.Sprintf("Hysteria2Config-%s.yaml", time.Now().Format("20060102150405"))
+	filePath := constant.ExportPathDir + fileName
+
+	if err = util.ExportFile(filePath, hysteria2ServerConfig, 1); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
+	if !util.Exists(filePath) {
+		vo.Fail("file not exist", c)
+		return
+	}
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Transfer-Encoding", "binary")
+	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName))
+	c.File(filePath)
 }
 
 func ImportHysteria2Config(c *gin.Context) {
+	return
+}
+
+func ExportConfig(c *gin.Context) {
+	configs, err := service.ListConfigNotIn([]string{constant.Hysteria2Config})
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	fileName := fmt.Sprintf("SystemConfig-%s.json", time.Now().Format("20060102150405"))
+	filePath := constant.ExportPathDir + fileName
+
+	if err = util.ExportFile(filePath, configs, 0); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
+	if !util.Exists(filePath) {
+		vo.Fail("file not exist", c)
+		return
+	}
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Transfer-Encoding", "binary")
+	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName))
+	c.File(filePath)
+}
+
+func ImportConfig(c *gin.Context) {
 	return
 }

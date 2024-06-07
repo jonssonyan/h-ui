@@ -37,6 +37,10 @@ func ListConfig(keys []string) ([]entity.Config, error) {
 	return dao.ListConfig("key in ?", keys)
 }
 
+func ListConfigNotIn(keys []string) ([]entity.Config, error) {
+	return dao.ListConfig("key not in ?", keys)
+}
+
 func GetHysteria2Config() (bo.Hysteria2ServerConfig, error) {
 	var serverConfig bo.Hysteria2ServerConfig
 	config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)

@@ -2,11 +2,13 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/util"
+	"time"
 )
 
 func LogSystem(c *gin.Context) {
@@ -87,10 +89,26 @@ func LogHysteria2(c *gin.Context) {
 	}, c)
 }
 
-func ExportSystemLog(c *gin.Context) {
-	return
-}
+func ExportLog(c *gin.Context) {
+	logExportDto, err := validateField(c, dto.LogExportDto{})
+	if err != nil {
+		return
+	}
 
-func ExportHysteria2Log(c *gin.Context) {
-	return
+	var fileName string
+	if *logExportDto.Option == 0 {
+		fileName = fmt.Sprintf("h-ui-%s.log", time.Now().Format("20060102150405"))
+	} else if *logExportDto.Option == 1 {
+		fileName = fmt.Sprintf("hysteria2-%s.log", time.Now().Format("20060102150405"))
+	}
+	filePath := constant.ExportPathDir + fileName
+
+	if !util.Exists(filePath) {
+		vo.Fail("file not exist", c)
+		return
+	}
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Transfer-Encoding", "binary")
+	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName))
+	c.File(filePath)
 }

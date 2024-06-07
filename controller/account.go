@@ -285,7 +285,7 @@ func ExportAccount(c *gin.Context) {
 	fileName := fmt.Sprintf("AccountExport-%s.json", time.Now().Format("20060102150405"))
 	filePath := constant.ExportPathDir + fileName
 
-	if err = util.ExportJson(filePath, accountExports); err != nil {
+	if err = util.ExportFile(filePath, accountExports, 0); err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
