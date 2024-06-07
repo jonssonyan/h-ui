@@ -10,6 +10,22 @@
             >保存
           </el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button @click="handleImport">
+            <template #icon>
+              <i-ep-upload />
+            </template>
+            导入
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="handleExport">
+            <template #icon>
+              <i-ep-download />
+            </template>
+            导出
+          </el-button>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -44,7 +60,7 @@
 
 <script setup lang="ts">
 import { Select } from "@element-plus/icons-vue";
-import { listConfigApi, updateConfigsApi } from "@/api/config";
+import { exportConfigApi, listConfigApi, updateConfigsApi } from "@/api/config";
 import { ConfigsUpdateDto } from "@/api/config/types";
 import type { FormInstance, FormRules } from "element-plus";
 import { validateNumberStr } from "@/utils/validate";
@@ -107,6 +123,29 @@ const setConfig = () => {
       }
     });
   });
+};
+
+const handleImport = () => {};
+
+const handleExport = async () => {
+  let response = await exportConfigApi();
+  try {
+    const blob = new Blob([response.data], {
+      type: "application/octet-stream",
+    });
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement("a");
+    document.body.appendChild(a);
+    a.href = url;
+    let dis = response.headers["content-disposition"];
+    a.download = dis.split("attachment; filename=")[1];
+    // 模拟点击下载
+    a.click();
+    window.URL.revokeObjectURL(url);
+    ElMessage.success("导出成功");
+  } catch (err) {
+    ElMessage.error("导出失败");
+  }
 };
 
 onMounted(() => {

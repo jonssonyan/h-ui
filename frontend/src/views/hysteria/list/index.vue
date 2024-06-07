@@ -23,30 +23,6 @@
             导出
           </el-button>
         </el-form-item>
-        <el-form-item>
-          <el-button @click="startHysteria2">
-            <template #icon>
-              <i-ep-circle-check />
-            </template>
-            启动
-          </el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="stopHysteria2">
-            <template #icon>
-              <i-ep-circle-close />
-            </template>
-            停止
-          </el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="restartHysteria2">
-            <template #icon>
-              <i-ep-refresh-right />
-            </template>
-            重启
-          </el-button>
-        </el-form-item>
       </el-form>
     </div>
 
@@ -78,9 +54,6 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
-        </el-form-item>
-        <el-form-item>
-          <el-tag type="success" size="large"> Hysteria2 状态: {{ '正常'}}</el-tag>
         </el-form-item>
       </el-form>
 
@@ -810,7 +783,11 @@ import {
 } from "@/api/config/types";
 import Outbounds from "./components/Outbounds/index.vue";
 import { CirclePlusFilled, Select } from "@element-plus/icons-vue";
-import { getConfigApi, getHysteria2ConfigApi } from "@/api/config";
+import {
+  exportHysteria2ConfigApi,
+  getConfigApi,
+  getHysteria2ConfigApi,
+} from "@/api/config";
 import { useI18n } from "vue-i18n";
 import { assignIgnoringNull } from "@/utils/object";
 
@@ -921,10 +898,26 @@ const tabs = computed(() => {
 });
 
 const handleImport = () => {};
-const handleExport = () => {};
-const startHysteria2 = () => {};
-const stopHysteria2 = () => {};
-const restartHysteria2 = () => {};
+const handleExport = async () => {
+  let response = await exportHysteria2ConfigApi();
+  try {
+    const blob = new Blob([response.data], {
+      type: "application/octet-stream",
+    });
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement("a");
+    document.body.appendChild(a);
+    a.href = url;
+    let dis = response.headers["content-disposition"];
+    a.download = dis.split("attachment; filename=")[1];
+    // 模拟点击下载
+    a.click();
+    window.URL.revokeObjectURL(url);
+    ElMessage.success("导出成功");
+  } catch (err) {
+    ElMessage.error("导出失败");
+  }
+};
 
 const handleChangeEnable = () => {};
 const submitForm = () => {
