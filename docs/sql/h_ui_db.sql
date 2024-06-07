@@ -32,7 +32,8 @@ create table config
 (
     id          INTEGER              not null
         primary key autoincrement,
-    `key`       TEXT      default '' not null,
+    `key`       TEXT      default '' not null
+        unique,
     `value`     TEXT      default '' not null,
     remark      TEXT      default '' not null,
     create_time TIMESTAMP default (datetime(CURRENT_TIMESTAMP, 'localtime')),

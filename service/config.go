@@ -74,6 +74,18 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 	return dao.UpdateConfig([]string{constant.Hysteria2Config}, map[string]interface{}{"value": string(config)})
 }
 
+func SetHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error {
+	config, err := yaml.Marshal(hysteria2ServerConfig)
+	if err != nil {
+		return err
+	}
+	return dao.UpdateConfig([]string{constant.Hysteria2Config}, map[string]interface{}{"value": string(config)})
+}
+
+func UpsertConfig(configs []entity.Config) error {
+	return dao.UpsertConfig(configs)
+}
+
 func GetHysteria2ApiPort() (int64, error) {
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {

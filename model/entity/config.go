@@ -1,8 +1,8 @@
 package entity
 
 type Config struct {
-	Key        *string `gorm:"column:key;default:''"`
-	Value      *string `gorm:"column:value;default:''"`
-	Remark     *string `gorm:"column:remark;default:''"`
+	Key        *string `gorm:"column:key;default:''" json:"key"`
+	Value      *string `gorm:"column:value;default:''" json:"value"`
+	Remark     *string `gorm:"column:remark;default:''" json:"remark"`
 	BaseEntity `gorm:"embedded"`
 }

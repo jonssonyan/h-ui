@@ -1,14 +1,19 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/yaml.v3"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
+	"h-ui/model/entity"
 	"h-ui/model/vo"
 	"h-ui/service"
 	"h-ui/util"
+	"io"
+	"strings"
 	"time"
 )
 
@@ -122,7 +127,34 @@ func ExportHysteria2Config(c *gin.Context) {
 }
 
 func ImportHysteria2Config(c *gin.Context) {
-	return
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		vo.Fail(constant.SysError, c)
+		return
+	}
+	if header.Size > 1024*1024*2 {
+		vo.Fail("the file is too big", c)
+		return
+	}
+	if !strings.HasSuffix(header.Filename, ".yaml") {
+		vo.Fail("file format not supported", c)
+		return
+	}
+	content, err := io.ReadAll(file)
+	if err != nil {
+		vo.Fail("yaml file read err", c)
+		return
+	}
+	var hysteria2ServerConfig bo.Hysteria2ServerConfig
+	if err = yaml.Unmarshal(content, &hysteria2ServerConfig); err != nil {
+		vo.Fail("content Unmarshal err", c)
+		return
+	}
+	if err = service.SetHysteria2Config(hysteria2ServerConfig); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
 }
 
 func ExportConfig(c *gin.Context) {
@@ -150,5 +182,32 @@ func ExportConfig(c *gin.Context) {
 }
 
 func ImportConfig(c *gin.Context) {
-	return
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		vo.Fail(constant.SysError, c)
+		return
+	}
+	if header.Size > 1024*1024*2 {
+		vo.Fail("the file is too big", c)
+		return
+	}
+	if !strings.HasSuffix(header.Filename, ".json") {
+		vo.Fail("file format not supported", c)
+		return
+	}
+	content, err := io.ReadAll(file)
+	if err != nil {
+		vo.Fail("json file read err", c)
+		return
+	}
+	var configs []entity.Config
+	if err = json.Unmarshal(content, &configs); err != nil {
+		vo.Fail("content Unmarshal err", c)
+		return
+	}
+	if err = service.UpsertConfig(configs); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
 }

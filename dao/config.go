@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"h-ui/model/constant"
 	"h-ui/model/entity"
 	"time"
@@ -52,4 +53,15 @@ func ListConfig(query interface{}, args ...interface{}) ([]entity.Config, error)
 		return configs, errors.New(constant.SysError)
 	}
 	return configs, nil
+}
+
+func UpsertConfig(configs []entity.Config) error {
+	if tx := sqliteDB.Model(&entity.Account{}).Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "key"}},
+		DoUpdates: clause.AssignmentColumns([]string{"value", "remark", "create_time", "update_time"}),
+	}).Create(configs); tx.Error != nil {
+		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		return errors.New(constant.SysError)
+	}
+	return nil
 }

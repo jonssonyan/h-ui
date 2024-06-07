@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"h-ui/model/constant"
 	"io"
 	"os/exec"
@@ -12,10 +13,19 @@ import (
 	"time"
 )
 
-var loggerPlus *LoggerPlus
+var logger logrus.Logger
 
 func init() {
-	loggerPlus = NewLoggerPlus(constant.Hysteria2LogPath, 1, 2, 30, true)
+	logger.SetOutput(&lumberjack.Logger{
+		Filename:   constant.Hysteria2LogPath,
+		MaxSize:    1,
+		MaxBackups: 2,
+		MaxAge:     30,
+		Compress:   true,
+		LocalTime:  true,
+	})
+	logger.SetFormatter(&logrus.JSONFormatter{TimestampFormat: "2006-01-02 15:04:05"})
+	logger.SetLevel(logrus.WarnLevel)
 }
 
 type process struct {
@@ -162,13 +172,13 @@ func (p *process) handleLogs(stdout, stderr io.ReadCloser) {
 			if !ok {
 				stdoutChan = nil
 			} else {
-				loggerPlus.Infof(line)
+				logger.Infof(line)
 			}
 		case line, ok := <-stderrChan:
 			if !ok {
 				stderrChan = nil
 			} else {
-				loggerPlus.Errorf(line)
+				logger.Errorf(line)
 			}
 		}
 
