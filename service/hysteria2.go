@@ -92,3 +92,8 @@ func RestartHysteria2() error {
 	}
 	return nil
 }
+
+func Hysteria2Status() bool {
+	hysteria2Instance := proxy.NewHysteria2Instance(util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
+	return hysteria2Instance.IsRunning()
+}

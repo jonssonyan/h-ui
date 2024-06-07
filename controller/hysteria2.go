@@ -1,10 +1,12 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/service"
+	"h-ui/util"
 )
 
 func StartHysteria2(c *gin.Context) {
@@ -58,5 +60,15 @@ func Hysteria2Kick(c *gin.Context) {
 }
 
 func GetHysteria2Version(c *gin.Context) {
+	version, err := util.Exec(fmt.Sprintf("%s -version", util.GetHysteria2BinPath()))
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(version, c)
+}
 
+func GetHysteria2Status(c *gin.Context) {
+	running := service.Hysteria2Status()
+	vo.Success(running, c)
 }

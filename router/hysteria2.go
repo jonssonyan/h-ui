@@ -20,5 +20,6 @@ func initHysteria2Router(hysteria2Api *gin.RouterGroup) {
 		hysteria2.POST("/restartHysteria2", controller.RestartHysteria2)
 		hysteria2.POST("/hysteria2Kick", controller.Hysteria2Kick)
 		hysteria2.GET("/getHysteria2Version", controller.GetHysteria2Version)
+		hysteria2.GET("/getHysteria2Status", controller.GetHysteria2Status)
 	}
 }
