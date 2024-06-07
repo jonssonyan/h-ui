@@ -33,3 +33,17 @@ export function hysteria2KickApi(
     data,
   });
 }
+
+export function getHysteria2VersionApi(): AxiosPromise<string> {
+  return request({
+    url: "/hysteria2/getHysteria2Version",
+    method: "get",
+  });
+}
+
+export function getHysteria2StatusApi(): AxiosPromise<boolean> {
+  return request({
+    url: "/hysteria2/getHysteria2Status",
+    method: "get",
+  });
+}

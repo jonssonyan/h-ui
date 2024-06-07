@@ -48,3 +48,41 @@ export function updateConfigsApi(data: ConfigUpdateDto): AxiosPromise {
     data,
   });
 }
+
+export function exportConfigApi(): AxiosPromise {
+  return request({
+    url: "/config/exportConfig",
+    method: "post",
+    responseType: "blob",
+  });
+}
+
+export function importConfigApi(data: FormData): AxiosPromise {
+  return request({
+    url: "/config/importConfig",
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data,
+  });
+}
+
+export function exportHysteria2ConfigApi(): AxiosPromise {
+  return request({
+    url: "/config/exportHysteria2Config",
+    method: "post",
+    responseType: "blob",
+  });
+}
+
+export function importHysteria2ConfigApi(data: FormData): AxiosPromise {
+  return request({
+    url: "/config/importHysteria2Config",
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data,
+  });
+}
