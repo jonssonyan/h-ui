@@ -1,8 +1,8 @@
 package vo
 
-type LogSystemPage struct {
-	LogSystemVos []LogSystemVo `json:"records"`
-	Total        int64         `json:"total"`
+type LogSystemPage[T LogSystemVo | LogHysteria2Vo] struct {
+	LogSystemVos []T   `json:"records"`
+	Total        int64 `json:"total"`
 }
 
 type LogSystemVo struct {
@@ -17,4 +17,7 @@ type LogSystemVo struct {
 }
 
 type LogHysteria2Vo struct {
+	Level string `json:"level"`
+	Msg   string `json:"msg"`
+	Time  string `json:"time"`
 }

@@ -10,5 +10,8 @@ const (
 
 	Hysteria2ConfigPath = "bin/hysteria2.yaml"
 
+	SystemLogPath    = "logs/h-ui.log"
+	Hysteria2LogPath = "logs/hysteria2.log"
+
 	TokenType = "Bearer"
 )

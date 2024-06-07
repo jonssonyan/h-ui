@@ -4,12 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"h-ui/model/constant"
 	"time"
 )
 
 func InitLog() {
 	logrus.SetOutput(&lumberjack.Logger{
-		Filename:   "logs/h-ui.log",
+		Filename:   constant.SystemLogPath,
 		MaxSize:    1,
 		MaxBackups: 2,
 		MaxAge:     30,

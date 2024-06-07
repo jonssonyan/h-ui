@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"github.com/sirupsen/logrus"
+	"h-ui/model/constant"
 	"io"
 	"os/exec"
 	"sync"
@@ -14,11 +15,7 @@ import (
 var loggerPlus *LoggerPlus
 
 func init() {
-	loggerPlus = NewLoggerPlus("logs/hysteria2.log",
-		1,
-		2,
-		30,
-		true)
+	loggerPlus = NewLoggerPlus(constant.Hysteria2LogPath, 1, 2, 30, true)
 }
 
 type process struct {
