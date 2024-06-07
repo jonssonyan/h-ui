@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
@@ -14,14 +13,12 @@ import (
 )
 
 func main() {
-	config, err := dao.GetConfig("key = ?", constant.HUIWebPort)
-	if err != nil {
-		panic(fmt.Sprintf("webPort get err: %v", err))
-	}
+	defer releaseResource()
 	r := gin.Default()
 	router.Router(r)
-	_ = r.Run(fmt.Sprintf(":%s", *config.Value))
-	defer releaseResource()
+	if err := service.StartServer(r); err != nil {
+		panic(err)
+	}
 }
 
 func init() {

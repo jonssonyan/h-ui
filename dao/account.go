@@ -14,7 +14,7 @@ import (
 
 func SaveAccount(account entity.Account) (int64, error) {
 	if tx := sqliteDB.Save(&account); tx.Error != nil {
-		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		logrus.Errorf("%v", tx.Error)
 		return 0, errors.New(constant.SysError)
 	}
 	return *account.Id, nil
@@ -22,7 +22,7 @@ func SaveAccount(account entity.Account) (int64, error) {
 
 func DeleteAccount(ids []int64) error {
 	if tx := sqliteDB.Where("id in ?", ids).Delete(&entity.Account{}); tx.Error != nil {
-		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		logrus.Errorf("%v", tx.Error)
 		return errors.New(constant.SysError)
 	}
 	return nil
@@ -34,7 +34,7 @@ func UpdateAccount(ids []int64, updates map[string]interface{}) error {
 		if tx := sqliteDB.Model(&entity.Account{}).
 			Where("id in ?", ids).
 			Updates(updates); tx.Error != nil {
-			logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+			logrus.Errorf("%v", tx.Error)
 			return errors.New(constant.SysError)
 		}
 	}
@@ -46,7 +46,7 @@ func UpsertAccount(accounts []entity.Account) error {
 		Columns:   []clause.Column{{Name: "username"}},
 		DoUpdates: clause.AssignmentColumns([]string{"pass", "con_pass", "quota", "download", "upload", "expire_time", "kick_util_time", "device_no", "role", "deleted", "create_time", "update_time"}),
 	}).Create(accounts); tx.Error != nil {
-		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		logrus.Errorf("%v", tx.Error)
 		return errors.New(constant.SysError)
 	}
 	return nil
@@ -65,7 +65,7 @@ func UpdateAccountTraffic(conPass string, download int64, upload int64) error {
 		if tx := sqliteDB.Model(&entity.Account{}).
 			Where("con_pass = ?", conPass).
 			Updates(updates); tx.Error != nil {
-			logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+			logrus.Errorf("%v", tx.Error)
 			return errors.New(constant.SysError)
 		}
 	}
@@ -79,7 +79,7 @@ func GetAccount(query interface{}, args ...interface{}) (entity.Account, error) 
 		if tx.Error == gorm.ErrRecordNotFound {
 			return account, errors.New(constant.AccountNotExist)
 		}
-		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		logrus.Errorf("%v", tx.Error)
 		return account, errors.New(constant.SysError)
 	}
 	return account, nil
@@ -99,7 +99,7 @@ func PageAccount(accountPageDto dto.AccountPageDto) ([]entity.Account, int64, er
 	}
 	tx.Count(&total)
 	if tx := tx.Find(&accounts); tx.Error != nil {
-		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		logrus.Errorf("%v", tx.Error)
 		return accounts, 0, errors.New(constant.SysError)
 	}
 	return accounts, total, nil
@@ -109,7 +109,7 @@ func ListAccount(query interface{}, args ...interface{}) ([]entity.Account, erro
 	var accounts []entity.Account
 	if tx := sqliteDB.Model(&entity.Account{}).
 		Where(query, args...).Order("role,create_time desc").Find(&accounts); tx.Error != nil {
-		logrus.Errorf(fmt.Sprintf("%v", tx.Error))
+		logrus.Errorf("%v", tx.Error)
 		return accounts, errors.New(constant.SysError)
 	}
 	return accounts, nil

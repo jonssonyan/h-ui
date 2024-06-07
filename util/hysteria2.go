@@ -14,7 +14,7 @@ func GetHysteria2BinPath() string {
 }
 
 func GetHysteria2BinName() string {
-	hysteria2FileName := fmt.Sprintf("hysteria2-%s-%s", runtime.GOOS, runtime.GOARCH)
+	hysteria2FileName := fmt.Sprintf("hysteria-%s-%s", runtime.GOOS, runtime.GOARCH)
 	if runtime.GOOS == "windows" {
 		hysteria2FileName += ".exe"
 	}

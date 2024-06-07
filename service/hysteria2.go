@@ -2,12 +2,15 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/constant"
 	"h-ui/proxy"
 	"h-ui/util"
 	"os"
+	"strconv"
+	"strings"
 )
 
 func InitHysteria2() {
@@ -15,20 +18,18 @@ func InitHysteria2() {
 	if !util.Exists(util.GetHysteria2BinPath()) {
 		// 指定版本防止 api 不兼容
 		if err := util.DownloadHysteria2(constant.Hysteria2Version); err != nil {
-			logrus.Errorf("download hysteris2 bin err: %v", err)
-			return
+			panic(fmt.Sprintf("download hysteris2 bin err: %v", err))
 		}
 	}
 
 	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
 	if err != nil {
-		logrus.Errorf("get hysteria2 enable config err: %v", err)
-		return
+		panic(fmt.Sprintf("get hysteria2 enable config err: %v", err))
 	}
 
 	if *config.Value == "1" {
-		if err := StartHysteria2(); err != nil {
-			return
+		if err = StartHysteria2(); err != nil {
+			panic(fmt.Sprintf("start hysteria2 server err: %v", err))
 		}
 	}
 }
@@ -52,6 +53,38 @@ func SetHysteria2ConfigYAML() error {
 }
 
 func StartHysteria2() error {
+	config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
+	if err != nil {
+		return err
+	}
+	if config.Value == nil || *config.Value == "" {
+		return errors.New("hysteria2 config is empty")
+	}
+	hysteria2Config, err := GetHysteria2Config()
+	if err != nil {
+		return err
+	}
+
+	// 代理端口
+	listen, err := strconv.Atoi(strings.Trim(*hysteria2Config.Listen, ":"))
+	if err != nil {
+		return err
+	}
+	listenPortAvailable := util.IsPortAvailable(uint(listen), "udp")
+	if !listenPortAvailable {
+		return errors.New("hysteria port has been used")
+	}
+
+	// api 端口
+	apiPort, err := strconv.Atoi(strings.Trim(*hysteria2Config.TrafficStats.Listen, ":"))
+	if err != nil {
+		return err
+	}
+	apiPortAvailable := util.IsPortAvailable(uint(apiPort), "tcp")
+	if !apiPortAvailable {
+		return errors.New("hysteria api port has been used")
+	}
+
 	// 初始化配置文件
 	if err := SetHysteria2ConfigYAML(); err != nil {
 		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
