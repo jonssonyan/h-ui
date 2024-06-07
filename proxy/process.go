@@ -6,11 +6,20 @@ import (
 	"errors"
 	"github.com/sirupsen/logrus"
 	"io"
-	"log"
 	"os/exec"
 	"sync"
 	"time"
 )
+
+var loggerPlus *LoggerPlus
+
+func init() {
+	loggerPlus = NewLoggerPlus("logs/hysteria2.log",
+		1,
+		2,
+		30,
+		true)
+}
 
 type process struct {
 	mutex *sync.Mutex
@@ -156,13 +165,13 @@ func (p *process) handleLogs(stdout, stderr io.ReadCloser) {
 			if !ok {
 				stdoutChan = nil
 			} else {
-				log.Println(line)
+				loggerPlus.Infof(line)
 			}
 		case line, ok := <-stderrChan:
 			if !ok {
 				stderrChan = nil
 			} else {
-				log.Println(line)
+				loggerPlus.Errorf(line)
 			}
 		}
 
