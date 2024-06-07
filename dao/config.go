@@ -55,7 +55,7 @@ func ListConfig(query interface{}, args ...interface{}) ([]entity.Config, error)
 }
 
 func UpsertConfig(configs []entity.Config) error {
-	if tx := sqliteDB.Model(&entity.Account{}).Clauses(clause.OnConflict{
+	if tx := sqliteDB.Model(&entity.Config{}).Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "key"}},
 		DoUpdates: clause.AssignmentColumns([]string{"value", "remark", "create_time", "update_time"}),
 	}).Create(configs); tx.Error != nil {
