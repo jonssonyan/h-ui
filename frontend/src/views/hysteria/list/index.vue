@@ -8,12 +8,21 @@
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleImport">
-            <template #icon>
-              <i-ep-upload />
-            </template>
-            导入
-          </el-button>
+          <el-upload
+            v-model:file-list="fileList"
+            :http-request="handleImport"
+            :show-file-list="false"
+            accept=".yaml"
+            :limit="1"
+            :before-upload="beforeImport"
+          >
+            <el-button>
+              <template #icon>
+                <i-ep-upload />
+              </template>
+              导入
+            </el-button>
+          </el-upload>
         </el-form-item>
         <el-form-item>
           <el-button @click="handleExport">
@@ -787,9 +796,15 @@ import {
   exportHysteria2ConfigApi,
   getConfigApi,
   getHysteria2ConfigApi,
+  importHysteria2ConfigApi,
 } from "@/api/config";
 import { useI18n } from "vue-i18n";
 import { assignIgnoringNull } from "@/utils/object";
+import {
+  UploadFile,
+  UploadRawFile,
+  UploadRequestOptions,
+} from "element-plus/lib/components";
 
 const { t } = useI18n();
 
@@ -819,6 +834,7 @@ const state = reactive({
   acl: false,
   outbounds: false,
   masquerade: false,
+  fileList: [] as UploadFile[],
 });
 
 const {
@@ -836,6 +852,7 @@ const {
   acl,
   outbounds,
   masquerade,
+  fileList,
 } = toRefs(state);
 
 const tabs = computed(() => {
@@ -897,7 +914,28 @@ const tabs = computed(() => {
   return tabs;
 });
 
-const handleImport = () => {};
+const handleImport = (params: UploadRequestOptions) => {
+  if (state.fileList.length > 0) {
+    let formData = new FormData();
+    formData.append("file", params.file);
+    importHysteria2ConfigApi(formData).then(() => {
+      ElMessage.success("导入成功");
+    });
+    state.fileList = [];
+  }
+};
+
+function beforeImport(file: UploadRawFile) {
+  if (!file.name.endsWith(".yaml")) {
+    ElMessage.error("file format not supported");
+    return false;
+  }
+  if (file.size / 1024 / 1024 > 2) {
+    ElMessage.error("the file is too big, less than 2 MB");
+    return false;
+  }
+}
+
 const handleExport = async () => {
   let response = await exportHysteria2ConfigApi();
   try {

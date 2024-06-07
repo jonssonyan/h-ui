@@ -11,12 +11,21 @@
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleImport">
-            <template #icon>
-              <i-ep-upload />
-            </template>
-            导入
-          </el-button>
+          <el-upload
+            v-model:file-list="fileList"
+            :http-request="handleImport"
+            :show-file-list="false"
+            accept=".json"
+            :limit="1"
+            :before-upload="beforeImport"
+          >
+            <el-button>
+              <template #icon>
+                <i-ep-upload />
+              </template>
+              导入
+            </el-button>
+          </el-upload>
         </el-form-item>
         <el-form-item>
           <el-button @click="handleExport">
@@ -60,10 +69,21 @@
 
 <script setup lang="ts">
 import { Select } from "@element-plus/icons-vue";
-import { exportConfigApi, listConfigApi, updateConfigsApi } from "@/api/config";
+import {
+  exportConfigApi,
+  importConfigApi,
+  importHysteria2ConfigApi,
+  listConfigApi,
+  updateConfigsApi,
+} from "@/api/config";
 import { ConfigsUpdateDto } from "@/api/config/types";
 import type { FormInstance, FormRules } from "element-plus";
-import { validateNumberStr } from "@/utils/validate";
+import {validateIntegerStr, validateNumberStr} from "@/utils/validate";
+import {
+  UploadFile,
+  UploadRawFile,
+  UploadRequestOptions,
+} from "element-plus/lib/components";
 
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
@@ -72,7 +92,7 @@ const formDataRef = ref<FormInstance>();
 const rules = reactive<FormRules>({
   huiWebPort: [
     {
-      validator: validateNumberStr,
+      validator: validateIntegerStr,
       trigger: ["change", "blur"],
     },
   ],
@@ -84,10 +104,15 @@ const rules = reactive<FormRules>({
   ],
 });
 
-const formData = reactive({
-  huiWebPort: "8081",
-  hysteria2TrafficTime: "1",
+const state = reactive({
+  formData: {
+    huiWebPort: "8081",
+    hysteria2TrafficTime: "1",
+  },
+  fileList: [] as UploadFile[],
 });
+
+const { formData, fileList } = toRefs(state);
 
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -96,11 +121,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
       let configs: Array<ConfigsUpdateDto> = [
         {
           key: huiWebPortKey,
-          value: formData.huiWebPort,
+          value: state.formData.huiWebPort,
         },
         {
           key: hysteria2TrafficTimeKey,
-          value: formData.hysteria2TrafficTime,
+          value: state.formData.hysteria2TrafficTime,
         },
       ];
       updateConfigsApi({ configUpdateDtos: configs }).then(() => {
@@ -117,15 +142,34 @@ const setConfig = () => {
     const configVos = response.data;
     configVos.forEach((configVo) => {
       if (configVo.key === huiWebPortKey) {
-        formData.huiWebPort = configVo.value;
+        state.formData.huiWebPort = configVo.value;
       } else if (configVo.key === hysteria2TrafficTimeKey) {
-        formData.hysteria2TrafficTime = configVo.value;
+        state.formData.hysteria2TrafficTime = configVo.value;
       }
     });
   });
 };
 
-const handleImport = () => {};
+const handleImport = (params: UploadRequestOptions) => {
+  if (state.fileList.length > 0) {
+    let formData = new FormData();
+    formData.append("file", params.file);
+    importConfigApi(formData).then(() => {
+      ElMessage.success("导入成功");
+    });
+    state.fileList = [];
+  }
+};
+const beforeImport = (file: UploadRawFile) => {
+  if (!file.name.endsWith(".json")) {
+    ElMessage.error("file format not supported");
+    return false;
+  }
+  if (file.size / 1024 / 1024 > 2) {
+    ElMessage.error("the file is too big, less than 2 MB");
+    return false;
+  }
+};
 
 const handleExport = async () => {
   let response = await exportConfigApi();
