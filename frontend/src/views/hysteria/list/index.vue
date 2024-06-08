@@ -38,12 +38,15 @@
     <el-card shadow="never">
       <el-form ref="enableFormDataRef" :model="enableFormData" inline>
         <el-tooltip :content="$t('hysteria.config.enable')" placement="bottom">
-          <el-form-item :label="$t('hysteria.enable')" prop="enable">
+          <el-form-item prop="enable">
             <el-switch
               v-model="enableFormData.enable"
               active-value="1"
               inactive-value="0"
               @change="handleChangeEnable"
+              :active-text="$t('hysteria.enable')"
+              :inactive-text="$t('hysteria.disable')"
+              size="large"
             />
           </el-form-item>
         </el-tooltip>

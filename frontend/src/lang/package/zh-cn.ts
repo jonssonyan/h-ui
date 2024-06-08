@@ -91,6 +91,7 @@ export default {
   },
   hysteria: {
     enable: "开启",
+    disable: "关闭",
     addConfigItem: "添加配置项",
     addOutbound: "添加出站规则",
     listen: "监听地址",
