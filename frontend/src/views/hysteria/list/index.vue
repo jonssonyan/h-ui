@@ -46,12 +46,17 @@
               @change="handleChangeEnable"
               :active-text="$t('hysteria.enable')"
               :inactive-text="$t('hysteria.disable')"
+              style="height: 32px"
             />
           </el-form-item>
         </el-tooltip>
         <el-form-item>
           <el-dropdown @command="handleDropdownClick">
-            <el-button type="primary" :icon="CirclePlusFilled">
+            <el-button
+              type="primary"
+              :icon="CirclePlusFilled"
+              style="height: 32px"
+            >
               {{ $t("hysteria.addConfigItem") }}
             </el-button>
             <template #dropdown>
@@ -70,6 +75,7 @@
           <el-select
             v-model="hysteria2Version"
             :placeholder="t('hysteria.hysteria2Version')"
+            style="height: 32px"
           >
             <el-option
               v-for="item in hysteria2Versions"
@@ -78,9 +84,30 @@
               :value="item.browserDownloadURL"
             />
           </el-select>
-          <el-button type="primary" @click="handleChangeHysteria2Version"
+          <el-button
+            type="primary"
+            @click="handleChangeHysteria2Version"
+            style="height: 32px"
             >{{ t("hysteria.changeHysteria2Version") }}
           </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-tag type="primary" style="height: 32px">
+            Hysteria2 版本: {{ hysteria2Monitor.version }}
+          </el-tag>
+        </el-form-item>
+        <el-form-item>
+          <el-tag
+            :type="hysteria2Monitor.running ? 'success' : 'error'"
+            style="height: 32px"
+          >
+            Hysteria2 状态:
+            {{
+              hysteria2Monitor.running
+                ? $t("monitor.hysteria2RunningTrue")
+                : $t("monitor.hysteria2RunningFalse")
+            }}
+          </el-tag>
         </el-form-item>
       </el-form>
 
@@ -825,6 +852,7 @@ import {
 } from "element-plus/lib/components";
 import { listReleaseApi } from "@/api/hysteria2";
 import { Hysteria2ReleaseVo } from "@/api/hysteria2/types";
+import { monitorHysteria2Api } from "@/api/monitor";
 
 const { t } = useI18n();
 
@@ -857,6 +885,10 @@ const state = reactive({
   fileList: [] as UploadFile[],
   hysteria2Version: "",
   hysteria2Versions: [] as Hysteria2ReleaseVo[],
+  hysteria2Monitor: {
+    version: "",
+    running: false,
+  },
 });
 
 const {
@@ -877,6 +909,7 @@ const {
   fileList,
   hysteria2Version,
   hysteria2Versions,
+  hysteria2Monitor,
 } = toRefs(state);
 
 const tabs = computed(() => {
@@ -1180,11 +1213,17 @@ const setHysteria2Versions = async () => {
   state.hysteria2Versions = data;
 };
 
+const setHysteria2Monitor = async () => {
+  const { data } = await monitorHysteria2Api();
+  Object.assign(state.hysteria2Monitor, data);
+};
+
 const handleChangeHysteria2Version = async () => {};
 
 onMounted(() => {
   setConfig();
   setHysteria2Versions();
+  setHysteria2Monitor();
 });
 </script>
 
