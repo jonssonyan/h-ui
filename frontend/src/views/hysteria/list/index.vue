@@ -92,13 +92,13 @@
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-tag type="primary" style="height: 32px">
+          <el-tag style="height: 32px">
             Hysteria2 版本: {{ hysteria2Monitor.version }}
           </el-tag>
         </el-form-item>
         <el-form-item>
           <el-tag
-            :type="hysteria2Monitor.running ? 'success' : 'error'"
+            :type="hysteria2Monitor.running ? 'success' : 'danger'"
             style="height: 32px"
           >
             Hysteria2 状态:
@@ -835,13 +835,14 @@ import {
   Hysteria2ServerConfig,
   Tab,
 } from "@/api/config/types";
-import Outbounds from "./components/Outbounds/index.vue";
+import Outbounds from "./components/Outbounds.vue";
 import { CirclePlusFilled, Select } from "@element-plus/icons-vue";
 import {
   exportHysteria2ConfigApi,
   getConfigApi,
   getHysteria2ConfigApi,
   importHysteria2ConfigApi,
+  updateHysteria2ConfigApi,
 } from "@/api/config";
 import { useI18n } from "vue-i18n";
 import { assignIgnoringNull } from "@/utils/object";
@@ -1016,7 +1017,11 @@ const handleExport = async () => {
 
 const handleChangeEnable = () => {};
 const submitForm = () => {
-  console.log(state.formData);
+  const params = { ...state.formData };
+  updateHysteria2ConfigApi(params).then(() => {
+    ElMessage.success("更新成功");
+    setConfig();
+  });
 };
 
 const setConfig = () => {

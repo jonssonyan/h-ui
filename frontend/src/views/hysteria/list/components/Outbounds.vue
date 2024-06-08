@@ -5,7 +5,7 @@
         :key="item"
         v-for="item in outbounds"
         @close="handleClose(item)"
-        @click="handleUpdate(item)"
+        @click="handleInfo(item)"
         size="large"
         closable
       >
@@ -172,6 +172,148 @@
           </div>
         </template>
       </el-dialog>
+
+      <el-dialog
+        :title="outboundInfoDialog.title"
+        v-model="outboundInfoDialog.visible"
+        width="600px"
+        append-to-body
+        @close="outboundInfoDialog.visible = false"
+      >
+        <el-form label-position="top">
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.name')"
+            placement="bottom"
+          >
+            <el-form-item label="name" prop="name">
+              <el-tag>{{ outboundInfo.name }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.type')"
+            placement="bottom"
+          >
+            <el-form-item label="type" prop="type">
+              <el-tag>{{ outboundInfo.type }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.socks5.addr')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="socks5.addr"
+              prop="socks5.addr"
+              v-if="outboundInfo.type === 'socks5'"
+            >
+              <el-tag>{{ outboundInfo.socks5.addr }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.socks5.username')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="socks5.username"
+              prop="outboundInfo.username"
+              v-if="outboundInfo.type === 'socks5'"
+            >
+              <el-tag>{{ outboundInfo.socks5.username }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.socks5.password')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="socks5.password"
+              prop="socks5.password"
+              v-if="outboundInfo.type === 'socks5'"
+            >
+              <el-tag>{{ outboundInfo.socks5.password }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.http.url')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="http.url"
+              prop="http.url"
+              v-if="outboundInfo.type === 'http'"
+            >
+              <el-tag>{{ outboundInfo.http.url }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.http.insecure')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="http.insecure"
+              prop="http.insecure"
+              v-if="outboundInfo.type === 'http'"
+            >
+              <el-tag>{{ outboundInfo.http.insecure }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.direct.mode')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="direct.mode"
+              prop="direct.mode"
+              v-if="outboundInfo.type === 'direct'"
+            >
+              <el-tag>{{ outboundInfo.direct.mode }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.direct.bindIPv4')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="direct.bindIPv4"
+              prop="direct.bindIPv4"
+              v-if="outboundInfo.type === 'direct'"
+            >
+              <el-tag>{{ outboundInfo.direct.bindIPv4 }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.direct.bindIPv6')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="direct.bindIPv6"
+              prop="direct.bindIPv6"
+              v-if="outboundInfo.type === 'direct'"
+            >
+              <el-tag>{{ outboundInfo.direct.bindIPv6 }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.direct.bindDevice')"
+            placement="bottom"
+          >
+            <el-form-item
+              label="direct.bindDevice"
+              prop="direct.bindDevice"
+              v-if="outboundInfo.type === 'direct'"
+            >
+              <el-tag>{{ outboundInfo.direct.bindDevice }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+        </el-form>
+        <template #footer>
+          <div class="dialog-footer">
+            <el-button @click="outboundInfoDialog.visible = false"
+              >{{ $t("common.cancel") }}
+            </el-button>
+          </div>
+        </template>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -205,49 +347,44 @@ const state = reactive({
   formData:
     defaultHysteria2ServerConfigOutbound as Hysteria2ServerConfigOutbound,
   dialog: {
+    title: "Add Outbound",
     visible: false,
   } as DialogType,
+  outboundInfoDialog: {
+    title: "Outbound Info",
+    visible: false,
+  },
+  outboundInfo: {} as Hysteria2ServerConfigOutbound,
 });
 
-const { formData, dialog } = toRefs(state);
+const { formData, dialog, outboundInfoDialog, outboundInfo } = toRefs(state);
 
 const outboundTypes = ["socks5", "http", "direct"];
 
 const outboundDirectModes = ["auto", "64", "46", "6", "4"];
 
-function resetFormData() {
-  Object.assign(state.formData, defaultHysteria2ServerConfigOutbound);
-}
-
 const handleAdd = () => {
-  state.dialog = {
-    title: "Add Outbound",
-    visible: true,
-  };
+  state.dialog.visible = true;
 };
 
 const handleClose = (outbound: Hysteria2ServerConfigOutbound): void => {
-  const index = outbounds.value?.indexOf(outbound);
+  const index = outbounds.value.indexOf(outbound);
   if (index !== -1) {
-    outbounds.value?.splice(index, 1);
+    outbounds.value.splice(index, 1);
   }
 };
 
-const handleUpdate = (outbound: Hysteria2ServerConfigOutbound) => {
-  Object.assign(state.formData, outbound);
-
-  dialog.value = {
-    title: "Update Outbound",
-    visible: true,
-  };
+const handleInfo = (outbound: Hysteria2ServerConfigOutbound) => {
+  state.outboundInfo = outbound;
+  state.outboundInfoDialog.visible = true;
 };
 
+/**
+ * 添加
+ */
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      const title = state.dialog.title;
-
-      // 精简 美化 最终配置文件
       if (state.formData.type === "socks5") {
         state.formData.http = undefined;
         state.formData.direct = undefined;
@@ -260,15 +397,7 @@ const submitForm = () => {
       }
 
       const outbound = { ...state.formData };
-
-      console.log(state.formData);
-      console.log(outbound);
-
-      if (title == "Update Outbound") {
-        console.log("update outbound");
-      } else {
-        outbounds.value?.push(outbound);
-      }
+      outbounds.value.push(outbound);
       closeDialog();
     }
   });
@@ -277,10 +406,6 @@ const closeDialog = (): void => {
   state.dialog.visible = false;
   dataFormRef.value.resetFields();
   dataFormRef.value.clearValidate();
-
-  if (state.dialog.title == "Update Outbound") {
-    resetFormData();
-  }
 };
 </script>
 
