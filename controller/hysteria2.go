@@ -84,7 +84,7 @@ func ListRelease(c *gin.Context) {
 			for _, asset := range item.Assets {
 				if asset.GetName() == util.GetHysteria2BinName() {
 					vos = append(vos, vo.Hysteria2ReleaseVo{
-						TagName:            *item.TagName,
+						TagName:            versionSplit[1],
 						BrowserDownloadURL: asset.GetBrowserDownloadURL(),
 					})
 					break
