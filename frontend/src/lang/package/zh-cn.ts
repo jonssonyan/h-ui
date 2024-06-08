@@ -93,6 +93,8 @@ export default {
     enable: "开启",
     disable: "关闭",
     addConfigItem: "添加配置项",
+    hysteria2Version: "Hysteria2 版本",
+    changeHysteria2Version: "切换",
     addOutbound: "添加出站规则",
     listen: "监听地址",
     tls: "TLS",
