@@ -23,3 +23,8 @@ func Hysteria2AuthFail(id string, c *gin.Context) {
 		Id: id,
 	})
 }
+
+type Hysteria2ReleaseVo struct {
+	TagName            string `json:"tagName"`
+	BrowserDownloadURL string `json:"browserDownloadURL"`
+}

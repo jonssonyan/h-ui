@@ -16,8 +16,8 @@ import (
 func InitHysteria2() {
 	// 初始化 bin
 	if !util.Exists(util.GetHysteria2BinPath()) {
-		// 指定最低版本防止 api 不兼容
-		if err := util.DownloadHysteria2(constant.Hysteria2Version); err != nil {
+		// 下载最新版
+		if err := util.DownloadHysteria2(""); err != nil {
 			panic(fmt.Sprintf("download hysteris2 bin err: %v", err))
 		}
 	}
