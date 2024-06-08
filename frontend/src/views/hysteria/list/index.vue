@@ -46,7 +46,6 @@
               @change="handleChangeEnable"
               :active-text="$t('hysteria.enable')"
               :inactive-text="$t('hysteria.disable')"
-              size="large"
             />
           </el-form-item>
         </el-tooltip>
@@ -66,6 +65,22 @@
               </el-dropdown-menu>
             </template>
           </el-dropdown>
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="hysteria2Version"
+            :placeholder="t('hysteria.hysteria2Version')"
+          >
+            <el-option
+              v-for="item in hysteria2Versions"
+              :key="item.tagName"
+              :label="item.tagName"
+              :value="item.browserDownloadURL"
+            />
+          </el-select>
+          <el-button type="primary" @click="handleChangeHysteria2Version"
+            >{{ t("hysteria.changeHysteria2Version") }}
+          </el-button>
         </el-form-item>
       </el-form>
 
@@ -808,6 +823,8 @@ import {
   UploadRawFile,
   UploadRequestOptions,
 } from "element-plus/lib/components";
+import { listReleaseApi } from "@/api/hysteria2";
+import { Hysteria2ReleaseVo } from "@/api/hysteria2/types";
 
 const { t } = useI18n();
 
@@ -838,6 +855,8 @@ const state = reactive({
   outbounds: false,
   masquerade: false,
   fileList: [] as UploadFile[],
+  hysteria2Version: "",
+  hysteria2Versions: [] as Hysteria2ReleaseVo[],
 });
 
 const {
@@ -856,6 +875,8 @@ const {
   outbounds,
   masquerade,
   fileList,
+  hysteria2Version,
+  hysteria2Versions,
 } = toRefs(state);
 
 const tabs = computed(() => {
@@ -1154,8 +1175,16 @@ const handleDropdownClick = (command: string) => {
   state.activeName = command;
 };
 
+const setHysteria2Versions = async () => {
+  const { data } = await listReleaseApi();
+  state.hysteria2Versions = data;
+};
+
+const handleChangeHysteria2Version = async () => {};
+
 onMounted(() => {
   setConfig();
+  setHysteria2Versions();
 });
 </script>
 
