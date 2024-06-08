@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"h-ui/model/dto"
 	"h-ui/model/vo"
@@ -84,7 +85,7 @@ func ListRelease(c *gin.Context) {
 			for _, asset := range item.Assets {
 				if asset.GetName() == util.GetHysteria2BinName() {
 					vos = append(vos, vo.Hysteria2ReleaseVo{
-						TagName:            versionSplit[1],
+						TagName:            fmt.Sprintf("v%s", versionSplit[1]),
 						BrowserDownloadURL: asset.GetBrowserDownloadURL(),
 					})
 					break
