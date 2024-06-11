@@ -329,7 +329,7 @@ const handleInfo = (outbound: Hysteria2ServerConfigOutbound) => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      if (outbounds.value.some((item) => item.name === formData.value.name)) {
+      if (outbounds.value.some((item) => item.name === state.formData.name)) {
         ElMessage.error("name 重复");
         return;
       }
