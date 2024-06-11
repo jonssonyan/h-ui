@@ -269,11 +269,12 @@ import {
   defaultHysteria2ServerConfigOutbound,
   Hysteria2ServerConfigOutbound,
 } from "@/api/config/types";
+import { PropType } from "vue";
 
 const props = defineProps({
   outbounds: {
     required: true,
-    type: Array,
+    type: Array as PropType<Array<Hysteria2ServerConfigOutbound>>,
     default: () => [],
   },
 });
@@ -331,18 +332,13 @@ const handleInfo = (outbound: Hysteria2ServerConfigOutbound) => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      // 简化配置文件
-      if (state.formData.type === "socks5") {
-        state.formData.http = undefined;
-        state.formData.direct = undefined;
-      } else if (state.formData.type === "http") {
-        state.formData.socks5 = undefined;
-        state.formData.direct = undefined;
-      } else if (state.formData.type === "direct") {
-        state.formData.socks5 = undefined;
-        state.formData.http = undefined;
+      const array = outbounds.value;
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].name === state.formData.name) {
+          ElMessage.error("name 重复");
+          return;
+        }
       }
-
       const outbound = { ...state.formData };
       outbounds.value.push(outbound);
       closeDialog();
