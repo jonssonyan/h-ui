@@ -159,7 +159,7 @@ export interface Hysteria2ServerConfigOutbound {
 export const defaultHysteria2ServerConfigOutbound: Hysteria2ServerConfigOutbound =
   {
     name: "",
-    type: "",
+    type: "socks5",
     socks5: {
       addr: "",
       username: undefined,
