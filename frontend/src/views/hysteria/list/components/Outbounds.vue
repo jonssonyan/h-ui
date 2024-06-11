@@ -45,94 +45,91 @@
               </el-select>
             </el-form-item>
           </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.socks5.addr')"
-            placement="bottom"
-            v-if="formData.type === 'socks5'"
-          >
-            <el-form-item label="socks5.addr" prop="socks5.addr">
-              <el-input v-model="formData.socks5.addr" clearable />
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.socks5.username')"
-            placement="bottom"
-            v-if="formData.type === 'socks5'"
-          >
-            <el-form-item label="socks5.username" prop="socks5.username">
-              <el-input v-model="formData.socks5.username" clearable />
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.socks5.password')"
-            placement="bottom"
-            v-if="formData.type === 'socks5'"
-          >
-            <el-form-item label="socks5.password" prop="socks5.password">
-              <el-input v-model="formData.socks5.password" clearable />
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.http.url')"
-            placement="bottom"
-            v-if="formData.type === 'http'"
-          >
-            <el-form-item label="http.url" prop="http.url">
-              <el-input v-model="formData.http.url" clearable />
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.http.insecure')"
-            placement="bottom"
-            v-if="formData.type === 'http'"
-          >
-            <el-form-item label="http.insecure" prop="http.insecure">
-              <el-switch v-model="formData.http.insecure" />
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.direct.mode')"
-            placement="bottom"
-            v-if="formData.type === 'direct'"
-          >
-            <el-form-item label="direct.mode" prop="direct.mode">
-              <el-select v-model="formData.direct.mode" style="width: 100%">
-                <el-option
-                  v-for="item in outboundDirectModes"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                />
-              </el-select>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.direct.bindIPv4')"
-            placement="bottom"
-            v-if="formData.type === 'direct'"
-          >
-            <el-form-item label="direct.bindIPv4" prop="direct.bindIPv4">
-              <el-input v-model="formData.direct.bindIPv4" clearable />
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.direct.bindIPv6')"
-            placement="bottom"
-            v-if="formData.type === 'direct'"
-          >
-            <el-form-item label="direct.bindIPv6" prop="direct.bindIPv6">
-              <el-input v-model="formData.direct.bindIPv6" clearable />
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.direct.bindDevice')"
-            placement="bottom"
-            v-if="formData.type === 'direct'"
-          >
-            <el-form-item label="direct.bindDevice" prop="direct.bindDevice">
-              <el-input v-model="formData.direct.bindDevice" clearable />
-            </el-form-item>
-          </el-tooltip>
+          <template v-if="formData.type === 'socks5'">
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.socks5.addr')"
+              placement="bottom"
+            >
+              <el-form-item label="socks5.addr" prop="socks5.addr">
+                <el-input v-model="formData.socks5.addr" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.socks5.username')"
+              placement="bottom"
+            >
+              <el-form-item label="socks5.username" prop="socks5.username">
+                <el-input v-model="formData.socks5.username" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.socks5.password')"
+              placement="bottom"
+            >
+              <el-form-item label="socks5.password" prop="socks5.password">
+                <el-input v-model="formData.socks5.password" clearable />
+              </el-form-item>
+            </el-tooltip>
+          </template>
+          <template v-if="formData.type === 'http'">
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.http.url')"
+              placement="bottom"
+            >
+              <el-form-item label="http.url" prop="http.url">
+                <el-input v-model="formData.http.url" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.http.insecure')"
+              placement="bottom"
+            >
+              <el-form-item label="http.insecure" prop="http.insecure">
+                <el-switch v-model="formData.http.insecure" />
+              </el-form-item>
+            </el-tooltip>
+          </template>
+          <template v-if="formData.type === 'direct'">
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.direct.mode')"
+              placement="bottom"
+            >
+              <el-form-item label="direct.mode" prop="direct.mode">
+                <el-select v-model="formData.direct.mode" style="width: 100%">
+                  <el-option
+                    v-for="item in outboundDirectModes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.direct.bindIPv4')"
+              placement="bottom"
+            >
+              <el-form-item label="direct.bindIPv4" prop="direct.bindIPv4">
+                <el-input v-model="formData.direct.bindIPv4" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.direct.bindIPv6')"
+              placement="bottom"
+            >
+              <el-form-item label="direct.bindIPv6" prop="direct.bindIPv6">
+                <el-input v-model="formData.direct.bindIPv6" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.direct.bindDevice')"
+              placement="bottom"
+            >
+              <el-form-item label="direct.bindDevice" prop="direct.bindDevice">
+                <el-input v-model="formData.direct.bindDevice" clearable />
+              </el-form-item>
+            </el-tooltip>
+          </template>
         </el-form>
         <template #footer>
           <div class="dialog-footer">
@@ -170,87 +167,87 @@
               <el-tag>{{ outboundInfo.type }}</el-tag>
             </el-form-item>
           </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.socks5.addr')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'socks5'"
-          >
-            <el-form-item label="socks5.addr" prop="socks5.addr">
-              <el-tag>{{ outboundInfo.socks5.addr }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.socks5.username')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'socks5'"
-          >
-            <el-form-item label="socks5.username" prop="outboundInfo.username">
-              <el-tag>{{ outboundInfo.socks5.username }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.socks5.password')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'socks5'"
-          >
-            <el-form-item label="socks5.password" prop="socks5.password">
-              <el-tag>{{ outboundInfo.socks5.password }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.http.url')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'http'"
-          >
-            <el-form-item label="http.url" prop="http.url">
-              <el-tag>{{ outboundInfo.http.url }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.http.insecure')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'http'"
-          >
-            <el-form-item label="http.insecure" prop="http.insecure">
-              <el-tag>{{ outboundInfo.http.insecure }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.direct.mode')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'direct'"
-          >
-            <el-form-item label="direct.mode" prop="direct.mode">
-              <el-tag>{{ outboundInfo.direct.mode }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.direct.bindIPv4')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'direct'"
-          >
-            <el-form-item label="direct.bindIPv4" prop="direct.bindIPv4">
-              <el-tag>{{ outboundInfo.direct.bindIPv4 }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.direct.bindIPv6')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'direct'"
-          >
-            <el-form-item label="direct.bindIPv6" prop="direct.bindIPv6">
-              <el-tag>{{ outboundInfo.direct.bindIPv6 }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
-          <el-tooltip
-            :content="$t('hysteria.config.outbounds.direct.bindDevice')"
-            placement="bottom"
-            v-if="outboundInfo.type === 'direct'"
-          >
-            <el-form-item label="direct.bindDevice" prop="direct.bindDevice">
-              <el-tag>{{ outboundInfo.direct.bindDevice }}</el-tag>
-            </el-form-item>
-          </el-tooltip>
+          <template v-if="outboundInfo.type === 'socks5'">
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.socks5.addr')"
+              placement="bottom"
+            >
+              <el-form-item label="socks5.addr" prop="socks5.addr">
+                <el-tag>{{ outboundInfo.socks5.addr }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.socks5.username')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="socks5.username"
+                prop="outboundInfo.username"
+              >
+                <el-tag>{{ outboundInfo.socks5.username }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.socks5.password')"
+              placement="bottom"
+            >
+              <el-form-item label="socks5.password" prop="socks5.password">
+                <el-tag>{{ outboundInfo.socks5.password }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+          </template>
+          <template v-if="outboundInfo.type === 'http'">
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.http.url')"
+              placement="bottom"
+            >
+              <el-form-item label="http.url" prop="http.url">
+                <el-tag>{{ outboundInfo.http.url }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.http.insecure')"
+              placement="bottom"
+            >
+              <el-form-item label="http.insecure" prop="http.insecure">
+                <el-tag>{{ outboundInfo.http.insecure }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+          </template>
+          <template v-if="outboundInfo.type === 'direct'">
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.direct.mode')"
+              placement="bottom"
+            >
+              <el-form-item label="direct.mode" prop="direct.mode">
+                <el-tag>{{ outboundInfo.direct.mode }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.direct.bindIPv4')"
+              placement="bottom"
+            >
+              <el-form-item label="direct.bindIPv4" prop="direct.bindIPv4">
+                <el-tag>{{ outboundInfo.direct.bindIPv4 }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.direct.bindIPv6')"
+              placement="bottom"
+            >
+              <el-form-item label="direct.bindIPv6" prop="direct.bindIPv6">
+                <el-tag>{{ outboundInfo.direct.bindIPv6 }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.outbounds.direct.bindDevice')"
+              placement="bottom"
+            >
+              <el-form-item label="direct.bindDevice" prop="direct.bindDevice">
+                <el-tag>{{ outboundInfo.direct.bindDevice }}</el-tag>
+              </el-form-item>
+            </el-tooltip>
+          </template>
         </el-form>
         <template #footer>
           <div class="dialog-footer">
