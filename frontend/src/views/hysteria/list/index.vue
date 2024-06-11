@@ -870,7 +870,7 @@ const state = reactive({
   enableFormData: {
     enable: "0",
   },
-  formData: defaultHysteria2ServerConfig as Hysteria2ServerConfig,
+  formData: { ...defaultHysteria2ServerConfig } as Hysteria2ServerConfig,
   activeName: "listen",
   tlsType: "acme",
   aclType: "inline",

@@ -288,8 +288,9 @@ const outbounds = useVModel(props, "outbounds", emit);
 const dataFormRef = ref(ElForm);
 
 const state = reactive({
-  formData:
-    defaultHysteria2ServerConfigOutbound as Hysteria2ServerConfigOutbound,
+  formData: {
+    ...defaultHysteria2ServerConfigOutbound,
+  } as Hysteria2ServerConfigOutbound,
   dialog: {
     title: "Add Outbound",
     visible: false,
