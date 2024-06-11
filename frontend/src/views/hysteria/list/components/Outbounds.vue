@@ -275,7 +275,7 @@ const props = defineProps({
   outbounds: {
     required: true,
     type: Array as PropType<Array<Hysteria2ServerConfigOutbound>>,
-    default: () => [],
+    default: (): Hysteria2ServerConfigOutbound[] => [],
   },
 });
 
@@ -332,15 +332,11 @@ const handleInfo = (outbound: Hysteria2ServerConfigOutbound) => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      const array = outbounds.value;
-      for (let i = 0; i < array.length; i++) {
-        if (array[i].name === state.formData.name) {
-          ElMessage.error("name 重复");
-          return;
-        }
+      if (outbounds.value.some((item) => item.name === formData.value.name)) {
+        ElMessage.error("name 重复");
+        return;
       }
-      const outbound = { ...state.formData };
-      outbounds.value.push(outbound);
+      outbounds.value.push({ ...state.formData });
       closeDialog();
     }
   });
