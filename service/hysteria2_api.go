@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"github.com/gin-gonic/gin"
 	"h-ui/dao"
 	"h-ui/model/constant"
 	"h-ui/proxy"
@@ -75,4 +76,17 @@ func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
 		return err
 	}
 	return nil
+}
+
+func Hysteria2Url(c *gin.Context) (string, error) {
+	//accountInfo, err := GetAccountInfo(c)
+	//if err != nil {
+	//	return "", err
+	//}
+	//hysteria2Config, err := GetHysteria2Config()
+	//if err != nil {
+	//	return "", err
+	//}
+	hysteria2Url := "hysteria2://"
+	return hysteria2Url, nil
 }

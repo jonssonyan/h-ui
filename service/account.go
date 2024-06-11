@@ -2,12 +2,14 @@ package service
 
 import (
 	"errors"
+	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/entity"
+	"h-ui/model/vo"
 )
 
 func Login(username string, pass string) (string, error) {
@@ -120,4 +122,19 @@ func ReleaseKickAccount(id int64) error {
 
 func UpsertAccount(accounts []entity.Account) error {
 	return dao.UpsertAccount(accounts)
+}
+
+func GetAccountInfo(c *gin.Context) (vo.AccountInfoVo, error) {
+	myClaims, err := ParseToken(GetToken(c))
+	if err != nil {
+		return vo.AccountInfoVo{}, err
+	}
+	if myClaims.AccountBo.Deleted != 0 {
+		return vo.AccountInfoVo{}, errors.New("this account has been disabled")
+	}
+	return vo.AccountInfoVo{
+		Id:       myClaims.AccountBo.Id,
+		Username: myClaims.AccountBo.Username,
+		Roles:    myClaims.AccountBo.Roles,
+	}, nil
 }

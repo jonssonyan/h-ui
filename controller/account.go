@@ -198,19 +198,10 @@ func UpdateAccount(c *gin.Context) {
 }
 
 func GetAccountInfo(c *gin.Context) {
-	myClaims, err := service.ParseToken(service.GetToken(c))
+	accountInfoVo, err := service.GetAccountInfo(c)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
-	}
-	if myClaims.AccountBo.Deleted != 0 {
-		vo.Fail("this account has been disabled", c)
-		return
-	}
-	accountInfoVo := vo.AccountInfoVo{
-		Id:       myClaims.AccountBo.Id,
-		Username: myClaims.AccountBo.Username,
-		Roles:    myClaims.AccountBo.Roles,
 	}
 	vo.Success(accountInfoVo, c)
 }
