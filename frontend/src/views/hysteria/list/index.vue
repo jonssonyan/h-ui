@@ -833,6 +833,7 @@
 import {
   defaultHysteria2ServerConfig,
   Hysteria2ServerConfig,
+  Hysteria2ServerConfigOutbound,
   Tab,
 } from "@/api/config/types";
 import Outbounds from "./components/Outbounds.vue";
@@ -1187,7 +1188,7 @@ const handleDropdownClick = (command: string) => {
     };
     state.acl = true;
   } else if (command === "outbounds") {
-    state.formData.outbounds = [];
+    state.formData.outbounds = [] as Hysteria2ServerConfigOutbound[];
     state.outbounds = true;
   } else if (command === "masquerade") {
     state.formData.masquerade = {

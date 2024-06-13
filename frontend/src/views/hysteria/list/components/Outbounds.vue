@@ -272,7 +272,7 @@ const props = defineProps({
   outbounds: {
     required: true,
     type: Array as PropType<Array<Hysteria2ServerConfigOutbound>>,
-    default: (): Hysteria2ServerConfigOutbound[] => [],
+    default: (): Array<Hysteria2ServerConfigOutbound> => [],
   },
 });
 
