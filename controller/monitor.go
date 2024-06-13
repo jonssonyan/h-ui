@@ -49,18 +49,13 @@ func MonitorHysteria2(c *gin.Context) {
 	}
 
 	content, err := util.Exec(fmt.Sprintf("%s version", util.GetHysteria2BinPath()))
-	if err != nil {
-		vo.Fail(err.Error(), c)
-		return
-	}
-
-	pattern := `v\d+\.\d+\.\d+`
-	re := regexp.MustCompile(pattern)
-	matches := re.FindAllString(content, -1)
-	version := ""
-	if len(matches) > 0 {
-		version = matches[0]
-		hysteria2MonitorVo.Version = version
+	if err == nil {
+		pattern := `v\d+\.\d+\.\d+`
+		re := regexp.MustCompile(pattern)
+		matches := re.FindAllString(content, -1)
+		if len(matches) > 0 {
+			hysteria2MonitorVo.Version = matches[0]
+		}
 	}
 
 	running := service.Hysteria2Status()
