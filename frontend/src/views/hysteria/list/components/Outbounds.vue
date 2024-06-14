@@ -267,6 +267,7 @@ import {
   Hysteria2ServerConfigOutbound,
 } from "@/api/config/types";
 import { PropType } from "vue";
+import { deepCopy } from "@/utils/object";
 
 const props = defineProps({
   outbounds: {
@@ -334,7 +335,8 @@ const submitForm = () => {
         ElMessage.error("name 重复");
         return;
       }
-      outbounds.value.push({ ...state.formData });
+      const outbound = deepCopy(state.formData);
+      outbounds.value.push(outbound);
       closeDialog();
     }
   });
