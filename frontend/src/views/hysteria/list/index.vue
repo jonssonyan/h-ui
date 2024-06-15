@@ -72,28 +72,30 @@
           </el-dropdown>
         </el-form-item>
         <el-form-item>
-          <el-select
-            v-model="hysteria2Version"
-            :placeholder="t('hysteria.hysteria2Version')"
-            style="height: 32px"
-          >
-            <el-option
-              v-for="item in hysteria2Versions"
-              :key="item.tagName"
-              :label="item.tagName"
-              :value="item.browserDownloadURL"
-            />
-          </el-select>
-          <el-button
-            type="primary"
-            @click="handleHysteria2ChangeVersion"
-            style="height: 32px"
-            >{{ t("hysteria.hysteria2ChangeVersion") }}
-          </el-button>
+          <div style="display: flex; align-items: center">
+            <el-select
+              v-model="hysteria2Version"
+              :placeholder="$t('hysteria.hysteria2Version')"
+              style="height: 32px; width: 150px"
+            >
+              <el-option
+                v-for="item in hysteria2Versions"
+                :key="item.tagName"
+                :label="item.tagName"
+                :value="item.browserDownloadURL"
+              />
+            </el-select>
+            <el-button
+              type="primary"
+              @click="handleHysteria2ChangeVersion"
+              style="height: 32px"
+              >{{ $t("hysteria.hysteria2ChangeVersion") }}
+            </el-button>
+          </div>
         </el-form-item>
         <el-form-item>
           <el-tag style="height: 32px">
-            {{ t("hysteria.hysteria2Version") }}:
+            {{ $t("hysteria.hysteria2Version") }}:
             {{ hysteria2Monitor.version }}
           </el-tag>
         </el-form-item>
@@ -102,7 +104,7 @@
             :type="hysteria2Monitor.running ? 'success' : 'danger'"
             style="height: 32px"
           >
-            {{ t("hysteria.hysteria2Running") }}:
+            {{ $t("hysteria.hysteria2Running") }}:
             {{
               hysteria2Monitor.running
                 ? $t("monitor.hysteria2RunningTrue")

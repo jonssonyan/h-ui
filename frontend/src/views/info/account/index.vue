@@ -21,10 +21,10 @@
         <el-col :span="16" :xs="24">
           <div class="flex h-full items-center">
             <el-button type="primary" :icon="Share" @click="handleSubscribe">
-              {{ t("common.subscribe") }}
+              {{ $t("common.subscribe") }}
             </el-button>
             <el-button type="primary" :icon="Share" @click="handleNodeUrl">
-              {{ t("common.nodeUrl") }}
+              {{ $t("common.nodeUrl") }}
             </el-button>
           </div>
         </el-col>
