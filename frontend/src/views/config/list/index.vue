@@ -168,6 +168,8 @@ const handleImport = async (params: UploadRequestOptions) => {
       state.fileList = [];
     } catch (e) {
       ElMessage.success(t("common.exportError"));
+    } finally {
+      await setConfig();
     }
   }
 };

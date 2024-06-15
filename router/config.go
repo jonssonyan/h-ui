@@ -11,7 +11,7 @@ func initConfigRouter(configApi *gin.RouterGroup) {
 		config.POST("/updateConfig", controller.UpdateConfig)
 		config.POST("/updateConfigs", controller.UpdateConfigs)
 		config.GET("/getConfig", controller.GetConfig)
-		config.GET("/listConfig", controller.ListConfig)
+		config.POST("/listConfig", controller.ListConfig)
 		config.GET("/getHysteria2Config", controller.GetHysteria2Config)
 		config.POST("/updateHysteria2Config", controller.UpdateHysteria2Config)
 		config.POST("/exportConfig", controller.ExportConfig)
