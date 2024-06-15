@@ -36,8 +36,8 @@
           </span>
           <el-input
             class="flex-1"
-            v-model="loginForm.password"
-            :placeholder="$t('login.username')"
+            v-model="loginForm.pass"
+            :placeholder="$t('login.password')"
             :type="passVisible === false ? 'password' : 'input'"
             size="large"
             name="pass"
