@@ -187,8 +187,23 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="$t('common.operate')" align="left" width="200">
+        <el-table-column :label="$t('common.operate')" align="left" width="300">
           <template #default="scope">
+            <el-dropdown @command="handleSubscribe(scope.row)">
+              <el-button type="primary" link
+                >{{ $t("common.subscribe") }}
+              </el-button>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>Shadowrocket</el-dropdown-item>
+                  <el-dropdown-item>v2rayN</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+
+            <el-button type="primary" link @click="handleNodeUrl(scope.row)"
+              >{{ $t("common.nodeUrl") }}
+            </el-button>
             <el-button type="primary" link @click="handleUpdate(scope.row)"
               >{{ $t("common.edit") }}
             </el-button>
@@ -363,7 +378,7 @@ import {
 } from "@/utils/time";
 import { formatBytes } from "@/utils/byte";
 import i18n from "@/lang";
-import { hysteria2KickApi } from "@/api/hysteria2";
+import { hysteria2KickApi, hysteria2UrlApi } from "@/api/hysteria2";
 import { UploadUserFile } from "element-plus";
 import {
   UploadFile,
@@ -371,8 +386,12 @@ import {
   UploadRawFile,
   UploadRequestOptions,
 } from "element-plus/lib/components";
+import { useI18n } from "vue-i18n";
+import { Hysteria2UrlDto } from "@/api/hysteria2/types";
+import copy from "copy-to-clipboard";
 
-const { t } = i18n.global;
+const { t } = useI18n();
+
 const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
 const kickFormRef = ref(ElForm); // 下线表单
@@ -656,6 +675,22 @@ const handleExport = () => {
     window.URL.revokeObjectURL(url);
     ElMessage.success("导出成功");
   });
+};
+
+const handleSubscribe = async (row: { [key: string]: any }) => {};
+
+const handleNodeUrl = async (row: { [key: string]: any }) => {
+  try {
+    const dto: Hysteria2UrlDto = {
+      accountId: row.id,
+      hostname: window.location.hostname,
+    };
+    const { data } = await hysteria2UrlApi(dto);
+    copy(data);
+    ElMessage.success(t("common.copySuccess"));
+  } catch (e) {
+    ElMessage.success(t("common.copyError"));
+  }
 };
 
 onMounted(() => {

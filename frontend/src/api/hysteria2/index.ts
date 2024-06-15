@@ -4,6 +4,7 @@ import request from "@/utils/request";
 import {
   Hysteria2KickDto,
   Hysteria2ReleaseVo,
+  Hysteria2UrlDto,
   Hysteria2VersionDto,
 } from "@/api/hysteria2/types";
 
@@ -17,11 +18,11 @@ export function hysteria2KickApi(
   });
 }
 
-export function changeHysteria2VersionApi(
+export function hysteria2ChangeVersionApi(
   data: Hysteria2VersionDto
 ): AxiosPromise {
   return request({
-    url: "/hysteria2/changeHysteria2Version",
+    url: "/hysteria2/hysteria2ChangeVersion",
     method: "post",
     data: data,
   });
@@ -34,9 +35,10 @@ export function listReleaseApi(): AxiosPromise<Hysteria2ReleaseVo[]> {
   });
 }
 
-export function hysteria2UrlApi(): AxiosPromise<string> {
+export function hysteria2UrlApi(dto: Hysteria2UrlDto): AxiosPromise<string> {
   return request({
     url: "/hysteria2/hysteria2Url",
     method: "get",
+    params: dto,
   });
 }

@@ -86,9 +86,9 @@
           </el-select>
           <el-button
             type="primary"
-            @click="handleChangeHysteria2Version"
+            @click="handleHysteria2ChangeVersion"
             style="height: 32px"
-            >{{ t("hysteria.changeHysteria2Version") }}
+            >{{ t("hysteria.hysteria2ChangeVersion") }}
           </el-button>
         </el-form-item>
         <el-form-item>
@@ -1224,7 +1224,7 @@ const setHysteria2Monitor = async () => {
   Object.assign(state.hysteria2Monitor, data);
 };
 
-const handleChangeHysteria2Version = async () => {};
+const handleHysteria2ChangeVersion = async () => {};
 
 onMounted(() => {
   setConfig();

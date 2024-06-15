@@ -20,9 +20,9 @@
 
         <el-col :span="16" :xs="24">
           <div class="flex h-full items-center">
-            <el-dropdown>
-              <el-button size="large" type="primary" :icon="Share">
-                订 阅 链 接
+            <el-dropdown @command="handleSubscribe">
+              <el-button type="primary" :icon="Share">
+                {{ t("common.subscribe") }}
               </el-button>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -32,8 +32,8 @@
               </template>
             </el-dropdown>
 
-            <el-button size="large" type="primary" :icon="Share" @click="nodeUrl">
-              节 点 URL
+            <el-button type="primary" :icon="Share" @click="handleNodeUrl">
+              {{ t("common.nodeUrl") }}
             </el-button>
           </div>
         </el-col>
@@ -130,6 +130,12 @@ import { useAccountStore } from "@/store/modules/account";
 import { timestampToDateTime } from "@/utils/time";
 import { formatBytes, formatStorageUnit } from "@/utils/byte";
 import { Share } from "@element-plus/icons-vue";
+import { useI18n } from "vue-i18n";
+import { Hysteria2UrlDto } from "@/api/hysteria2/types";
+import { hysteria2UrlApi } from "@/api/hysteria2";
+import copy from "copy-to-clipboard";
+
+const { t } = useI18n();
 
 const accountStore = useAccountStore();
 
@@ -148,6 +154,7 @@ const greetings = computed(() => {
   } else if (hours >= 0 && hours < 6) {
     return "我愿成为流星，划破黑夜，只为照亮你的梦境，晚安🌛！";
   }
+  return "Hello H UI";
 });
 
 const state = reactive({
@@ -156,15 +163,27 @@ const state = reactive({
 
 const { account } = toRefs(state);
 
+const handleSubscribe = () => {};
+
+const handleNodeUrl = async () => {
+  try {
+    const dto: Hysteria2UrlDto = {
+      accountId: accountStore.id,
+      hostname: window.location.hostname,
+    };
+    const { data } = await hysteria2UrlApi(dto);
+    copy(data);
+    ElMessage.success(t("common.copySuccess"));
+  } catch (e) {
+    ElMessage.success(t("common.copyError"));
+  }
+};
+
 onMounted(() => {
   getAccountApi({ id: accountStore.id }).then((response) => {
     Object.assign(state.account, response.data);
   });
 });
-
-const nodeUrl = () =>{
-
-}
 </script>
 
 <style lang="scss" scoped>
