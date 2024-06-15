@@ -33,3 +33,10 @@ export function listReleaseApi(): AxiosPromise<Hysteria2ReleaseVo[]> {
     method: "get",
   });
 }
+
+export function hysteria2UrlApi(): AxiosPromise<string> {
+  return request({
+    url: "/hysteria2/hysteria2Url",
+    method: "get",
+  });
+}

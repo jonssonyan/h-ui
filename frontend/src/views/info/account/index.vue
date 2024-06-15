@@ -32,7 +32,7 @@
               </template>
             </el-dropdown>
 
-            <el-button size="large" type="primary" :icon="Share">
+            <el-button size="large" type="primary" :icon="Share" @click="nodeUrl">
               节 点 URL
             </el-button>
           </div>
@@ -161,6 +161,10 @@ onMounted(() => {
     Object.assign(state.account, response.data);
   });
 });
+
+const nodeUrl = () =>{
+
+}
 </script>
 
 <style lang="scss" scoped>

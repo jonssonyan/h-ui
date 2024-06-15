@@ -3,10 +3,10 @@
  * @param target
  * @param sources
  */
-export function assignIgnoringNull<T extends object>(
+export const assignIgnoringNull = <T extends object>(
   target: T,
   ...sources: (Partial<T> | null | undefined)[]
-): T {
+): T => {
   sources.forEach((source) => {
     if (source) {
       Object.keys(source).forEach((key) => {
@@ -18,7 +18,7 @@ export function assignIgnoringNull<T extends object>(
     }
   });
   return target;
-}
+};
 
 /**
  * 深拷贝

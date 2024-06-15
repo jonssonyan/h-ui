@@ -446,7 +446,7 @@ const shortcutsKick = [
   },
 ];
 
-function resetFormData() {
+const resetFormData = () => {
   Object.assign(state.formData, {
     id: undefined,
     quota: 0,
@@ -454,42 +454,42 @@ function resetFormData() {
     deleted: 0,
   });
   quotaTmp.value = 0;
-}
+};
 
 /**
  * 查询
  */
-function handleQuery() {
+const handleQuery = () => {
   state.loading = true;
   pageAccountApi(state.queryParams).then(({ data }) => {
     state.records = data.records;
     state.total = data.total;
     state.loading = false;
   });
-}
+};
 
 /**
  * 重置
  */
-function resetQuery() {
+const resetQuery = () => {
   queryFormRef.value.resetFields();
   handleQuery();
-}
+};
 
 /**
  * 保存
  **/
-async function handleAdd() {
+const handleAdd = () => {
   state.dialog = {
     title: "添加用户",
     visible: true,
   };
-}
+};
 
 /**
  * 修改
  **/
-async function handleUpdate(row: { [key: string]: any }) {
+const handleUpdate = (row: { [key: string]: any }) => {
   const id = row.id;
   getAccountApi({ id: id }).then(({ data }) => {
     Object.assign(formData.value, data);
@@ -500,12 +500,12 @@ async function handleUpdate(row: { [key: string]: any }) {
     title: "修改用户",
     visible: true,
   };
-}
+};
 
 /**
  * 表单提交
  */
-function submitForm() {
+const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
       const accountId = state.formData.id;
@@ -525,12 +525,12 @@ function submitForm() {
       }
     }
   });
-}
+};
 
 /**
  * 下线表单提交
  */
-function submitKickForm() {
+const submitKickForm = () => {
   dataFormKickRef.value.validate((valid: any) => {
     if (valid) {
       const params = { ...state.dataFormKick };
@@ -541,12 +541,12 @@ function submitKickForm() {
       });
     }
   });
-}
+};
 
 /**
  * 删除
  */
-function handleDelete(row: { [key: string]: any }) {
+const handleDelete = (row: { [key: string]: any }) => {
   const id = row.id;
   const username = row.username;
   ElMessageBox.confirm(
@@ -558,42 +558,42 @@ function handleDelete(row: { [key: string]: any }) {
       type: "warning",
     }
   )
-    .then(function () {
+    .then(() => {
       deleteAccountApi({ id: id }).then(() => {
         ElMessage.success("删除成功");
         handleQuery();
       });
     })
     .catch(() => ElMessage.info("已取消删除"));
-}
+};
 
 /**
  * 强制用户下线
  * @param row
  */
-function handleKick(row: { [key: string]: any }) {
+const handleKick = (row: { [key: string]: any }) => {
   state.dataFormKick.ids = [row.id];
   dialogKick.value = {
     title: t("common.kickTip"),
     visible: true,
   };
-}
+};
 
 /**
  * 解除下线状态
  * @param row
  */
-function confirmReleaseKick(row: { [key: string]: any }) {
+const confirmReleaseKick = (row: { [key: string]: any }) => {
   releaseKickAccountApi({ id: row.id }).then(() => {
     ElMessage.success("解除成功");
     handleQuery();
   });
-}
+};
 
 /**
  * 关闭用户弹窗
  */
-function closeDialog() {
+const closeDialog = () => {
   dialog.value.visible = false;
   dataFormRef.value.resetFields();
   dataFormRef.value.clearValidate();
@@ -601,21 +601,21 @@ function closeDialog() {
   if (dialog.value.title == "修改用户") {
     resetFormData();
   }
-}
+};
 
 /**
  * 关闭下线弹窗
  */
-function closeDialogKick() {
+const closeDialogKick = () => {
   dialogKick.value.visible = false;
   dataFormKickRef.value.resetFields();
   dataFormKickRef.value.clearValidate();
-}
+};
 
 /**
  * 导入
  */
-function handleImport(params: UploadRequestOptions) {
+const handleImport = (params: UploadRequestOptions) => {
   if (state.fileList.length > 0) {
     let formData = new FormData();
     formData.append("file", params.file);
@@ -624,9 +624,9 @@ function handleImport(params: UploadRequestOptions) {
     });
     state.fileList = [];
   }
-}
+};
 
-function beforeImport(file: UploadRawFile) {
+const beforeImport = (file: UploadRawFile) => {
   if (!file.name.endsWith(".json")) {
     ElMessage.error("file format not supported");
     return false;
@@ -635,12 +635,12 @@ function beforeImport(file: UploadRawFile) {
     ElMessage.error("the file is too big, less than 2 MB");
     return false;
   }
-}
+};
 
 /**
  * 导出
  */
-function handleExport() {
+const handleExport = () => {
   exportAccountApi().then((res) => {
     const blob = new Blob([res.data], {
       type: "application/octet-stream",
@@ -656,7 +656,7 @@ function handleExport() {
     window.URL.revokeObjectURL(url);
     ElMessage.success("导出成功");
   });
-}
+};
 
 onMounted(() => {
   // 初始化用户列表数据

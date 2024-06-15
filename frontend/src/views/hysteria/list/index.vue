@@ -984,7 +984,7 @@ const handleImport = (params: UploadRequestOptions) => {
   }
 };
 
-function beforeImport(file: UploadRawFile) {
+const beforeImport = (file: UploadRawFile) => {
   if (!file.name.endsWith(".yaml")) {
     ElMessage.error("file format not supported");
     return false;
@@ -993,7 +993,7 @@ function beforeImport(file: UploadRawFile) {
     ElMessage.error("the file is too big, less than 2 MB");
     return false;
   }
-}
+};
 
 const handleExport = async () => {
   let response = await exportHysteria2ConfigApi();

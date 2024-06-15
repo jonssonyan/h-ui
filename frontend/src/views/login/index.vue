@@ -111,26 +111,26 @@ const loginRules = {
 /**
  * 密码校验器
  */
-function passValidator(rule: any, value: any, callback: any) {
+const passValidator = (rule: any, value: any, callback: any) => {
   if (value.length < 6) {
     callback(new Error("The password can not be less than 6 digits"));
   } else {
     callback();
   }
-}
+};
 
 /**
  * 检查输入大小写状态
  */
-function checkCapslock(e: any) {
+const checkCapslock = (e: any) => {
   const { key } = e;
   isCapslock.value = key && key.length === 1 && key >= "A" && key <= "Z";
-}
+};
 
 /**
  * 登录
  */
-function handleLogin() {
+const handleLogin = () => {
   loginFormRef.value.validate((valid: boolean) => {
     if (valid) {
       loading.value = true;
@@ -153,14 +153,13 @@ function handleLogin() {
 
           router.push({ path: redirect, query: otherQueryParams });
         })
-        .catch(() => {
-        })
+        .catch(() => {})
         .finally(() => {
           loading.value = false;
         });
     }
   });
-}
+};
 </script>
 
 <style lang="scss" scoped>
