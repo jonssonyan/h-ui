@@ -54,6 +54,11 @@ export default {
   },
   info: {
     expireTime: "年-月-日 时:分:秒",
+    greeting1: "微凉扑面，清新的空气，唤醒一天的活力🌅！",
+    greeting2: "上午好，",
+    greeting3: "下午好，",
+    greeting4: "晚上好，",
+    greeting5: "我愿成为流星，划破黑夜，只为照亮你的梦境，晚安🌛！",
   },
   account: {
     username: "用户名",

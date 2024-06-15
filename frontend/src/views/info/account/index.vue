@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <el-card shadow="never">
       <el-row justify="space-between">
-        <el-col :span="8" :xs="24">
+        <el-col :span="12" :xs="24">
           <div class="flex h-full items-center">
             <img
               class="w-20 h-20 mr-5 rounded-full"
@@ -18,8 +18,8 @@
           </div>
         </el-col>
 
-        <el-col :span="16" :xs="24">
-          <div class="flex h-full items-center">
+        <el-col :span="12" :xs="24">
+          <div class="flex h-full items-center" style="justify-content: right">
             <el-button type="primary" :icon="Share" @click="handleSubscribe">
               {{ $t("common.subscribe") }}
             </el-button>
@@ -137,15 +137,15 @@ const date: Date = new Date();
 const greetings = computed(() => {
   const hours = date.getHours();
   if (hours >= 6 && hours < 8) {
-    return "微凉扑面，清新的空气，唤醒一天的活力🌅！";
+    return t("info.greeting1");
   } else if (hours >= 8 && hours < 12) {
-    return "上午好，" + accountStore.username + "！";
+    return t("info.greeting2") + accountStore.username + "！";
   } else if (hours >= 12 && hours < 18) {
-    return "下午好，" + accountStore.username + "！";
+    return t("info.greeting3") + accountStore.username + "！";
   } else if (hours >= 18 && hours < 24) {
-    return "晚上好，" + accountStore.username + "！";
+    return t("info.greeting4") + accountStore.username + "！";
   } else if (hours >= 0 && hours < 6) {
-    return "我愿成为流星，划破黑夜，只为照亮你的梦境，晚安🌛！";
+    return t("info.greeting5");
   }
   return "Hello H UI";
 });
