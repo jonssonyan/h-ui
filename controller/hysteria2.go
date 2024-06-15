@@ -37,7 +37,7 @@ func Hysteria2Kick(c *gin.Context) {
 	vo.Success(nil, c)
 }
 
-func ChangeHysteria2Version(c *gin.Context) {
+func Hysteria2ChangeVersion(c *gin.Context) {
 	hysteria2VersionDto, err := validateField(c, dto.Hysteria2VersionDto{})
 	if err != nil {
 		return
@@ -96,11 +96,19 @@ func ListRelease(c *gin.Context) {
 	vo.Success(vos, c)
 }
 
+func Hysteria2Subscribe(c *gin.Context) {
+	service.Hysteria2Subscribe(c)
+}
+
 func Hysteria2Url(c *gin.Context) {
-	hysteria2UrlVo, err := service.Hysteria2Url(c)
+	hysteria2UrlDto, err := validateField(c, dto.Hysteria2UrlDto{})
+	if err != nil {
+		return
+	}
+	url, err := service.Hysteria2Url(*hysteria2UrlDto.AccountId, *hysteria2UrlDto.Hostname)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(hysteria2UrlVo, c)
+	vo.Success(url, c)
 }

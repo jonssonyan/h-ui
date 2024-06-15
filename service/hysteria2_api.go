@@ -4,9 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/yaml.v3"
 	"h-ui/dao"
+	"h-ui/model/bo"
 	"h-ui/model/constant"
-	"h-ui/model/vo"
 	"h-ui/proxy"
 	"strings"
 )
@@ -81,36 +82,71 @@ func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
 	return nil
 }
 
-func Hysteria2Url(c *gin.Context) (vo.Hysteria2UrlVo, error) {
-	hysteria2UrlVo := vo.Hysteria2UrlVo{}
+func Hysteria2Subscribe(c *gin.Context) (string, string, error) {
 	accountInfo, err := GetAccountInfo(c)
 	if err != nil {
-		return hysteria2UrlVo, err
+		return "", "", err
 	}
+	account, err := dao.GetAccount("id = ?", accountInfo.Id)
+
+	userInfo := fmt.Sprintf("upload=%d; download=%d; total=%d; expire=%d",
+		*account.Upload,
+		*account.Download,
+		*account.Quota,
+		*account.ExpireTime/1000)
+
+	clashConfig := bo.ClashConfig{}
+	var ClashConfigInterface []interface{}
+	var proxies []string
+
+	//hysterai2Config, err := GetHysteria2Config()
+	//if err != nil {
+	//	return "", "", err
+	//}
+
+	proxyGroups := make([]bo.ProxyGroup, 0)
+	proxyGroup := bo.ProxyGroup{
+		Name:    "PROXY",
+		Type:    "select",
+		Proxies: proxies,
+	}
+
+	proxyGroups = append(proxyGroups, proxyGroup)
+	clashConfig.ProxyGroups = proxyGroups
+	clashConfig.Proxies = ClashConfigInterface
+
+	clashConfigYaml, err := yaml.Marshal(&clashConfig)
+	if err != nil {
+		return "", "", err
+	}
+
+	return userInfo, string(clashConfigYaml), nil
+}
+
+func Hysteria2Url(accountId int64, hostname string) (string, error) {
+	account, err := dao.GetAccount("id = ?", accountId)
+	if err != nil {
+		return "", err
+	}
+
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
-		return hysteria2UrlVo, err
+		return "", err
 	}
 
-	account, err := dao.GetAccount("id = ?", accountInfo.Id)
-	if err != nil {
-		return hysteria2UrlVo, err
-	}
-
-	hysteria2UrlVo.Auth = *account.ConPass
-
-	config := ""
-
+	urlConfig := ""
 	if hysteria2Config.Obfs != nil &&
 		hysteria2Config.Obfs.Type != nil &&
 		*hysteria2Config.Obfs.Type == "salamander" &&
 		hysteria2Config.Obfs.Salamander != nil &&
 		hysteria2Config.Obfs.Salamander.Password != nil &&
 		*hysteria2Config.Obfs.Salamander.Password != "" {
-		config += fmt.Sprintf("&obfs=salamander&obfs-password=%s", *hysteria2Config.Obfs.Salamander.Password)
+		urlConfig += fmt.Sprintf("&obfs=salamander&obfs-password=%s", *hysteria2Config.Obfs.Salamander.Password)
 	}
 
-	hysteria2UrlVo.Config = strings.TrimPrefix(config, "&")
+	if urlConfig != "" {
+		urlConfig = "?" + strings.TrimPrefix(urlConfig, "&")
+	}
 
-	return hysteria2UrlVo, nil
+	return fmt.Sprintf("hysteria2://%s@%s%s", *account.ConPass, hostname, *hysteria2Config.Listen) + urlConfig, nil
 }

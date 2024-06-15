@@ -28,8 +28,3 @@ type Hysteria2ReleaseVo struct {
 	TagName            string `json:"tagName"`
 	BrowserDownloadURL string `json:"browserDownloadURL"`
 }
-
-type Hysteria2UrlVo struct {
-	Auth   string `json:"auth"`
-	Config string `json:"config"`
-}
