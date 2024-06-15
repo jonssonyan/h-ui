@@ -5,7 +5,6 @@
         <el-form-item :label="$t('log.numLine')" prop="numLine">
           <el-select
             v-model="queryParams.numLine"
-            :placeholder="$t('log.numLine')"
             style="width: 200px"
             @change="setRecords"
           >
@@ -19,7 +18,7 @@
             <template #icon>
               <i-ep-download />
             </template>
-            导出
+            {{ $t("common.export") }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -43,6 +42,9 @@
 <script setup lang="ts">
 import { LogDto, LogHysteria2Vo } from "@/api/log/types";
 import { exportLogApi, logHysteria2Api } from "@/api/log";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 const state = reactive({
   loading: true,
@@ -55,14 +57,15 @@ const state = reactive({
 
 const { loading, records, queryParams } = toRefs(state);
 
-const setRecords = () => {
-  state.loading = true;
-  logHysteria2Api(state.queryParams).then((response) => {
-    const { data } = response;
+const setRecords = async () => {
+  try {
+    state.loading = true;
+    const { data } = await logHysteria2Api(state.queryParams);
     state.records = data.records;
     state.total = data.total;
+  } finally {
     state.loading = false;
-  });
+  }
 };
 
 const handleExport = async () => {
@@ -80,9 +83,9 @@ const handleExport = async () => {
     // 模拟点击下载
     a.click();
     window.URL.revokeObjectURL(url);
-    ElMessage.success("导出成功");
+    ElMessage.success(t("common.exportSuccess"));
   } catch (err) {
-    ElMessage.error("导出失败");
+    ElMessage.error(t("common.exportError"));
   }
 };
 

@@ -393,9 +393,7 @@ const dataFormRef = ref(ElForm); // 用户表单
 const kickFormRef = ref(ElForm); // 下线表单
 
 const state = reactive({
-  // 遮罩层
   loading: true,
-  // 总条数
   total: 0,
   records: [] as AccountVo[],
   dialog: {

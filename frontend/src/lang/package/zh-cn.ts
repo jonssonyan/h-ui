@@ -51,6 +51,9 @@ export default {
     copyError: "复制失败",
     subscribe: "订阅连接",
     nodeUrl: "节点 URL",
+    export: "导出",
+    exportSuccess: "导出成功",
+    exportError: "导出失败",
   },
   info: {
     expireTime: "年-月-日 时:分:秒",
@@ -96,7 +99,6 @@ export default {
   },
   log: {
     numLine: "显示行数",
-    export: "导出",
   },
   hysteria: {
     enable: "开启",
