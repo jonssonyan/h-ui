@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form
       ref="loginFormRef"
-      :model="loginData"
+      :model="loginForm"
       :rules="loginRules"
       class="login-form"
     >
@@ -19,7 +19,7 @@
           class="flex-1"
           ref="username"
           size="large"
-          v-model="loginData.username"
+          v-model="loginForm.username"
           :placeholder="$t('login.username')"
           name="username"
         />
@@ -30,17 +30,17 @@
         content="Caps lock is On"
         placement="right"
       >
-        <el-form-item prop="password">
+        <el-form-item prop="pass">
           <span class="p-2 text-white">
             <svg-icon icon-class="password" />
           </span>
           <el-input
             class="flex-1"
-            v-model="loginData.pass"
-            placeholder="密码"
+            v-model="loginForm.password"
+            :placeholder="$t('login.username')"
             :type="passVisible === false ? 'password' : 'input'"
             size="large"
-            name="password"
+            name="pass"
             @keyup="checkCapslock"
             @keyup.enter="handleLogin"
           />
@@ -99,24 +99,38 @@ const passVisible = ref(false);
 const loginFormRef = ref(ElForm);
 
 /**
- * 密码校验器
+ * 登录表单
  */
-const passValidator = (rule: any, value: any, callback: any) => {
-  if (value.length < 6) {
-    callback(new Error("The password can not be less than 6 digits"));
-  } else {
-    callback();
-  }
-};
-
-const loginData = ref<AccountLoginDto>({
+const loginForm = ref<AccountLoginDto>({
   username: "",
   pass: "",
 });
 
 const loginRules = {
-  username: [{ required: true, trigger: "blur" }],
-  pass: [{ required: true, trigger: "blur", validator: passValidator }],
+  username: [
+    {
+      required: true,
+      message: "Please enter username",
+      trigger: ["change", "blur"],
+    },
+    {
+      pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
+      message: "Username format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
+  pass: [
+    {
+      required: true,
+      message: "Please enter password",
+      trigger: ["change", "blur"],
+    },
+    {
+      pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
+      message: "Password format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
 };
 
 /**
@@ -134,8 +148,9 @@ const handleLogin = () => {
   loginFormRef.value.validate((valid: boolean) => {
     if (valid) {
       loading.value = true;
+      const params = { ...loginForm.value };
       accountStore
-        .login(loginData.value)
+        .login(params)
         .then(() => {
           const query: LocationQuery = route.query;
 
