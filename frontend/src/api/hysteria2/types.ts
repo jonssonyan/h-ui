@@ -14,6 +14,12 @@ export interface Hysteria2ReleaseVo {
   browserDownloadURL: string;
 }
 
+export interface Hysteria2SubscribeUrlDto {
+  accountId: number;
+  protocol: string;
+  host: string;
+}
+
 export interface Hysteria2UrlDto {
   accountId: number;
   hostname: string;

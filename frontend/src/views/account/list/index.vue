@@ -187,20 +187,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="$t('common.operate')" align="left" width="300">
+        <el-table-column :label="$t('common.operate')" align="left" width="320">
           <template #default="scope">
-            <el-dropdown @command="handleSubscribe(scope.row)">
-              <el-button type="primary" link
-                >{{ $t("common.subscribe") }}
-              </el-button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>Shadowrocket</el-dropdown-item>
-                  <el-dropdown-item>v2rayN</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-
+            <el-button type="primary" link @click="handleSubscribe(scope.row)"
+              >{{ $t("common.subscribe") }}
+            </el-button>
             <el-button type="primary" link @click="handleNodeUrl(scope.row)"
               >{{ $t("common.nodeUrl") }}
             </el-button>
@@ -378,7 +369,11 @@ import {
 } from "@/utils/time";
 import { formatBytes } from "@/utils/byte";
 import i18n from "@/lang";
-import { hysteria2KickApi, hysteria2UrlApi } from "@/api/hysteria2";
+import {
+  hysteria2KickApi,
+  hysteria2SubscribeUrlApi,
+  hysteria2UrlApi,
+} from "@/api/hysteria2";
 import { UploadUserFile } from "element-plus";
 import {
   UploadFile,
@@ -387,7 +382,10 @@ import {
   UploadRequestOptions,
 } from "element-plus/lib/components";
 import { useI18n } from "vue-i18n";
-import { Hysteria2UrlDto } from "@/api/hysteria2/types";
+import {
+  Hysteria2SubscribeUrlDto,
+  Hysteria2UrlDto,
+} from "@/api/hysteria2/types";
 import copy from "copy-to-clipboard";
 
 const { t } = useI18n();
@@ -677,7 +675,20 @@ const handleExport = () => {
   });
 };
 
-const handleSubscribe = async (row: { [key: string]: any }) => {};
+const handleSubscribe = async (row: { [key: string]: any }) => {
+  try {
+    const dto: Hysteria2SubscribeUrlDto = {
+      accountId: row.id,
+      protocol: window.location.protocol,
+      host: window.location.host,
+    };
+    const { data } = await hysteria2SubscribeUrlApi(dto);
+    copy(data);
+    ElMessage.success(t("common.copySuccess"));
+  } catch (e) {
+    ElMessage.success(t("common.copyError"));
+  }
+};
 
 const handleNodeUrl = async (row: { [key: string]: any }) => {
   try {

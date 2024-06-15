@@ -93,7 +93,8 @@
         </el-form-item>
         <el-form-item>
           <el-tag style="height: 32px">
-            Hysteria2 版本: {{ hysteria2Monitor.version }}
+            {{ t("hysteria.hysteria2Version") }}:
+            {{ hysteria2Monitor.version }}
           </el-tag>
         </el-form-item>
         <el-form-item>
@@ -101,7 +102,7 @@
             :type="hysteria2Monitor.running ? 'success' : 'danger'"
             style="height: 32px"
           >
-            Hysteria2 状态:
+            {{ t("hysteria.hysteria2Running") }}:
             {{
               hysteria2Monitor.running
                 ? $t("monitor.hysteria2RunningTrue")

@@ -20,18 +20,9 @@
 
         <el-col :span="16" :xs="24">
           <div class="flex h-full items-center">
-            <el-dropdown @command="handleSubscribe">
-              <el-button type="primary" :icon="Share">
-                {{ t("common.subscribe") }}
-              </el-button>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>Shadowrocket</el-dropdown-item>
-                  <el-dropdown-item>v2rayN</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-
+            <el-button type="primary" :icon="Share" @click="handleSubscribe">
+              {{ t("common.subscribe") }}
+            </el-button>
             <el-button type="primary" :icon="Share" @click="handleNodeUrl">
               {{ t("common.nodeUrl") }}
             </el-button>
@@ -131,12 +122,14 @@ import { timestampToDateTime } from "@/utils/time";
 import { formatBytes, formatStorageUnit } from "@/utils/byte";
 import { Share } from "@element-plus/icons-vue";
 import { useI18n } from "vue-i18n";
-import { Hysteria2UrlDto } from "@/api/hysteria2/types";
-import { hysteria2UrlApi } from "@/api/hysteria2";
+import {
+  Hysteria2SubscribeUrlDto,
+  Hysteria2UrlDto,
+} from "@/api/hysteria2/types";
+import { hysteria2SubscribeUrlApi, hysteria2UrlApi } from "@/api/hysteria2";
 import copy from "copy-to-clipboard";
 
 const { t } = useI18n();
-
 const accountStore = useAccountStore();
 
 const date: Date = new Date();
@@ -146,11 +139,11 @@ const greetings = computed(() => {
   if (hours >= 6 && hours < 8) {
     return "微凉扑面，清新的空气，唤醒一天的活力🌅！";
   } else if (hours >= 8 && hours < 12) {
-    return "上午好，" + state.account.username + "！";
+    return "上午好，" + accountStore.username + "！";
   } else if (hours >= 12 && hours < 18) {
-    return "下午好，" + state.account.username + "！";
+    return "下午好，" + accountStore.username + "！";
   } else if (hours >= 18 && hours < 24) {
-    return "晚上好，" + state.account.username + "！";
+    return "晚上好，" + accountStore.username + "！";
   } else if (hours >= 0 && hours < 6) {
     return "我愿成为流星，划破黑夜，只为照亮你的梦境，晚安🌛！";
   }
@@ -163,7 +156,20 @@ const state = reactive({
 
 const { account } = toRefs(state);
 
-const handleSubscribe = () => {};
+const handleSubscribe = async () => {
+  try {
+    const dto: Hysteria2SubscribeUrlDto = {
+      accountId: accountStore.id,
+      protocol: window.location.protocol,
+      host: window.location.host,
+    };
+    const { data } = await hysteria2SubscribeUrlApi(dto);
+    copy(data);
+    ElMessage.success(t("common.copySuccess"));
+  } catch (e) {
+    ElMessage.success(t("common.copyError"));
+  }
+};
 
 const handleNodeUrl = async () => {
   try {
