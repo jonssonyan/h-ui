@@ -98,16 +98,6 @@ const passVisible = ref(false);
  */
 const loginFormRef = ref(ElForm);
 
-const loginData = ref<AccountLoginDto>({
-  username: "",
-  pass: "",
-});
-
-const loginRules = {
-  username: [{ required: true, trigger: "blur" }],
-  pass: [{ required: true, trigger: "blur", validator: passValidator }],
-};
-
 /**
  * 密码校验器
  */
@@ -117,6 +107,16 @@ const passValidator = (rule: any, value: any, callback: any) => {
   } else {
     callback();
   }
+};
+
+const loginData = ref<AccountLoginDto>({
+  username: "",
+  pass: "",
+});
+
+const loginRules = {
+  username: [{ required: true, trigger: "blur" }],
+  pass: [{ required: true, trigger: "blur", validator: passValidator }],
 };
 
 /**
