@@ -2,10 +2,13 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"h-ui/dao"
 	"h-ui/model/constant"
+	"h-ui/model/vo"
 	"h-ui/proxy"
+	"strings"
 )
 
 func Hysteria2Auth(conPass string) (string, error) {
@@ -78,15 +81,36 @@ func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
 	return nil
 }
 
-func Hysteria2Url(c *gin.Context) (string, error) {
-	//accountInfo, err := GetAccountInfo(c)
-	//if err != nil {
-	//	return "", err
-	//}
-	//hysteria2Config, err := GetHysteria2Config()
-	//if err != nil {
-	//	return "", err
-	//}
-	hysteria2Url := "hysteria2://"
-	return hysteria2Url, nil
+func Hysteria2Url(c *gin.Context) (vo.Hysteria2UrlVo, error) {
+	hysteria2UrlVo := vo.Hysteria2UrlVo{}
+	accountInfo, err := GetAccountInfo(c)
+	if err != nil {
+		return hysteria2UrlVo, err
+	}
+	hysteria2Config, err := GetHysteria2Config()
+	if err != nil {
+		return hysteria2UrlVo, err
+	}
+
+	account, err := dao.GetAccount("id = ?", accountInfo.Id)
+	if err != nil {
+		return hysteria2UrlVo, err
+	}
+
+	hysteria2UrlVo.Auth = *account.ConPass
+
+	config := ""
+
+	if hysteria2Config.Obfs != nil &&
+		hysteria2Config.Obfs.Type != nil &&
+		*hysteria2Config.Obfs.Type == "salamander" &&
+		hysteria2Config.Obfs.Salamander != nil &&
+		hysteria2Config.Obfs.Salamander.Password != nil &&
+		*hysteria2Config.Obfs.Salamander.Password != "" {
+		config += fmt.Sprintf("&obfs=salamander&obfs-password=%s", *hysteria2Config.Obfs.Salamander.Password)
+	}
+
+	hysteria2UrlVo.Config = strings.TrimPrefix(config, "&")
+
+	return hysteria2UrlVo, nil
 }

@@ -97,10 +97,10 @@ func ListRelease(c *gin.Context) {
 }
 
 func Hysteria2Url(c *gin.Context) {
-	hysteria2Url, err := service.Hysteria2Url(c)
+	hysteria2UrlVo, err := service.Hysteria2Url(c)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(hysteria2Url, c)
+	vo.Success(hysteria2UrlVo, c)
 }
