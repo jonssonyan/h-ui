@@ -509,10 +509,7 @@ function submitForm() {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
       const accountId = state.formData.id;
-      let accountUpdateDto: AccountUpdateDto = Object.assign(
-        {},
-        state.formData
-      );
+      let accountUpdateDto: AccountUpdateDto = { ...state.formData };
       if (accountId) {
         updateAccountApi(accountUpdateDto).then(() => {
           ElMessage.success("修改用户成功");
