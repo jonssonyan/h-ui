@@ -36,11 +36,11 @@
     </div>
 
     <el-card shadow="never">
-      <el-form ref="enableFormDataRef" :model="enableFormData" inline>
+      <el-form ref="enableFormRef" :model="enableForm" inline>
         <el-tooltip :content="$t('hysteria.config.enable')" placement="bottom">
           <el-form-item prop="enable">
             <el-switch
-              v-model="enableFormData.enable"
+              v-model="enableForm.enable"
               active-value="1"
               inactive-value="0"
               @change="handleChangeEnable"
@@ -868,7 +868,7 @@ const resolverTypes = ref<string[]>(["tcp", "udp", "tls", "https"]);
 const masqueradeTypes = ref<string[]>(["file", "proxy", "string"]);
 
 const state = reactive({
-  enableFormData: {
+  enableForm: {
     enable: "0",
   },
   formData: { ...defaultHysteria2ServerConfig } as Hysteria2ServerConfig,
@@ -896,7 +896,7 @@ const state = reactive({
 const {
   activeName,
   formData,
-  enableFormData,
+  enableForm,
   tlsType,
   aclType,
   obfs,
@@ -1029,7 +1029,7 @@ const setConfig = () => {
   getConfigApi({ key: hysteria2EnableKey }).then((response) => {
     if (response.data) {
       const { value } = response.data;
-      state.enableFormData.enable = value;
+      state.enableForm.enable = value;
     }
   });
   getHysteria2ConfigApi().then((response) => {

@@ -301,10 +301,10 @@
       append-to-body
       @close="closeDialogKick"
     >
-      <el-form ref="dataFormKickRef" :model="dataFormKick" label-width="100px">
+      <el-form ref="kickFormRef" :model="kickForm" label-width="100px">
         <el-form-item :label="$t('account.kickUtilTime')" prop="kickUtilTime">
           <el-date-picker
-            v-model="dataFormKick.kickUtilTime"
+            v-model="kickForm.kickUtilTime"
             type="datetime"
             :placeholder="$t('account.kickUtilTime')"
             value-format="x"
@@ -375,7 +375,7 @@ import {
 const { t } = i18n.global;
 const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
-const dataFormKickRef = ref(ElForm); // 下线表单
+const kickFormRef = ref(ElForm); // 下线表单
 
 const state = reactive({
   // 遮罩层
@@ -394,7 +394,7 @@ const state = reactive({
     expireTime: getMonthLater(),
     deleted: 0,
   } as AccountForm,
-  dataFormKick: {
+  kickForm: {
     kickUtilTime: getHourLater(),
   } as KickAccountForm,
   queryParams: {
@@ -414,7 +414,7 @@ const {
   dialog,
   dialogKick,
   formData,
-  dataFormKick,
+  kickForm,
   queryParams,
   quotaTmp,
   fileList,
@@ -531,9 +531,9 @@ const submitForm = () => {
  * 下线表单提交
  */
 const submitKickForm = () => {
-  dataFormKickRef.value.validate((valid: any) => {
+  kickFormRef.value.validate((valid: any) => {
     if (valid) {
-      const params = { ...state.dataFormKick };
+      const params = { ...state.kickForm };
       hysteria2KickApi(params).then(() => {
         ElMessage.success("下线成功");
         closeDialogKick();
@@ -572,7 +572,7 @@ const handleDelete = (row: { [key: string]: any }) => {
  * @param row
  */
 const handleKick = (row: { [key: string]: any }) => {
-  state.dataFormKick.ids = [row.id];
+  state.kickForm.ids = [row.id];
   dialogKick.value = {
     title: t("common.kickTip"),
     visible: true,
@@ -608,8 +608,8 @@ const closeDialog = () => {
  */
 const closeDialogKick = () => {
   dialogKick.value.visible = false;
-  dataFormKickRef.value.resetFields();
-  dataFormKickRef.value.clearValidate();
+  kickFormRef.value.resetFields();
+  kickFormRef.value.clearValidate();
 };
 
 /**
