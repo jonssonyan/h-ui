@@ -13,6 +13,12 @@ type Hysteria2VersionDto struct {
 	Version *string `json:"version" form:"version" validate:"required,min=1,max=5"`
 }
 
+type Hysteria2SubscribeUrlDto struct {
+	AccountId *int64  `json:"accountId" form:"accountId" validate:"required,gt=0"`
+	Protocol  *string `json:"protocol" form:"protocol" validate:"required,min=1,max=8"`
+	Host      *string `json:"host" form:"host" validate:"required,min=1,max=301"`
+}
+
 type Hysteria2UrlDto struct {
 	AccountId *int64  `json:"accountId" form:"accountId" validate:"required,gt=0"`
 	Hostname  *string `json:"hostname" form:"hostname" validate:"required,min=1,max=255"`

@@ -3,12 +3,12 @@ package service
 import (
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/proxy"
+	"strconv"
 	"strings"
 )
 
@@ -82,45 +82,101 @@ func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
 	return nil
 }
 
-func Hysteria2Subscribe(c *gin.Context) (string, string, error) {
-	accountInfo, err := GetAccountInfo(c)
+func Hysteria2SubscribeUrl(accountId int64, protocol string, host string) (string, error) {
+	account, err := dao.GetAccount("id = ?", accountId)
 	if err != nil {
-		return "", "", err
+		return "", err
 	}
-	account, err := dao.GetAccount("id = ?", accountInfo.Id)
+	return fmt.Sprintf("%s//%s/hui/%s", protocol, host, *account.ConPass), nil
+}
 
-	userInfo := fmt.Sprintf("upload=%d; download=%d; total=%d; expire=%d",
-		*account.Upload,
-		*account.Download,
-		*account.Quota,
-		*account.ExpireTime/1000)
-
-	clashConfig := bo.ClashConfig{}
-	var ClashConfigInterface []interface{}
-	var proxies []string
-
-	//hysterai2Config, err := GetHysteria2Config()
-	//if err != nil {
-	//	return "", "", err
-	//}
-
-	proxyGroups := make([]bo.ProxyGroup, 0)
-	proxyGroup := bo.ProxyGroup{
-		Name:    "PROXY",
-		Type:    "select",
-		Proxies: proxies,
-	}
-
-	proxyGroups = append(proxyGroups, proxyGroup)
-	clashConfig.ProxyGroups = proxyGroups
-	clashConfig.Proxies = ClashConfigInterface
-
-	clashConfigYaml, err := yaml.Marshal(&clashConfig)
+func Hysteria2Subscribe(conPass string, clientType string, host string) (string, string, error) {
+	account, err := dao.GetAccount("con_pass = ?", conPass)
 	if err != nil {
 		return "", "", err
 	}
 
-	return userInfo, string(clashConfigYaml), nil
+	userInfo := ""
+	configYaml := ""
+	if clientType == "Shadowrocket" || clientType == "ClashforWindows" {
+		userInfo = fmt.Sprintf("upload=%d; download=%d; total=%d; expire=%d",
+			*account.Upload,
+			*account.Download,
+			*account.Quota,
+			*account.ExpireTime/1000)
+
+		clashConfig := bo.ClashConfig{}
+		var ClashConfigInterface []interface{}
+
+		hysteria2Config, err := GetHysteria2Config()
+		if err != nil {
+			return "", "", err
+		}
+
+		port, err := strconv.ParseUint(strings.TrimPrefix(*hysteria2Config.Listen, ":"), 10, 64)
+		if err != nil {
+			return "", "", err
+		}
+
+		hysteria2 := bo.Hysteria2{
+			Name:     "hysteria2",
+			Type:     "hysteria2",
+			Server:   strings.Split(host, ":")[0],
+			Port:     uint(port),
+			Password: conPass,
+		}
+		if hysteria2Config.Obfs != nil &&
+			hysteria2Config.Obfs.Type != nil &&
+			*hysteria2Config.Obfs.Type == "salamander" &&
+			hysteria2Config.Obfs.Salamander != nil &&
+			hysteria2Config.Obfs.Salamander.Password != nil &&
+			*hysteria2Config.Obfs.Salamander.Password != "" {
+			hysteria2.Obfs = "salamander"
+			hysteria2.ObfsPassword = *hysteria2Config.Obfs.Salamander.Password
+		}
+
+		if hysteria2Config.Bandwidth != nil {
+			if hysteria2Config.Bandwidth.Up != nil &&
+				*hysteria2Config.Bandwidth.Up != "" {
+				up, err := strconv.ParseUint(strings.Split(*hysteria2Config.Bandwidth.Up, " ")[0], 10, 64)
+				if err != nil {
+					return "", "", err
+				}
+
+				hysteria2.Up = int(up)
+			}
+			if hysteria2Config.Bandwidth.Down != nil &&
+				*hysteria2Config.Bandwidth.Down != "" {
+				down, err := strconv.ParseUint(strings.Split(*hysteria2Config.Bandwidth.Down, " ")[0], 10, 64)
+				if err != nil {
+					return "", "", err
+				}
+
+				hysteria2.Down = int(down)
+			}
+		}
+
+		ClashConfigInterface = append(ClashConfigInterface, hysteria2)
+
+		proxyGroups := make([]bo.ProxyGroup, 0)
+		proxyGroup := bo.ProxyGroup{
+			Name:    "PROXY",
+			Type:    "select",
+			Proxies: []string{"hysteria2"},
+		}
+
+		proxyGroups = append(proxyGroups, proxyGroup)
+		clashConfig.ProxyGroups = proxyGroups
+		clashConfig.Proxies = ClashConfigInterface
+
+		clashConfigYaml, err := yaml.Marshal(&clashConfig)
+		if err != nil {
+			return "", "", err
+		}
+		configYaml = string(clashConfigYaml)
+	}
+
+	return userInfo, configYaml, nil
 }
 
 func Hysteria2Url(accountId int64, hostname string) (string, error) {
