@@ -36,8 +36,8 @@ export function getConfigApi(data: ConfigDto): AxiosPromise<ConfigVo> {
 export function listConfigApi(data: ConfigsDto): AxiosPromise<Array<ConfigVo>> {
   return request({
     url: "/config/listConfig",
-    method: "post",
-    data: data,
+    method: "get",
+    params: data,
   });
 }
 

@@ -110,7 +110,7 @@ const loginRules = {
   username: [
     {
       required: true,
-      message: "Please enter username",
+      message: "Required",
       trigger: ["change", "blur"],
     },
     {
@@ -122,7 +122,7 @@ const loginRules = {
   pass: [
     {
       required: true,
-      message: "Please enter password",
+      message: "Required",
       trigger: ["change", "blur"],
     },
     {

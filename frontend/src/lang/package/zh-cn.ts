@@ -51,9 +51,13 @@ export default {
     copyError: "复制失败",
     subscribe: "订阅连接",
     nodeUrl: "节点 URL",
+    import: "导入",
+    importSuccess: "导出成功",
+    importError: "导出失败",
     export: "导出",
     exportSuccess: "导出成功",
     exportError: "导出失败",
+    save: "保存",
   },
   info: {
     expireTime: "年-月-日 时:分:秒",
@@ -85,6 +89,7 @@ export default {
   config: {
     huiWebPort: "H UI Web 端口",
     hysteria2TrafficTime: "Hysteria2 流量倍数",
+    saveSuccess: "修改配置成功",
   },
   monitor: {
     cpuPercent: "CPU 使用率",

@@ -3,11 +3,8 @@
     <div class="search">
       <el-form inline>
         <el-form-item>
-          <el-button
-            type="primary"
-            @click="submitForm(formDataRef)"
-            :icon="Select"
-            >保存
+          <el-button type="primary" @click="submitForm" :icon="Select">
+            {{ $t("common.save") }}
           </el-button>
         </el-form-item>
         <el-form-item>
@@ -23,7 +20,7 @@
               <template #icon>
                 <i-ep-upload />
               </template>
-              导入
+              {{ $t("common.import") }}
             </el-button>
           </el-upload>
         </el-form-item>
@@ -32,7 +29,7 @@
             <template #icon>
               <i-ep-download />
             </template>
-            导出
+            {{ $t("common.export") }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -41,13 +38,13 @@
     <el-card shadow="never">
       <el-form
         ref="formDataRef"
-        :rules="rules"
-        :model="formData"
+        :rules="dataFormRules"
+        :model="dataForm"
         label-position="top"
       >
         <el-form-item :label="$t('config.huiWebPort')" prop="huiWebPort">
           <el-input
-            v-model="formData.huiWebPort"
+            v-model="dataForm.huiWebPort"
             :placeholder="$t('config.huiWebPort')"
             clearable
           />
@@ -57,7 +54,7 @@
           prop="hysteria2TrafficTime"
         >
           <el-input
-            v-model="formData.hysteria2TrafficTime"
+            v-model="dataForm.hysteria2TrafficTime"
             :placeholder="$t('config.hysteria2TrafficTime')"
             clearable
           />
@@ -72,92 +69,106 @@ import { Select } from "@element-plus/icons-vue";
 import {
   exportConfigApi,
   importConfigApi,
-  importHysteria2ConfigApi,
   listConfigApi,
   updateConfigsApi,
 } from "@/api/config";
 import { ConfigsUpdateDto } from "@/api/config/types";
-import type { FormInstance, FormRules } from "element-plus";
-import {validateIntegerStr, validateNumberStr} from "@/utils/validate";
 import {
   UploadFile,
   UploadRawFile,
   UploadRequestOptions,
 } from "element-plus/lib/components";
+import { useI18n } from "vue-i18n";
 
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 
-const formDataRef = ref<FormInstance>();
-const rules = reactive<FormRules>({
+const { t } = useI18n();
+
+const formDataRef = ref(ElForm);
+
+const dataFormRules = {
   huiWebPort: [
     {
-      validator: validateIntegerStr,
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+    {
+      pattern: /^\d+$/,
+      message: "field must be a integer",
       trigger: ["change", "blur"],
     },
   ],
   hysteria2TrafficTime: [
     {
-      validator: validateNumberStr,
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+    {
+      pattern: /^\d+(\.\d)?$/,
+      message: "field must be a number with up to one decimal place",
       trigger: ["change", "blur"],
     },
   ],
-});
+};
 
 const state = reactive({
-  formData: {
+  dataForm: {
     huiWebPort: "8081",
     hysteria2TrafficTime: "1",
   },
   fileList: [] as UploadFile[],
 });
 
-const { formData, fileList } = toRefs(state);
+const { dataForm, fileList } = toRefs(state);
 
-const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.validate((valid) => {
+const submitForm = () => {
+  formDataRef.value.validate((valid: boolean) => {
     if (valid) {
-      let configs: Array<ConfigsUpdateDto> = [
+      let configs: ConfigsUpdateDto[] = [
         {
           key: huiWebPortKey,
-          value: state.formData.huiWebPort,
+          value: state.dataForm.huiWebPort,
         },
         {
           key: hysteria2TrafficTimeKey,
-          value: state.formData.hysteria2TrafficTime,
+          value: state.dataForm.hysteria2TrafficTime,
         },
       ];
       updateConfigsApi({ configUpdateDtos: configs }).then(() => {
-        ElMessage.success("修改配置成功");
+        ElMessage.success(t("config.saveSuccess"));
       });
     }
   });
 };
 
-const setConfig = () => {
-  listConfigApi({
+const setConfig = async () => {
+  const { data } = await listConfigApi({
     keys: [huiWebPortKey, hysteria2TrafficTimeKey],
-  }).then((response) => {
-    const configVos = response.data;
-    configVos.forEach((configVo) => {
-      if (configVo.key === huiWebPortKey) {
-        state.formData.huiWebPort = configVo.value;
-      } else if (configVo.key === hysteria2TrafficTimeKey) {
-        state.formData.hysteria2TrafficTime = configVo.value;
-      }
-    });
+  });
+
+  data.forEach((configVo) => {
+    if (configVo.key === huiWebPortKey) {
+      state.dataForm.huiWebPort = configVo.value;
+    } else if (configVo.key === hysteria2TrafficTimeKey) {
+      state.dataForm.hysteria2TrafficTime = configVo.value;
+    }
   });
 };
 
-const handleImport = (params: UploadRequestOptions) => {
+const handleImport = async (params: UploadRequestOptions) => {
   if (state.fileList.length > 0) {
-    let formData = new FormData();
-    formData.append("file", params.file);
-    importConfigApi(formData).then(() => {
-      ElMessage.success("导入成功");
-    });
-    state.fileList = [];
+    try {
+      let formData = new FormData();
+      formData.append("file", params.file);
+      await importConfigApi(formData);
+      ElMessage.success(t("common.exportSuccess"));
+      state.fileList = [];
+    } catch (e) {
+      ElMessage.success(t("common.exportError"));
+    }
   }
 };
 const beforeImport = (file: UploadRawFile) => {
@@ -172,8 +183,8 @@ const beforeImport = (file: UploadRawFile) => {
 };
 
 const handleExport = async () => {
-  let response = await exportConfigApi();
   try {
+    let response = await exportConfigApi();
     const blob = new Blob([response.data], {
       type: "application/octet-stream",
     });
@@ -187,7 +198,7 @@ const handleExport = async () => {
     a.click();
     window.URL.revokeObjectURL(url);
     ElMessage.success("导出成功");
-  } catch (err) {
+  } catch (e) {
     ElMessage.error("导出失败");
   }
 };
