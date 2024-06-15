@@ -77,7 +77,7 @@ func GetAccount(query interface{}, args ...interface{}) (entity.Account, error) 
 	if tx := sqliteDB.Model(&entity.Account{}).
 		Where(query, args...).First(&account); tx.Error != nil {
 		if tx.Error == gorm.ErrRecordNotFound {
-			return account, errors.New(constant.AccountNotExist)
+			return account, errors.New(constant.WrongPassword)
 		}
 		logrus.Errorf("%v", tx.Error)
 		return account, errors.New(constant.SysError)

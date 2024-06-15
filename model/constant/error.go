@@ -9,6 +9,6 @@ const (
 	IllegalTokenError string = "authentication failed"
 	TokenExpiredError string = "token expired"
 
-	AccountNotExist string = "account not exist"
-	ConfigNotExist  string = "config not exist"
+	WrongPassword  string = "wrong password"
+	ConfigNotExist string = "config not exist"
 )

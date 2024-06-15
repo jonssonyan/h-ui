@@ -368,16 +368,14 @@ import {
   getDayLater,
 } from "@/utils/time";
 import { formatBytes } from "@/utils/byte";
-import i18n from "@/lang";
+
 import {
   hysteria2KickApi,
   hysteria2SubscribeUrlApi,
   hysteria2UrlApi,
 } from "@/api/hysteria2";
-import { UploadUserFile } from "element-plus";
 import {
   UploadFile,
-  UploadFiles,
   UploadRawFile,
   UploadRequestOptions,
 } from "element-plus/lib/components";
@@ -476,13 +474,15 @@ const resetFormData = () => {
 /**
  * 查询
  */
-const handleQuery = () => {
+const handleQuery = async () => {
   state.loading = true;
-  pageAccountApi(state.queryParams).then(({ data }) => {
+  try {
+    const { data } = await pageAccountApi(state.queryParams);
     state.records = data.records;
     state.total = data.total;
+  } finally {
     state.loading = false;
-  });
+  }
 };
 
 /**

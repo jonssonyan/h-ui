@@ -76,7 +76,7 @@ func ExistAccountUsername(username string, id int64) bool {
 		_, err = dao.GetAccount("username = ?", username)
 	}
 	if err != nil {
-		if err.Error() == constant.AccountNotExist {
+		if err.Error() == constant.WrongPassword {
 			return false
 		}
 	}

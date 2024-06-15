@@ -20,6 +20,12 @@ func Login(c *gin.Context) {
 	if err != nil {
 		return
 	}
+
+	if !service.ExistAccountUsername(*loginDto.Username, 0) {
+		vo.Fail("account not exist", c)
+		return
+	}
+
 	token, err := service.Login(*loginDto.Username, util.SHA224String(*loginDto.Pass))
 	if err != nil {
 		vo.Fail(err.Error(), c)

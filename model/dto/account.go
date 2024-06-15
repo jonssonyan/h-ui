@@ -2,7 +2,7 @@ package dto
 
 type AccountPageDto struct {
 	BaseDto
-	Username *string `json:"username" form:"username" validate:"omitempty,min=1,max=32,validateStr"`
+	Username *string `json:"username" form:"username" validate:"omitempty,min=1,max=32"`
 	Deleted  *int64  `json:"deleted" form:"deleted" validate:"omitempty,oneof=0 1"`
 }
 
