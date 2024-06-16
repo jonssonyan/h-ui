@@ -39,6 +39,12 @@
   </div>
 </template>
 
+<script lang="ts">
+export default {
+  name: "index",
+};
+</script>
+
 <script setup lang="ts">
 import { LogDto, LogHysteria2Vo } from "@/api/log/types";
 import { exportLogApi, logHysteria2Api } from "@/api/log";

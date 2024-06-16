@@ -832,6 +832,12 @@
   </div>
 </template>
 
+<script lang="ts">
+export default {
+  name: "index",
+};
+</script>
+
 <script setup lang="ts">
 import {
   defaultHysteria2ServerConfig,
@@ -839,7 +845,7 @@ import {
   Hysteria2ServerConfigOutbound,
   Tab,
 } from "@/api/config/types";
-import Outbounds from "./components/Outbounds.vue";
+import Outbounds from "./components/Outbounds/index.vue";
 import { CirclePlusFilled, Select } from "@element-plus/icons-vue";
 import {
   exportHysteria2ConfigApi,

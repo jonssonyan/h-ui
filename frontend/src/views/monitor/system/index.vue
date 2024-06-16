@@ -162,6 +162,12 @@
   </div>
 </template>
 
+<script lang="ts">
+export default {
+  name: "index",
+};
+</script>
+
 <script setup lang="ts">
 import { monitorHysteria2Api, monitorSystemApi } from "@/api/monitor";
 

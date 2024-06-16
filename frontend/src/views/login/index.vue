@@ -65,6 +65,12 @@
   </div>
 </template>
 
+<script lang="ts">
+export default {
+  name: "index",
+};
+</script>
+
 <script setup lang="ts">
 import router from "@/router";
 import LangSelect from "@/components/LangSelect/index.vue";

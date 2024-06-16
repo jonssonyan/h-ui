@@ -114,6 +114,12 @@
   </div>
 </template>
 
+<script lang="ts">
+export default {
+  name: "index",
+};
+</script>
+
 <script setup lang="ts">
 import { getAccountApi } from "@/api/account";
 import { AccountVo } from "@/api/account/types";

@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <github-corner class="github-corner" />
-    <!-- 用户数据 -->
     <div class="search">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
         <el-form-item :label="$t('account.username')" prop="username">
@@ -54,7 +53,7 @@
               <template #icon>
                 <i-ep-upload />
               </template>
-              导入
+              {{ $t("common.import") }}
             </el-button>
           </el-upload>
         </el-form-item>
@@ -63,7 +62,7 @@
             <template #icon>
               <i-ep-download />
             </template>
-            导出
+            {{ $t("common.export") }}
           </el-button>
         </el-form-item>
       </el-form>
@@ -187,7 +186,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column :label="$t('common.operate')" align="left" width="320">
+        <el-table-column
+          :label="$t('common.operate')"
+          align="center"
+          width="360"
+        >
           <template #default="scope">
             <el-button type="primary" link @click="handleSubscribe(scope.row)"
               >{{ $t("common.subscribe") }}
@@ -202,16 +205,16 @@
               >{{ $t("common.delete") }}
             </el-button>
             <el-button type="danger" link @click="handleKick(scope.row)"
-              >{{ $t("common.kick") }}
+              >{{ $t("account.kick") }}
             </el-button>
             <el-popconfirm
-              :title="$t('common.releaseKickTip')"
+              :title="$t('account.releaseKickTip')"
               @confirm="confirmReleaseKick(scope.row)"
               v-if="calculateTimeDifference(scope.row.kickUtilTime) !== '-'"
             >
               <template #reference>
                 <el-button type="danger" link
-                  >{{ $t("common.releaseKick") }}
+                  >{{ $t("account.releaseKick") }}
                 </el-button>
               </template>
             </el-popconfirm>
@@ -228,7 +231,6 @@
       />
     </el-card>
 
-    <!-- 用户表单 -->
     <el-dialog
       :title="dialog.title"
       v-model="dialog.visible"
@@ -236,10 +238,10 @@
       append-to-body
       @close="closeDialog"
     >
-      <el-form ref="dataFormRef" :model="formData" label-width="80px">
+      <el-form ref="dataFormRef" :model="dataForm" label-width="80px">
         <el-form-item :label="$t('account.username')" prop="username">
           <el-input
-            v-model="formData.username"
+            v-model="dataForm.username"
             :placeholder="$t('account.username')"
             maxlength="50"
             clearable
@@ -247,7 +249,7 @@
         </el-form-item>
         <el-form-item :label="$t('account.pass')" prop="pass">
           <el-input
-            v-model="formData.pass"
+            v-model="dataForm.pass"
             :placeholder="$t('account.pass')"
             maxlength="50"
             clearable
@@ -257,7 +259,7 @@
         </el-form-item>
         <el-form-item :label="$t('account.conPass')" prop="conPass">
           <el-input
-            v-model="formData.conPass"
+            v-model="dataForm.conPass"
             :placeholder="$t('account.conPass')"
             maxlength="50"
             clearable
@@ -266,14 +268,11 @@
           />
         </el-form-item>
         <el-form-item :label="$t('account.quota')" prop="quota">
-          <unit-select
-            v-model:quota="formData.quota"
-            v-model:quotaTmp="quotaTmp"
-          />
+          <unit-select :quota="dataForm.quota" :quotaTmp="quotaTmp" />
         </el-form-item>
         <el-form-item :label="$t('account.expireTime')" prop="expireTime">
           <el-date-picker
-            v-model="formData.expireTime"
+            v-model="dataForm.expireTime"
             type="datetime"
             :placeholder="$t('account.expireTime')"
             value-format="x"
@@ -283,7 +282,7 @@
         </el-form-item>
 
         <el-form-item :label="$t('common.deleted')" prop="deleted">
-          <el-radio-group v-model="formData.deleted">
+          <el-radio-group v-model="dataForm.deleted">
             <el-radio :label="0">{{ $t("common.enable") }}</el-radio>
             <el-radio :label="1">{{ $t("common.disable") }}</el-radio>
           </el-radio-group>
@@ -299,7 +298,6 @@
       </template>
     </el-dialog>
 
-    <!-- 下线表单 -->
     <el-dialog
       :title="dialogKick.title"
       v-model="dialogKick.visible"
@@ -402,7 +400,7 @@ const state = reactive({
   dialogKick: {
     visible: false,
   } as DialogType,
-  formData: {
+  dataForm: {
     quota: 0,
     expireTime: getMonthLater(),
     deleted: 0,
@@ -426,7 +424,7 @@ const {
   records,
   dialog,
   dialogKick,
-  formData,
+  dataForm,
   kickForm,
   queryParams,
   quotaTmp,
@@ -450,17 +448,25 @@ const shortcuts = [
 
 const shortcutsKick = [
   {
-    text: "A Hour later",
+    text: "A hour later",
     value: getHourLater,
   },
   {
     text: "A day later",
     value: getDayLater,
   },
+  {
+    text: "A week later",
+    value: getWeekLater,
+  },
+  {
+    text: "A month later",
+    value: getMonthLater,
+  },
 ];
 
 const resetFormData = () => {
-  Object.assign(state.formData, {
+  Object.assign(state.dataForm, {
     id: undefined,
     quota: 0,
     expireTime: getMonthLater(),
@@ -496,7 +502,7 @@ const resetQuery = () => {
  **/
 const handleAdd = () => {
   state.dialog = {
-    title: "添加用户",
+    title: t("common.save"),
     visible: true,
   };
 };
@@ -507,12 +513,12 @@ const handleAdd = () => {
 const handleUpdate = (row: { [key: string]: any }) => {
   const id = row.id;
   getAccountApi({ id: id }).then(({ data }) => {
-    Object.assign(formData.value, data);
+    Object.assign(dataForm.value, data);
     quotaTmp.value = data.quota;
   });
 
   dialog.value = {
-    title: "修改用户",
+    title: t("common.update"),
     visible: true,
   };
 };
@@ -523,17 +529,17 @@ const handleUpdate = (row: { [key: string]: any }) => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      const accountId = state.formData.id;
-      let accountUpdateDto: AccountUpdateDto = { ...state.formData };
+      const accountId = state.dataForm.id;
+      let accountUpdateDto: AccountUpdateDto = { ...state.dataForm };
       if (accountId) {
         updateAccountApi(accountUpdateDto).then(() => {
-          ElMessage.success("修改用户成功");
+          ElMessage.success(t("common.updateSuccess"));
           closeDialog();
           handleQuery();
         });
       } else {
         saveAccountApi(accountUpdateDto).then(() => {
-          ElMessage.success("新增用户成功");
+          ElMessage.success(t("common.saveSuccess"));
           closeDialog();
           handleQuery();
         });
@@ -550,7 +556,7 @@ const submitKickForm = () => {
     if (valid) {
       const params = { ...state.kickForm };
       hysteria2KickApi(params).then(() => {
-        ElMessage.success("下线成功");
+        ElMessage.success(t("common.downloadSuccess"));
         closeDialogKick();
         handleQuery();
       });
@@ -565,21 +571,23 @@ const handleDelete = (row: { [key: string]: any }) => {
   const id = row.id;
   const username = row.username;
   ElMessageBox.confirm(
-    "是否确认删除用户名为「" + username + "」的数据项?",
-    "警告",
+    "Are you sure to delete the data item with the username「" +
+      username +
+      "」?",
+    "Warning",
     {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
+      confirmButtonText: t("common.confirm"),
+      cancelButtonText: t("common.cancel"),
       type: "warning",
     }
   )
     .then(() => {
       deleteAccountApi({ id: id }).then(() => {
-        ElMessage.success("删除成功");
+        ElMessage.success(t("common.deleteSuccess"));
         handleQuery();
       });
     })
-    .catch(() => ElMessage.info("已取消删除"));
+    .catch(() => ElMessage.info(t("common.deleteCancel")));
 };
 
 /**
@@ -589,7 +597,7 @@ const handleDelete = (row: { [key: string]: any }) => {
 const handleKick = (row: { [key: string]: any }) => {
   state.kickForm.ids = [row.id];
   dialogKick.value = {
-    title: t("common.kickTip"),
+    title: t("account.kickTip"),
     visible: true,
   };
 };
@@ -600,7 +608,7 @@ const handleKick = (row: { [key: string]: any }) => {
  */
 const confirmReleaseKick = (row: { [key: string]: any }) => {
   releaseKickAccountApi({ id: row.id }).then(() => {
-    ElMessage.success("解除成功");
+    ElMessage.success(t("account.releaseSuccess"));
     handleQuery();
   });
 };
@@ -613,7 +621,7 @@ const closeDialog = () => {
   dataFormRef.value.resetFields();
   dataFormRef.value.clearValidate();
 
-  if (dialog.value.title == "修改用户") {
+  if (dialog.value.title == t("common.update")) {
     resetFormData();
   }
 };
@@ -635,7 +643,7 @@ const handleImport = (params: UploadRequestOptions) => {
     let formData = new FormData();
     formData.append("file", params.file);
     importAccountApi(formData).then(() => {
-      ElMessage.success("导入成功");
+      ElMessage.success(t("common.importSuccess"));
     });
     state.fileList = [];
   }
@@ -669,7 +677,7 @@ const handleExport = () => {
     // 模拟点击下载
     a.click();
     window.URL.revokeObjectURL(url);
-    ElMessage.success("导出成功");
+    ElMessage.success(t("common.exportSuccess"));
   });
 };
 

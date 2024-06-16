@@ -64,6 +64,12 @@
   </div>
 </template>
 
+<script lang="ts">
+export default {
+  name: "index",
+};
+</script>
+
 <script setup lang="ts">
 import { Select } from "@element-plus/icons-vue";
 import {
@@ -138,7 +144,7 @@ const submitForm = () => {
         },
       ];
       updateConfigsApi({ configUpdateDtos: configs }).then(() => {
-        ElMessage.success(t("config.saveSuccess"));
+        ElMessage.success(t("common.saveSuccess"));
       });
     }
   });
