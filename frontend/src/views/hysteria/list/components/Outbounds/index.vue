@@ -21,13 +21,13 @@
         append-to-body
         @close="closeDialog"
       >
-        <el-form ref="dataFormRef" label-position="top" :model="formData">
+        <el-form ref="dataFormRef" label-position="top" :model="dataForm">
           <el-tooltip
             :content="$t('hysteria.config.outbounds.name')"
             placement="bottom"
           >
             <el-form-item label="name" prop="name">
-              <el-input v-model="formData.name" clearable />
+              <el-input v-model="dataForm.name" clearable />
             </el-form-item>
           </el-tooltip>
           <el-tooltip
@@ -35,7 +35,7 @@
             placement="bottom"
           >
             <el-form-item label="type" prop="type">
-              <el-select v-model="formData.type" style="width: 100%">
+              <el-select v-model="dataForm.type" style="width: 100%">
                 <el-option
                   v-for="item in outboundTypes"
                   :key="item"
@@ -45,13 +45,13 @@
               </el-select>
             </el-form-item>
           </el-tooltip>
-          <template v-if="formData.type === 'socks5'">
+          <template v-if="dataForm.type === 'socks5'">
             <el-tooltip
               :content="$t('hysteria.config.outbounds.socks5.addr')"
               placement="bottom"
             >
               <el-form-item label="socks5.addr" prop="socks5.addr">
-                <el-input v-model="formData.socks5.addr" clearable />
+                <el-input v-model="dataForm.socks5.addr" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -59,7 +59,7 @@
               placement="bottom"
             >
               <el-form-item label="socks5.username" prop="socks5.username">
-                <el-input v-model="formData.socks5.username" clearable />
+                <el-input v-model="dataForm.socks5.username" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -67,17 +67,17 @@
               placement="bottom"
             >
               <el-form-item label="socks5.password" prop="socks5.password">
-                <el-input v-model="formData.socks5.password" clearable />
+                <el-input v-model="dataForm.socks5.password" clearable />
               </el-form-item>
             </el-tooltip>
           </template>
-          <template v-if="formData.type === 'http'">
+          <template v-if="dataForm.type === 'http'">
             <el-tooltip
               :content="$t('hysteria.config.outbounds.http.url')"
               placement="bottom"
             >
               <el-form-item label="http.url" prop="http.url">
-                <el-input v-model="formData.http.url" clearable />
+                <el-input v-model="dataForm.http.url" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -85,17 +85,17 @@
               placement="bottom"
             >
               <el-form-item label="http.insecure" prop="http.insecure">
-                <el-switch v-model="formData.http.insecure" />
+                <el-switch v-model="dataForm.http.insecure" />
               </el-form-item>
             </el-tooltip>
           </template>
-          <template v-if="formData.type === 'direct'">
+          <template v-if="dataForm.type === 'direct'">
             <el-tooltip
               :content="$t('hysteria.config.outbounds.direct.mode')"
               placement="bottom"
             >
               <el-form-item label="direct.mode" prop="direct.mode">
-                <el-select v-model="formData.direct.mode" style="width: 100%">
+                <el-select v-model="dataForm.direct.mode" style="width: 100%">
                   <el-option
                     v-for="item in outboundDirectModes"
                     :key="item"
@@ -110,7 +110,7 @@
               placement="bottom"
             >
               <el-form-item label="direct.bindIPv4" prop="direct.bindIPv4">
-                <el-input v-model="formData.direct.bindIPv4" clearable />
+                <el-input v-model="dataForm.direct.bindIPv4" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -118,7 +118,7 @@
               placement="bottom"
             >
               <el-form-item label="direct.bindIPv6" prop="direct.bindIPv6">
-                <el-input v-model="formData.direct.bindIPv6" clearable />
+                <el-input v-model="dataForm.direct.bindIPv6" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -126,7 +126,7 @@
               placement="bottom"
             >
               <el-form-item label="direct.bindDevice" prop="direct.bindDevice">
-                <el-input v-model="formData.direct.bindDevice" clearable />
+                <el-input v-model="dataForm.direct.bindDevice" clearable />
               </el-form-item>
             </el-tooltip>
           </template>
@@ -295,7 +295,7 @@ const outbounds = useVModel(props, "outbounds", emit);
 const dataFormRef = ref(ElForm);
 
 const state = reactive({
-  formData: {
+  dataForm: {
     ...defaultHysteria2ServerConfigOutbound,
   } as Hysteria2ServerConfigOutbound,
   dialog: {
@@ -309,7 +309,7 @@ const state = reactive({
   outboundInfo: {} as Hysteria2ServerConfigOutbound,
 });
 
-const { formData, dialog, outboundInfoDialog, outboundInfo } = toRefs(state);
+const { dataForm, dialog, outboundInfoDialog, outboundInfo } = toRefs(state);
 
 const outboundTypes = ["socks5", "http", "direct"];
 
@@ -337,11 +337,11 @@ const handleInfo = (outbound: Hysteria2ServerConfigOutbound) => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      if (outbounds.value.some((item) => item.name === state.formData.name)) {
+      if (outbounds.value.some((item) => item.name === state.dataForm.name)) {
         ElMessage.error("name cannot be repeated");
         return;
       }
-      const outbound = deepCopy(state.formData);
+      const outbound = deepCopy(state.dataForm);
       outbounds.value.push(outbound);
       closeDialog();
     }

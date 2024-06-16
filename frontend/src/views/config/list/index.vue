@@ -37,7 +37,7 @@
 
     <el-card shadow="never">
       <el-form
-        ref="formDataRef"
+        ref="dataFormRef"
         :rules="dataFormRules"
         :model="dataForm"
         label-position="top"
@@ -91,7 +91,7 @@ const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 
 const { t } = useI18n();
 
-const formDataRef = ref(ElForm);
+const dataFormRef = ref(ElForm);
 
 const dataFormRules = {
   huiWebPort: [
@@ -131,7 +131,7 @@ const state = reactive({
 const { dataForm, fileList } = toRefs(state);
 
 const submitForm = () => {
-  formDataRef.value.validate((valid: boolean) => {
+  dataFormRef.value.validate((valid: boolean) => {
     if (valid) {
       let configs: ConfigsUpdateDto[] = [
         {

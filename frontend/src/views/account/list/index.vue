@@ -550,7 +550,7 @@ const {
   fileList,
 } = toRefs(state);
 
-const resetFormData = () => {
+const resetDataForm = () => {
   Object.assign(state.dataForm, {
     id: undefined,
     quota: 0,
@@ -707,7 +707,7 @@ const closeDialog = () => {
   dataFormRef.value.clearValidate();
 
   if (dialog.value.title == t("common.update")) {
-    resetFormData();
+    resetDataForm();
   }
 };
 

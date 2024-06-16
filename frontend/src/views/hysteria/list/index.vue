@@ -115,10 +115,10 @@
       </el-form>
 
       <el-form
-        ref="formDataRef"
-        :rules="formDataRules"
+        ref="dataFormRef"
+        :rules="dataFormRules"
         label-position="top"
-        :model="formData"
+        :model="dataForm"
       >
         <el-tabs
           v-model="activeName"
@@ -132,7 +132,7 @@
               placement="bottom"
             >
               <el-form-item label="listen" prop="listen">
-                <el-input v-model="formData.listen" clearable />
+                <el-input v-model="dataForm.listen" clearable />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -158,7 +158,7 @@
               placement="bottom"
             >
               <el-form-item label="cert" prop="tls.cert">
-                <el-input v-model="formData.tls.cert" clearable />
+                <el-input v-model="dataForm.tls.cert" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -167,7 +167,7 @@
               placement="bottom"
             >
               <el-form-item label="key" prop="tls.key">
-                <el-input v-model="formData.tls.key" clearable />
+                <el-input v-model="dataForm.tls.key" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -176,7 +176,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.domains" prop="acme.domains">
-                <imputMultiple :tags="formData.acme.domains" />
+                <imputMultiple :tags="dataForm.acme.domains" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -185,7 +185,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.email" prop="acme.email">
-                <el-input v-model="formData.acme.email" clearable />
+                <el-input v-model="dataForm.acme.email" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -194,7 +194,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.ca" prop="acme.ca">
-                <el-select v-model="formData.acme.ca" style="width: 100%">
+                <el-select v-model="dataForm.acme.ca" style="width: 100%">
                   <el-option
                     v-for="item in acmeCas"
                     :key="item"
@@ -210,7 +210,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.disableHTTP" prop="acme.disableHTTP">
-                <el-switch v-model="formData.acme.disableHTTP" />
+                <el-switch v-model="dataForm.acme.disableHTTP" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -222,7 +222,7 @@
                 label="acme.disableTLSALPN"
                 prop="acme.disableTLSALPN"
               >
-                <el-switch v-model="formData.acme.disableTLSALPN" />
+                <el-switch v-model="dataForm.acme.disableTLSALPN" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -231,7 +231,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.altHTTPPort" prop="acme.altHTTPPort">
-                <el-input v-model="formData.acme.altHTTPPort" clearable />
+                <el-input v-model="dataForm.acme.altHTTPPort" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -243,7 +243,7 @@
                 label="acme.altTLSALPNPort"
                 prop="acme.altTLSALPNPort"
               >
-                <el-input v-model="formData.acme.altTLSALPNPort" clearable />
+                <el-input v-model="dataForm.acme.altTLSALPNPort" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -252,7 +252,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.dir" prop="acme.dir">
-                <el-input v-model="formData.acme.dir" clearable />
+                <el-input v-model="dataForm.acme.dir" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -261,7 +261,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.listenHost" prop="acme.listenHost">
-                <el-input v-model="formData.acme.listenHost" clearable />
+                <el-input v-model="dataForm.acme.listenHost" clearable />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -272,7 +272,7 @@
             >
               <el-form-item label="obfs.type" prop="obfs.type">
                 <el-select
-                  v-model="formData.obfs.type"
+                  v-model="dataForm.obfs.type"
                   style="width: 100%"
                   clearable
                 >
@@ -286,7 +286,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.obfs.type === 'salamander'"
+              v-if="dataForm.obfs.type === 'salamander'"
               :content="$t('hysteria.config.obfs.salamander.password')"
               placement="bottom"
             >
@@ -295,7 +295,7 @@
                 prop="obfs.salamander.password"
               >
                 <el-input
-                  v-model="formData.obfs.salamander.password"
+                  v-model="dataForm.obfs.salamander.password"
                   clearable
                 />
               </el-form-item>
@@ -311,7 +311,7 @@
                 prop="quic.initStreamReceiveWindow"
               >
                 <el-input
-                  v-model="formData.quic.initStreamReceiveWindow"
+                  v-model="dataForm.quic.initStreamReceiveWindow"
                   clearable
                 />
               </el-form-item>
@@ -325,7 +325,7 @@
                 prop="quic.maxStreamReceiveWindow"
               >
                 <el-input
-                  v-model="formData.quic.maxStreamReceiveWindow"
+                  v-model="dataForm.quic.maxStreamReceiveWindow"
                   clearable
                 />
               </el-form-item>
@@ -339,7 +339,7 @@
                 prop="quic.initConnReceiveWindow"
               >
                 <el-input
-                  v-model="formData.quic.initConnReceiveWindow"
+                  v-model="dataForm.quic.initConnReceiveWindow"
                   clearable
                 />
               </el-form-item>
@@ -353,7 +353,7 @@
                 prop="quic.maxConnReceiveWindow"
               >
                 <el-input
-                  v-model="formData.quic.maxConnReceiveWindow"
+                  v-model="dataForm.quic.maxConnReceiveWindow"
                   clearable
                 />
               </el-form-item>
@@ -366,7 +366,7 @@
                 label="quic.maxIdleTimeout"
                 prop="quic.maxIdleTimeout"
               >
-                <el-input v-model="formData.quic.maxIdleTimeout" clearable />
+                <el-input v-model="dataForm.quic.maxIdleTimeout" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -378,7 +378,7 @@
                 prop="quic.maxIncomingStreams"
               >
                 <el-input
-                  v-model="formData.quic.maxIncomingStreams"
+                  v-model="dataForm.quic.maxIncomingStreams"
                   clearable
                 />
               </el-form-item>
@@ -391,7 +391,7 @@
                 label="quic.disablePathMTUDiscovery"
                 prop="quic.disablePathMTUDiscovery"
               >
-                <el-switch v-model="formData.quic.disablePathMTUDiscovery" />
+                <el-switch v-model="dataForm.quic.disablePathMTUDiscovery" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -405,7 +405,7 @@
               placement="bottom"
             >
               <el-form-item label="bandwidth.up" prop="bandwidth.up">
-                <el-input v-model="formData.bandwidth.up" clearable />
+                <el-input v-model="dataForm.bandwidth.up" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -413,7 +413,7 @@
               placement="bottom"
             >
               <el-form-item label="bandwidth.down" prop="bandwidth.down">
-                <el-input v-model="formData.bandwidth.down" clearable />
+                <el-input v-model="dataForm.bandwidth.down" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -424,7 +424,7 @@
                 label="ignoreClientBandwidth"
                 prop="ignoreClientBandwidth"
               >
-                <el-switch v-model="formData.ignoreClientBandwidth" />
+                <el-switch v-model="dataForm.ignoreClientBandwidth" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -438,7 +438,7 @@
               placement="bottom"
             >
               <el-form-item label="speedTest" prop="speedTest">
-                <el-switch v-model="formData.speedTest" />
+                <el-switch v-model="dataForm.speedTest" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -448,7 +448,7 @@
               placement="bottom"
             >
               <el-form-item label="disableUDP" prop="disableUDP">
-                <el-switch v-model="formData.disableUDP" />
+                <el-switch v-model="dataForm.disableUDP" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -456,7 +456,7 @@
               placement="bottom"
             >
               <el-form-item label="udpIdleTimeout" prop="udpIdleTimeout">
-                <el-input v-model="formData.udpIdleTimeout" clearable />
+                <el-input v-model="dataForm.udpIdleTimeout" clearable />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -470,7 +470,7 @@
               placement="bottom"
             >
               <el-form-item label="resolver.type" prop="resolver.type">
-                <el-select v-model="formData.resolver.type" style="width: 100%">
+                <el-select v-model="dataForm.resolver.type" style="width: 100%">
                   <el-option
                     v-for="item in resolverTypes"
                     :key="item"
@@ -481,16 +481,16 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'tcp'"
+              v-if="dataForm.resolver.type === 'tcp'"
               :content="$t('hysteria.config.resolver.tcp.addr')"
               placement="bottom"
             >
               <el-form-item label="resolver.tcp.addr" prop="resolver.tcp.addr">
-                <el-input v-model="formData.resolver.tcp.addr" clearable />
+                <el-input v-model="dataForm.resolver.tcp.addr" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'tcp'"
+              v-if="dataForm.resolver.type === 'tcp'"
               :content="$t('hysteria.config.resolver.tcp.timeout')"
               placement="bottom"
             >
@@ -498,20 +498,20 @@
                 label="resolver.tcp.timeout"
                 prop="resolver.tcp.timeout"
               >
-                <el-input v-model="formData.resolver.tcp.timeout" clearable />
+                <el-input v-model="dataForm.resolver.tcp.timeout" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'udp'"
+              v-if="dataForm.resolver.type === 'udp'"
               :content="$t('hysteria.config.resolver.udp.addr')"
               placement="bottom"
             >
               <el-form-item label="resolver.udp.addr" prop="resolver.udp.addr">
-                <el-input v-model="formData.resolver.udp.addr" clearable />
+                <el-input v-model="dataForm.resolver.udp.addr" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'udp'"
+              v-if="dataForm.resolver.type === 'udp'"
               :content="$t('hysteria.config.resolver.udp.timeout')"
               placement="bottom"
             >
@@ -519,20 +519,20 @@
                 label="resolver.udp.timeout"
                 prop="resolver.udp.timeout"
               >
-                <el-input v-model="formData.resolver.udp.timeout" clearable />
+                <el-input v-model="dataForm.resolver.udp.timeout" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'tls'"
+              v-if="dataForm.resolver.type === 'tls'"
               :content="$t('hysteria.config.resolver.tls.addr')"
               placement="bottom"
             >
               <el-form-item label="resolver.tls.addr" prop="resolver.tls.addr">
-                <el-input v-model="formData.resolver.tls.addr" clearable />
+                <el-input v-model="dataForm.resolver.tls.addr" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'tls'"
+              v-if="dataForm.resolver.type === 'tls'"
               :content="$t('hysteria.config.resolver.tls.timeout')"
               placement="bottom"
             >
@@ -540,20 +540,20 @@
                 label="resolver.tls.timeout"
                 prop="resolver.tls.timeout"
               >
-                <el-input v-model="formData.resolver.tls.timeout" clearable />
+                <el-input v-model="dataForm.resolver.tls.timeout" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'tls'"
+              v-if="dataForm.resolver.type === 'tls'"
               :content="$t('hysteria.config.resolver.tls.sni')"
               placement="bottom"
             >
               <el-form-item label="resolver.tls.sni" prop="resolver.tls.sni">
-                <el-input v-model="formData.resolver.tls.sni" clearable />
+                <el-input v-model="dataForm.resolver.tls.sni" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'tls'"
+              v-if="dataForm.resolver.type === 'tls'"
               :content="$t('hysteria.config.resolver.tls.insecure')"
               placement="bottom"
             >
@@ -561,11 +561,11 @@
                 label="resolver.tls.insecure"
                 prop="resolver.tls.insecure"
               >
-                <el-switch v-model="formData.resolver.tls.insecure" />
+                <el-switch v-model="dataForm.resolver.tls.insecure" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'https'"
+              v-if="dataForm.resolver.type === 'https'"
               :content="$t('hysteria.config.resolver.https.addr')"
               placement="bottom"
             >
@@ -573,11 +573,11 @@
                 label="resolver.https.addr"
                 prop="resolver.https.addr"
               >
-                <el-input v-model="formData.resolver.https.addr" clearable />
+                <el-input v-model="dataForm.resolver.https.addr" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'https'"
+              v-if="dataForm.resolver.type === 'https'"
               :content="$t('hysteria.config.resolver.https.timeout')"
               placement="bottom"
             >
@@ -585,11 +585,11 @@
                 label="resolver.https.timeout"
                 prop="resolver.https.timeout"
               >
-                <el-input v-model="formData.resolver.https.timeout" clearable />
+                <el-input v-model="dataForm.resolver.https.timeout" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'https'"
+              v-if="dataForm.resolver.type === 'https'"
               :content="$t('hysteria.config.resolver.https.sni')"
               placement="bottom"
             >
@@ -597,11 +597,11 @@
                 label="resolver.https.sni"
                 prop="resolver.https.sni"
               >
-                <el-input v-model="formData.resolver.https.sni" clearable />
+                <el-input v-model="dataForm.resolver.https.sni" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.resolver.type === 'https'"
+              v-if="dataForm.resolver.type === 'https'"
               :content="$t('hysteria.config.resolver.https.insecure')"
               placement="bottom"
             >
@@ -609,7 +609,7 @@
                 label="resolver.https.insecure"
                 prop="resolver.https.insecure"
               >
-                <el-switch v-model="formData.resolver.https.insecure" />
+                <el-switch v-model="dataForm.resolver.https.insecure" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -635,7 +635,7 @@
               placement="bottom"
             >
               <el-form-item label="acl.file" prop="acl.file">
-                <el-input v-model="formData.acl.file" clearable />
+                <el-input v-model="dataForm.acl.file" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -644,7 +644,7 @@
               placement="bottom"
             >
               <el-form-item label="acl.inline" prop="acl.inline">
-                <imputMultiple :tags="formData.acl.inline" />
+                <imputMultiple :tags="dataForm.acl.inline" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -652,7 +652,7 @@
               placement="bottom"
             >
               <el-form-item label="acl.geoip" prop="acl.geoip">
-                <el-input v-model="formData.acl.geoip" clearable />
+                <el-input v-model="dataForm.acl.geoip" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -660,7 +660,7 @@
               placement="bottom"
             >
               <el-form-item label="acl.geosite" prop="acl.geosite">
-                <el-input v-model="formData.acl.geosite" clearable />
+                <el-input v-model="dataForm.acl.geosite" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -671,7 +671,7 @@
                 label="acl.geoUpdateInterval"
                 prop="acl.geoUpdateInterval"
               >
-                <el-input v-model="formData.acl.geoUpdateInterval" clearable />
+                <el-input v-model="dataForm.acl.geoUpdateInterval" clearable />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -680,7 +680,7 @@
             name="outbounds"
             v-if="outbounds"
           >
-            <Outbounds :outbounds="formData.outbounds" />
+            <Outbounds :outbounds="dataForm.outbounds" />
           </el-tab-pane>
           <el-tab-pane :label="$t('hysteria.http')" name="http">
             <el-tooltip
@@ -691,7 +691,7 @@
                 :label="$t('hysteria.config.trafficStats.listen')"
                 prop="trafficStats.listen"
               >
-                <el-input v-model="formData.trafficStats.listen" clearable />
+                <el-input v-model="dataForm.trafficStats.listen" clearable />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -706,7 +706,7 @@
             >
               <el-form-item label="masquerade.type" prop="masquerade.type">
                 <el-select
-                  v-model="formData.masquerade.type"
+                  v-model="dataForm.masquerade.type"
                   style="width: 100%"
                   clearable
                 >
@@ -720,7 +720,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.masquerade.type === 'file'"
+              v-if="dataForm.masquerade.type === 'file'"
               :content="$t('hysteria.config.masquerade.file.dir')"
               placement="bottom"
             >
@@ -728,11 +728,11 @@
                 label="masquerade.file.dir"
                 prop="masquerade.file.dir"
               >
-                <el-input v-model="formData.masquerade.file.dir" clearable />
+                <el-input v-model="dataForm.masquerade.file.dir" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.masquerade.type === 'proxy'"
+              v-if="dataForm.masquerade.type === 'proxy'"
               :content="$t('hysteria.config.masquerade.proxy.url')"
               placement="bottom"
             >
@@ -740,11 +740,11 @@
                 label="masquerade.proxy.url"
                 prop="masquerade.proxy.url"
               >
-                <el-input v-model="formData.masquerade.proxy.url" clearable />
+                <el-input v-model="dataForm.masquerade.proxy.url" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.masquerade.type === 'proxy'"
+              v-if="dataForm.masquerade.type === 'proxy'"
               :content="$t('hysteria.config.masquerade.proxy.rewriteHost')"
               placement="bottom"
             >
@@ -752,11 +752,11 @@
                 label="masquerade.proxy.rewriteHost"
                 prop="masquerade.proxy.rewriteHost"
               >
-                <el-switch v-model="formData.masquerade.proxy.rewriteHost" />
+                <el-switch v-model="dataForm.masquerade.proxy.rewriteHost" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.masquerade.type === 'string'"
+              v-if="dataForm.masquerade.type === 'string'"
               :content="$t('hysteria.config.masquerade.string.content')"
               placement="bottom"
             >
@@ -765,13 +765,13 @@
                 prop="masquerade.string.content"
               >
                 <el-input
-                  v-model="formData.masquerade.string.content"
+                  v-model="dataForm.masquerade.string.content"
                   clearable
                 />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.masquerade.type === 'string'"
+              v-if="dataForm.masquerade.type === 'string'"
               :content="$t('hysteria.config.masquerade.string.headers')"
               placement="bottom"
             >
@@ -780,13 +780,13 @@
                 prop="masquerade.string.headers"
               >
                 <el-input
-                  v-model="formData.masquerade.string.headers"
+                  v-model="dataForm.masquerade.string.headers"
                   clearable
                 />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="formData.masquerade.type === 'string'"
+              v-if="dataForm.masquerade.type === 'string'"
               :content="$t('hysteria.config.masquerade.string.statusCode')"
               placement="bottom"
             >
@@ -794,7 +794,7 @@
                 label="masquerade.string.statusCode"
                 prop="masquerade.string.statusCode"
               >
-                <el-switch v-model="formData.masquerade.string.statusCode" />
+                <el-switch v-model="dataForm.masquerade.string.statusCode" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -805,7 +805,7 @@
                 label="masquerade.listenHTTP"
                 prop="masquerade.listenHTTP"
               >
-                <el-input v-model="formData.masquerade.listenHTTP" clearable />
+                <el-input v-model="dataForm.masquerade.listenHTTP" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -816,7 +816,7 @@
                 label="masquerade.listenHTTPS"
                 prop="masquerade.listenHTTPS"
               >
-                <el-input v-model="formData.masquerade.listenHTTPS" clearable />
+                <el-input v-model="dataForm.masquerade.listenHTTPS" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -827,7 +827,7 @@
                 label="masquerade.forceHTTPS"
                 prop="masquerade.forceHTTPS"
               >
-                <el-switch v-model="formData.masquerade.forceHTTPS" />
+                <el-switch v-model="dataForm.masquerade.forceHTTPS" />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -873,9 +873,9 @@ import { monitorHysteria2Api } from "@/api/monitor";
 const { t } = useI18n();
 
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
-const formDataRef = ref(ElForm);
+const dataFormRef = ref(ElForm);
 
-const formDataRules = {
+const dataFormRules = {
   listen: [
     {
       required: true,
@@ -903,7 +903,7 @@ const state = reactive({
   enableForm: {
     enable: "0",
   },
-  formData: { ...defaultHysteria2ServerConfig } as Hysteria2ServerConfig,
+  dataForm: { ...defaultHysteria2ServerConfig } as Hysteria2ServerConfig,
   activeName: "listen",
   tlsType: "acme",
   aclType: "inline",
@@ -927,7 +927,7 @@ const state = reactive({
 
 const {
   activeName,
-  formData,
+  dataForm,
   enableForm,
   tlsType,
   aclType,
@@ -1049,9 +1049,9 @@ const handleExport = async () => {
 
 const handleChangeEnable = () => {};
 const submitForm = () => {
-  formDataRef.value.validate((valid: any) => {
+  dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      const params = { ...state.formData };
+      const params = { ...state.dataForm };
       updateHysteria2ConfigApi(params).then(() => {
         ElMessage.success(t("common.save"));
         setConfig();
@@ -1069,42 +1069,42 @@ const setConfig = () => {
   });
   getHysteria2ConfigApi().then((response) => {
     if (response.data) {
-      assignIgnoringNull(state.formData, response.data);
-      if (state.formData?.tls?.cert && state.formData?.tls?.key) {
+      assignIgnoringNull(state.dataForm, response.data);
+      if (state.dataForm?.tls?.cert && state.dataForm?.tls?.key) {
         state.tlsType = "tls";
       } else {
         state.tlsType = "acme";
       }
-      if (state.formData?.acl?.inline) {
+      if (state.dataForm?.acl?.inline) {
         state.aclType = "inline";
       } else {
         state.aclType = "file";
       }
-      if (state.formData?.obfs) {
+      if (state.dataForm?.obfs) {
         state.obfs = true;
       }
-      if (state.formData?.quic) {
+      if (state.dataForm?.quic) {
         state.quic = true;
       }
-      if (state.formData?.bandwidth) {
+      if (state.dataForm?.bandwidth) {
         state.bandwidth = true;
       }
-      if (state.formData?.speedTest) {
+      if (state.dataForm?.speedTest) {
         state.speedTest = true;
       }
-      if (state.formData?.disableUDP || state.formData?.udpIdleTimeout) {
+      if (state.dataForm?.disableUDP || state.dataForm?.udpIdleTimeout) {
         state.udp = true;
       }
-      if (state.formData?.resolver) {
+      if (state.dataForm?.resolver) {
         state.resolver = true;
       }
-      if (state.formData?.acl) {
+      if (state.dataForm?.acl) {
         state.acl = true;
       }
-      if (state.formData?.outbounds) {
+      if (state.dataForm?.outbounds) {
         state.outbounds = true;
       }
-      if (state.formData?.masquerade) {
+      if (state.dataForm?.masquerade) {
         state.masquerade = true;
       }
     }
@@ -1122,33 +1122,33 @@ const closeTabPane = (tabPaneName: string) => {
   }
 
   if (tabPaneName === "obfs") {
-    state.formData.obfs = undefined;
+    state.dataForm.obfs = undefined;
     state.obfs = false;
   } else if (tabPaneName === "quic") {
-    state.formData.quic = undefined;
+    state.dataForm.quic = undefined;
     state.quic = false;
   } else if (tabPaneName === "bandwidth") {
-    state.formData.bandwidth = undefined;
-    state.formData.ignoreClientBandwidth = undefined;
+    state.dataForm.bandwidth = undefined;
+    state.dataForm.ignoreClientBandwidth = undefined;
     state.bandwidth = false;
   } else if (tabPaneName === "speedTest") {
-    state.formData.speedTest = undefined;
+    state.dataForm.speedTest = undefined;
     state.speedTest = true;
   } else if (tabPaneName === "udp") {
-    state.formData.disableUDP = undefined;
-    state.formData.udpIdleTimeout = undefined;
+    state.dataForm.disableUDP = undefined;
+    state.dataForm.udpIdleTimeout = undefined;
     state.udp = false;
   } else if (tabPaneName === "resolver") {
-    state.formData.resolver = undefined;
+    state.dataForm.resolver = undefined;
     state.resolver = false;
   } else if (tabPaneName === "acl") {
-    state.formData.acl = undefined;
+    state.dataForm.acl = undefined;
     state.acl = false;
   } else if (tabPaneName === "outbounds") {
-    state.formData.outbounds = undefined;
+    state.dataForm.outbounds = undefined;
     state.outbounds = false;
   } else if (tabPaneName === "masquerade") {
-    state.formData.masquerade = undefined;
+    state.dataForm.masquerade = undefined;
     state.masquerade = false;
   }
   state.activeName = "listen";
@@ -1156,7 +1156,7 @@ const closeTabPane = (tabPaneName: string) => {
 
 const handleDropdownClick = (command: string) => {
   if (command === "obfs") {
-    state.formData.obfs = {
+    state.dataForm.obfs = {
       type: "salamander",
       salamander: {
         password: "cry_me_a_r1ver",
@@ -1164,7 +1164,7 @@ const handleDropdownClick = (command: string) => {
     };
     state.obfs = true;
   } else if (command === "quic") {
-    state.formData.quic = {
+    state.dataForm.quic = {
       initStreamReceiveWindow: 8388608,
       maxStreamReceiveWindow: 8388608,
       initConnReceiveWindow: 20971520,
@@ -1175,21 +1175,21 @@ const handleDropdownClick = (command: string) => {
     };
     state.quic = true;
   } else if (command === "bandwidth") {
-    state.formData.bandwidth = {
+    state.dataForm.bandwidth = {
       up: "1 gbps",
       down: "1 gbps",
     };
-    state.formData.ignoreClientBandwidth = false;
+    state.dataForm.ignoreClientBandwidth = false;
     state.bandwidth = true;
   } else if (command === "speedTest") {
-    state.formData.speedTest = false;
+    state.dataForm.speedTest = false;
     state.speedTest = true;
   } else if (command === "udp") {
-    state.formData.disableUDP = false;
-    state.formData.udpIdleTimeout = "60s";
+    state.dataForm.disableUDP = false;
+    state.dataForm.udpIdleTimeout = "60s";
     state.udp = true;
   } else if (command === "resolver") {
-    state.formData.resolver = {
+    state.dataForm.resolver = {
       type: "",
       tcp: {
         addr: "8.8.8.8:53",
@@ -1214,7 +1214,7 @@ const handleDropdownClick = (command: string) => {
     };
     state.resolver = true;
   } else if (command === "acl") {
-    state.formData.acl = {
+    state.dataForm.acl = {
       file: undefined,
       inline: undefined,
       geoip: undefined,
@@ -1223,10 +1223,10 @@ const handleDropdownClick = (command: string) => {
     };
     state.acl = true;
   } else if (command === "outbounds") {
-    state.formData.outbounds = [] as Hysteria2ServerConfigOutbound[];
+    state.dataForm.outbounds = [] as Hysteria2ServerConfigOutbound[];
     state.outbounds = true;
   } else if (command === "masquerade") {
-    state.formData.masquerade = {
+    state.dataForm.masquerade = {
       type: "",
       file: {
         dir: "",
