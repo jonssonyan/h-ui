@@ -8,6 +8,7 @@
       :precision="0"
       clearable
       style="width: 220px"
+      @blur="changeCapacity"
     />
     <el-select
       v-model="unit"
@@ -67,6 +68,11 @@ watch(
     unit.value = formatStorageUnit(props.quotaTmp);
   }
 );
+const changeCapacity = () => {
+  if (!state.capacity) {
+    state.capacity = 0;
+  }
+};
 </script>
 
 <style lang="scss" scoped></style>
