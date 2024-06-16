@@ -114,7 +114,12 @@
         </el-form-item>
       </el-form>
 
-      <el-form ref="formDataRef" label-position="top" :model="formData">
+      <el-form
+        ref="formDataRef"
+        :rules="formDataRules"
+        label-position="top"
+        :model="formData"
+      >
         <el-tabs
           v-model="activeName"
           class="tabs"
@@ -868,6 +873,24 @@ import { monitorHysteria2Api } from "@/api/monitor";
 const { t } = useI18n();
 
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
+const formDataRef = ref(ElForm);
+
+const formDataRules = {
+  listen: [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+  ],
+  "trafficStats.listen": [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+  ],
+};
 
 const tlsTypes = ref<string[]>(["tls", "acme"]);
 const aclTypes = ref<string[]>(["file", "inline"]);
@@ -1016,21 +1039,24 @@ const handleExport = async () => {
     a.href = url;
     let dis = response.headers["content-disposition"];
     a.download = dis.split("attachment; filename=")[1];
-    // 模拟点击下载
     a.click();
     window.URL.revokeObjectURL(url);
-    ElMessage.success("导出成功");
+    ElMessage.success(t("common.exportSuccess"));
   } catch (e) {
-    ElMessage.error("导出失败");
+    ElMessage.error(t("common.exportError"));
   }
 };
 
 const handleChangeEnable = () => {};
 const submitForm = () => {
-  const params = { ...state.formData };
-  updateHysteria2ConfigApi(params).then(() => {
-    ElMessage.success("更新成功");
-    setConfig();
+  formDataRef.value.validate((valid: any) => {
+    if (valid) {
+      const params = { ...state.formData };
+      updateHysteria2ConfigApi(params).then(() => {
+        ElMessage.success(t("common.save"));
+        setConfig();
+      });
+    }
   });
 };
 
