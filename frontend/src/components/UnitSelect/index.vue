@@ -7,7 +7,7 @@
       :controls="false"
       :precision="0"
       clearable
-      style="width: 214px"
+      style="width: 220px"
     />
     <el-select
       v-model="unit"
@@ -72,5 +72,6 @@ watch(
 <style lang="scss" scoped>
 .container {
   display: flex;
+  align-items: center;
 }
 </style>

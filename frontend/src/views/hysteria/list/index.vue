@@ -20,7 +20,7 @@
               <template #icon>
                 <i-ep-upload />
               </template>
-              导入
+              {{ $t("common.import") }}
             </el-button>
           </el-upload>
         </el-form-item>
@@ -29,7 +29,7 @@
             <template #icon>
               <i-ep-download />
             </template>
-            导出
+            {{ $t("common.export") }}
           </el-button>
         </el-form-item>
       </el-form>

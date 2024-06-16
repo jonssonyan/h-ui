@@ -238,7 +238,16 @@
       append-to-body
       @close="closeDialog"
     >
-      <el-form ref="dataFormRef" :model="dataForm" label-width="80px">
+      <el-form
+        ref="dataFormRef"
+        :rules="
+          dialog.title === t('common.add')
+            ? dataFormAddRules
+            : dataFormUpdateRules
+        "
+        :model="dataForm"
+        label-width="80px"
+      >
         <el-form-item :label="$t('account.username')" prop="username">
           <el-input
             v-model="dataForm.username"
@@ -280,11 +289,10 @@
             clearable
           />
         </el-form-item>
-
         <el-form-item :label="$t('common.deleted')" prop="deleted">
           <el-radio-group v-model="dataForm.deleted">
-            <el-radio :label="0">{{ $t("common.enable") }}</el-radio>
-            <el-radio :label="1">{{ $t("common.disable") }}</el-radio>
+            <el-radio :value="0">{{ $t("common.enable") }}</el-radio>
+            <el-radio :value="1">{{ $t("common.disable") }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -390,6 +398,117 @@ const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
 const kickFormRef = ref(ElForm); // 下线表单
 
+const dataFormAddRules = {
+  username: [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+    {
+      pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
+      message: "Username format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
+  pass: [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+    {
+      pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
+      message: "Pass format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
+  conPass: [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+    {
+      pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
+      message: "ConPass format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
+  expireTime: [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+  ],
+  deleted: [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+  ],
+};
+
+const dataFormUpdateRules = {
+  username: [
+    {
+      pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
+      message: "Username format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
+  pass: [
+    {
+      pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
+      message: "Pass format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
+  conPass: [
+    {
+      pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
+      message: "Pass format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
+};
+
+const shortcuts = [
+  {
+    text: "A week later",
+    value: getWeekLater,
+  },
+  {
+    text: "A month later",
+    value: getMonthLater,
+  },
+  {
+    text: "A year later",
+    value: getYearLater,
+  },
+];
+
+const shortcutsKick = [
+  {
+    text: "A hour later",
+    value: getHourLater,
+  },
+  {
+    text: "A day later",
+    value: getDayLater,
+  },
+  {
+    text: "A week later",
+    value: getWeekLater,
+  },
+  {
+    text: "A month later",
+    value: getMonthLater,
+  },
+];
+
 const state = reactive({
   loading: true,
   total: 0,
@@ -431,40 +550,6 @@ const {
   fileList,
 } = toRefs(state);
 
-const shortcuts = [
-  {
-    text: "A week later",
-    value: getWeekLater,
-  },
-  {
-    text: "A month later",
-    value: getMonthLater,
-  },
-  {
-    text: "A year later",
-    value: getYearLater,
-  },
-];
-
-const shortcutsKick = [
-  {
-    text: "A hour later",
-    value: getHourLater,
-  },
-  {
-    text: "A day later",
-    value: getDayLater,
-  },
-  {
-    text: "A week later",
-    value: getWeekLater,
-  },
-  {
-    text: "A month later",
-    value: getMonthLater,
-  },
-];
-
 const resetFormData = () => {
   Object.assign(state.dataForm, {
     id: undefined,
@@ -502,7 +587,7 @@ const resetQuery = () => {
  **/
 const handleAdd = () => {
   state.dialog = {
-    title: t("common.save"),
+    title: t("common.add"),
     visible: true,
   };
 };
