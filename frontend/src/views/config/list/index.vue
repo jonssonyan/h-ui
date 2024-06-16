@@ -205,9 +205,9 @@ const handleExport = async () => {
     // 模拟点击下载
     a.click();
     window.URL.revokeObjectURL(url);
-    ElMessage.success("导出成功");
+    ElMessage.success(t("common.exportSuccess"));
   } catch (e) {
-    ElMessage.error("导出失败");
+    ElMessage.error(t("common.exportError"));
   }
 };
 

@@ -3,8 +3,8 @@
     <div class="search">
       <el-form :inline="true">
         <el-form-item>
-          <el-button type="primary" @click="submitForm" :icon="Select"
-            >保存
+          <el-button type="primary" @click="submitForm" :icon="Select">
+            {{ $t("common.save") }}
           </el-button>
         </el-form-item>
         <el-form-item>
@@ -987,7 +987,7 @@ const handleImport = (params: UploadRequestOptions) => {
     let formData = new FormData();
     formData.append("file", params.file);
     importHysteria2ConfigApi(formData).then(() => {
-      ElMessage.success("导入成功");
+      ElMessage.success(t("common.importSuccess"));
     });
     state.fileList = [];
   }
