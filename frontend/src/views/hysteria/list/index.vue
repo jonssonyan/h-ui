@@ -857,6 +857,7 @@ import {
   getConfigApi,
   getHysteria2ConfigApi,
   importHysteria2ConfigApi,
+  updateConfigsApi,
   updateHysteria2ConfigApi,
 } from "@/api/config";
 import { useI18n } from "vue-i18n";
@@ -866,7 +867,7 @@ import {
   UploadRawFile,
   UploadRequestOptions,
 } from "element-plus/lib/components";
-import { listReleaseApi } from "@/api/hysteria2";
+import { hysteria2ChangeVersionApi, listReleaseApi } from "@/api/hysteria2";
 import { Hysteria2ReleaseVo } from "@/api/hysteria2/types";
 import { monitorHysteria2Api } from "@/api/monitor";
 
@@ -1047,7 +1048,14 @@ const handleExport = async () => {
   }
 };
 
-const handleChangeEnable = () => {};
+const handleChangeEnable = async () => {
+  await updateConfigsApi({
+    configUpdateDtos: [
+      { key: hysteria2EnableKey, value: state.enableForm.enable },
+    ],
+  });
+  ElMessage.success("common.saveSuccess");
+};
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
@@ -1259,7 +1267,10 @@ const setHysteria2Monitor = async () => {
   Object.assign(state.hysteria2Monitor, data);
 };
 
-const handleHysteria2ChangeVersion = async () => {};
+const handleHysteria2ChangeVersion = async () => {
+  await hysteria2ChangeVersionApi({ version: state.hysteria2Version });
+  ElMessage.success(t("common.changeSuccess"));
+};
 
 onMounted(() => {
   setConfig();

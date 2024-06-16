@@ -60,6 +60,7 @@ export default {
     deleteSuccess: "删除成功",
     deleteCancel: "取消删除",
     downloadSuccess: "下载成功",
+    changeSuccess: "切换成功",
   },
   info: {
     expireTime: "年-月-日 时:分:秒",
