@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div style="display: flex; align-items: center">
     <el-input-number
       v-model="capacity"
       :placeholder="$t('account.quota')"
@@ -69,9 +69,4 @@ watch(
 );
 </script>
 
-<style lang="scss" scoped>
-.container {
-  display: flex;
-  align-items: center;
-}
-</style>
+<style lang="scss" scoped></style>
