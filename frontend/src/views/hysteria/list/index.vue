@@ -76,7 +76,7 @@
             <el-select
               v-model="hysteria2Version"
               :placeholder="$t('hysteria.hysteria2Version')"
-              style="height: 32px; width: 150px"
+              style="height: 32px; width: 160px"
             >
               <el-option
                 v-for="item in hysteria2Versions"

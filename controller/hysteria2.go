@@ -69,7 +69,7 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 func ListRelease(c *gin.Context) {
 	releases, err := util.ListRelease("apernet", "hysteria")
 	if err != nil {
-		vo.Fail(err.Error(), c)
+		vo.Fail("get Hysteria2 releases failed", c)
 		return
 	}
 
