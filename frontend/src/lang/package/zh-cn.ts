@@ -176,7 +176,7 @@ export default {
         down: "下载",
       },
       ignoreClientBandwidth: "忽略客户端带宽设置",
-      speedTest: "启用后，服务端将允许客户端进行下载和上传速度测试。",
+      speedTest: "speedTest 启用后，服务端将允许客户端进行下载和上传速度测试。",
       disableUDP: "disableUDP 启用后服务端禁用 UDP 转发，只支持 TCP。",
       udpIdleTimeout:
         "udpIdleTimeout 用于指定服务器对于每个 UDP 会话，在没有流量时保持本地 UDP 端口的时间长度。概念上与 NAT 的 UDP 会话超时时间相似。",
