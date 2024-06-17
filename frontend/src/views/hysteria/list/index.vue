@@ -43,7 +43,7 @@
               v-model="enableForm.enable"
               active-value="1"
               inactive-value="0"
-              @change="handleChangeEnable(enableForm.enable)"
+              @change="handleChangeEnable"
               :active-text="$t('hysteria.enable')"
               :inactive-text="$t('hysteria.disable')"
               style="height: 32px"
@@ -861,7 +861,7 @@ import {
   updateHysteria2ConfigApi,
 } from "@/api/config";
 import { useI18n } from "vue-i18n";
-import { assignIgnoringNull } from "@/utils/object";
+import { assignIgnoringNull, deepCopy } from "@/utils/object";
 import {
   UploadFile,
   UploadRawFile,
@@ -1063,7 +1063,12 @@ const handleChangeEnable = async () => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      const params = { ...state.dataForm };
+      let params = deepCopy(state.dataForm);
+      if (state.tlsType == "tls") {
+        params.acme = undefined;
+      } else {
+        params.tls = undefined;
+      }
       updateHysteria2ConfigApi(params).then(() => {
         ElMessage.success(t("common.saveSuccess"));
         setConfig();
@@ -1082,7 +1087,10 @@ const setConfig = () => {
   getHysteria2ConfigApi().then((response) => {
     if (response.data) {
       assignIgnoringNull(state.dataForm, response.data);
-      if (state.dataForm?.tls?.cert && state.dataForm?.tls?.key) {
+      if (
+        (state.dataForm?.tls?.cert && state.dataForm?.tls?.key) ||
+        state.dataForm?.acme?.domains.length == 0
+      ) {
         state.tlsType = "tls";
       } else {
         state.tlsType = "acme";

@@ -341,7 +341,19 @@ const submitForm = () => {
         ElMessage.error("name cannot be repeated");
         return;
       }
-      const outbound = deepCopy(state.dataForm);
+      let outbound = deepCopy(state.dataForm);
+
+      if (outbound.type === "socks5") {
+        outbound.http = undefined;
+        outbound.direct = undefined;
+      } else if (outbound.type === "http") {
+        outbound.socks5 = undefined;
+        outbound.direct = undefined;
+      } else if (outbound.type === "direct") {
+        outbound.socks5 = undefined;
+        outbound.http = undefined;
+      }
+
       outbounds.value.push(outbound);
       closeDialog();
     }
