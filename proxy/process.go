@@ -134,8 +134,7 @@ func (p *process) handleCmdExecution(cmd *exec.Cmd) {
 			_ = p.release()
 		}
 	case <-ctx.Done():
-		logrus.Errorf("cmd wait timeout")
-		_ = p.release()
+
 	}
 }
 
