@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/service"
@@ -46,7 +47,6 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 		vo.Fail(err.Error(), c)
 		return
 	}
-
 	if util.Exists(util.GetHysteria2BinPath()) {
 		if err := os.Remove(util.GetHysteria2BinPath()); err != nil {
 			vo.Fail("filed remove hysteria2 bin file", c)
@@ -54,14 +54,22 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 		}
 	}
 
-	if err = util.DownloadHysteria2(*hysteria2VersionDto.Version); err != nil {
+	if err = util.DownloadHysteria2(fmt.Sprintf("app/%s", *hysteria2VersionDto.Version)); err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
 
-	if err = service.StartHysteria2(); err != nil {
+	config, err := service.GetConfig(constant.Hysteria2Enable)
+	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
+	}
+
+	if *config.Value == "1" {
+		if err = service.StartHysteria2(); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
 	}
 	vo.Success(nil, c)
 }
@@ -73,7 +81,7 @@ func ListRelease(c *gin.Context) {
 		return
 	}
 
-	var vos []vo.Hysteria2ReleaseVo
+	var versions []string
 	for _, item := range releases {
 		versionSplit := strings.Split(*item.TagName, "/v")
 		if len(versionSplit) == 2 {
@@ -84,16 +92,13 @@ func ListRelease(c *gin.Context) {
 			}
 			for _, asset := range item.Assets {
 				if asset.GetName() == util.GetHysteria2BinName() {
-					vos = append(vos, vo.Hysteria2ReleaseVo{
-						TagName:            fmt.Sprintf("v%s", versionSplit[1]),
-						BrowserDownloadURL: asset.GetBrowserDownloadURL(),
-					})
+					versions = append(versions, fmt.Sprintf("v%s", versionSplit[1]))
 					break
 				}
 			}
 		}
 	}
-	vo.Success(vos, c)
+	vo.Success(versions, c)
 }
 
 func Hysteria2SubscribeUrl(c *gin.Context) {

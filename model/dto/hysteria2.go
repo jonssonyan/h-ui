@@ -10,7 +10,7 @@ type Hysteria2KickDto struct {
 }
 
 type Hysteria2VersionDto struct {
-	Version *string `json:"version" form:"version" validate:"required,min=1,max=5"`
+	Version *string `json:"version" form:"version" validate:"required,min=1,max=10"`
 }
 
 type Hysteria2SubscribeUrlDto struct {

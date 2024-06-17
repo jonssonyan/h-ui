@@ -80,9 +80,9 @@
             >
               <el-option
                 v-for="item in hysteria2Versions"
-                :key="item.tagName"
-                :label="item.tagName"
-                :value="item.browserDownloadURL"
+                :key="item"
+                :label="item"
+                :value="item"
               />
             </el-select>
             <el-button
@@ -919,7 +919,7 @@ const state = reactive({
   masquerade: false,
   fileList: [] as UploadFile[],
   hysteria2Version: "",
-  hysteria2Versions: [] as Hysteria2ReleaseVo[],
+  hysteria2Versions: [] as string[],
   hysteria2Monitor: {
     version: "",
     running: false,
@@ -1270,6 +1270,7 @@ const setHysteria2Monitor = async () => {
 const handleHysteria2ChangeVersion = async () => {
   await hysteria2ChangeVersionApi({ version: state.hysteria2Version });
   ElMessage.success(t("common.changeSuccess"));
+  await setHysteria2Monitor();
 };
 
 onMounted(() => {

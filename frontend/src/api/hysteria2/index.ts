@@ -2,10 +2,10 @@ import { AxiosPromise } from "axios";
 import { Hysteria2ServerConfig } from "@/api/config/types";
 import request from "@/utils/request";
 import {
-	Hysteria2KickDto,
-	Hysteria2ReleaseVo, Hysteria2SubscribeUrlDto,
-	Hysteria2UrlDto,
-	Hysteria2VersionDto,
+  Hysteria2KickDto,
+  Hysteria2SubscribeUrlDto,
+  Hysteria2UrlDto,
+  Hysteria2VersionDto,
 } from "@/api/hysteria2/types";
 
 export function hysteria2KickApi(
@@ -28,7 +28,7 @@ export function hysteria2ChangeVersionApi(
   });
 }
 
-export function listReleaseApi(): AxiosPromise<Hysteria2ReleaseVo[]> {
+export function listReleaseApi(): AxiosPromise<string[]> {
   return request({
     url: "/hysteria2/listRelease",
     method: "get",

@@ -9,11 +9,6 @@ export interface Hysteria2VersionDto {
   version: string;
 }
 
-export interface Hysteria2ReleaseVo {
-  tagName: string;
-  browserDownloadURL: string;
-}
-
 export interface Hysteria2SubscribeUrlDto {
   accountId: number;
   protocol: string;
