@@ -43,7 +43,7 @@
               v-model="enableForm.enable"
               active-value="1"
               inactive-value="0"
-              @change="handleChangeEnable"
+              @change="handleChangeEnable(enableForm.enable)"
               :active-text="$t('hysteria.enable')"
               :inactive-text="$t('hysteria.disable')"
               style="height: 32px"
@@ -868,7 +868,6 @@ import {
   UploadRequestOptions,
 } from "element-plus/lib/components";
 import { hysteria2ChangeVersionApi, listReleaseApi } from "@/api/hysteria2";
-import { Hysteria2ReleaseVo } from "@/api/hysteria2/types";
 import { monitorHysteria2Api } from "@/api/monitor";
 
 const { t } = useI18n();
@@ -1049,19 +1048,24 @@ const handleExport = async () => {
 };
 
 const handleChangeEnable = async () => {
-  await updateConfigsApi({
-    configUpdateDtos: [
-      { key: hysteria2EnableKey, value: state.enableForm.enable },
-    ],
-  });
-  ElMessage.success("common.saveSuccess");
+  const enable = state.enableForm.enable === "1" ? "0" : "1";
+  try {
+    await updateConfigsApi({
+      configUpdateDtos: [
+        { key: hysteria2EnableKey, value: state.enableForm.enable },
+      ],
+    });
+  } catch (e) {
+    state.enableForm.enable = enable;
+  }
 };
+
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
       const params = { ...state.dataForm };
       updateHysteria2ConfigApi(params).then(() => {
-        ElMessage.success(t("common.save"));
+        ElMessage.success(t("common.saveSuccess"));
         setConfig();
       });
     }
