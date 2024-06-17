@@ -35,7 +35,7 @@ func InitHysteria2() {
 }
 
 func SetHysteria2ConfigYAML() error {
-	hysteria2Config, err := dao.GetConfig(constant.Hysteria2Config)
+	hysteria2Config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
 	if err != nil {
 		return err
 	}

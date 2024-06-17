@@ -80,6 +80,21 @@ func GetConfig(c *gin.Context) {
 		Key:   *config.Key,
 		Value: *config.Value,
 	}
+
+	running := service.Hysteria2Status()
+
+	if (*config.Value == "1") != running {
+		enable := "0"
+		if running {
+			enable = "1"
+		}
+		if err := service.UpdateConfig(constant.Hysteria2Enable, enable); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
+		configVo.Value = enable
+	}
+
 	vo.Success(configVo, c)
 }
 

@@ -10,6 +10,7 @@ import (
 	"h-ui/model/constant"
 	"h-ui/model/entity"
 	"strconv"
+	"strings"
 )
 
 func UpdateConfig(key string, value string) error {
@@ -98,7 +99,7 @@ func GetHysteria2ApiPort() (int64, error) {
 		logrus.Errorf("get hysteria2 config err: %v", err)
 		return 0, err
 	}
-	apiPort, err := strconv.ParseInt(*hysteria2Config.TrafficStats.Listen, 10, 64)
+	apiPort, err := strconv.ParseInt(strings.Trim(*hysteria2Config.TrafficStats.Listen, ":"), 10, 64)
 	if err != nil {
 		logrus.Errorf("apiPort string conv int64 err: %v", err)
 		return 0, err
