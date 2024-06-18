@@ -145,7 +145,7 @@ func UpdateAccount(c *gin.Context) {
 	}
 
 	if accountUpdateDto.Username != nil && *accountUpdateDto.Username != "" && service.ExistAccountUsername(*accountUpdateDto.Username, *accountUpdateDto.Id) {
-		vo.Fail(fmt.Sprintf("用户名%s已存在", *accountUpdateDto.Username), c)
+		vo.Fail(fmt.Sprintf("username %s already exists", *accountUpdateDto.Username), c)
 		return
 	}
 
@@ -156,7 +156,7 @@ func UpdateAccount(c *gin.Context) {
 			return
 		}
 		if *account.Role == "admin" {
-			vo.Fail("admin 账号不能删除", c)
+			vo.Fail("the admin account cannot be deleted", c)
 			return
 		}
 	}
