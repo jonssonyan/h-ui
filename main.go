@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	"h-ui/cmd"
 	"h-ui/dao"
 	"h-ui/middleware"
 	"h-ui/model/constant"
@@ -29,6 +30,7 @@ func init() {
 	dao.InitSqliteDB()
 	middleware.InitCron()
 	service.InitHysteria2()
+	cmd.InitCmd()
 }
 
 func releaseResource() {
@@ -36,7 +38,6 @@ func releaseResource() {
 }
 
 func initFile() {
-
 	var dirs = []string{constant.LogDir, constant.SqliteDBDir, constant.BinDir, constant.ExportPathDir}
 	for _, item := range dirs {
 		if !util.Exists(item) {
