@@ -125,8 +125,8 @@ func (p *process) handleCmdExecution(cmd *exec.Cmd) {
 	err := <-done
 	if err != nil {
 		logrus.Errorf("cmd wait err: %v", err)
-		if err := p.cmd.Process.Release(); err != nil {
-			logrus.Errorf("failed to release resources: %v", err)
+		if err := p.release(); err != nil {
+			logrus.Errorf(err.Error())
 		}
 	}
 }

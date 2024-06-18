@@ -16,7 +16,6 @@ import (
 	"h-ui/util"
 	"io"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -123,14 +122,6 @@ func UpdateHysteria2Config(c *gin.Context) {
 	if err != nil {
 		return
 	}
-
-	var mutex sync.Mutex
-	if !mutex.TryLock() {
-		vo.Fail("update hysteria2 config error", c)
-		return
-	}
-	defer mutex.Unlock()
-
 	if err = service.UpdateHysteria2Config(hysteria2ServerConfig); err != nil {
 		vo.Fail(err.Error(), c)
 		return
@@ -238,6 +229,12 @@ func ImportHysteria2Config(c *gin.Context) {
 		vo.Fail(err.Error(), c)
 		return
 	}
+
+	if err = service.RestartHysteria2(); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
 	vo.Success(nil, c)
 }
 
