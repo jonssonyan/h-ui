@@ -4,7 +4,7 @@
 
 仅仅是 Hysteria2 的面板
 
-# 系统要求
+# 建议系统
 
 系统: CentOS Stream 8/Ubuntu 20.04 LTS/Debian 11.1
 
@@ -59,3 +59,5 @@ go build -o h-ui -trimpath -ldflags "-s -w"
 ```
 
 # 其他
+
+# 开源协议

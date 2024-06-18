@@ -59,3 +59,5 @@ go build -o h-ui -trimpath -ldflags "-s -w"
 ```
 
 # Other
+
+# License
