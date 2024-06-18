@@ -1,3 +1,5 @@
+[English](README.md)
+
 # H UI
 
 仅仅是 Hysteria2 的面板

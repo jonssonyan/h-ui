@@ -1,3 +1,5 @@
+[中文](README_ZH.md)
+
 # H UI
 
 Just the panel for Hysteria2
