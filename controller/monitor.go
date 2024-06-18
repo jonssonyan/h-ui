@@ -48,6 +48,7 @@ func MonitorHysteria2(c *gin.Context) {
 		hysteria2MonitorVo.DeviceTotal = deviceTotal
 	}
 
+	hysteria2MonitorVo.Version = "-"
 	content, err := util.Exec(fmt.Sprintf("%s version", util.GetHysteria2BinPath()))
 	if err == nil {
 		pattern := `v\d+\.\d+\.\d+`
