@@ -53,6 +53,10 @@ func StartServer(r *gin.Engine) error {
 }
 
 func StopServer() error {
+	if err := StopHysteria2(); err != nil {
+		logrus.Errorf(err.Error())
+		return err
+	}
 	if server != nil {
 		cancel()
 		if err := server.Shutdown(ctx); err != nil {
