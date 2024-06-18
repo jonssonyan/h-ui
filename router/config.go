@@ -8,7 +8,6 @@ import (
 func initConfigRouter(configApi *gin.RouterGroup) {
 	config := configApi.Group("/config")
 	{
-		config.POST("/updateConfig", controller.UpdateConfig)
 		config.POST("/updateConfigs", controller.UpdateConfigs)
 		config.GET("/getConfig", controller.GetConfig)
 		config.POST("/listConfig", controller.ListConfig)

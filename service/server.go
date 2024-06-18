@@ -10,20 +10,11 @@ import (
 	"h-ui/util"
 	"net/http"
 	"strconv"
-	"sync"
 )
 
-var (
-	server *http.Server
-	mutex  sync.Mutex
-)
+var server *http.Server
 
 func StartServer(r *gin.Engine) error {
-	if !mutex.TryLock() {
-		return errors.New("start server err")
-	}
-	defer mutex.Unlock()
-
 	config, err := dao.GetConfig("key = ?", constant.HUIWebPort)
 	if err != nil {
 		return errors.New(err.Error())

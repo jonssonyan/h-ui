@@ -19,28 +19,10 @@ import (
 	"time"
 )
 
-func UpdateConfig(c *gin.Context) {
-	configUpdateDto, err := validateField(c, dto.ConfigUpdateDto{})
-	if err != nil {
-		return
-	}
-	if err = service.UpdateConfig(*configUpdateDto.Key, *configUpdateDto.Value); err != nil {
-		vo.Fail(err.Error(), c)
-		return
-	}
-	vo.Success(nil, c)
-}
-
 func UpdateConfigs(c *gin.Context) {
 	configsUpdateDto, err := validateField(c, dto.ConfigsUpdateDto{})
 	if err != nil {
 		return
-	}
-	for _, item := range configsUpdateDto.ConfigUpdateDtos {
-		if err = service.UpdateConfig(*item.Key, *item.Value); err != nil {
-			vo.Fail(err.Error(), c)
-			return
-		}
 	}
 
 	config, err := service.GetConfig(constant.HUIWebPort)
@@ -50,12 +32,19 @@ func UpdateConfigs(c *gin.Context) {
 	}
 
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
+		if err = service.UpdateConfig(*item.Key, *item.Value); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
+	}
+
+	for _, item := range configsUpdateDto.ConfigUpdateDtos {
 		if item.Key != nil && *item.Key == constant.HUIWebPort && *config.Value != *item.Value {
 			go func() {
 				if err := service.StartServer(gin.Default()); err != nil {
 					logrus.Errorf(err.Error())
 					// 启动失败后将端口改为以前的端口
-					if err := service.UpdateConfig(constant.HUIWebPort, *item.Value); err != nil {
+					if err := service.UpdateConfig(constant.HUIWebPort, *config.Value); err != nil {
 						logrus.Errorf(err.Error())
 					}
 				}
