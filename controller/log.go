@@ -96,12 +96,14 @@ func ExportLog(c *gin.Context) {
 	}
 
 	var fileName string
+	var filePath string
 	if *logExportDto.Option == 0 {
 		fileName = fmt.Sprintf("h-ui-%s.log", time.Now().Format("20060102150405"))
+		filePath = constant.SystemLogPath
 	} else if *logExportDto.Option == 1 {
 		fileName = fmt.Sprintf("hysteria2-%s.log", time.Now().Format("20060102150405"))
+		filePath = constant.Hysteria2LogPath
 	}
-	filePath := constant.ExportPathDir + fileName
 
 	if !util.Exists(filePath) {
 		vo.Fail("log file not exist", c)
