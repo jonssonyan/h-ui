@@ -55,7 +55,7 @@ docker run -d --name h-ui --restart always \
 # compile
 
 ```shell
-go build -trimpath -ldflags -o h-ui -ldflags="-s -w"
+go build -o h-ui -trimpath -ldflags "-s -w"
 ```
 
 # Other

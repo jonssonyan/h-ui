@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN go build -trimpath -ldflags -o h-ui -ldflags="-s -w"
+RUN go build -o h-ui -trimpath -ldflags "-s -w"
 
 FROM 1.20.14-alpine
 

@@ -56,7 +56,7 @@ docker run -d --name h-ui --restart always \
 # 编译
 
 ```shell
-go build -trimpath -ldflags -o h-ui -ldflags="-s -w"
+go build -o h-ui -trimpath -ldflags "-s -w"
 ```
 
 # 其他
