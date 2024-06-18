@@ -22,7 +22,6 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/export:/export \
   -v /h-ui/logs:/logs \
   h-ui
-
 ```
 
 自定义 Web 端口
@@ -36,7 +35,6 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/logs:/logs \
   h-ui \
   ./h-ui -p [端口]
-
 ```
 
 设置时区，默认 Asia/Shanghai
@@ -50,12 +48,13 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/export:/export \
   -v /h-ui/logs:/logs \
   h-ui
-
 ```
 
 # 编译
 
-```shell
+[build.bat](build.bat) / [build.sh](build.sh)
+
+```bash
 go build -o h-ui -trimpath -ldflags "-s -w"
 ```
 
