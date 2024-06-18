@@ -11,8 +11,8 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "hui",
-	Short: "",
-	Long:  ``,
+	Short: "just the panel for Hysteria2",
+	Long:  "just the panel for Hysteria2",
 	Run: func(cmd *cobra.Command, args []string) {
 		p, _ := cmd.Flags().GetString("p")
 		if p != "" {

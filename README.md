@@ -1,6 +1,6 @@
 # H UI
 
-Just the panel of Hysteria2
+Just the panel for Hysteria2
 
 # compile
 
