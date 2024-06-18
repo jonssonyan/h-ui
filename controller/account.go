@@ -93,7 +93,7 @@ func SaveAccount(c *gin.Context) {
 	}
 
 	if service.ExistAccountUsername(*accountSaveDto.Username, 0) {
-		vo.Fail(fmt.Sprintf("用户名%s已存在", *accountSaveDto.Username), c)
+		vo.Fail(fmt.Sprintf("username %s already exists", *accountSaveDto.Username), c)
 		return
 	}
 

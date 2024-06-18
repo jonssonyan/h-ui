@@ -25,6 +25,40 @@ func Hysteria2Auth(c *gin.Context) {
 	vo.Hysteria2AuthSuccess(username, c)
 }
 
+func Hysteria2Subscribe(c *gin.Context) {
+	conPass := c.Param("conPass")
+	userAgent := c.Request.Header.Get("User-Agent")
+	host := c.Request.Header.Get("Host")
+
+	if host == "" {
+		vo.Fail("Host is empty", c)
+		return
+	}
+
+	var clientType string
+	if strings.HasPrefix(userAgent, "ClashforWindows") {
+		clientType = "ClashforWindows"
+	} else if strings.HasPrefix(userAgent, "Shadowrocket") {
+		clientType = "Shadowrocket"
+	} else if strings.HasPrefix(userAgent, "v2rayN") {
+		clientType = "v2rayN"
+	}
+
+	userInfo, configYaml, err := service.Hysteria2Subscribe(conPass, clientType, host)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
+	if clientType == "ClashforWindows" || clientType == "Shadowrocket" {
+		c.Header("content-disposition", "attachment; filename=hui.yaml")
+		c.Header("profile-update-interval", "12")
+		c.Header("subscription-userinfo", userInfo)
+	}
+
+	c.String(200, configYaml)
+}
+
 func Hysteria2Kick(c *gin.Context) {
 	hysteria2KickDto, err := validateField(c, dto.Hysteria2KickDto{})
 	if err != nil {
@@ -114,40 +148,6 @@ func Hysteria2SubscribeUrl(c *gin.Context) {
 		return
 	}
 	vo.Success(subscribeUrl, c)
-}
-
-func Hysteria2Subscribe(c *gin.Context) {
-	conPass := c.Param("conPass")
-	userAgent := c.Request.Header.Get("User-Agent")
-	host := c.Request.Header.Get("Host")
-
-	if host == "" {
-		vo.Fail("Host is empty", c)
-		return
-	}
-
-	var clientType string
-	if strings.HasPrefix(userAgent, "ClashforWindows") {
-		clientType = "ClashforWindows"
-	} else if strings.HasPrefix(userAgent, "Shadowrocket") {
-		clientType = "Shadowrocket"
-	} else if strings.HasPrefix(userAgent, "v2rayN") {
-		clientType = "v2rayN"
-	}
-
-	userInfo, configYaml, err := service.Hysteria2Subscribe(conPass, clientType, host)
-	if err != nil {
-		vo.Fail(err.Error(), c)
-		return
-	}
-
-	if clientType == "ClashforWindows" || clientType == "Shadowrocket" {
-		c.Header("content-disposition", "attachment; filename=hui.yaml")
-		c.Header("profile-update-interval", "12")
-		c.Header("subscription-userinfo", userInfo)
-	}
-
-	c.String(200, configYaml)
 }
 
 func Hysteria2Url(c *gin.Context) {
