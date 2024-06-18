@@ -45,6 +45,10 @@ Memory: ≥ 256MB
 
 ## Deployment
 
+Panel address: http://[your_ip/your_domain]:8081
+
+Default administrator username: sysadmin Password: 123456. Please log in to the management backend to change the password after deployment.
+
 ### Docker (Recommended)
 
 1. Install Docker
