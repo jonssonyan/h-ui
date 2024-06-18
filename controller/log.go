@@ -104,7 +104,7 @@ func ExportLog(c *gin.Context) {
 	filePath := constant.ExportPathDir + fileName
 
 	if !util.Exists(filePath) {
-		vo.Fail("file not exist", c)
+		vo.Fail("log file not exist", c)
 		return
 	}
 	c.Header("Content-Type", "application/octet-stream")

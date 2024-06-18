@@ -2,7 +2,6 @@ package proxy
 
 import (
 	"bufio"
-	"context"
 	"errors"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -10,7 +9,6 @@ import (
 	"io"
 	"os/exec"
 	"sync"
-	"time"
 )
 
 var logger logrus.Logger
@@ -119,22 +117,17 @@ func (p *process) release() error {
 }
 
 func (p *process) handleCmdExecution(cmd *exec.Cmd) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
 	done := make(chan error, 1)
 	go func() {
 		done <- cmd.Wait()
 	}()
 
-	select {
-	case err := <-done:
-		if err != nil {
-			logrus.Errorf("cmd wait err: %v", err)
-			_ = p.release()
+	err := <-done
+	if err != nil {
+		logrus.Errorf("cmd wait err: %v", err)
+		if err := p.cmd.Process.Release(); err != nil {
+			logrus.Errorf("failed to release resources: %v", err)
 		}
-	case <-ctx.Done():
-
 	}
 }
 
