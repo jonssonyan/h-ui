@@ -13,6 +13,12 @@ import (
 	"strings"
 )
 
+var hysteria2Instance *proxy.Hysteria2Process
+
+func init() {
+	hysteria2Instance = proxy.NewHysteria2Instance(util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
+}
+
 func InitHysteria2() {
 	// 初始化 bin
 	if !util.Exists(util.GetHysteria2BinPath()) {
@@ -90,7 +96,6 @@ func StartHysteria2() error {
 		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
 		return errors.New("set hysteria2 config.yaml err")
 	}
-	hysteria2Instance := proxy.NewHysteria2Instance(util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
 	if err := hysteria2Instance.StartHysteria2(); err != nil {
 		logrus.Errorf("start hysteria2 err: %v", err)
 		return errors.New("start hysteria2 err")
@@ -99,7 +104,6 @@ func StartHysteria2() error {
 }
 
 func StopHysteria2() error {
-	hysteria2Instance := proxy.NewHysteria2Instance("", constant.Hysteria2ConfigPath)
 	if err := hysteria2Instance.StopHysteria2(); err != nil {
 		logrus.Errorf("stop hysteria2 err: %v", err)
 		return errors.New("stop hysteria2 err")
@@ -113,7 +117,6 @@ func RestartHysteria2() error {
 		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
 		return errors.New("set hysteria2 config.yaml err")
 	}
-	hysteria2Instance := proxy.NewHysteria2Instance(util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
 	if err := hysteria2Instance.RestartHysteria2(); err != nil {
 		logrus.Errorf("restart hysteria2 err: %v", err)
 		return errors.New("restart hysteria2 err")
@@ -122,6 +125,5 @@ func RestartHysteria2() error {
 }
 
 func Hysteria2Status() bool {
-	hysteria2Instance := proxy.NewHysteria2Instance(util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath)
 	return hysteria2Instance.IsRunning()
 }
