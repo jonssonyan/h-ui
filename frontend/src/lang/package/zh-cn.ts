@@ -45,7 +45,7 @@ export default {
     cancel: "取消",
     copySuccess: "复制成功",
     copyError: "复制失败",
-    subscribe: "订阅连接",
+    subscribe: "订阅链接",
     nodeUrl: "节点 URL",
     import: "导入",
     importSuccess: "导入成功",
