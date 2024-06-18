@@ -15,27 +15,41 @@ CPU Architecture: x86_64/amd64
 - Docker(recommended)
 
 ```bash
-docker run -d --name hui --restart always \
+docker run -d --name h-ui --restart always \
   --network=host \
-  -v /hui/bin:/bin \
-  -v /hui/data:/data \
-  -v /hui/export:/export \
-  -v /hui/logs:/logs \
-  hui
+  -v /h-ui/bin:/bin \
+  -v /h-ui/data:/data \
+  -v /h-ui/export:/export \
+  -v /h-ui/logs:/logs \
+  h-ui
 
 ```
 
 Custom web port
 
 ```bash
-docker run -d --name hui --restart always \
+docker run -d --name h-ui --restart always \
   --network=host \
-  -v /hui/bin:/bin \
-  -v /hui/data:/data \
-  -v /hui/export:/export \
-  -v /hui/logs:/logs \
-  hui \
-  ./hui -p [端口]
+  -v /h-ui/bin:/bin \
+  -v /h-ui/data:/data \
+  -v /h-ui/export:/export \
+  -v /h-ui/logs:/logs \
+  h-ui \
+  ./h-ui -p [端口]
+```
+
+Set the time zone, default is Asia/Shanghai
+
+```bash
+docker run -d --name h-ui --restart always \
+  --network=host \
+  -e TZ=Asia/Shanghai \
+  -v /h-ui/bin:/bin \
+  -v /h-ui/data:/data \
+  -v /h-ui/export:/export \
+  -v /h-ui/logs:/logs \
+  h-ui
+
 ```
 
 # compile
