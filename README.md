@@ -22,7 +22,16 @@ Just the panel for Hysteria2
 
 ## Features
 
+- Lightweight, low resource usage, easy to deploy
+- Monitor system status and Hysterai2 status
+- Limit user traffic, user online status, force users to log off, number of online users
+- Limit the number of users' online devices at the same time, the number of online devices
+- User subscription link, node URL, import and export users
+- Managing Hysterai2 configurations and Hysterai2 versions
+- Change the Web port, modify the Hysteria2 traffic multiplier
+- View, import, and export system logs and Hysteria2 logs
 - I18n: English, 简体中文
+- Page adaptation, support night mode, custom page themes
 
 ## Recommended OS
 
