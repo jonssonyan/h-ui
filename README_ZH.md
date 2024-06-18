@@ -21,7 +21,7 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/data:/data \
   -v /h-ui/export:/export \
   -v /h-ui/logs:/logs \
-  h-ui
+  jonssonyan/h-ui
 ```
 
 自定义 Web 端口
@@ -33,7 +33,7 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/data:/data \
   -v /h-ui/export:/export \
   -v /h-ui/logs:/logs \
-  h-ui \
+  jonssonyan/h-ui \
   ./h-ui -p [端口]
 ```
 
@@ -47,7 +47,7 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/data:/data \
   -v /h-ui/export:/export \
   -v /h-ui/logs:/logs \
-  h-ui
+  jonssonyan/h-ui
 ```
 
 # 编译

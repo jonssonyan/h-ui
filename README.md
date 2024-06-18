@@ -21,7 +21,7 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/data:/data \
   -v /h-ui/export:/export \
   -v /h-ui/logs:/logs \
-  h-ui
+  jonssonyan/h-ui
 ```
 
 Custom web port
@@ -33,7 +33,7 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/data:/data \
   -v /h-ui/export:/export \
   -v /h-ui/logs:/logs \
-  h-ui \
+  jonssonyan/h-ui \
   ./h-ui -p [端口]
 ```
 
@@ -47,14 +47,14 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/data:/data \
   -v /h-ui/export:/export \
   -v /h-ui/logs:/logs \
-  h-ui
+  jonssonyan/h-ui
 ```
 
 # compile
 
 [build.bat](build.bat) / [build.sh](build.sh)
 
-```shell
+```bash
 go build -o h-ui -trimpath -ldflags "-s -w"
 ```
 
