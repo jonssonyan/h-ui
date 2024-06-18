@@ -10,6 +10,8 @@
 
 CPU: x86_64/amd64
 
+内存: ≥ 256MB
+
 # 安装
 
 - Docker(推荐)
@@ -49,6 +51,10 @@ docker run -d --name h-ui --restart always \
   -v /h-ui/logs:/logs \
   jonssonyan/h-ui
 ```
+
+- 手动
+
+
 
 # 编译
 

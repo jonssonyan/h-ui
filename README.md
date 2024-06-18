@@ -1,18 +1,18 @@
 [中文](README_ZH.md)
 
-# H UI
+## H UI
 
 Just the panel for Hysteria2
 
-# Recommended OS
+## Recommended OS
 
 OS version: CentOS Stream 8/Ubuntu 20.04 LTS/Debian 11.1
 
 CPU Architecture: x86_64/amd64
 
-# Install
+## Install
 
-- Docker(recommended)
+- Docker(Recommended)
 
 ```bash
 docker run -d --name h-ui --restart always \
@@ -50,7 +50,7 @@ docker run -d --name h-ui --restart always \
   jonssonyan/h-ui
 ```
 
-# compile
+## Compilation
 
 [build.bat](build.bat) / [build.sh](build.sh)
 
@@ -58,6 +58,12 @@ docker run -d --name h-ui --restart always \
 go build -o h-ui -trimpath -ldflags "-s -w"
 ```
 
-# Other
+## Other
 
-# License
+## Contributors
+
+<a href="https://github.com/jonssonyan/h-ui/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jonssonyan/h-ui" />
+</a>
+
+## License
