@@ -18,6 +18,8 @@ Just the panel for Hysteria2
 <a href="https://hub.docker.com/r/jonssonyan/h-ui"><img src="https://img.shields.io/docker/pulls/jonssonyan/h-ui" alt="Docker pulls"></a>
 </p>
 
+![cover](./docs/images/cover.png)
+
 </div>
 
 ## Features
