@@ -35,6 +35,7 @@ func init() {
 
 func releaseResource() {
 	dao.CloseSqliteDB()
+	service.ReleaseHysteria2()
 }
 
 func initFile() {

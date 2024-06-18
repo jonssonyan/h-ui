@@ -97,7 +97,7 @@ func (p *process) Stop() error {
 	return nil
 }
 
-func (p *process) release() error {
+func (p *process) Release() error {
 	if !p.mutex.TryLock() {
 		logrus.Errorf("cmd release err: lock not acquired")
 		return errors.New("cmd release err")
@@ -125,7 +125,7 @@ func (p *process) handleCmdExecution(cmd *exec.Cmd) {
 	err := <-done
 	if err != nil {
 		logrus.Errorf("cmd wait err: %v", err)
-		if err := p.release(); err != nil {
+		if err := p.Release(); err != nil {
 			logrus.Errorf(err.Error())
 		}
 	}

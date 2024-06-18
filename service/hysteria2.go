@@ -127,3 +127,9 @@ func RestartHysteria2() error {
 func Hysteria2Status() bool {
 	return hysteria2Instance.IsRunning()
 }
+
+func ReleaseHysteria2() {
+	if err := hysteria2Instance.Release(); err != nil {
+		logrus.Errorf(err.Error())
+	}
+}
