@@ -11,9 +11,11 @@ Just the panel for Hysteria2
 仅仅是 Hysteria2 的面板
 
 <p>
-<a href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="https://shields.io/github/license/jonssonyan/h-ui" alt="License: GPL-3.0"></a>
+<a href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/github/license/jonssonyan/h-ui" alt="License: GPL-3.0"></a>
 <a href="https://github.com/jonssonyan/h-ui/stargazers"><img src="https://img.shields.io/github/stars/jonssonyan/h-ui" alt="GitHub stars"></a>
+<a href="https://github.com/jonssonyan/h-ui/forks"><img src="https://img.shields.io/github/forks/jonssonyan/h-ui" alt="GitHub forks"></a>
 <a href="https://github.com/jonssonyan/h-ui/releases"><img src="https://img.shields.io/github/v/release/jonssonyan/h-ui" alt="GitHub release"></a>
+<a href="https://hub.docker.com/r/jonssonyan/h-ui"><img src="https://img.shields.io/docker/pulls/jonssonyan/h-ui" alt="Docker pulls"></a>
 </p>
 
 </div>
@@ -109,7 +111,7 @@ Memory: ≥ 256MB
 - backend
 
   Windows: [build.bat](build.bat)
-    
+
   Mac/Linux: [build.sh](build.sh)
 
 ## Other
