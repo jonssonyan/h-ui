@@ -13,10 +13,7 @@ Just the panel for Hysteria2
 <p>
 <a href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="https://shields.io/github/license/jonssonyan/h-ui" alt="License: GPL-3.0"></a>
 <a href="https://github.com/jonssonyan/h-ui/stargazers"><img src="https://img.shields.io/github/stars/jonssonyan/h-ui" alt="GitHub stars"></a>
-<a href="https://github.com/jonssonyan/h-ui/forks"><img src="https://img.shields.io/github/forks/jonssonyan/h-ui" alt="GitHub forks"></a>
-<a href="https://github.com/jonssonyan/h-ui/issues"><img src="https://img.shields.io/github/issues/jonssonyan/h-ui" alt="GitHub issues"></a>
 <a href="https://github.com/jonssonyan/h-ui/releases"><img src="https://img.shields.io/github/v/release/jonssonyan/h-ui" alt="GitHub release"></a>
-<a href="https://hub.docker.com/r/jonssonyan/h-ui"><img src="https://img.shields.io/docker/pulls/jonssonyan/h-ui" alt="Docker pulls"></a>
 </p>
 
 </div>
@@ -87,33 +84,33 @@ Memory: ≥ 256MB
 
 ## Development
 
-frontend
+- frontend
 
-```bash
-cd frontend
-pnpm install
-npm run dev
-```
+   ```bash
+   cd frontend
+   pnpm install
+   npm run dev
+   ```
 
-backend
+- backend
 
-```bash
-go run main.go
-```
+   ```bash
+   go run main.go
+   ```
 
 ## Build
 
-frontend
+- frontend
 
-```bash
-npm run build:prod
-```
+   ```bash
+   npm run build:prod
+   ```
 
-backend
+- backend
 
-Windows: [build.bat](build.bat)
-
-Mac/Linux: [build.sh](build.sh)
+  Windows: [build.bat](build.bat)
+    
+  Mac/Linux: [build.sh](build.sh)
 
 ## Other
 
