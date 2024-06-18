@@ -61,6 +61,8 @@ export default {
     deleteCancel: "Delete cancel",
     downloadSuccess: "Download successful",
     changeSuccess: "Change successful",
+    enableSuccess: "Hysteria2 start successful",
+    disableSuccess: "Hysteria2 stop successful",
   },
   info: {
     expireTime: "y-M-d H:m:s",

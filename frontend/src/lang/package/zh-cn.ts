@@ -61,6 +61,8 @@ export default {
     deleteCancel: "取消删除",
     downloadSuccess: "下载成功",
     changeSuccess: "切换成功",
+    enableSuccess: "Hysteria2 启动 ！！",
+    disableSuccess: "Hysteria2 已关闭",
   },
   info: {
     expireTime: "年-月-日 时:分:秒",

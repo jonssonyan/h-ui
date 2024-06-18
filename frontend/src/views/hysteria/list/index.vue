@@ -1055,9 +1055,12 @@ const handleChangeEnable = async () => {
         { key: hysteria2EnableKey, value: state.enableForm.enable },
       ],
     });
+    ElMessage.success(t("common.enableSuccess"));
   } catch (e) {
     state.enableForm.enable = enable;
+    ElMessage.error(t("common.disableSuccess"));
   }
+  await setHysteria2Monitor();
 };
 
 const submitForm = () => {
