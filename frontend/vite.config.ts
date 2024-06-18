@@ -44,7 +44,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       proxy: {
         // 反向代理解决跨域
         [env.VITE_APP_BASE_API]: {
-          target: "http://127.0.0.1:8081",
+          target: "http://127.0.0.1:8082",
           changeOrigin: true,
           rewrite: (path) =>
             path.replace(new RegExp("^" + env.VITE_APP_BASE_API), "/hui"), // 替换 /dev-api 为 target 接口地址

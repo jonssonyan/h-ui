@@ -41,7 +41,7 @@ func UpdateConfigs(c *gin.Context) {
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
 		if item.Key != nil && *item.Key == constant.HUIWebPort && *config.Value != *item.Value {
 			go func() {
-				if err := service.StartServer(gin.Default()); err != nil {
+				if err := service.StopServer(); err != nil {
 					logrus.Errorf(err.Error())
 					// 启动失败后将端口改为以前的端口
 					if err := service.UpdateConfig(constant.HUIWebPort, *config.Value); err != nil {

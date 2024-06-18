@@ -16,8 +16,10 @@ func main() {
 	defer releaseResource()
 	r := gin.Default()
 	router.Router(r)
-	if err := service.StartServer(r); err != nil {
-		panic(err)
+	for {
+		if err := service.StartServer(r); err != nil {
+			panic(err)
+		}
 	}
 }
 
