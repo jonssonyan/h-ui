@@ -171,6 +171,8 @@ Go >= 1.20, Node.js >= 18.12.0
 
 ## 贡献者
 
+在这里感谢所有为此项目做出贡献的人
+
 <a href="https://github.com/jonssonyan/h-ui/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=jonssonyan/h-ui" />
 </a>

@@ -173,6 +173,8 @@ you can contact me at YouTube: https://www.youtube.com/@jonssonyan
 
 ## Contributors
 
+Thanks to everyone who contributed to this project.
+
 <a href="https://github.com/jonssonyan/h-ui/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=jonssonyan/h-ui" />
 </a>
