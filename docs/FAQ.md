@@ -56,3 +56,8 @@ Lower versions do not support the latest API
 ## Log export failed
 
 No log file
+
+## Unable to access the panel
+
+1. Check if the operation is normal
+2. Check if the firewall allows the port
