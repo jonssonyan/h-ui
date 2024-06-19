@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"h-ui/cmd"
 	"h-ui/model/constant"
 	"log"
 	"os"
@@ -19,7 +18,7 @@ var sqliteDB *gorm.DB
 
 var sqlInitStr = "create table account\n(\n    id             INTEGER                  not null\n        primary key autoincrement,\n    username       TEXT      default ''     not null\n        unique,\n    `pass`         TEXT      default ''     not null,\n    con_pass       TEXT      default ''     not null,\n    quota          INTEGER   default 0      not null,\n    download       INTEGER   default 0      not null,\n    upload         INTEGER   default 0      not null,\n    expire_time    INTEGER   default 0      not null,\n    kick_util_time INTEGER   default 0      not null,\n    device_no      INTEGER   default 3      not null,\n    `role`         TEXT      default 'user' not null,\n    deleted        INTEGER   default 0      not null,\n    create_time    TIMESTAMP default (datetime(CURRENT_TIMESTAMP, 'localtime')),\n    update_time    TIMESTAMP default (datetime(CURRENT_TIMESTAMP, 'localtime'))\n);\ncreate index account_deleted_index\n    on account (deleted);\ncreate index account_con_pass_index\n    on account (con_pass);\ncreate index account_pass_index\n    on account (`pass`);\ncreate index account_username_index\n    on account (username);\nINSERT INTO account (username, `pass`, con_pass, quota, download, upload, expire_time, device_no, role)\nVALUES ('sysadmin', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6',\n        'c7591c31adf8af0b6b8ae8cbbccd8d1aaa0c7bb068f576bddb6378d5', -1, 0, 0, 253370736000000, 6, 'admin');\ncreate table config\n(\n    id          INTEGER              not null\n        primary key autoincrement,\n    `key`       TEXT      default '' not null\n        unique,\n    `value`     TEXT      default '' not null,\n    remark      TEXT      default '' not null,\n    create_time TIMESTAMP default (datetime(CURRENT_TIMESTAMP, 'localtime')),\n    update_time TIMESTAMP default (datetime(CURRENT_TIMESTAMP, 'localtime'))\n);\ncreate index account_key_index\n    on config (`key`);\nINSERT INTO config (key, value, remark)\nVALUES ('H_UI_WEB_PORT', '8081', 'H UI Web 端口');\nINSERT INTO config (key, value, remark)\nVALUES ('JWT_SECRET', hex(randomblob(10)), 'JWT 密钥');\nINSERT INTO config (key, value, remark)\nVALUES ('HYSTERIA2_ENABLE', '0', 'Hysteria2 开关');\nINSERT INTO config (key, value, remark)\nVALUES ('HYSTERIA2_CONFIG', '', 'Hysteria2 配置');\nINSERT INTO config (key, value, remark)\nVALUES ('HYSTERIA2_TRAFFIC_TIME', '1', 'Hysteria2 流量倍数');"
 
-func InitSqliteDB() {
+func InitSqliteDB(port string) {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags),
 		logger.Config{
@@ -56,8 +55,8 @@ func InitSqliteDB() {
 			panic(fmt.Sprintf("sqlite table init err: %v", err))
 		}
 	}
-	if cmd.Port != "" {
-		if tx := sqliteDB.Exec("UPDATE config set `value` = ? where `key` = 'H_UI_WEB_PORT'", cmd.Port); tx.Error != nil {
+	if port != "" {
+		if tx := sqliteDB.Exec("UPDATE config set `value` = ? where `key` = 'H_UI_WEB_PORT'", port); tx.Error != nil {
 			panic(fmt.Sprintf("sqlite exec err: %v", tx.Error.Error()))
 		}
 	}
