@@ -49,7 +49,7 @@ CPU: x86_64/amd64
 
 默认管理员用户名：sysadmin 密码：123456，部署后请及时登录管理后台修改密码
 
-### Docker (推荐)
+### 容器部署 (推荐)
 
 1. 安装 Docker
 
@@ -99,7 +99,7 @@ CPU: x86_64/amd64
      jonssonyan/h-ui
    ```
 
-### 手动
+### 手动部署
 
 下载可执行文件: https://github.com/jonssonyan/h-ui/releases
 
