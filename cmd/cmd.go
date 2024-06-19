@@ -3,10 +3,10 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"h-ui/model/constant"
 	"h-ui/service"
+	"os"
 	"strconv"
 )
 
@@ -21,12 +21,11 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if version {
 			fmt.Println("h-ui version ", constant.Version)
-			return
+			os.Exit(0)
 		}
 		if port != "" {
 			if err := validateAndSetPort(port); err != nil {
-				logrus.Errorf(err.Error())
-				return
+				panic(err.Error())
 			}
 		}
 	},
@@ -51,6 +50,6 @@ func InitCmd() {
 	rootCmd.PersistentFlags().BoolVarP(&version, "version", "v", false, "Print the version number")
 
 	if err := rootCmd.Execute(); err != nil {
-		logrus.Errorf("execute root command error: %v", err)
+		panic(fmt.Sprintf("execute root command error: %v", err))
 	}
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"h-ui/cmd"
 	"h-ui/dao"
 	"h-ui/middleware"
@@ -43,8 +43,7 @@ func initFile() {
 	for _, item := range dirs {
 		if !util.Exists(item) {
 			if err := os.Mkdir(item, os.ModePerm); err != nil {
-				logrus.Errorf("%s create err: %v", item, err)
-				panic(err)
+				panic(fmt.Sprintf("%s create err: %v", item, err))
 			}
 		}
 	}
