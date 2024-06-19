@@ -135,6 +135,8 @@ https://v2.hysteria.network/zh/docs/getting-started/3rd-party-apps/
 
 ## 开发
 
+Go >= 1.20, Node.js >= 18.12.0
+
 - frontend
 
    ```bash
