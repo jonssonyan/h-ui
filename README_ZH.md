@@ -99,6 +99,15 @@ CPU: x86_64/amd64
 
 ### 手动
 
+下载可执行文件: https://github.com/jonssonyan/h-ui/releases
+
+```bash
+mkdir h-ui
+cd h-ui
+curl -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64
+chmod +x ./h-ui && ./h-ui
+```
+
 ## 开发
 
 - frontend

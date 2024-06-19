@@ -47,7 +47,8 @@ Memory: ≥ 128MB
 
 Panel address: http://[your_ip/your_domain]:8081
 
-Default administrator username: sysadmin Password: 123456. Please log in to the management backend to change the password in time after deployment.
+Default administrator username: sysadmin Password: 123456. Please log in to the management backend to change the
+password in time after deployment.
 
 ### Docker (Recommended)
 
@@ -98,6 +99,15 @@ Default administrator username: sysadmin Password: 123456. Please log in to the 
    ```
 
 ### Manual
+
+Executable files: https://github.com/jonssonyan/h-ui/releases
+
+```bash
+mkdir h-ui
+cd h-ui
+curl -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64
+chmod +x ./h-ui && ./h-ui
+```
 
 ## Development
 
