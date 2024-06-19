@@ -26,7 +26,7 @@ Just the panel for Hysteria2
 
 - Lightweight, low resource usage, easy to deploy
 - Monitor system status and Hysteria2 status
-- Limit user traffic, user online status, force users to log off, number of online users
+- Limit user traffic, user online status, force users to log off, number of online users, reset user traffic
 - Limit the number of users' online devices at the same time, the number of online devices
 - User subscription link, node URL, import and export users
 - Managing Hysteria2 configurations and Hysteria2 versions
