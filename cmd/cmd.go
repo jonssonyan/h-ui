@@ -11,7 +11,11 @@ var rootCmd = &cobra.Command{
 	Short: "just the panel for Hysteria2",
 	Long:  "just the panel for Hysteria2",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Usage: h-ui [server] [-p <port>] [version] [help]")
+		if os.Getenv("GIN_MODE") == "release" {
+			fmt.Println("Usage: h-ui [server] [-p <port>] [version] [help]")
+		} else {
+			runServer()
+		}
 	},
 }
 
