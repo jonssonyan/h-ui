@@ -19,4 +19,4 @@ RUN apk update && apk add --no-cache bash tzdata ca-certificates \
     && echo $TZ > /etc/timezone \
     && chmod +x /app/h-ui
 
-CMD ["./h-ui","server"]
+CMD ["./h-ui"]

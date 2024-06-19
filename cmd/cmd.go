@@ -1,22 +1,53 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
+	"h-ui/model/constant"
 	"os"
+	"strconv"
 )
+
+var (
+	port    string
+	version bool
+)
+
+func init() {
+	rootCmd.PersistentFlags().StringVarP(&port, "port", "p", "", "set the port for the web server")
+	rootCmd.PersistentFlags().BoolVarP(&version, "version", "v", false, "show version")
+}
 
 var rootCmd = &cobra.Command{
 	Use:   "h-ui",
 	Short: "just the panel for Hysteria2",
 	Long:  "just the panel for Hysteria2",
 	Run: func(cmd *cobra.Command, args []string) {
-		if os.Getenv("GIN_MODE") == "release" {
-			fmt.Println("Usage: h-ui [server] [-p <port>] [version] [help]")
-		} else {
+		if len(args) == 0 || port != "" {
+			if err := validateAndSetPort(port); err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
 			runServer()
 		}
+		if version {
+			fmt.Println("h-ui version", constant.Version)
+		}
 	},
+}
+
+func validateAndSetPort(p string) error {
+	if p != "" {
+		value, err := strconv.ParseInt(p, 10, 64)
+		if err != nil {
+			return errors.New("invalid port value")
+		}
+		if value <= 0 || value > 65535 {
+			return errors.New("the port range is between 0-65535")
+		}
+	}
+	return nil
 }
 
 func Execute() {

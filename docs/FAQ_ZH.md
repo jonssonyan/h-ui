@@ -17,7 +17,7 @@ chmod +x ./h-ui
 - 自定义 Web 端口启动
 
   ```bash
-  ./h-ui server -p [端口]
+  ./h-ui -p [端口]
   ```
 
 # 部署问题

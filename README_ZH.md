@@ -83,7 +83,7 @@ CPU: x86_64/amd64
      -v /h-ui/export:/export \
      -v /h-ui/logs:/logs \
      jonssonyan/h-ui \
-     ./h-ui server -p [端口]
+     ./h-ui -p [端口]
    ```
 
    设置时区，默认 Asia/Shanghai
@@ -105,7 +105,7 @@ CPU: x86_64/amd64
 
 ```bash
 mkdir h-ui && cd h-ui
-curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui server
+curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui
 ```
 
 ## 系统升级
