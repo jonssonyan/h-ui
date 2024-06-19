@@ -17,7 +17,7 @@ chmod +x ./h-ui
 - Start with a custom web port
 
   ```bash
-  ./h-ui server -p [po]
+  ./h-ui server -p [port]
   ```
 
 # Deployment Issues
