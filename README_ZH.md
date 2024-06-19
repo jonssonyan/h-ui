@@ -106,6 +106,23 @@ mkdir h-ui && cd h-ui
 curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui
 ```
 
+## 性能优化
+
+- 定时重启服务器
+
+    ```bash
+    0 4 * * * /sbin/reboot
+    ```
+
+- 安装网络加速
+    - [Chikage0o0/Linux-NetSpeed](https://github.com/ylx2016/Linux-NetSpeed)
+    - [ylx2016/Linux-NetSpeed](https://github.com/ylx2016/Linux-NetSpeed)
+    - [teddysun/across#bbrsh](https://github.com/teddysun/across#bbrsh)
+
+## 客户端
+
+https://v2.hysteria.network/zh/docs/getting-started/3rd-party-apps/
+
 ## 开发
 
 - frontend

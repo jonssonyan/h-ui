@@ -107,6 +107,23 @@ mkdir h-ui && cd h-ui
 curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui
 ```
 
+## Performance Optimization
+
+- Scheduled server restart
+
+    ```bash
+    0 4 * * * /sbin/reboot
+    ```
+
+- Install Network Accelerator
+    - [Chikage0o0/Linux-NetSpeed](https://github.com/ylx2016/Linux-NetSpeed)
+    - [ylx2016/Linux-NetSpeed](https://github.com/ylx2016/Linux-NetSpeed)
+    - [teddysun/across#bbrsh](https://github.com/teddysun/across#bbrsh)
+
+## Client
+
+https://v2.hysteria.network/docs/getting-started/3rd-party-apps/
+
 ## Development
 
 - frontend
