@@ -189,7 +189,7 @@
         <el-table-column
           :label="$t('common.operate')"
           align="center"
-          width="360"
+          width="380"
         >
           <template #default="scope">
             <el-button type="primary" link @click="handleSubscribe(scope.row)"
@@ -197,6 +197,9 @@
             </el-button>
             <el-button type="primary" link @click="handleNodeUrl(scope.row)"
               >{{ $t("common.nodeUrl") }}
+            </el-button>
+            <el-button type="primary" link @click="resetTraffic(scope.row)"
+              >{{ $t("common.resetTraffic") }}
             </el-button>
             <el-button type="primary" link @click="handleUpdate(scope.row)"
               >{{ $t("common.edit") }}
@@ -362,6 +365,7 @@ import {
   exportAccountApi,
   releaseKickAccountApi,
   importAccountApi,
+  resetTrafficApi,
 } from "@/api/account";
 import { Search, Plus, Refresh } from "@element-plus/icons-vue";
 import {
@@ -792,6 +796,15 @@ const handleNodeUrl = async (row: { [key: string]: any }) => {
     ElMessage.success(t("common.copySuccess"));
   } catch (e) {
     ElMessage.success(t("common.copyError"));
+  }
+};
+
+const resetTraffic = async (row: { [key: string]: any }) => {
+  try {
+    await resetTrafficApi({ id: row.id });
+    ElMessage.success(t("common.updateSuccess"));
+  } catch (e) {
+    ElMessage.error(t("common.updateError"));
   }
 };
 

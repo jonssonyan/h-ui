@@ -68,7 +68,7 @@ func UpdateAccount(account entity.Account) error {
 	return dao.UpdateAccount([]int64{*account.Id}, updates)
 }
 
-func RestFlow(id int64) error {
+func ResetTraffic(id int64) error {
 	return dao.UpdateAccount([]int64{id}, map[string]interface{}{"download": 0, "upload": 0})
 }
 

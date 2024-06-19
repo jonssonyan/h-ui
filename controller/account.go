@@ -203,12 +203,12 @@ func UpdateAccount(c *gin.Context) {
 	vo.Success(nil, c)
 }
 
-func RestFlow(c *gin.Context) {
+func ResetTraffic(c *gin.Context) {
 	idDto, err := validateField(c, dto.IdDto{})
 	if err != nil {
 		return
 	}
-	if err = service.RestFlow(*idDto.Id); err != nil {
+	if err = service.ResetTraffic(*idDto.Id); err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}

@@ -84,6 +84,18 @@ export function updateAccountApi(data: AccountUpdateDto): AxiosPromise {
 }
 
 /**
+ * 重设流量
+ * @param data
+ */
+export function resetTrafficApi(data: IdDto): AxiosPromise {
+  return request({
+    url: "/account/resetTraffic",
+    method: "post",
+    data: data,
+  });
+}
+
+/**
  * 登录
  * @param data
  */
