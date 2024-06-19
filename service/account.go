@@ -68,6 +68,10 @@ func UpdateAccount(account entity.Account) error {
 	return dao.UpdateAccount([]int64{*account.Id}, updates)
 }
 
+func RestFlow(id int64) error {
+	return dao.UpdateAccount([]int64{id}, map[string]interface{}{"download": 0, "upload": 0})
+}
+
 func ExistAccountUsername(username string, id int64) bool {
 	var err error
 	if id != 0 {

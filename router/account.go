@@ -12,6 +12,7 @@ func initAccountAdminRouter(accountApi *gin.RouterGroup) {
 		account.POST("/saveAccount", controller.SaveAccount)
 		account.POST("/deleteAccount", controller.DeleteAccount)
 		account.POST("/updateAccount", controller.UpdateAccount)
+		account.POST("/restFlow", controller.RestFlow)
 		account.GET("/getAccountInfo", controller.GetAccountInfo)
 		account.GET("/getAccount", controller.GetAccount)
 		account.POST("/importAccount", controller.ImportAccount)

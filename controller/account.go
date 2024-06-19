@@ -203,6 +203,18 @@ func UpdateAccount(c *gin.Context) {
 	vo.Success(nil, c)
 }
 
+func RestFlow(c *gin.Context) {
+	idDto, err := validateField(c, dto.IdDto{})
+	if err != nil {
+		return
+	}
+	if err = service.RestFlow(*idDto.Id); err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(nil, c)
+}
+
 func GetAccountInfo(c *gin.Context) {
 	accountInfoVo, err := service.GetAccountInfo(c)
 	if err != nil {
