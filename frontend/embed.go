@@ -22,7 +22,7 @@ func InitFrontend(router *gin.Engine) {
 		c.Data(http.StatusOK, "text/html", indexHTML)
 	})
 
-	router.StaticFS("/static", http.FS(getStaticFS()))
+	router.StaticFS("/assets", http.FS(getStaticFS()))
 
 	router.NoRoute(func(c *gin.Context) {
 		filePath := c.Request.URL.Path
@@ -36,7 +36,7 @@ func InitFrontend(router *gin.Engine) {
 }
 
 func getStaticFS() fs.FS {
-	staticFs, _ := fs.Sub(staticFiles, "dist/static")
+	staticFs, _ := fs.Sub(staticFiles, "dist/assets")
 	return staticFs
 }
 
