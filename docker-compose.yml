@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  h-ui:
+    image: jonssonyan/h-ui
+    container_name: h-ui
+    restart: always
+    network_mode: host
+    volumes:
+      - /h-ui/bin:/bin
+      - /h-ui/data:/data
+      - /h-ui/export:/export
+      - /h-ui/logs:/logs
+    environment:
+      TZ: Asia/Shanghai
+    command: ./h-ui -p 8081
