@@ -28,11 +28,15 @@ var rootCmd = &cobra.Command{
 			fmt.Println("h-ui version", constant.Version)
 			os.Exit(0)
 		}
-		if err := validateAndSetPort(port); err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+		if len(args) == 0 || port != "" {
+			if err := validateAndSetPort(port); err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+			runServer()
+			return
 		}
-		runServer()
+		fmt.Println("Usage: h-ui [server] [-p <port>] [-v] [-h]")
 	},
 }
 
