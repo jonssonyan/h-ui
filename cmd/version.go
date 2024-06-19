@@ -9,14 +9,14 @@ import (
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Show version",
-	Long:  "Show version.",
-	Run:   runVersion,
+	Long:  "Show version",
+	Run:   runVersionCmd,
 }
 
 func init() {
 	rootCmd.AddCommand(versionCmd)
 }
 
-func runVersion(cmd *cobra.Command, args []string) {
+func runVersionCmd(cmd *cobra.Command, args []string) {
 	fmt.Println("h-ui version", constant.Version)
 }
