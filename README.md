@@ -84,7 +84,7 @@ password in time after deployment.
      -v /h-ui/export:/export \
      -v /h-ui/logs:/logs \
      jonssonyan/h-ui \
-     ./h-ui server -p [端口]
+     ./h-ui server -p [port]
    ```
 
    Set the time zone, default is Asia/Shanghai
