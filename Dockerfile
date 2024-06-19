@@ -21,4 +21,4 @@ RUN apk update \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone
 
-CMD ["./h-ui"]
+CMD ["./h-ui","server"]

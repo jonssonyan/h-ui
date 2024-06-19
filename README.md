@@ -84,7 +84,7 @@ password in time after deployment.
      -v /h-ui/export:/export \
      -v /h-ui/logs:/logs \
      jonssonyan/h-ui \
-     ./h-ui -p [端口]
+     ./h-ui server -p [端口]
    ```
 
    Set the time zone, default is Asia/Shanghai
@@ -106,7 +106,7 @@ Executable files: https://github.com/jonssonyan/h-ui/releases
 
 ```bash
 mkdir h-ui && cd h-ui
-curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui
+curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui server
 ```
 
 ## System Upgrade

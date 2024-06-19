@@ -11,13 +11,13 @@ chmod +x ./h-ui
 - Check the system version
 
   ```bash
-  ./h-ui -v
+  ./h-ui version
   ```
 
 - Start with a custom web port
 
   ```bash
-  ./h-ui -p [port]
+  ./h-ui server -p [po]
   ```
 
 # Deployment Issues

@@ -11,13 +11,13 @@ chmod +x ./h-ui
 - 查看系统版本
 
   ```bash
-  ./h-ui -v
+  ./h-ui version
   ```
 
 - 自定义 Web 端口启动
 
   ```bash
-  ./h-ui -p [端口]
+  ./h-ui server -p [端口]
   ```
 
 # 部署问题
