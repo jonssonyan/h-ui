@@ -22,6 +22,15 @@ func InitFrontend(router *gin.Engine) {
 		c.Data(http.StatusOK, "text/html", indexHTML)
 	})
 
+	router.GET("/favicon.ico", func(c *gin.Context) {
+		indexHTML, err := staticFiles.ReadFile("dist/favicon.ico")
+		if err != nil {
+			c.String(http.StatusInternalServerError, "Internal Server Error")
+			return
+		}
+		c.Data(http.StatusOK, "image/x-icon", indexHTML)
+	})
+
 	router.StaticFS("/assets", http.FS(getStaticFS()))
 
 	router.NoRoute(func(c *gin.Context) {
