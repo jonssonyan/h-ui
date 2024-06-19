@@ -19,7 +19,7 @@ var rootCmd = &cobra.Command{
 	Long:  "just the panel for Hysteria2",
 	Run: func(cmd *cobra.Command, args []string) {
 		if version {
-			fmt.Println("h-ui version ", constant.Version)
+			fmt.Println("h-ui version", constant.Version)
 			os.Exit(0)
 		}
 		if Port != "" {
