@@ -1,19 +1,17 @@
-FROM golang:1.20.14-alpine as builder
+FROM alpine:3.15
 
-WORKDIR /app
-
-COPY . .
-
-RUN go build -o h-ui -trimpath -ldflags "-s -w"
-
-FROM 1.20.14-alpine
+LABEL maintainer="jonsosnyan <https://jonssonyan.com>"
 
 WORKDIR /app
 
 ENV TZ=Asia/Shanghai
 ENV GIN_MODE=release
 
-COPY --from=builder /app/h-ui .
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
+
+COPY build/h-ui-${TARGETOS}-${TARGETARCH}${TARGETVARIANT} h-ui
 
 RUN apk update \
     && apk add --no-cache bash tzdata ca-certificates \
