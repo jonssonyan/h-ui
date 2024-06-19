@@ -104,7 +104,7 @@ CPU: x86_64/amd64
 ```bash
 mkdir h-ui
 cd h-ui
-curl -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64
+curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64
 chmod +x ./h-ui && ./h-ui
 ```
 
