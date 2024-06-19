@@ -53,8 +53,10 @@ CPU: x86_64/amd64
 
 1. 安装 Docker
 
+   https://docs.docker.com/engine/install/
+
    ```bash
-   source <(curl -L https://github.com/jonssonyan/install-script/raw/main/docker-install.sh)
+   bash <(curl -fsSL https://get.docker.com)
    ```
 
 2. 启动容器

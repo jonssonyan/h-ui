@@ -54,9 +54,11 @@ password in time after deployment.
 
 1. Install Docker
 
-    ```bash
-    source <(curl -L https://github.com/jonssonyan/install-script/raw/main/docker-install.sh)
-    ```
+   https://docs.docker.com/engine/install/
+
+   ```bash
+   bash <(curl -fsSL https://get.docker.com)
+   ```
 
 2. Start a container
 
