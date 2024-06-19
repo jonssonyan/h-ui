@@ -111,7 +111,12 @@ curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui
 
 ## System Upgrade
 
-Export the user, system configuration, and Hysteria2 configuration in the management background, redeploy the latest version of h-ui, and import the data into the management background after the deployment is complete.
+Export the user, system configuration, and Hysteria2 configuration in the management background, redeploy the latest
+version of h-ui, and import the data into the management background after the deployment is complete.
+
+## FAQ
+
+[English > FAQ](./docs/FAQ.md)
 
 ## Performance Optimization
 

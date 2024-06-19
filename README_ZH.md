@@ -112,6 +112,10 @@ curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui
 
 在管理后台将用户、系统配置、Hysteria2 配置导出，重新部署最新版的 h-ui，部署完成之后在管理后台将数据导入
 
+## 常见问题
+
+[简体中文 > 常见问题](./docs/FAQ_ZH.md)
+
 ## 性能优化
 
 - 定时重启服务器
