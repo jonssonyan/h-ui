@@ -198,9 +198,16 @@
             <el-button type="primary" link @click="handleNodeUrl(scope.row)"
               >{{ $t("common.nodeUrl") }}
             </el-button>
-            <el-button type="primary" link @click="resetTraffic(scope.row)"
-              >{{ $t("common.resetTraffic") }}
-            </el-button>
+            <el-popconfirm
+              title="Are you sure to reset traffic?"
+              @confirm="resetTraffic(scope.row)"
+            >
+              <template #reference>
+                <el-button type="primary" link
+                  >{{ $t("common.resetTraffic") }}
+                </el-button>
+              </template>
+            </el-popconfirm>
             <el-button type="primary" link @click="handleUpdate(scope.row)"
               >{{ $t("common.edit") }}
             </el-button>
