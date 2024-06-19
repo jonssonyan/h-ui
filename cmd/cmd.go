@@ -24,16 +24,15 @@ var rootCmd = &cobra.Command{
 	Short: "just the panel for Hysteria2",
 	Long:  "just the panel for Hysteria2",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 || port != "" {
-			if err := validateAndSetPort(port); err != nil {
-				fmt.Println(err.Error())
-				os.Exit(1)
-			}
-			runServer()
-		}
 		if version {
 			fmt.Println("h-ui version", constant.Version)
+			os.Exit(0)
 		}
+		if err := validateAndSetPort(port); err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+		runServer()
 	},
 }
 
