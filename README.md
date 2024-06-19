@@ -25,11 +25,11 @@ Just the panel for Hysteria2
 ## Features
 
 - Lightweight, low resource usage, easy to deploy
-- Monitor system status and Hysterai2 status
+- Monitor system status and Hysteria2 status
 - Limit user traffic, user online status, force users to log off, number of online users
 - Limit the number of users' online devices at the same time, the number of online devices
 - User subscription link, node URL, import and export users
-- Managing Hysterai2 configurations and Hysterai2 versions
+- Managing Hysteria2 configurations and Hysteria2 versions
 - Change the Web port, modify the Hysteria2 traffic multiplier
 - View, import, and export system logs and Hysteria2 logs
 - I18n: English, 简体中文
@@ -41,13 +41,13 @@ OS version: CentOS Stream 8/Ubuntu 20.04 LTS/Debian 11.1
 
 CPU Architecture: x86_64/amd64
 
-Memory: ≥ 256MB
+Memory: ≥ 128MB
 
 ## Deployment
 
 Panel address: http://[your_ip/your_domain]:8081
 
-Default administrator username: sysadmin Password: 123456. Please log in to the management backend to change the password after deployment.
+Default administrator username: sysadmin Password: 123456. Please log in to the management backend to change the password in time after deployment.
 
 ### Docker (Recommended)
 
