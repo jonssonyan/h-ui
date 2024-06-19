@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
-	"h-ui/model/constant"
 	"os"
 	"strconv"
 )
@@ -13,6 +12,7 @@ var (
 	port    string
 	version bool
 )
+
 var rootCmd = &cobra.Command{
 	Use:   "h-ui",
 	Short: "just the panel for Hysteria2",
@@ -24,9 +24,6 @@ var rootCmd = &cobra.Command{
 				os.Exit(1)
 			}
 			startServer()
-		}
-		if version {
-			fmt.Println("h-ui version", constant.Version)
 		}
 		fmt.Println("Usage: h-ui [server] [-p <port>] [-v] [-h]")
 	},
@@ -47,7 +44,7 @@ func validateAndSetPort(p string) error {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&port, "port", "p", "", "Set the port for the server")
-	rootCmd.PersistentFlags().BoolVarP(&version, "version", "v", false, "Print the version number")
+	rootCmd.PersistentFlags().BoolVarP(&version, "version", "v", false, "Show version")
 }
 
 func Execute() {
