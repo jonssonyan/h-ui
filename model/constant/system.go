@@ -16,4 +16,6 @@ const (
 	Hysteria2Version = "app/v2.4.4"
 
 	TokenType = "Bearer"
+
+	Version = "v0.0.1"
 )
