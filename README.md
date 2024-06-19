@@ -109,6 +109,10 @@ mkdir h-ui && cd h-ui
 curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui
 ```
 
+## System Upgrade
+
+Export the user, system configuration, and Hysteria2 configuration in the management background, redeploy the latest version of h-ui, and import the data into the management background after the deployment is complete.
+
 ## Performance Optimization
 
 - Scheduled server restart
