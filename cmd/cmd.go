@@ -18,15 +18,21 @@ var rootCmd = &cobra.Command{
 	Short: "just the panel for Hysteria2",
 	Long:  "just the panel for Hysteria2",
 	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) == 0 {
+			fmt.Println("Usage: h-ui [server] [-p <port>] [-v] [-h]")
+		} else if args[0] == "server" {
+			if Port != "" {
+				if err := validateAndSetPort(Port); err != nil {
+					fmt.Println(err.Error())
+					os.Exit(1)
+				}
+			}
+			return
+		}
 		if version {
 			fmt.Println("h-ui version", constant.Version)
-			os.Exit(0)
 		}
-		if Port != "" {
-			if err := validateAndSetPort(Port); err != nil {
-				panic(err.Error())
-			}
-		}
+		os.Exit(0)
 	},
 }
 
