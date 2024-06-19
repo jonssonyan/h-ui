@@ -25,12 +25,12 @@ func main() {
 }
 
 func init() {
+	cmd.InitCmd()
 	initFile()
 	middleware.InitLog()
 	dao.InitSqliteDB()
 	middleware.InitCron()
 	service.InitHysteria2()
-	cmd.InitCmd()
 }
 
 func releaseResource() {

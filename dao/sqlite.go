@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+	"h-ui/cmd"
 	"h-ui/model/constant"
 	"log"
 	"os"
@@ -53,6 +54,11 @@ func InitSqliteDB() {
 	if count == 0 {
 		if err = sqliteInit(sqlInitStr); err != nil {
 			panic(fmt.Sprintf("sqlite table init err: %v", err))
+		}
+	}
+	if cmd.Port != "" {
+		if tx := sqliteDB.Exec("UPDATE config set `value` = ? where `key` = 'H_UI_WEB_PORT'", cmd.Port); tx.Error != nil {
+			panic(fmt.Sprintf("sqlite exec err: %v", tx.Error.Error()))
 		}
 	}
 }

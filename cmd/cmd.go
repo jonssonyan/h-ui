@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"h-ui/model/constant"
-	"h-ui/service"
 	"os"
 	"strconv"
 )
 
 var (
-	port    string
+	Port    string
 	version bool
 )
 var rootCmd = &cobra.Command{
@@ -23,8 +22,8 @@ var rootCmd = &cobra.Command{
 			fmt.Println("h-ui version ", constant.Version)
 			os.Exit(0)
 		}
-		if port != "" {
-			if err := validateAndSetPort(port); err != nil {
+		if Port != "" {
+			if err := validateAndSetPort(Port); err != nil {
 				panic(err.Error())
 			}
 		}
@@ -39,14 +38,11 @@ func validateAndSetPort(p string) error {
 	if value < 0 || value > 65535 {
 		return errors.New("the port range is between 0-65535")
 	}
-	if err := service.UpdateConfig(constant.HUIWebPort, p); err != nil {
-		return err
-	}
 	return nil
 }
 
 func InitCmd() {
-	rootCmd.PersistentFlags().StringVarP(&port, "port", "p", "", "Set the port for the server")
+	rootCmd.PersistentFlags().StringVarP(&Port, "port", "p", "", "Set the port for the server")
 	rootCmd.PersistentFlags().BoolVarP(&version, "version", "v", false, "Print the version number")
 
 	if err := rootCmd.Execute(); err != nil {
