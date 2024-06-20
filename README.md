@@ -171,7 +171,7 @@ Go >= 1.20, Node.js >= 18.12.0
 
 Contact me: https://t.me/jonssonyan_channel
 
-You can follow me on YouTube: https://www.youtube.com/@jonssonyan
+You can subscribe to my channel on YouTube: https://www.youtube.com/@jonssonyan
 
 ## Contributors
 
