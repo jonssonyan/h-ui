@@ -189,7 +189,7 @@
         <el-table-column
           :label="$t('common.operate')"
           align="center"
-          width="300"
+          width="260"
         >
           <template #default="scope">
             <el-button type="primary" link @click="handleSubscribe(scope.row)"
