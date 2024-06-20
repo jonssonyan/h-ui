@@ -5,6 +5,7 @@ import {
   Hysteria2KickDto,
   Hysteria2SubscribeUrlDto,
   Hysteria2UrlDto,
+  Hysteria2UrlVo,
   Hysteria2VersionDto,
 } from "@/api/hysteria2/types";
 
@@ -35,15 +36,19 @@ export function listReleaseApi(): AxiosPromise<string[]> {
   });
 }
 
-export function hysteria2SubscribeUrlApi(dto: Hysteria2SubscribeUrlDto): AxiosPromise<string> {
-	return request({
-		url: "/hysteria2/hysteria2SubscribeUrl",
-		method: "get",
-		params: dto,
-	});
+export function hysteria2SubscribeUrlApi(
+  dto: Hysteria2SubscribeUrlDto
+): AxiosPromise<string> {
+  return request({
+    url: "/hysteria2/hysteria2SubscribeUrl",
+    method: "get",
+    params: dto,
+  });
 }
 
-export function hysteria2UrlApi(dto: Hysteria2UrlDto): AxiosPromise<string> {
+export function hysteria2UrlApi(
+  dto: Hysteria2UrlDto
+): AxiosPromise<Hysteria2UrlVo> {
   return request({
     url: "/hysteria2/hysteria2Url",
     method: "get",

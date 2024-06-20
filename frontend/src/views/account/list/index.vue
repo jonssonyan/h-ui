@@ -831,7 +831,7 @@ const handleNodeUrl = async (row: { [key: string]: any }) => {
       hostname: window.location.hostname,
     };
     const { data } = await hysteria2UrlApi(dto);
-    copy(data);
+    copy(data.url);
     ElMessage.success(t("common.copySuccess"));
   } catch (e) {
     /* empty */
@@ -845,7 +845,7 @@ const handleQrCode = async (row: { [key: string]: any }) => {
       hostname: window.location.hostname,
     };
     const { data } = await hysteria2UrlApi(dto);
-
+    state.qrCodeSrc = "data:image/png;base64," + data.qrCode;
     state.qrCodeDialog.visible = true;
   } catch (e) {
     /* empty */

@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/skip2/go-qrcode"
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/service"
@@ -150,5 +151,15 @@ func Hysteria2Url(c *gin.Context) {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(url, c)
+	// 生成二维码
+	qrCode, err := qrcode.Encode(url, qrcode.Medium, 300)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	hysteria2UrlVo := vo.Hysteria2UrlVo{
+		Url:    url,
+		QrCode: qrCode,
+	}
+	vo.Success(hysteria2UrlVo, c)
 }
