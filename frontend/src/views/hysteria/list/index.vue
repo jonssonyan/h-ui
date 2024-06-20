@@ -1042,7 +1042,9 @@ const handleExport = async () => {
     a.click();
     window.URL.revokeObjectURL(url);
     ElMessage.success(t("common.exportSuccess"));
-  } catch (e) { /* empty */ }
+  } catch (e) {
+    /* empty */
+  }
 };
 
 const handleChangeEnable = async () => {

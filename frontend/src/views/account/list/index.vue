@@ -802,7 +802,7 @@ const handleNodeUrl = async (row: { [key: string]: any }) => {
     copy(data);
     ElMessage.success(t("common.copySuccess"));
   } catch (e) {
-    ElMessage.success(t("common.copyError"));
+    /* empty */
   }
 };
 
@@ -811,7 +811,7 @@ const resetTraffic = async (row: { [key: string]: any }) => {
     await resetTrafficApi({ id: row.id });
     ElMessage.success(t("common.updateSuccess"));
   } catch (e) {
-    ElMessage.error(t("common.updateError"));
+    /* empty */
   }
 };
 

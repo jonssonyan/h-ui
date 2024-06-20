@@ -187,7 +187,7 @@ const handleNodeUrl = async () => {
     copy(data);
     ElMessage.success(t("common.copySuccess"));
   } catch (e) {
-    ElMessage.success(t("common.copyError"));
+    /* empty */
   }
 };
 
