@@ -40,6 +40,7 @@
         <el-tooltip :content="$t('hysteria.config.enable')" placement="bottom">
           <el-form-item prop="enable">
             <el-switch
+              :disabled="disable"
               v-model="enableForm.enable"
               active-value="1"
               inactive-value="0"
@@ -94,19 +95,23 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-tag style="height: 32px">
+          <el-tag style="height: 32px" :type="disable ? 'info' : 'primary'">
             {{ $t("hysteria.hysteria2Version") }}:
-            {{ hysteria2Monitor.version }}
+            {{ disable ? "-" : hysteria2Monitor.version }}
           </el-tag>
         </el-form-item>
         <el-form-item>
           <el-tag
-            :type="hysteria2Monitor.running ? 'success' : 'danger'"
+            :type="
+              disable ? 'info' : hysteria2Monitor.running ? 'success' : 'danger'
+            "
             style="height: 32px"
           >
             {{ $t("hysteria.hysteria2Running") }}:
             {{
-              hysteria2Monitor.running
+              disable
+                ? "-"
+                : hysteria2Monitor.running
                 ? $t("monitor.hysteria2RunningTrue")
                 : $t("monitor.hysteria2RunningFalse")
             }}
@@ -923,6 +928,7 @@ const state = reactive({
     version: "",
     running: false,
   },
+  disable: true,
 });
 
 const {
@@ -944,6 +950,7 @@ const {
   hysteria2Version,
   hysteria2Versions,
   hysteria2Monitor,
+  disable,
 } = toRefs(state);
 
 const tabs = computed(() => {
@@ -1005,14 +1012,18 @@ const tabs = computed(() => {
   return tabs;
 });
 
-const handleImport = (params: UploadRequestOptions) => {
+const handleImport = async (params: UploadRequestOptions) => {
   if (state.fileList.length > 0) {
-    let formData = new FormData();
-    formData.append("file", params.file);
-    importHysteria2ConfigApi(formData).then(() => {
+    try {
+      let formData = new FormData();
+      formData.append("file", params.file);
+      await importHysteria2ConfigApi(formData);
       ElMessage.success(t("common.importSuccess"));
-    });
-    state.fileList = [];
+      state.fileList = [];
+      await setHysteria2Monitor();
+    } catch (e) {
+      /* empty */
+    }
   }
 };
 
@@ -1280,6 +1291,7 @@ const setHysteria2Versions = async () => {
 const setHysteria2Monitor = async () => {
   const { data } = await monitorHysteria2Api();
   Object.assign(state.hysteria2Monitor, data);
+  state.disable = data.running;
 };
 
 const handleHysteria2ChangeVersion = async () => {
