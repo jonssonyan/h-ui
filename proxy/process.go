@@ -71,8 +71,6 @@ func (p *process) Start(name string, arg ...string) error {
 
 	p.cmd = cmd
 
-	go p.handleCmdExecution(cmd)
-
 	go p.handleLogs(stdout, stderr)
 
 	return nil
@@ -114,21 +112,6 @@ func (p *process) Release() error {
 	}
 	p.cmd = nil
 	return nil
-}
-
-func (p *process) handleCmdExecution(cmd *exec.Cmd) {
-	done := make(chan error, 1)
-	go func() {
-		done <- cmd.Wait()
-	}()
-
-	err := <-done
-	if err != nil {
-		logrus.Errorf("cmd wait err: %v", err)
-		if err := p.Release(); err != nil {
-			logrus.Errorf(err.Error())
-		}
-	}
 }
 
 func (p *process) handleLogs(stdout, stderr io.ReadCloser) {
