@@ -67,10 +67,10 @@ CPU: x86_64/amd64
 
    docker run -d --name h-ui --restart always \
      --network=host \
-     -v /h-ui/bin:/bin \
-     -v /h-ui/data:/data \
-     -v /h-ui/export:/export \
-     -v /h-ui/logs:/logs \
+     -v /h-ui/bin:/app/bin \
+     -v /h-ui/data:/app/data \
+     -v /h-ui/export:/app/export \
+     -v /h-ui/logs:/app/logs \
      jonssonyan/h-ui
    ```
 
@@ -79,10 +79,10 @@ CPU: x86_64/amd64
    ```bash
    docker run -d --name h-ui --restart always \
      --network=host \
-     -v /h-ui/bin:/bin \
-     -v /h-ui/data:/data \
-     -v /h-ui/export:/export \
-     -v /h-ui/logs:/logs \
+     -v /h-ui/bin:/app/bin \
+     -v /h-ui/data:/app/data \
+     -v /h-ui/export:/app/export \
+     -v /h-ui/logs:/app/logs \
      jonssonyan/h-ui \
      ./h-ui -p [端口]
    ```
@@ -93,10 +93,10 @@ CPU: x86_64/amd64
    docker run -d --name h-ui --restart always \
      --network=host \
      -e TZ=Asia/Shanghai \
-     -v /h-ui/bin:/bin \
-     -v /h-ui/data:/data \
-     -v /h-ui/export:/export \
-     -v /h-ui/logs:/logs \
+     -v /h-ui/bin:/app/bin \
+     -v /h-ui/data:/app/data \
+     -v /h-ui/export:/app/export \
+     -v /h-ui/logs:/app/logs \
      jonssonyan/h-ui
    ```
 
