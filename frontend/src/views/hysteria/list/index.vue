@@ -96,7 +96,7 @@
         <el-form-item>
           <el-tag style="height: 32px">
             {{ $t("hysteria.hysteria2Version") }}:
-            {{ hysteria2Monitor.version }}
+            {{ hysteria2Monitor.version ? hysteria2Monitor.version : "-" }}
           </el-tag>
         </el-form-item>
         <el-form-item>
