@@ -2,7 +2,7 @@ FROM alpine:3.15
 
 LABEL maintainer="jonsosnyan <https://jonssonyan.com>"
 
-WORKDIR /app
+WORKDIR /h-ui
 
 ENV TZ=Asia/Shanghai
 ENV GIN_MODE=release
@@ -17,6 +17,6 @@ RUN apk update && apk add --no-cache bash tzdata ca-certificates \
     && rm -rf /var/cache/apk/* \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
-    && chmod +x /app/h-ui
+    && chmod +x /h-ui/h-ui
 
 CMD ["./h-ui"]

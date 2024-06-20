@@ -68,10 +68,10 @@ password in time after deployment.
 
    docker run -d --name h-ui --restart always \
      --network=host \
-     -v /h-ui/bin:/app/bin \
-     -v /h-ui/data:/app/data \
-     -v /h-ui/export:/app/export \
-     -v /h-ui/logs:/app/logs \
+     -v /h-ui/bin:/h-ui/bin \
+     -v /h-ui/data:/h-ui/data \
+     -v /h-ui/export:/h-ui/export \
+     -v /h-ui/logs:/h-ui/logs \
      jonssonyan/h-ui
    ```
 
@@ -80,10 +80,10 @@ password in time after deployment.
    ```bash
    docker run -d --name h-ui --restart always \
      --network=host \
-     -v /h-ui/bin:/app/bin \
-     -v /h-ui/data:/app/data \
-     -v /h-ui/export:/app/export \
-     -v /h-ui/logs:/app/logs \
+     -v /h-ui/bin:/h-ui/bin \
+     -v /h-ui/data:/h-ui/data \
+     -v /h-ui/export:/h-ui/export \
+     -v /h-ui/logs:/h-ui/logs \
      jonssonyan/h-ui \
      ./h-ui -p [port]
    ```
@@ -94,10 +94,10 @@ password in time after deployment.
    docker run -d --name h-ui --restart always \
      --network=host \
      -e TZ=Asia/Shanghai \
-     -v /h-ui/bin:/app/bin \
-     -v /h-ui/data:/app/data \
-     -v /h-ui/export:/app/export \
-     -v /h-ui/logs:/app/logs \
+     -v /h-ui/bin:/h-ui/bin \
+     -v /h-ui/data:/h-ui/data \
+     -v /h-ui/export:/h-ui/export \
+     -v /h-ui/logs:/h-ui/logs \
      jonssonyan/h-ui
    ```
 

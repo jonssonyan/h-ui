@@ -7,10 +7,10 @@ services:
     restart: always
     network_mode: host
     volumes:
-      - /h-ui/bin:/app/bin
-      - /h-ui/data:/app/data
-      - /h-ui/export:/app/export
-      - /h-ui/logs:/app/logs
+      - /h-ui/bin:/h-ui/bin
+      - /h-ui/data:/h-ui/data
+      - /h-ui/export:/h-ui/export
+      - /h-ui/logs:/h-ui/logs
     environment:
       TZ: Asia/Shanghai
     command: ./h-ui -p 8081
