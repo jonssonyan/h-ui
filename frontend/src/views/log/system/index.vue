@@ -91,7 +91,7 @@ const handleExport = async () => {
     window.URL.revokeObjectURL(url);
     ElMessage.success(t("common.exportSuccess"));
   } catch (e) {
-    ElMessage.error(t("common.exportError"));
+    /* empty */
   }
 };
 

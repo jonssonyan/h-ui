@@ -788,7 +788,7 @@ const handleSubscribe = async (row: { [key: string]: any }) => {
     copy(data);
     ElMessage.success(t("common.copySuccess"));
   } catch (e) {
-    ElMessage.success(t("common.copyError"));
+    /* empty */
   }
 };
 

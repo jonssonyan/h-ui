@@ -90,9 +90,7 @@ const handleExport = async () => {
     a.click();
     window.URL.revokeObjectURL(url);
     ElMessage.success(t("common.exportSuccess"));
-  } catch (e) {
-    ElMessage.error(t("common.exportError"));
-  }
+  } catch (e) { /* empty */ }
 };
 
 onMounted(() => {

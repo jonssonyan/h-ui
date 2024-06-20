@@ -1042,9 +1042,7 @@ const handleExport = async () => {
     a.click();
     window.URL.revokeObjectURL(url);
     ElMessage.success(t("common.exportSuccess"));
-  } catch (e) {
-    ElMessage.error(t("common.exportError"));
-  }
+  } catch (e) { /* empty */ }
 };
 
 const handleChangeEnable = async () => {
@@ -1055,10 +1053,13 @@ const handleChangeEnable = async () => {
         { key: hysteria2EnableKey, value: state.enableForm.enable },
       ],
     });
-    ElMessage.success(t("common.enableSuccess"));
+    if (state.enableForm.enable === "1") {
+      ElMessage.success(t("common.enableSuccess"));
+    } else {
+      ElMessage.error(t("common.disableSuccess"));
+    }
   } catch (e) {
     state.enableForm.enable = enable;
-    ElMessage.error(t("common.disableSuccess"));
   }
   await setHysteria2Monitor();
 };
