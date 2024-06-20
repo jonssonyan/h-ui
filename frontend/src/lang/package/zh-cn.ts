@@ -46,6 +46,7 @@ export default {
     copySuccess: "复制成功",
     subscribe: "订阅链接",
     nodeUrl: "节点 URL",
+    nodeQrCode: "节点二维码",
     resetTraffic: "重设流量",
     import: "导入",
     importSuccess: "导入成功",

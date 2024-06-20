@@ -46,6 +46,7 @@ export default {
     copySuccess: "Copy successful",
     subscribe: "Subscribe",
     nodeUrl: "Node URL",
+    nodeQrCode: "Node QR Code",
     resetTraffic: "Reset traffic",
     import: "Import",
     importSuccess: "Import successful",

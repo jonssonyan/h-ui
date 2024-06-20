@@ -26,6 +26,9 @@
             <el-button type="primary" :icon="Share" @click="handleNodeUrl">
               {{ $t("common.nodeUrl") }}
             </el-button>
+            <el-button type="primary" :icon="Share" @click="handleQrCode">
+              {{ $t("common.nodeQrCode") }}
+            </el-button>
           </div>
         </el-col>
       </el-row>
@@ -111,6 +114,28 @@
         </el-card>
       </el-col>
     </el-row>
+
+    <el-dialog
+      :title="qrCodeDialog.title"
+      v-model="qrCodeDialog.visible"
+      width="600px"
+      append-to-body
+      @close="qrCodeDialog.visible = false"
+    >
+      <el-form style="text-align: center">
+        <el-image
+          style="width: 300px; height: 300px"
+          :src="qrCodeSrc"
+        ></el-image>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="qrCodeDialog.visible = false"
+            >{{ $t("common.confirm") }}
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -158,9 +183,14 @@ const greetings = computed(() => {
 
 const state = reactive({
   account: {} as AccountVo,
+  qrCodeDialog: {
+    title: "QR Code",
+    visible: false,
+  } as DialogType,
+  qrCodeSrc: "",
 });
 
-const { account } = toRefs(state);
+const { qrCodeDialog, account, qrCodeSrc } = toRefs(state);
 
 const handleSubscribe = async () => {
   try {
@@ -186,6 +216,18 @@ const handleNodeUrl = async () => {
     const { data } = await hysteria2UrlApi(dto);
     copy(data);
     ElMessage.success(t("common.copySuccess"));
+  } catch (e) {
+    /* empty */
+  }
+};
+
+const handleQrCode = async () => {
+  try {
+    const dto: Hysteria2UrlDto = {
+      accountId: accountStore.id,
+      hostname: window.location.hostname,
+    };
+    const { data } = await hysteria2UrlApi(dto);
   } catch (e) {
     /* empty */
   }
