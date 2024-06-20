@@ -189,7 +189,7 @@
         <el-table-column
           :label="$t('common.operate')"
           align="center"
-          width="420"
+          width="300"
         >
           <template #default="scope">
             <el-button type="primary" link @click="handleSubscribe(scope.row)"
@@ -197,6 +197,9 @@
             </el-button>
             <el-button type="primary" link @click="handleNodeUrl(scope.row)"
               >{{ $t("common.nodeUrl") }}
+            </el-button>
+            <el-button type="primary" link @click="handleQrCode(scope.row)">
+              {{ $t("common.nodeQrCode") }}
             </el-button>
             <el-popconfirm
               title="Are you sure to reset traffic?"
@@ -342,6 +345,28 @@
           </el-button>
           <el-button @click="closeDialogKick"
             >{{ $t("common.cancel") }}
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <el-dialog
+      :title="qrCodeDialog.title"
+      v-model="qrCodeDialog.visible"
+      width="600px"
+      append-to-body
+      @close="qrCodeDialog.visible = false"
+    >
+      <el-form style="text-align: center">
+        <el-image
+          style="width: 300px; height: 300px"
+          :src="qrCodeSrc"
+        ></el-image>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="qrCodeDialog.visible = false"
+            >{{ $t("common.confirm") }}
           </el-button>
         </div>
       </template>
@@ -546,6 +571,11 @@ const state = reactive({
   } as AccountPageDto,
   quotaTmp: 0,
   fileList: [] as UploadFile[],
+  qrCodeDialog: {
+    title: "QR Code",
+    visible: false,
+  } as DialogType,
+  qrCodeSrc: "",
 });
 
 const {
@@ -559,6 +589,8 @@ const {
   queryParams,
   quotaTmp,
   fileList,
+  qrCodeDialog,
+  qrCodeSrc,
 } = toRefs(state);
 
 const resetDataForm = () => {
@@ -801,6 +833,20 @@ const handleNodeUrl = async (row: { [key: string]: any }) => {
     const { data } = await hysteria2UrlApi(dto);
     copy(data);
     ElMessage.success(t("common.copySuccess"));
+  } catch (e) {
+    /* empty */
+  }
+};
+
+const handleQrCode = async (row: { [key: string]: any }) => {
+  try {
+    const dto: Hysteria2UrlDto = {
+      accountId: row.id,
+      hostname: window.location.hostname,
+    };
+    const { data } = await hysteria2UrlApi(dto);
+
+    state.qrCodeDialog.visible = true;
   } catch (e) {
     /* empty */
   }

@@ -228,6 +228,8 @@ const handleQrCode = async () => {
       hostname: window.location.hostname,
     };
     const { data } = await hysteria2UrlApi(dto);
+
+    state.qrCodeDialog.visible = true;
   } catch (e) {
     /* empty */
   }
