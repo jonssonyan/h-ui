@@ -1291,7 +1291,7 @@ const setHysteria2Versions = async () => {
 const setHysteria2Monitor = async () => {
   const { data } = await monitorHysteria2Api();
   Object.assign(state.hysteria2Monitor, data);
-  state.disable = data.running;
+  state.disable = !data.running;
 };
 
 const handleHysteria2ChangeVersion = async () => {
