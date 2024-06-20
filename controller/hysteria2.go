@@ -3,7 +3,6 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/service"
@@ -93,13 +92,8 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 		return
 	}
 
-	config, err := service.GetConfig(constant.Hysteria2Enable)
-	if err != nil {
-		vo.Fail(err.Error(), c)
-		return
-	}
-
-	if *config.Value == "1" {
+	running := service.Hysteria2Status()
+	if running {
 		if err = service.StartHysteria2(); err != nil {
 			vo.Fail(err.Error(), c)
 			return
