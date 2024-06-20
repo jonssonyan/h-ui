@@ -34,6 +34,7 @@ Just the panel for Hysteria2
 - View, import, and export system logs and Hysteria2 logs
 - I18n: English, 简体中文
 - Page adaptation, support night mode, custom page themes
+- More features waiting for you to discover
 
 ## Recommended OS
 

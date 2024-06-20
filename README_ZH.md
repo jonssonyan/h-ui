@@ -34,6 +34,7 @@ Just the panel for Hysteria2
 - 查看、导入和导出系统日志和 Hysteria2 日志
 - 多国语言支持: English, 简体中文
 - 页面适配、支持夜间模式、自定义页面主题
+- 更多功能等待你发现
 
 ## 建议系统
 
