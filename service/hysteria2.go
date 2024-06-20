@@ -112,14 +112,13 @@ func StopHysteria2() error {
 }
 
 func RestartHysteria2() error {
-	// 初始化配置文件
-	if err := SetHysteria2ConfigYAML(); err != nil {
-		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
-		return errors.New("set hysteria2 config.yaml err")
+	if err := StopHysteria2(); err != nil {
+		logrus.Errorf("stop hysteria2 err: %v", err)
+		return errors.New("stop hysteria2 err")
 	}
-	if err := hysteria2Instance.RestartHysteria2(); err != nil {
-		logrus.Errorf("restart hysteria2 err: %v", err)
-		return errors.New("restart hysteria2 err")
+	if err := StartHysteria2(); err != nil {
+		logrus.Errorf("start hysteria2 err: %v", err)
+		return errors.New("start hysteria2 err")
 	}
 	return nil
 }

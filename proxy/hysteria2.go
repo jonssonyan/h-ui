@@ -34,13 +34,3 @@ func (h *Hysteria2Process) StopHysteria2() error {
 	_ = util.RemoveFile(h.configPath)
 	return nil
 }
-
-func (h *Hysteria2Process) RestartHysteria2() error {
-	if err := h.Stop(); err != nil {
-		return err
-	}
-	if err := h.StartHysteria2(); err != nil {
-		return err
-	}
-	return nil
-}
