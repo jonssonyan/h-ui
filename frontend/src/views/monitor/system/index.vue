@@ -127,7 +127,7 @@
           </template>
           <div class="flex items-center justify-between mt-5">
             <div class="text-lg text-right">
-              {{ hysteria2Monitor.version }}
+              {{ hysteria2Monitor.version ? hysteria2Monitor.version : "-" }}
             </div>
           </div>
         </el-card>
@@ -146,11 +146,17 @@
             <div
               class="text-lg text-right"
               :style="
-                hysteria2Monitor.running ? 'color: #2ecc71' : 'color: #e74c3c'
+                hysteria2Monitor.running === undefined
+                  ? '-'
+                  : hysteria2Monitor.running
+                  ? 'color: #2ecc71'
+                  : 'color: #e74c3c'
               "
             >
               {{
-                hysteria2Monitor.running
+                hysteria2Monitor.running === undefined
+                  ? "-"
+                  : hysteria2Monitor.running
                   ? $t("monitor.hysteria2RunningTrue")
                   : $t("monitor.hysteria2RunningFalse")
               }}
@@ -180,8 +186,8 @@ const state = reactive({
   hysteria2Monitor: {
     userTotal: 0,
     deviceTotal: 0,
-    version: "",
-    running: false,
+    version: undefined,
+    running: undefined,
   },
 });
 
