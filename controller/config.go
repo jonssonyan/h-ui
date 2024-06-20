@@ -126,9 +126,13 @@ func UpdateHysteria2Config(c *gin.Context) {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	if err = service.RestartHysteria2(); err != nil {
-		vo.Fail(err.Error(), c)
-		return
+
+	running := service.Hysteria2Status()
+	if running {
+		if err = service.RestartHysteria2(); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
 	}
 	vo.Success(nil, c)
 }
@@ -230,9 +234,12 @@ func ImportHysteria2Config(c *gin.Context) {
 		return
 	}
 
-	if err = service.RestartHysteria2(); err != nil {
-		vo.Fail(err.Error(), c)
-		return
+	running := service.Hysteria2Status()
+	if running {
+		if err = service.RestartHysteria2(); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
 	}
 
 	vo.Success(nil, c)
