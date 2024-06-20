@@ -114,7 +114,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
             // Otherwise, avoid them because they can refer to NTFS alternate data streams.
             return (
               driveLetter +
-              name.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, "_")
+              name.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, "")
             );
           },
         },
