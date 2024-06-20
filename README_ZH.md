@@ -167,6 +167,8 @@ Go >= 1.20, Node.js >= 18.12.0
 
 ## 其他
 
+联系我: https://t.me/jonssonyan_channel
+
 你可以在 YouTube 上关注我: https://www.youtube.com/@jonssonyan
 
 ## 贡献者
