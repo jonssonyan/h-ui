@@ -59,6 +59,7 @@ export default {
     deleteSuccess: "Delete successful",
     deleteCancel: "Delete cancel",
     downloadSuccess: "Download successful",
+    wait: "The version is being changed, please wait a moment",
     changeSuccess: "Change successful",
     enableSuccess: "Hysteria2 start successful",
     disableSuccess: "Hysteria2 stop successful",

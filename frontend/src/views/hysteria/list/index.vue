@@ -1286,6 +1286,11 @@ const setHysteria2Monitor = async () => {
 };
 
 const handleHysteria2ChangeVersion = async () => {
+  if (!state.hysteria2Version) {
+    ElMessage.error("version number is required");
+    return;
+  }
+  ElMessage.info(t("common.wait"));
   await hysteria2ChangeVersionApi({ version: state.hysteria2Version });
   ElMessage.success(t("common.changeSuccess"));
   await setHysteria2Monitor();

@@ -59,6 +59,7 @@ export default {
     deleteSuccess: "删除成功",
     deleteCancel: "取消删除",
     downloadSuccess: "下载成功",
+    wait: "正在更换版本，请等待一会儿",
     changeSuccess: "切换成功",
     enableSuccess: "Hysteria2 启动 ！！",
     disableSuccess: "Hysteria2 已关闭",

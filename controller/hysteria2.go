@@ -77,6 +77,12 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 		return
 	}
 
+	running := service.Hysteria2Status()
+	if running {
+		vo.Fail("please stop Hysteria2 first", c)
+		return
+	}
+
 	if util.Exists(util.GetHysteria2BinPath()) {
 		if err := os.Remove(util.GetHysteria2BinPath()); err != nil {
 			vo.Fail("filed remove hysteria2 bin file", c)
@@ -89,13 +95,6 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 		return
 	}
 
-	running := service.Hysteria2Status()
-	if running {
-		if err = service.RestartHysteria2(); err != nil {
-			vo.Fail(err.Error(), c)
-			return
-		}
-	}
 	vo.Success(nil, c)
 }
 
