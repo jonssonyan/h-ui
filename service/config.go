@@ -105,6 +105,9 @@ func GetHysteria2ApiPort() (int64, error) {
 		logrus.Errorf("get hysteria2 config err: %v", err)
 		return 0, err
 	}
+	if hysteria2Config.TrafficStats == nil || hysteria2Config.TrafficStats.Listen == nil {
+		return 0, errors.New("hysteria2 Traffic Stats API (HTTP) Listen is nil")
+	}
 	apiPort, err := strconv.ParseInt(strings.Trim(*hysteria2Config.TrafficStats.Listen, ":"), 10, 64)
 	if err != nil {
 		logrus.Errorf("apiPort string conv int64 err: %v", err)

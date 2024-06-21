@@ -91,6 +91,18 @@ func Hysteria2SubscribeUrl(accountId int64, protocol string, host string) (strin
 }
 
 func Hysteria2Subscribe(conPass string, clientType string, host string) (string, string, error) {
+	config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
+	if err != nil {
+		return "", "", err
+	}
+	if config.Value == nil || *config.Value == "" {
+		return "", "", errors.New("hysteria2 config is empty")
+	}
+	hysteria2Config, err := GetHysteria2Config()
+	if err != nil {
+		return "", "", err
+	}
+
 	account, err := dao.GetAccount("con_pass = ?", conPass)
 	if err != nil {
 		return "", "", err
@@ -107,11 +119,6 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 
 		clashConfig := bo.ClashConfig{}
 		var ClashConfigInterface []interface{}
-
-		hysteria2Config, err := GetHysteria2Config()
-		if err != nil {
-			return "", "", err
-		}
 
 		port, err := strconv.ParseUint(strings.TrimPrefix(*hysteria2Config.Listen, ":"), 10, 64)
 		if err != nil {
@@ -180,12 +187,19 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 }
 
 func Hysteria2Url(accountId int64, hostname string) (string, error) {
-	account, err := dao.GetAccount("id = ?", accountId)
+	config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
+	if err != nil {
+		return "", err
+	}
+	if config.Value == nil || *config.Value == "" {
+		return "", errors.New("hysteria2 config is empty")
+	}
+	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
 		return "", err
 	}
 
-	hysteria2Config, err := GetHysteria2Config()
+	account, err := dao.GetAccount("id = ?", accountId)
 	if err != nil {
 		return "", err
 	}
