@@ -304,8 +304,8 @@
         </el-form-item>
         <el-form-item :label="$t('common.deleted')" prop="deleted">
           <el-radio-group v-model="dataForm.deleted">
-            <el-radio :value="0">{{ $t("common.enable") }}</el-radio>
-            <el-radio :value="1">{{ $t("common.disable") }}</el-radio>
+            <el-radio :label="0">{{ $t("common.enable") }}</el-radio>
+            <el-radio :label="1">{{ $t("common.disable") }}</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -638,13 +638,11 @@ const handleAdd = () => {
 /**
  * 修改
  **/
-const handleUpdate = (row: { [key: string]: any }) => {
+const handleUpdate = async (row: { [key: string]: any }) => {
   const id = row.id;
-  getAccountApi({ id: id }).then(({ data }) => {
-    Object.assign(dataForm.value, data);
-    quotaTmp.value = data.quota;
-  });
-
+  const { data } = await getAccountApi({ id: id });
+  Object.assign(state.dataForm, data);
+  quotaTmp.value = data.quota;
   dialog.value = {
     title: t("common.update"),
     visible: true,
