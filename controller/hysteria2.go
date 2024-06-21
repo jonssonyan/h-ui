@@ -78,7 +78,7 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 		return
 	}
 
-	running := service.Hysteria2Status()
+	running := service.Hysteria2IsRunning()
 	if running {
 		vo.Fail("please stop Hysteria2 first", c)
 		return

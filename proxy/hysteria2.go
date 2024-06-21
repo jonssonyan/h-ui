@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"h-ui/model/constant"
 	"h-ui/util"
 	"os/exec"
 	"sync"
@@ -15,12 +16,16 @@ type Hysteria2Process struct {
 	configPath string
 }
 
-func NewHysteria2Instance(binPath string, configPath string) *Hysteria2Process {
-	return &Hysteria2Process{process{mutex: &mutexHysteria2, cmd: &cmdHysteria2}, binPath, configPath}
+func NewHysteria2Instance() *Hysteria2Process {
+	return &Hysteria2Process{process{mutex: &mutexHysteria2, cmd: &cmdHysteria2}, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath}
+}
+
+func (h *Hysteria2Process) IsRunning() bool {
+	return h.isRunning()
 }
 
 func (h *Hysteria2Process) StartHysteria2() error {
-	if err := h.Start(h.binPath, "-c", h.configPath, "server"); err != nil {
+	if err := h.start(h.binPath, "-c", h.configPath, "server"); err != nil {
 		_ = util.RemoveFile(h.configPath)
 		return err
 	}
@@ -28,9 +33,13 @@ func (h *Hysteria2Process) StartHysteria2() error {
 }
 
 func (h *Hysteria2Process) StopHysteria2() error {
-	if err := h.Stop(); err != nil {
+	if err := h.stop(); err != nil {
 		return err
 	}
 	_ = util.RemoveFile(h.configPath)
 	return nil
+}
+
+func (h *Hysteria2Process) Release() error {
+	return h.release()
 }

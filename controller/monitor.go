@@ -59,7 +59,7 @@ func MonitorHysteria2(c *gin.Context) {
 		}
 	}
 
-	running := service.Hysteria2Status()
+	running := service.Hysteria2IsRunning()
 	hysteria2MonitorVo.Running = running
 
 	vo.Success(hysteria2MonitorVo, c)

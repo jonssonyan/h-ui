@@ -43,8 +43,7 @@ func Hysteria2Online() (map[string]int64, error) {
 		if err != nil {
 			return nil, errors.New("get hysteria2 apiPort err")
 		}
-		hysteria2Api := proxy.NewHysteria2Api(apiPort)
-		onlineUsers, err := hysteria2Api.OnlineUsers()
+		onlineUsers, err := proxy.NewHysteria2Api(apiPort).OnlineUsers()
 		if err != nil {
 			return nil, err
 		}
@@ -77,8 +76,7 @@ func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
 	if err != nil {
 		return errors.New("get hysteria2 apiPort err")
 	}
-	hysteria2Api := proxy.NewHysteria2Api(apiPort)
-	if err = hysteria2Api.KickUsers(keys); err != nil {
+	if err = proxy.NewHysteria2Api(apiPort).KickUsers(keys); err != nil {
 		return err
 	}
 	return nil

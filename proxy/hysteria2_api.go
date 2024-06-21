@@ -11,30 +11,23 @@ import (
 	"h-ui/model/constant"
 	"io"
 	"net/http"
-	"os/exec"
 	"time"
 )
 
 type Hysteria2Api struct {
 	apiPort int64
-	cmd     *exec.Cmd
 }
 
 func NewHysteria2Api(apiPort int64) *Hysteria2Api {
 	return &Hysteria2Api{
 		apiPort: apiPort,
-		cmd:     &cmdHysteria2,
 	}
-}
-
-func (h *Hysteria2Api) IsRunning() bool {
-	return h.cmd != nil && h.cmd.Process != nil
 }
 
 // ListUsers 每个用户的流量信息
 func (h *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic, error) {
 	var users map[string]bo.Hysteria2UserTraffic
-	if !h.IsRunning() {
+	if !NewHysteria2Instance().IsRunning() {
 		return users, nil
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
@@ -72,7 +65,7 @@ func (h *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic
 
 // KickUsers 踢下线
 func (h *Hysteria2Api) KickUsers(keys []string) error {
-	if !h.IsRunning() {
+	if !NewHysteria2Instance().IsRunning() {
 		return nil
 	}
 	usernamesByte, err := json.Marshal(keys)
@@ -106,7 +99,7 @@ func (h *Hysteria2Api) KickUsers(keys []string) error {
 // OnlineUsers 在线用户
 func (h *Hysteria2Api) OnlineUsers() (map[string]int64, error) {
 	var onlineUsers map[string]int64
-	if !h.IsRunning() {
+	if !!NewHysteria2Instance().IsRunning() {
 		return onlineUsers, nil
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)

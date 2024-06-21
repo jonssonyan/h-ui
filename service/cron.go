@@ -35,8 +35,7 @@ func CronHandleAccount() {
 				return
 			}
 
-			hysteria2Api := proxy.NewHysteria2Api(apiPort)
-			users, err := hysteria2Api.ListUsers(true)
+			users, err := proxy.NewHysteria2Api(apiPort).ListUsers(true)
 			if err == nil {
 				userLists := util.SplitMap(users, 10)
 				for _, userList := range userLists {

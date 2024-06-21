@@ -31,18 +31,18 @@ type process struct {
 	cmd   *exec.Cmd
 }
 
-func (p *process) IsRunning() bool {
-	return p.cmd != nil && p.cmd.Process != nil
+func (p *process) isRunning() bool {
+	return p.cmd != nil && p.cmd.Process != nil && p.cmd.ProcessState == nil
 }
 
-func (p *process) Start(name string, arg ...string) error {
+func (p *process) start(name string, arg ...string) error {
 	if !p.mutex.TryLock() {
 		logrus.Errorf("start cmd err: lock not acquired")
 		return errors.New("start cmd err")
 	}
 	defer p.mutex.Unlock()
 
-	if p.IsRunning() {
+	if p.isRunning() {
 		return nil
 	}
 
@@ -76,14 +76,14 @@ func (p *process) Start(name string, arg ...string) error {
 	return nil
 }
 
-func (p *process) Stop() error {
+func (p *process) stop() error {
 	if !p.mutex.TryLock() {
 		logrus.Errorf("cmd stop err: lock not acquired")
 		return errors.New("cmd stop err")
 	}
 	defer p.mutex.Unlock()
 
-	if !p.IsRunning() {
+	if !p.isRunning() {
 		return nil
 	}
 
@@ -95,14 +95,14 @@ func (p *process) Stop() error {
 	return nil
 }
 
-func (p *process) Release() error {
+func (p *process) release() error {
 	if !p.mutex.TryLock() {
 		logrus.Errorf("cmd release err: lock not acquired")
 		return errors.New("cmd release err")
 	}
 	defer p.mutex.Unlock()
 
-	if !p.IsRunning() {
+	if !p.isRunning() {
 		return nil
 	}
 

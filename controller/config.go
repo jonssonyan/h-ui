@@ -70,7 +70,7 @@ func GetConfig(c *gin.Context) {
 		Value: *config.Value,
 	}
 
-	running := service.Hysteria2Status()
+	running := service.Hysteria2IsRunning()
 
 	if (*config.Value == "1") != running {
 		enable := "0"
@@ -127,7 +127,7 @@ func UpdateHysteria2Config(c *gin.Context) {
 		return
 	}
 
-	running := service.Hysteria2Status()
+	running := service.Hysteria2IsRunning()
 	if running {
 		if err = service.RestartHysteria2(); err != nil {
 			vo.Fail(err.Error(), c)
@@ -234,7 +234,7 @@ func ImportHysteria2Config(c *gin.Context) {
 		return
 	}
 
-	running := service.Hysteria2Status()
+	running := service.Hysteria2IsRunning()
 	if running {
 		if err = service.RestartHysteria2(); err != nil {
 			vo.Fail(err.Error(), c)
