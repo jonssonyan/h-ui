@@ -46,10 +46,6 @@ CPU: x86_64/amd64
 
 ## 部署
 
-面板地址: http://[your_ip/your_domain]:8081
-
-默认管理员用户名：sysadmin 密码：123456，部署后请及时登录管理后台修改密码
-
 ### 容器部署 (推荐)
 
 1. 安装 Docker
@@ -108,6 +104,11 @@ CPU: x86_64/amd64
 mkdir h-ui && cd h-ui
 curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui
 ```
+
+## 默认安装信息
+
+- 面板端口: 9090
+- 用户名/密码: sysadmin
 
 ## 系统升级
 

@@ -122,7 +122,7 @@ const dataFormRules = {
 
 const state = reactive({
   dataForm: {
-    huiWebPort: "8081",
+    huiWebPort: "9090",
     hysteria2TrafficTime: "1",
   },
   fileList: [] as UploadFile[],

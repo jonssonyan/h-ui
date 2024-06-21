@@ -26,8 +26,8 @@ create index account_pass_index
 create index account_username_index
     on account (username);
 INSERT INTO account (username, `pass`, con_pass, quota, download, upload, expire_time, device_no, role)
-VALUES ('sysadmin', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6',
-        'c7591c31adf8af0b6b8ae8cbbccd8d1aaa0c7bb068f576bddb6378d5', -1, 0, 0, 253370736000000, 6, 'admin');
+VALUES ('sysadmin', '02f382b76ca1ab7aa06ab03345c7712fd5b971fb0c0f2aef98bac9cd',
+        'ee85cbdbb387a61de3d1d52e6773cc31e28c7913b32f4b7aa44ec61b', -1, 0, 0, 253370736000000, 6, 'admin');
 create table config
 (
     id          INTEGER              not null
@@ -42,7 +42,7 @@ create table config
 create index account_key_index
     on config (`key`);
 INSERT INTO config (key, value, remark)
-VALUES ('H_UI_WEB_PORT', '8081', 'H UI Web 端口');
+VALUES ('H_UI_WEB_PORT', '9090', 'H UI Web 端口');
 INSERT INTO config (key, value, remark)
 VALUES ('JWT_SECRET', hex(randomblob(10)), 'JWT 密钥');
 INSERT INTO config (key, value, remark)

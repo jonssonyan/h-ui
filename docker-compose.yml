@@ -13,4 +13,4 @@ services:
       - /h-ui/logs:/h-ui/logs
     environment:
       TZ: Asia/Shanghai
-    command: ./h-ui -p 8081
+    command: ./h-ui -p 9090
