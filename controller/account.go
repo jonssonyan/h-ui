@@ -127,7 +127,7 @@ func DeleteAccount(c *gin.Context) {
 		return
 	}
 	if *account.Role == "admin" {
-		vo.Fail("admin 账号不能删除", c)
+		vo.Fail("admin cannot be deleted", c)
 		return
 	}
 	err = service.DeleteAccount([]int64{*idDto.Id})
