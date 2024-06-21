@@ -48,7 +48,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       proxy: {
         // 反向代理解决跨域
         [env.VITE_APP_BASE_API]: {
-          target: "http://127.0.0.1:9090",
+          target: "http://127.0.0.1:8081",
           changeOrigin: true,
         },
       },

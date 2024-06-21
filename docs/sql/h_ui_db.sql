@@ -42,7 +42,7 @@ create table config
 create index account_key_index
     on config (`key`);
 INSERT INTO config (key, value, remark)
-VALUES ('H_UI_WEB_PORT', '9090', 'H UI Web 端口');
+VALUES ('H_UI_WEB_PORT', '8081', 'H UI Web 端口');
 INSERT INTO config (key, value, remark)
 VALUES ('JWT_SECRET', hex(randomblob(10)), 'JWT 密钥');
 INSERT INTO config (key, value, remark)

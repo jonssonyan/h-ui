@@ -107,7 +107,7 @@ curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui
 
 ## Default Installation Information
 
-- Panel Port: 9090
+- Panel Port: 8081
 - Username/Password: sysadmin
 
 ## System Upgrade

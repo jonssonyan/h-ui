@@ -107,7 +107,7 @@ curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui
 
 ## 默认安装信息
 
-- 面板端口: 9090
+- 面板端口: 8081
 - 用户名/密码: sysadmin
 
 ## 系统升级
