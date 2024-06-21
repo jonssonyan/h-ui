@@ -38,7 +38,7 @@ Just the panel for Hysteria2
 
 ## Recommended OS
 
-OS version: CentOS Stream 8/Ubuntu 20.04 LTS/Debian 11.1
+OS version: CentOS Stream 8+/Ubuntu+ LTS/Debian 11+
 
 CPU Architecture: x86_64/amd64
 
