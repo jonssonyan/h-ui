@@ -34,8 +34,12 @@ func CronHandleAccount() {
 				logrus.Errorf("hysteria2TrafficTime string conv int64 err: %v", err)
 				return
 			}
-
-			users, err := proxy.NewHysteria2Api(apiPort).ListUsers(true)
+			jwtSecretConfig, err := dao.GetConfig("key = ?", constant.JwtSecret)
+			if err != nil {
+				logrus.Errorf("jwtSecretConfig is nill")
+				return
+			}
+			users, err := proxy.NewHysteria2Api(apiPort).ListUsers(true, *jwtSecretConfig.Value)
 			if err == nil {
 				userLists := util.SplitMap(users, 10)
 				for _, userList := range userLists {

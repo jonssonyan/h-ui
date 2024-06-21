@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/bo"
@@ -43,7 +44,12 @@ func Hysteria2Online() (map[string]int64, error) {
 		if err != nil {
 			return nil, errors.New("get hysteria2 apiPort err")
 		}
-		onlineUsers, err := proxy.NewHysteria2Api(apiPort).OnlineUsers()
+		jwtSecretConfig, err := dao.GetConfig("key = ?", constant.JwtSecret)
+		if err != nil {
+			logrus.Errorf("jwtSecretConfig is nill")
+			return nil, errors.New(constant.SysError)
+		}
+		onlineUsers, err := proxy.NewHysteria2Api(apiPort).OnlineUsers(*jwtSecretConfig.Value)
 		if err != nil {
 			return nil, err
 		}
@@ -76,7 +82,12 @@ func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
 	if err != nil {
 		return errors.New("get hysteria2 apiPort err")
 	}
-	if err = proxy.NewHysteria2Api(apiPort).KickUsers(keys); err != nil {
+	jwtSecretConfig, err := dao.GetConfig("key = ?", constant.JwtSecret)
+	if err != nil {
+		logrus.Errorf("jwtSecretConfig is nill")
+		return errors.New(constant.SysError)
+	}
+	if err = proxy.NewHysteria2Api(apiPort).KickUsers(keys, *jwtSecretConfig.Value); err != nil {
 		return err
 	}
 	return nil

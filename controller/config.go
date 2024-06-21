@@ -145,15 +145,31 @@ func ExportHysteria2Config(c *gin.Context) {
 	}
 
 	// 默认值
-	getConfig, err := dao.GetConfig("key = ?", constant.HUIWebPort)
+	config, err := dao.ListConfig("key in ?", []string{constant.HUIWebPort, constant.JwtSecret})
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
+
+	var hUIWebPortConfig *entity.Config
+	var jwtSecretConfig *entity.Config
+	for _, item := range config {
+		if *item.Key == constant.HUIWebPort {
+			hUIWebPortConfig = &item
+		} else if *item.Key == constant.JwtSecret {
+			jwtSecretConfig = &item
+		}
+	}
+
+	if hUIWebPortConfig == nil || jwtSecretConfig == nil {
+		logrus.Errorf("hUIWebPortConfig or jwtSecretConfig is nil")
+		vo.Fail(constant.SysError, c)
+		return
+	}
+
 	authType := "http"
-	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
+	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *hUIWebPortConfig.Value)
 	authHttpInsecure := true
-	trafficStatsSecret := ""
 	var auth bo.ServerConfigAuth
 	auth.Type = &authType
 	var http bo.ServerConfigAuthHTTP
@@ -161,7 +177,7 @@ func ExportHysteria2Config(c *gin.Context) {
 	http.Insecure = &authHttpInsecure
 	auth.HTTP = &http
 	var trafficStats bo.ServerConfigTrafficStats
-	trafficStats.Secret = &trafficStatsSecret
+	trafficStats.Secret = jwtSecretConfig.Value
 	hysteria2ServerConfig.Auth = &auth
 	hysteria2ServerConfig.TrafficStats = &trafficStats
 
@@ -209,15 +225,31 @@ func ImportHysteria2Config(c *gin.Context) {
 	}
 
 	// 默认值
-	getConfig, err := dao.GetConfig("key = ?", constant.HUIWebPort)
+	config, err := dao.ListConfig("key in ?", []string{constant.HUIWebPort, constant.JwtSecret})
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
+
+	var hUIWebPortConfig *entity.Config
+	var jwtSecretConfig *entity.Config
+	for _, item := range config {
+		if *item.Key == constant.HUIWebPort {
+			hUIWebPortConfig = &item
+		} else if *item.Key == constant.JwtSecret {
+			jwtSecretConfig = &item
+		}
+	}
+
+	if hUIWebPortConfig == nil || jwtSecretConfig == nil {
+		logrus.Errorf("hUIWebPortConfig or jwtSecretConfig is nil")
+		vo.Fail(constant.SysError, c)
+		return
+	}
+
 	authType := "http"
-	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *getConfig.Value)
+	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", *hUIWebPortConfig.Value)
 	authHttpInsecure := true
-	trafficStatsSecret := ""
 	var auth bo.ServerConfigAuth
 	auth.Type = &authType
 	var http bo.ServerConfigAuthHTTP
@@ -225,7 +257,7 @@ func ImportHysteria2Config(c *gin.Context) {
 	http.Insecure = &authHttpInsecure
 	auth.HTTP = &http
 	var trafficStats bo.ServerConfigTrafficStats
-	trafficStats.Secret = &trafficStatsSecret
+	trafficStats.Secret = jwtSecretConfig.Value
 	hysteria2ServerConfig.Auth = &auth
 	hysteria2ServerConfig.TrafficStats = &trafficStats
 

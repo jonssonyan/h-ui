@@ -25,7 +25,7 @@ func NewHysteria2Api(apiPort int64) *Hysteria2Api {
 }
 
 // ListUsers 每个用户的流量信息
-func (h *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic, error) {
+func (h *Hysteria2Api) ListUsers(clear bool, secret string) (map[string]bo.Hysteria2UserTraffic, error) {
 	var users map[string]bo.Hysteria2UserTraffic
 	if !NewHysteria2Instance().IsRunning() {
 		return users, nil
@@ -41,6 +41,7 @@ func (h *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic
 		logrus.Errorf("Hysteria2 ListUsers NewRequest err: %v", err)
 		return nil, errors.New(constant.SysError)
 	}
+	req.Header.Set("Authorization", secret)
 	resp, err := http.DefaultClient.Do(req)
 	defer func() {
 		if resp != nil {
@@ -64,7 +65,7 @@ func (h *Hysteria2Api) ListUsers(clear bool) (map[string]bo.Hysteria2UserTraffic
 }
 
 // KickUsers 踢下线
-func (h *Hysteria2Api) KickUsers(keys []string) error {
+func (h *Hysteria2Api) KickUsers(keys []string, secret string) error {
 	if !NewHysteria2Instance().IsRunning() {
 		return nil
 	}
@@ -82,6 +83,7 @@ func (h *Hysteria2Api) KickUsers(keys []string) error {
 		logrus.Errorf("Hysteria2 KickUsers NewRequest err: %v", err)
 		return errors.New(constant.SysError)
 	}
+	req.Header.Set("Authorization", secret)
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := http.DefaultClient.Do(req)
 	defer func() {
@@ -97,7 +99,7 @@ func (h *Hysteria2Api) KickUsers(keys []string) error {
 }
 
 // OnlineUsers 在线用户
-func (h *Hysteria2Api) OnlineUsers() (map[string]int64, error) {
+func (h *Hysteria2Api) OnlineUsers(secret string) (map[string]int64, error) {
 	var onlineUsers map[string]int64
 	if !!NewHysteria2Instance().IsRunning() {
 		return onlineUsers, nil
@@ -110,6 +112,7 @@ func (h *Hysteria2Api) OnlineUsers() (map[string]int64, error) {
 		logrus.Errorf("Hysteria2 OnlineUsers NewRequest err: %v", err)
 		return nil, errors.New(constant.SysError)
 	}
+	req.Header.Set("Authorization", secret)
 	resp, err := http.DefaultClient.Do(req)
 	defer func() {
 		if resp != nil {
