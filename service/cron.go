@@ -44,9 +44,8 @@ func CronHandleAccount() {
 				userLists := util.SplitMap(users, 10)
 				for _, userList := range userLists {
 					go func(users map[string]bo.Hysteria2UserTraffic) {
-						for conPass, traffic := range users {
-							conPassEncrypt := util.SHA224String(conPass)
-							if err = dao.UpdateAccountTraffic(conPassEncrypt, int64(float64(traffic.Rx)*hysteria2TrafficTimeFloat), int64(float64(traffic.Tx)*hysteria2TrafficTimeFloat)); err != nil {
+						for username, traffic := range users {
+							if err = dao.UpdateAccountTraffic(username, int64(float64(traffic.Rx)*hysteria2TrafficTimeFloat), int64(float64(traffic.Tx)*hysteria2TrafficTimeFloat)); err != nil {
 								logrus.Errorf("hysteria2 hanle account err apiPort: %d err: %v", apiPort, err)
 								continue
 							}

@@ -52,7 +52,7 @@ func UpsertAccount(accounts []entity.Account) error {
 	return nil
 }
 
-func UpdateAccountTraffic(conPass string, download int64, upload int64) error {
+func UpdateAccountTraffic(username string, download int64, upload int64) error {
 	if upload != 0 || download != 0 {
 		updates := map[string]interface{}{}
 		if download != 0 {
@@ -63,7 +63,7 @@ func UpdateAccountTraffic(conPass string, download int64, upload int64) error {
 		}
 		updates["update_time"] = time.Now().Format("2006-01-02 15:04:05")
 		if tx := sqliteDB.Model(&entity.Account{}).
-			Where("con_pass = ?", conPass).
+			Where("username = ?", username).
 			Updates(updates); tx.Error != nil {
 			logrus.Errorf("%v", tx.Error)
 			return errors.New(constant.SysError)

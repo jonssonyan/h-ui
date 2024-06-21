@@ -72,10 +72,10 @@ func PageAccount(c *gin.Context) {
 				CreateTime: *item.CreateTime,
 			},
 		}
-		if value, exists := onlineUsers[*item.ConPass]; exists {
+		if value, exists := onlineUsers[*item.Username]; exists {
 			accountVo.Online = true
 			accountVo.Device = value
-			delete(onlineUsers, *item.ConPass)
+			delete(onlineUsers, *item.Username)
 		}
 		accountVos = append(accountVos, accountVo)
 	}

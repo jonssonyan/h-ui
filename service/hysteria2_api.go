@@ -26,7 +26,7 @@ func Hysteria2Auth(conPass string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	device, exist := onlineUsers[*account.ConPass]
+	device, exist := onlineUsers[*account.Username]
 	if exist && *account.DeviceNo < device {
 		return "", errors.New("device limited")
 	}
@@ -76,7 +76,7 @@ func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
 	}
 	var keys []string
 	for _, item := range accounts {
-		keys = append(keys, *item.ConPass)
+		keys = append(keys, *item.Username)
 	}
 	apiPort, err := GetHysteria2ApiPort()
 	if err != nil {
