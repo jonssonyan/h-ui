@@ -10,10 +10,12 @@ import (
 	"h-ui/proxy"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func Hysteria2Auth(conPass string) (string, error) {
-	account, err := dao.GetAccount("deleted = 0 and pass = ? and CURRENT_TIMESTAMP < expire_time and CURRENT_TIMESTAMP > kick_util_time and (quota < 0 or quota > download + upload) ", conPass)
+	now := time.Now().UnixMilli()
+	account, err := dao.GetAccount("deleted = 0 and con_pass = ? and ? < expire_time and ? > kick_util_time and (quota < 0 or quota > download + upload)", conPass, now, now)
 	if err != nil {
 		return "", err
 	}
