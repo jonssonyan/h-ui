@@ -101,7 +101,7 @@ func (h *Hysteria2Api) KickUsers(keys []string, secret string) error {
 // OnlineUsers 在线用户
 func (h *Hysteria2Api) OnlineUsers(secret string) (map[string]int64, error) {
 	var onlineUsers map[string]int64
-	if !!NewHysteria2Instance().IsRunning() {
+	if !NewHysteria2Instance().IsRunning() {
 		return onlineUsers, nil
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
