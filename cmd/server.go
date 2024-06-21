@@ -13,12 +13,12 @@ import (
 )
 
 func runServer() {
+	defer releaseResource()
 	initFile()
 	middleware.InitLog()
 	dao.InitSqliteDB(port)
 	middleware.InitCron()
 	service.InitHysteria2()
-	defer releaseResource()
 	r := gin.Default()
 	router.Router(r)
 	for {
