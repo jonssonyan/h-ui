@@ -10,14 +10,20 @@ import (
 var mutexHysteria2 sync.Mutex
 var cmdHysteria2 exec.Cmd
 
+var hysteria2Instance *Hysteria2Process
+
 type Hysteria2Process struct {
 	process
 	binPath    string
 	configPath string
 }
 
+func init() {
+	hysteria2Instance = &Hysteria2Process{process{mutex: &mutexHysteria2, cmd: &cmdHysteria2}, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath}
+}
+
 func NewHysteria2Instance() *Hysteria2Process {
-	return &Hysteria2Process{process{mutex: &mutexHysteria2, cmd: &cmdHysteria2}, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath}
+	return hysteria2Instance
 }
 
 func (h *Hysteria2Process) IsRunning() bool {
