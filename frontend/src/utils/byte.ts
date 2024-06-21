@@ -24,31 +24,30 @@ export const formatBytes = (bytes: number, decimals = 2): string => {
 };
 
 export const calculateBytes = (value: number, unit: string): number => {
-	// 将单位转换为大写，并去除空格
-	const formattedUnit = unit.toUpperCase().trim();
+  // 将单位转换为大写，并去除空格
+  const formattedUnit = unit.toUpperCase().trim();
 
-	// 定义存储单位和对应的字节数的映射关系
-	const unitToBytes: Record<string, number> = {
-		BYTES: 1,
-		KB: 1024 ** 1,
-		MB: 1024 ** 2,
-		GB: 1024 ** 3,
-		TB: 1024 ** 4,
-		PB: 1024 ** 5,
-		EB: 1024 ** 6,
-		ZB: 1024 ** 7,
-		YB: 1024 ** 8,
-	};
+  // 定义存储单位和对应的字节数的映射关系
+  const unitToBytes: Record<string, number> = {
+    BYTES: 1,
+    KB: 1024 ** 1,
+    MB: 1024 ** 2,
+    GB: 1024 ** 3,
+    TB: 1024 ** 4,
+    PB: 1024 ** 5,
+    EB: 1024 ** 6,
+    ZB: 1024 ** 7,
+    YB: 1024 ** 8,
+  };
 
-	// 检查传入的单位是否存在于映射关系中
-	if (!Object.prototype.hasOwnProperty.call(unitToBytes, formattedUnit)) {
-		throw new Error("Invalid unit");
-	}
+  // 检查传入的单位是否存在于映射关系中
+  if (!Object.prototype.hasOwnProperty.call(unitToBytes, formattedUnit)) {
+    throw new Error("Invalid unit");
+  }
 
-	// 计算并返回字节数
-	return value * unitToBytes[formattedUnit];
+  // 计算并返回字节数
+  return value * unitToBytes[formattedUnit];
 };
-
 
 /**
  * 格式化存储容量单位

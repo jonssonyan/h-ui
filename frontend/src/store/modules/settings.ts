@@ -12,7 +12,10 @@ export const useSettingsStore = defineStore("setting", () => {
 
   const layout = useStorage<string>("layout", defaultSettings.layout);
 
-  const themeColor = useStorage<string>("themeColor", defaultSettings.themeColor);
+  const themeColor = useStorage<string>(
+    "themeColor",
+    defaultSettings.themeColor
+  );
 
   // actions
   function changeSetting(param: { key: string; value: any }) {

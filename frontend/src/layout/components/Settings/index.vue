@@ -34,12 +34,18 @@ const themeColors = ref<string[]>([
  */
 function changeThemeColor(color: string) {
   settingsStore.changeSetting({ key: "themeColor", value: color });
-  document.documentElement.style.setProperty("--el-color-primary", settingsStore.themeColor);
+  document.documentElement.style.setProperty(
+    "--el-color-primary",
+    settingsStore.themeColor
+  );
 }
 
 onMounted(() => {
-	window.document.body.setAttribute("layout", settingsStore.layout);
-	document.documentElement.style.setProperty("--el-color-primary", settingsStore.themeColor);
+  window.document.body.setAttribute("layout", settingsStore.layout);
+  document.documentElement.style.setProperty(
+    "--el-color-primary",
+    settingsStore.themeColor
+  );
 });
 </script>
 
