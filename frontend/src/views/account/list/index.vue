@@ -661,13 +661,13 @@ const submitForm = () => {
       let accountUpdateDto: AccountUpdateDto = { ...state.dataForm };
       if (accountId) {
         updateAccountApi(accountUpdateDto).then(() => {
-          ElMessage.success(t("common.updateSuccess"));
+          ElMessage.success(t("common.success"));
           closeDialog();
           handleQuery();
         });
       } else {
         saveAccountApi(accountUpdateDto).then(() => {
-          ElMessage.success(t("common.saveSuccess"));
+          ElMessage.success(t("common.success"));
           closeDialog();
           handleQuery();
         });
@@ -684,7 +684,7 @@ const submitKickForm = () => {
     if (valid) {
       const params = { ...state.kickForm };
       hysteria2KickApi(params).then(() => {
-        ElMessage.success(t("common.downloadSuccess"));
+        ElMessage.success(t("common.success"));
         closeDialogKick();
         handleQuery();
       });
@@ -711,11 +711,11 @@ const handleDelete = (row: { [key: string]: any }) => {
   )
     .then(() => {
       deleteAccountApi({ id: id }).then(() => {
-        ElMessage.success(t("common.deleteSuccess"));
+        ElMessage.success(t("common.success"));
         handleQuery();
       });
     })
-    .catch(() => ElMessage.info(t("common.deleteCancel")));
+    .catch(() => ElMessage.info(t("common.cancel")));
 };
 
 /**
@@ -771,7 +771,7 @@ const handleImport = (params: UploadRequestOptions) => {
     let formData = new FormData();
     formData.append("file", params.file);
     importAccountApi(formData).then(() => {
-      ElMessage.success(t("common.importSuccess"));
+      ElMessage.success(t("common.success"));
     });
     state.fileList = [];
   }
@@ -805,7 +805,7 @@ const handleExport = () => {
     // 模拟点击下载
     a.click();
     window.URL.revokeObjectURL(url);
-    ElMessage.success(t("common.exportSuccess"));
+    ElMessage.success(t("common.success"));
   });
 };
 
@@ -855,7 +855,8 @@ const handleQrCode = async (row: { [key: string]: any }) => {
 const resetTraffic = async (row: { [key: string]: any }) => {
   try {
     await resetTrafficApi({ id: row.id });
-    ElMessage.success(t("common.updateSuccess"));
+    ElMessage.success(t("common.success"));
+    await handleQuery();
   } catch (e) {
     /* empty */
   }

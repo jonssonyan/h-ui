@@ -1010,7 +1010,7 @@ const handleImport = (params: UploadRequestOptions) => {
     let formData = new FormData();
     formData.append("file", params.file);
     importHysteria2ConfigApi(formData).then(() => {
-      ElMessage.success(t("common.importSuccess"));
+      ElMessage.success(t("common.success"));
     });
     state.fileList = [];
   }
@@ -1041,7 +1041,7 @@ const handleExport = async () => {
     a.download = dis.split("attachment; filename=")[1];
     a.click();
     window.URL.revokeObjectURL(url);
-    ElMessage.success(t("common.exportSuccess"));
+    ElMessage.success(t("common.success"));
   } catch (e) {
     /* empty */
   }
@@ -1076,7 +1076,7 @@ const submitForm = () => {
         params.tls = undefined;
       }
       updateHysteria2ConfigApi(params).then(() => {
-        ElMessage.success(t("common.saveSuccess"));
+        ElMessage.success(t("common.success"));
         setConfig();
       });
     }
@@ -1292,7 +1292,7 @@ const handleHysteria2ChangeVersion = async () => {
   }
   ElMessage.info(t("common.wait"));
   await hysteria2ChangeVersionApi({ version: state.hysteria2Version });
-  ElMessage.success(t("common.changeSuccess"));
+  ElMessage.success(t("common.success"));
   await setHysteria2Monitor();
 };
 

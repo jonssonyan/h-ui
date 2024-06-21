@@ -144,7 +144,7 @@ const submitForm = () => {
         },
       ];
       updateConfigsApi({ configUpdateDtos: configs }).then(() => {
-        ElMessage.success(t("common.saveSuccess"));
+        ElMessage.success(t("common.success"));
       });
     }
   });
@@ -170,7 +170,7 @@ const handleImport = async (params: UploadRequestOptions) => {
       let formData = new FormData();
       formData.append("file", params.file);
       await importConfigApi(formData);
-      ElMessage.success(t("common.exportSuccess"));
+      ElMessage.success(t("common.success"));
       state.fileList = [];
     } catch (e) {
       /* empty */
@@ -205,7 +205,7 @@ const handleExport = async () => {
     // 模拟点击下载
     a.click();
     window.URL.revokeObjectURL(url);
-    ElMessage.success(t("common.exportSuccess"));
+    ElMessage.success(t("common.success"));
   } catch (e) {
     /* empty */
   }
