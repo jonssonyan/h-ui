@@ -16,7 +16,7 @@ import (
 
 func Hysteria2Auth(conPass string) (string, error) {
 	now := time.Now().UnixMilli()
-	account, err := dao.GetAccount("deleted = 0 and con_pass = ? and ? < expire_time and ? > kick_util_time and (quota < 0 or quota > download + upload)", conPass, now, now)
+	account, err := dao.GetAccount("con_pass = ? and deleted = 0 and (quota < 0 or quota > download + upload) and ? < expire_time and ? > kick_util_time", conPass, now, now)
 	if err != nil {
 		return "", err
 	}
