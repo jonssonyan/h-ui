@@ -38,7 +38,7 @@ Just the panel for Hysteria2
 
 ## 建议系统
 
-系统: CentOS Stream 8+/Ubuntu+ LTS/Debian 11+
+系统: CentOS 8+/Ubuntu 20+/Debian 11+
 
 CPU: x86_64/amd64
 
