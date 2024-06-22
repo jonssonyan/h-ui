@@ -57,6 +57,7 @@ export default {
     enableSuccess: "Hysteria2 启动 ！！",
     disableSuccess: "Hysteria2 已关闭",
     success: "成功",
+    refresh: "刷新",
   },
   info: {
     expireTime: "年-月-日 时:分:秒",

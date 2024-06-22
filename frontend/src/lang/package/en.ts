@@ -57,6 +57,7 @@ export default {
     enableSuccess: "Hysteria2 start successful",
     disableSuccess: "Hysteria2 stop successful",
     success: "Success",
+    refresh: "Refresh",
   },
   info: {
     expireTime: "y-M-d H:m:s",

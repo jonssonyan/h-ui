@@ -21,6 +21,14 @@
             {{ $t("common.export") }}
           </el-button>
         </el-form-item>
+        <el-form-item prop="refresh">
+          <el-button @click="setRecords">
+            <template #icon>
+              <i-ep-refresh />
+            </template>
+            {{ $t("common.refresh") }}
+          </el-button>
+        </el-form-item>
       </el-form>
     </div>
 
