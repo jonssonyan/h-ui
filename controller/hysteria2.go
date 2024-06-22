@@ -28,7 +28,7 @@ func Hysteria2Auth(c *gin.Context) {
 func Hysteria2Subscribe(c *gin.Context) {
 	conPass := c.Param("conPass")
 	userAgent := c.Request.Header.Get("User-Agent")
-	host := c.Request.Header.Get("Host")
+	host := c.Request.Host
 
 	if host == "" {
 		vo.Fail("Host is empty", c)
