@@ -162,7 +162,7 @@ func ExportHysteria2Config(c *gin.Context) {
 	}
 
 	if hUIWebPort == "" || jwtSecret == "" {
-		logrus.Errorf("hUIWebPortConfig or jwtSecretConfig is nil")
+		logrus.Errorf("hUIWebPort or jwtSecret is nil")
 		vo.Fail(constant.SysError, c)
 		return
 	}
@@ -176,10 +176,8 @@ func ExportHysteria2Config(c *gin.Context) {
 	http.URL = &authHttpUrl
 	http.Insecure = &authHttpInsecure
 	auth.HTTP = &http
-	var trafficStats bo.ServerConfigTrafficStats
-	trafficStats.Secret = &jwtSecret
 	hysteria2ServerConfig.Auth = &auth
-	hysteria2ServerConfig.TrafficStats = &trafficStats
+	hysteria2ServerConfig.TrafficStats.Secret = &jwtSecret
 
 	fileName := fmt.Sprintf("Hysteria2Config-%s.yaml", time.Now().Format("20060102150405"))
 	filePath := constant.ExportPathDir + fileName
@@ -231,24 +229,24 @@ func ImportHysteria2Config(c *gin.Context) {
 		return
 	}
 
-	var hUIWebPortConfig string
-	var jwtSecretConfig string
+	var hUIWebPort string
+	var jwtSecret string
 	for _, item := range config {
 		if *item.Key == constant.HUIWebPort {
-			hUIWebPortConfig = *item.Value
+			hUIWebPort = *item.Value
 		} else if *item.Key == constant.JwtSecret {
-			jwtSecretConfig = *item.Value
+			jwtSecret = *item.Value
 		}
 	}
 
-	if hUIWebPortConfig == "" || jwtSecretConfig == "" {
-		logrus.Errorf("hUIWebPortConfig or jwtSecretConfig is nil")
+	if hUIWebPort == "" || jwtSecret == "" {
+		logrus.Errorf("hUIWebPort or jwtSecret is nil")
 		vo.Fail(constant.SysError, c)
 		return
 	}
 
 	authType := "http"
-	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", hUIWebPortConfig)
+	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", hUIWebPort)
 	authHttpInsecure := true
 	var auth bo.ServerConfigAuth
 	auth.Type = &authType
@@ -256,10 +254,8 @@ func ImportHysteria2Config(c *gin.Context) {
 	http.URL = &authHttpUrl
 	http.Insecure = &authHttpInsecure
 	auth.HTTP = &http
-	var trafficStats bo.ServerConfigTrafficStats
-	trafficStats.Secret = &jwtSecretConfig
 	hysteria2ServerConfig.Auth = &auth
-	hysteria2ServerConfig.TrafficStats = &trafficStats
+	hysteria2ServerConfig.TrafficStats.Secret = &jwtSecret
 
 	if err = service.SetHysteria2Config(hysteria2ServerConfig); err != nil {
 		vo.Fail(err.Error(), c)
