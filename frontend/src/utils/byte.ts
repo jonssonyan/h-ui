@@ -23,7 +23,7 @@ export const formatBytes = (bytes: number, decimals = 2): string => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 };
 
-export const calculateBytes = (value: number, unit: string): number => {
+export const calculateBytes = (value = 0, unit = "Bytes"): number => {
   // 将单位转换为大写，并去除空格
   const formattedUnit = unit.toUpperCase().trim();
 
@@ -43,6 +43,10 @@ export const calculateBytes = (value: number, unit: string): number => {
   // 检查传入的单位是否存在于映射关系中
   if (!Object.prototype.hasOwnProperty.call(unitToBytes, formattedUnit)) {
     throw new Error("Invalid unit");
+  }
+
+  if (value == -1) {
+    return -1;
   }
 
   // 计算并返回字节数

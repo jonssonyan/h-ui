@@ -290,7 +290,7 @@
           />
         </el-form-item>
         <el-form-item :label="$t('account.quota')" prop="quota">
-          <unit-select :quota="dataForm.quota" :quotaTmp="quotaTmp" />
+          <unit-select :setValue="setQuota" :valueTmp="quotaTmp" />
         </el-form-item>
         <el-form-item :label="$t('account.expireTime')" prop="expireTime">
           <el-date-picker
@@ -647,6 +647,10 @@ const handleUpdate = async (row: { [key: string]: any }) => {
     title: t("common.update"),
     visible: true,
   };
+};
+
+const setQuota = (newQuota: number) => {
+  state.dataForm.quota = newQuota;
 };
 
 /**

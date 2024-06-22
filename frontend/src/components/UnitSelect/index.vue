@@ -2,13 +2,12 @@
   <div style="display: flex; align-items: center">
     <el-input-number
       v-model="capacity"
-      :placeholder="$t('account.quota')"
+      placeholder="Please enter a value"
       :min="-1"
       :controls="false"
       :precision="0"
       clearable
       style="width: 220px"
-      @blur="changeCapacity"
     />
     <el-select
       v-model="unit"
@@ -33,13 +32,15 @@ import {
   formatStorageUnit,
 } from "@/utils/byte";
 
+const units = ["Bytes", "KB", "MB", "GB", "TB", "PB"];
+
 const props = defineProps({
-  quota: {
+  valueTmp: {
     type: Number as PropType<number>,
     required: true,
   },
-  quotaTmp: {
-    type: Number as PropType<number>,
+  setValue: {
+    type: Function as PropType<(newValue: number) => void>,
     required: true,
   },
 });
@@ -51,28 +52,23 @@ const state = reactive({
 
 const { capacity, unit } = toRefs(state);
 
-const units = ["Bytes", "KB", "MB", "GB", "TB", "PB"];
-
-const emit = defineEmits(["update:quota"]);
-
-const quota = useVModel(props, "quota", emit);
-
-watch([capacity, unit], ([newC, newU]) => {
-  quota.value = calculateBytes(newC, newU);
-});
+watch(
+  [capacity, unit],
+  ([newC, newU]) => {
+    const newValue = calculateBytes(newC, newU);
+    props.setValue(newValue);
+  },
+  { immediate: true }
+);
 
 watch(
-  () => props.quotaTmp,
-  () => {
-    capacity.value = formatStorageCapacity(props.quotaTmp);
-    unit.value = formatStorageUnit(props.quotaTmp);
-  }
+  () => props.valueTmp,
+  (newValue) => {
+    state.capacity = formatStorageCapacity(newValue);
+    state.unit = formatStorageUnit(newValue);
+  },
+  { immediate: true }
 );
-const changeCapacity = () => {
-  if (!state.capacity) {
-    state.capacity = 0;
-  }
-};
 </script>
 
 <style lang="scss" scoped></style>
