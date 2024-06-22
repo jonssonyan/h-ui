@@ -302,6 +302,17 @@
             clearable
           />
         </el-form-item>
+        <el-form-item :label="$t('account.deviceNo')" prop="deviceNo">
+          <el-input-number
+            v-model="dataForm.deviceNo"
+            :placeholder="$t('account.deviceNo')"
+            :min="1"
+            :controls="false"
+            :precision="0"
+            clearable
+            style="width: 220px"
+          />
+        </el-form-item>
         <el-form-item :label="$t('common.deleted')" prop="deleted">
           <el-radio-group v-model="dataForm.deleted">
             <el-radio :label="0">{{ $t("common.enable") }}</el-radio>
@@ -478,6 +489,13 @@ const dataFormAddRules = {
       trigger: ["change", "blur"],
     },
   ],
+  deviceNo: [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+  ],
   deleted: [
     {
       required: true,
@@ -558,6 +576,7 @@ const state = reactive({
   dataForm: {
     quota: 0,
     expireTime: getMonthLater(),
+    deviceNo: 6,
     deleted: 0,
   } as AccountForm,
   kickForm: {

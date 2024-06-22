@@ -9,6 +9,7 @@ export interface AccountUpdateDto extends IdDto {
   conPass: string;
   quota: number;
   expireTime: number;
+  deviceNo: number;
   deleted: number;
 }
 
@@ -18,6 +19,7 @@ export interface AccountSaveDto {
   conPass: string;
   quota: number;
   expireTime: number;
+  deviceNo: number;
   deleted: number;
 }
 
@@ -59,6 +61,7 @@ export interface AccountForm extends IdDto {
   conPass: string;
   quota: number;
   expireTime: number;
+  deviceNo: number;
   deleted: number;
 }
 
