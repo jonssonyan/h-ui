@@ -182,7 +182,7 @@
             <el-tag v-if="scope.row.deleted === 0" type="success"
               >{{ $t("common.enable") }}
             </el-tag>
-            <el-tag v-else type="info">{{ $t("common.disable") }}</el-tag>
+            <el-tag v-else type="danger">{{ $t("common.disable") }}</el-tag>
           </template>
         </el-table-column>
 
@@ -247,7 +247,7 @@
     <el-dialog
       :title="dialog.title"
       v-model="dialog.visible"
-      width="600px"
+      width="620px"
       append-to-body
       @close="closeDialog"
     >
@@ -259,7 +259,7 @@
             : dataFormUpdateRules
         "
         :model="dataForm"
-        label-width="80px"
+        label-width="100px"
       >
         <el-form-item :label="$t('account.username')" prop="username">
           <el-input
