@@ -132,16 +132,16 @@
           </template>
         </el-table-column>
         <el-table-column
-          key="deviceNo"
-          :label="$t('account.deviceNo')"
-          align="center"
-          prop="deviceNo"
-        />
-        <el-table-column
           key="device"
           :label="$t('account.device')"
           align="center"
           prop="device"
+        />
+        <el-table-column
+          key="deviceNo"
+          :label="$t('account.deviceNo')"
+          align="center"
+          prop="deviceNo"
         />
         <el-table-column
           key="kickUtilTime"
@@ -164,6 +164,15 @@
           </template>
         </el-table-column>
         <el-table-column
+          :label="$t('common.createTime')"
+          align="center"
+          prop="createTime"
+        >
+          <template #default="scope">
+            {{ timestampToDateTime(scope.row.createTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column
           key="deleted"
           :label="$t('common.deleted')"
           align="center"
@@ -174,15 +183,6 @@
               >{{ $t("common.enable") }}
             </el-tag>
             <el-tag v-else type="info">{{ $t("common.disable") }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('common.createTime')"
-          align="center"
-          prop="createTime"
-        >
-          <template #default="scope">
-            {{ timestampToDateTime(scope.row.createTime) }}
           </template>
         </el-table-column>
 
@@ -292,16 +292,6 @@
         <el-form-item :label="$t('account.quota')" prop="quota">
           <unit-select :setValue="setQuota" :valueTmp="quotaTmp" />
         </el-form-item>
-        <el-form-item :label="$t('account.expireTime')" prop="expireTime">
-          <el-date-picker
-            v-model="dataForm.expireTime"
-            type="datetime"
-            :placeholder="$t('account.expireTime')"
-            value-format="x"
-            :shortcuts="shortcuts"
-            clearable
-          />
-        </el-form-item>
         <el-form-item :label="$t('account.deviceNo')" prop="deviceNo">
           <el-input-number
             v-model="dataForm.deviceNo"
@@ -311,6 +301,16 @@
             :precision="0"
             clearable
             style="width: 220px"
+          />
+        </el-form-item>
+        <el-form-item :label="$t('account.expireTime')" prop="expireTime">
+          <el-date-picker
+            v-model="dataForm.expireTime"
+            type="datetime"
+            :placeholder="$t('account.expireTime')"
+            value-format="x"
+            :shortcuts="shortcuts"
+            clearable
           />
         </el-form-item>
         <el-form-item :label="$t('common.deleted')" prop="deleted">
