@@ -21,7 +21,7 @@ CREATE INDEX account_con_pass_index ON account (con_pass);
 CREATE INDEX account_pass_index ON account (pass);
 INSERT INTO account (username, pass, con_pass, quota, download, upload, expire_time, device_no, role)
 VALUES ('sysadmin', '02f382b76ca1ab7aa06ab03345c7712fd5b971fb0c0f2aef98bac9cd',
-        'ee85cbdbb387a61de3d1d52e6773cc31e28c7913b32f4b7aa44ec61b', -1, 0, 0, 253370736000000, 6, 'admin');
+        'sysadmin.sysadmin', -1, 0, 0, 253370736000000, 6, 'admin');
 CREATE TABLE config
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,

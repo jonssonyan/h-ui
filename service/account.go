@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
@@ -48,7 +49,7 @@ func UpdateAccount(account entity.Account) error {
 		updates["pass"] = *account.Pass
 	}
 	if account.ConPass != nil && *account.ConPass != "" {
-		updates["con_pass"] = *account.ConPass
+		updates["con_pass"] = fmt.Sprintf("%s.%s", *account.Username, *account.ConPass)
 	}
 	if account.Quota != nil {
 		updates["quota"] = *account.Quota

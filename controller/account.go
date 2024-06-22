@@ -98,11 +98,11 @@ func SaveAccount(c *gin.Context) {
 	}
 
 	passEncrypt := util.SHA224String(*accountSaveDto.Pass)
-	conPassEncrypt := util.SHA224String(fmt.Sprintf("%s %s", *accountSaveDto.Username, *accountSaveDto.ConPass))
+	conPass := fmt.Sprintf("%s.%s", *accountSaveDto.Username, *accountSaveDto.ConPass)
 	account := entity.Account{
 		Username:   accountSaveDto.Username,
 		Pass:       &passEncrypt,
-		ConPass:    &conPassEncrypt,
+		ConPass:    &conPass,
 		Quota:      accountSaveDto.Quota,
 		ExpireTime: accountSaveDto.ExpireTime,
 		DeviceNo:   accountSaveDto.DeviceNo,
@@ -167,27 +167,10 @@ func UpdateAccount(c *gin.Context) {
 		passEncrypt = &passEncryptSha224
 	}
 
-	var conPassEncrypt *string
-	if accountUpdateDto.ConPass != nil && *accountUpdateDto.ConPass != "" {
-		var username string
-		if accountUpdateDto.Username != nil && *accountUpdateDto.Username != "" {
-			username = *accountUpdateDto.Username
-		} else {
-			account, err := service.GetAccount(*accountUpdateDto.Id)
-			if err != nil {
-				vo.Fail(err.Error(), c)
-				return
-			}
-			username = *account.Username
-		}
-		conPassSha224 := util.SHA224String(fmt.Sprintf("%s %s", username, *accountUpdateDto.ConPass))
-		conPassEncrypt = &conPassSha224
-	}
-
 	account := entity.Account{
 		Username:   accountUpdateDto.Username,
 		Pass:       passEncrypt,
-		ConPass:    conPassEncrypt,
+		ConPass:    accountUpdateDto.ConPass,
 		Quota:      accountUpdateDto.Quota,
 		ExpireTime: accountUpdateDto.ExpireTime,
 		DeviceNo:   accountUpdateDto.DeviceNo,
