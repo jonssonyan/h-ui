@@ -96,6 +96,14 @@ CPU: x86_64/amd64
      jonssonyan/h-ui
    ```
 
+卸载
+
+```bash
+docker rm -f h-ui
+docker rmi h-ui
+rm -rf /h-ui
+```
+
 ### 手动部署
 
 下载可执行文件: https://github.com/jonssonyan/h-ui/releases
@@ -103,6 +111,12 @@ CPU: x86_64/amd64
 ```bash
 mkdir h-ui && cd h-ui
 curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui
+```
+
+卸载
+
+```bash
+rm -rf h-ui
 ```
 
 ## 默认安装信息

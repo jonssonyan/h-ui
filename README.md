@@ -96,6 +96,14 @@ Memory: ≥ 128MB
      jonssonyan/h-ui
    ```
 
+Uninstall
+
+```bash
+docker rm -f h-ui
+docker rmi h-ui
+rm -rf /h-ui
+```
+
 ### Manual
 
 Executable files: https://github.com/jonssonyan/h-ui/releases
@@ -103,6 +111,12 @@ Executable files: https://github.com/jonssonyan/h-ui/releases
 ```bash
 mkdir h-ui && cd h-ui
 curl -L -o h-ui https://github.com/jonssonyan/h-ui/releases/download/v0.0.1/h-ui-linux-amd64 && chmod +x ./h-ui && ./h-ui
+```
+
+Uninstall
+
+```bash
+rm -rf h-ui
 ```
 
 ## Default Installation Information
