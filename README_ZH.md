@@ -100,7 +100,7 @@ CPU: x86_64/amd64
 
 ```bash
 docker rm -f h-ui
-docker rmi h-ui
+docker rmi jonssonyan/h-ui
 rm -rf /h-ui
 ```
 
