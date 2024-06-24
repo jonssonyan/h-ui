@@ -1,0 +1,15 @@
+[Unit]
+Description=h-ui Service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/local/h-ui/
+ExecStart=/usr/local/h-ui/h-ui
+Restart=on-failure
+User=nobody
+Group=nogroup
+
+[Install]
+WantedBy=multi-user.target
