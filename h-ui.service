@@ -7,9 +7,6 @@ Wants=network.target
 Type=simple
 WorkingDirectory=/usr/local/h-ui/
 ExecStart=/usr/local/h-ui/h-ui
-Restart=on-failure
-User=nobody
-Group=nogroup
 
 [Install]
 WantedBy=multi-user.target
