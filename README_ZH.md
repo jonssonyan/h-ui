@@ -120,7 +120,8 @@ systemctl restart h-ui
 卸载
 
 ```bash
-rm -rf /usr/local/h-ui/
+systemctl stop h-ui
+rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
 ```
 
 ## 默认安装信息
