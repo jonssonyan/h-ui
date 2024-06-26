@@ -70,7 +70,7 @@ CPU: x86_64/amd64
      jonssonyan/h-ui
    ```
 
-   自定义 Web 端口
+   自定义 Web 端口，默认 8081
 
    ```bash
    docker run -d --name h-ui --restart always \
@@ -80,7 +80,7 @@ CPU: x86_64/amd64
      -v /h-ui/export:/h-ui/export \
      -v /h-ui/logs:/h-ui/logs \
      jonssonyan/h-ui \
-     ./h-ui -p [端口]
+     ./h-ui -p 8081
    ```
 
    设置时区，默认 Asia/Shanghai

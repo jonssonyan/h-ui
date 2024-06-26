@@ -70,7 +70,7 @@ Memory: ≥ 128MB
      jonssonyan/h-ui
    ```
 
-   Custom web port
+   Custom web port, default is 8081
 
    ```bash
    docker run -d --name h-ui --restart always \
@@ -80,7 +80,7 @@ Memory: ≥ 128MB
      -v /h-ui/export:/h-ui/export \
      -v /h-ui/logs:/h-ui/logs \
      jonssonyan/h-ui \
-     ./h-ui -p [port]
+     ./h-ui -p 8081
    ```
 
    Set the time zone, default is Asia/Shanghai
