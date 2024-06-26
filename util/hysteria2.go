@@ -25,7 +25,7 @@ func DownloadHysteria2(version string) error {
 	hysteria2BinName := GetHysteria2BinName()
 	hysteria2BinPath := GetHysteria2BinPath()
 
-	// 下载最新版本 Hysteria2
+	// Download the latest version of Hysteria2
 	url, err := GetReleaseAssetURL("apernet", "hysteria", version, hysteria2BinName)
 	if err != nil {
 		return err

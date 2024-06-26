@@ -12,9 +12,9 @@ func SplitMap[T any](inputMap map[string]T, chunkSize int) []map[string]T {
 		currentGroup[key] = value
 
 		if len(currentGroup) == chunkSize || groupIndex+1 == quantity {
-			// 当当前组已满或达到最后一组时，将映射添加到结果切片中
+			// When the current group is full or the last group is reached, add the mapping to the result slice
 			segments = append(segments, currentGroup)
-			currentGroup = make(map[string]T) // 初始化一个新的映射
+			currentGroup = make(map[string]T) // Initialize a new mapping
 			groupIndex++
 		}
 	}

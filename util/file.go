@@ -26,7 +26,7 @@ func RemoveFile(fileName string) error {
 	return nil
 }
 
-// ReadLinesFromBottom 从下往上顺序读取文件内容并返回指定数量的行数
+// ReadLinesFromBottom Read the file contents sequentially from bottom to top and return the specified number of lines
 func ReadLinesFromBottom(filePath string, numLines int) ([]string, int, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -37,7 +37,7 @@ func ReadLinesFromBottom(filePath string, numLines int) ([]string, int, error) {
 	var lines []string
 	scanner := bufio.NewScanner(file)
 
-	// 逐行读取文件内容并反转行顺序
+	// Read the file contents line by line and reverse the order of the lines
 	total := 0
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
@@ -48,12 +48,12 @@ func ReadLinesFromBottom(filePath string, numLines int) ([]string, int, error) {
 		return nil, 0, err
 	}
 
-	// 反转行顺序
+	// Reverse row order
 	for i, j := 0, len(lines)-1; i < j; i, j = i+1, j-1 {
 		lines[i], lines[j] = lines[j], lines[i]
 	}
 
-	// 返回指定数量的行数
+	// Returns the specified number of rows
 	if len(lines) < numLines {
 		numLines = len(lines)
 	}

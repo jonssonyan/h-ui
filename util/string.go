@@ -6,14 +6,14 @@ func CompareVersion(version1, version2 string) int {
 	v1 := strings.Split(version1, ".")
 	v2 := strings.Split(version2, ".")
 
-	// 比较主版本号
+	// Compare major version numbers
 	if v1[0] > v2[0] {
 		return 1
 	} else if v1[0] < v2[0] {
 		return -1
 	}
 
-	// 如果主版本号相同，比较次版本号
+	// If the major version numbers are the same, compare the minor version numbers
 	if len(v1) > 1 && len(v2) > 1 {
 		if v1[1] > v2[1] {
 			return 1
@@ -22,7 +22,7 @@ func CompareVersion(version1, version2 string) int {
 		}
 	}
 
-	// 如果主版本号和次版本号都相同，则比较修订版本号
+	// If the major and minor versions are the same, compare the revision numbers
 	if len(v1) > 2 && len(v2) > 2 {
 		if v1[2] > v2[2] {
 			return 1
@@ -31,6 +31,6 @@ func CompareVersion(version1, version2 string) int {
 		}
 	}
 
-	// 版本号完全相同
+	// The version number is exactly the same
 	return 0
 }
