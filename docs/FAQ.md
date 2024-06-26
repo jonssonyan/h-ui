@@ -41,7 +41,7 @@ View h-ui logs through the log menu to eliminate the cause of the error
 ## Hysteria2 startup failed
 
 - Hysteria2 configuration error, view Hysteria2 logs through the log menu to eliminate the cause of the error
-- Through ACME Applying for a certificate requires a while. The application will start only after the certificate application is successful. Wait patiently and refresh the page
+- It takes some time to apply for a certificate using ACME for the first time. Please wait patiently for Hysteria2 to start and refresh the page
 
 # Usage Issues
 
