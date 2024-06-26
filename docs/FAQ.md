@@ -20,44 +20,43 @@ chmod +x ./h-ui
   ./h-ui -p [port]
   ```
 
-# Deployment Issues
-
-## Meaning of folders in a project
+## Meaning of folders in project
 
 - bin: Hysteria2 executable and configuration files
-
 - data: database files
 - export: all exported files
 - logs: system logs and Hysteria2 operation logs
 
-## Startup failed
+# Deployment Issues
 
-View log files
+## Unable to access the panel
 
-1. View error description in the command line
+- Check if h-ui is running normally
+- Check if the firewall allows ports
 
-2. View logs/h-ui.log
+## h-ui startup failed
+
+View h-ui logs through the log menu to eliminate the cause of the error
+
+## Hysteria2 startup failed
+
+- Hysteria2 configuration error, view Hysteria2 logs through the log menu to eliminate the cause of the error
+- Through ACME Applying for a certificate requires a while. The application will start only after the certificate application is successful. Wait patiently and refresh the page
 
 # Usage Issues
 
 ## How to manage certificates?
 
-ACME method (recommended) The system automatically manages. For self-owned certificates, you need to maintain them
-manually and replace them manually after expiration.
+ACME method (recommended) The system automatically manages. The self-owned certificate method requires manual maintenance and manual replacement after expiration
 
-## Own certificate, set Hysteria2 certificate path
+## How to set the Hysteria2 certificate path for your own certificate?
 
-Upload the certificate file to the server, and fill in the absolute path of the certificate when configuring Hysteria2
+Upload the certificate file to the server. When configuring Hysteria2, fill in the absolute path of the certificate. When deploying through Docker, you need to upload the certificate file to the volume mapping folder. Recommended: /h-ui/bin
 
 ## Why only Hysteria2 version >= v2.4.4 is supported?
 
-Lower versions do not support the latest API
+Hysteria2 with lower versions does not support the latest API
 
 ## Log export failed
 
 No log file
-
-## Unable to access the panel
-
-1. Check if the operation is normal
-2. Check if the firewall allows the port
