@@ -12,7 +12,7 @@ type AccountVo struct {
 	Role         string `json:"role"`
 	Deleted      int64  `json:"deleted"`
 
-	Online bool  `json:"online"` // Online status
+	Online bool  `json:"online"` // online status
 	Device int64 `json:"device"` // Number of online devices
 }
 type AccountPageVo struct {

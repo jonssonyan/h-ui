@@ -33,12 +33,12 @@ CREATE TABLE config
 );
 CREATE INDEX config_key_index ON config (key);
 INSERT INTO config (key, value, remark)
-VALUES ('H_UI_WEB_PORT', '8081', 'H UI Web 端口');
+VALUES ('H_UI_WEB_PORT', '8081', 'H UI Web Port');
 INSERT INTO config (key, value, remark)
-VALUES ('JWT_SECRET', hex(randomblob(10)), 'JWT 密钥');
+VALUES ('JWT_SECRET', hex(randomblob(10)), 'JWT Secret');
 INSERT INTO config (key, value, remark)
-VALUES ('HYSTERIA2_ENABLE', '0', 'Hysteria2 开关');
+VALUES ('HYSTERIA2_ENABLE', '0', 'Hysteria2 Switch');
 INSERT INTO config (key, value, remark)
-VALUES ('HYSTERIA2_CONFIG', '', 'Hysteria2 配置');
+VALUES ('HYSTERIA2_CONFIG', '', 'Hysteria2 Config');
 INSERT INTO config (key, value, remark)
-VALUES ('HYSTERIA2_TRAFFIC_TIME', '1', 'Hysteria2 流量倍数');
+VALUES ('HYSTERIA2_TRAFFIC_TIME', '1', 'Hysteria2 Traffic Time');
