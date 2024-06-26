@@ -1,47 +1,50 @@
-# Windows amd64
-# export CGO_ENABLED=0
-# export GOOS=windows
-# export GOARCH=amd64
-# go build -o build/h-ui-windows-amd64.exe -trimpath -ldflags "-s -w"
-# Mac amd64
-# export CGO_ENABLED=0
-# export GOOS=darwin
-# export GOARCH=amd64
-# go build -o build/h-ui-darwin-amd64 -trimpath -ldflags "-s -w"
-# Linux 386
-export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=386
-go build -o build/h-ui-linux-386 -trimpath -ldflags "-s -w"
-# Linux amd64
-export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=amd64
-go build -o build/h-ui-linux-amd64 -trimpath -ldflags "-s -w"
-# Linux armv6
-export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=arm
-export GOARM=6
-go build -o build/h-ui-linux-armv6 -trimpath -ldflags "-s -w"
-# Linux armv7
-export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=arm
-export GOARM=7
-go build -o build/h-ui-linux-armv7 -trimpath -ldflags "-s -w"
-# Linux arm64
-export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=arm64
-go build -o build/h-ui-linux-arm64 -trimpath -ldflags "-s -w"
-# Linux ppc64le
-export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=ppc64le
-go build -o build/h-ui-linux-ppc64le -trimpath -ldflags "-s -w"
-# Linux s390x
-export CGO_ENABLED=0
-export GOOS=linux
-export GOARCH=s390x
-go build -o build/h-ui-linux-s390x -trimpath -ldflags "-s -w"
+#!/bin/bash
+
+# target platform array
+platforms=(
+  "windows/amd64"
+  "darwin/amd64"
+  "linux/386"
+  "linux/amd64"
+  "linux/arm/6"
+  "linux/arm/7"
+  "linux/arm64"
+  "linux/ppc64le"
+  "linux/s390x"
+)
+
+# output directory
+output_dir="build"
+
+# make sure the output directory exists
+mkdir -p "$output_dir"
+
+# compile for each target platform
+for platform in "${platforms[@]}"; do
+  IFS='/' read -r -a platform_split <<<"$platform"
+  GOOS=${platform_split[0]}
+  GOARCH=${platform_split[1]}
+  GOARM=${platform_split[2]}
+
+  output_name="h-ui-${GOOS}-${GOARCH}"
+  if [ "$GOARCH" == "arm" ]; then
+    output_name+="v${GOARM}"
+  fi
+
+  # add the appropriate extension
+  if [ "$GOOS" == "windows" ]; then
+    output_name+=".exe"
+  fi
+
+  echo "Building for $GOOS/$GOARCH ${GOARM:-}"
+  build_env="CGO_ENABLED=0 GOOS=$GOOS GOARCH=$GOARCH"
+  [ "$GOARCH" == "arm" ] && build_env+=" GOARM=$GOARM"
+
+  env $build_env go build -o "$output_dir/$output_name" -trimpath -ldflags "-s -w"
+  if [ $? -ne 0 ]; then
+    echo "Error occurred during building for $GOOS/$GOARCH ${GOARM:-}"
+    exit 1
+  fi
+done
+
+echo "All builds completed successfully!"
