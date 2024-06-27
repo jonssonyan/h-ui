@@ -225,6 +225,14 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 		urlConfig += fmt.Sprintf("&obfs=salamander&obfs-password=%s", *hysteria2Config.Obfs.Salamander.Password)
 	}
 
+	urlConfig += fmt.Sprintf("&insecure=1")
+
+	if hysteria2Config.ACME != nil &&
+		hysteria2Config.ACME.Domains != nil &&
+		len(hysteria2Config.ACME.Domains) > 0 {
+		urlConfig += fmt.Sprintf("&sni=%s", hysteria2Config.ACME.Domains[0])
+	}
+
 	if urlConfig != "" {
 		urlConfig = "?" + strings.TrimPrefix(urlConfig, "&")
 	}
