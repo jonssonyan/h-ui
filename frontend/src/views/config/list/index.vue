@@ -240,10 +240,11 @@ const setConfig = async () => {
     } else if (configVo.key === huiKeyPath) {
       state.dataForm.huiKeyPath = configVo.value;
     }
-    if (state.dataForm.huiCrtPath != "" && state.dataForm.huiKeyPath != "") {
-      state.huiHttps = 1;
-    }
   });
+
+	if (state.dataForm.huiCrtPath != "" && state.dataForm.huiKeyPath != "") {
+		state.huiHttps = 1;
+	}
 };
 
 const handleImport = async (params: UploadRequestOptions) => {
