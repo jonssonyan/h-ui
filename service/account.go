@@ -63,6 +63,9 @@ func UpdateAccount(account entity.Account) error {
 	if account.Upload != nil {
 		updates["upload"] = *account.Upload
 	}
+	if account.DeviceNo != nil {
+		updates["device_no"] = *account.DeviceNo
+	}
 	if account.Deleted != nil {
 		updates["deleted"] = *account.Deleted
 	}
