@@ -95,6 +95,10 @@ export default {
   config: {
     huiWebPort: "H UI Web Port",
     hysteria2TrafficTime: "Hysteria2 Traffic Time",
+    huiCrtPath: "H UI CRT File Path",
+    huiKeyPath: "H UI KEY File Path",
+    restartHUI: "Restart Panel",
+    restartTip: "Restarting, please refresh",
   },
   monitor: {
     cpuPercent: "CPU Usage",

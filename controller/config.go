@@ -336,3 +336,12 @@ func Hysteria2AcmePath(c *gin.Context) {
 	}
 	vo.Success(hysteria2AcmePathVo, c)
 }
+
+func RestartHUI(c *gin.Context) {
+	go func() {
+		if err := service.StopServer(); err != nil {
+			logrus.Errorf(err.Error())
+		}
+	}()
+	vo.Success(nil, c)
+}

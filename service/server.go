@@ -43,9 +43,28 @@ func StartServer(r *gin.Engine) error {
 		Handler: r,
 	}
 	ctx, cancel = context.WithCancel(context.Background())
-	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		logrus.Errorf("could not listen on port %d: %v", newPort, err)
-		return err
+
+	crtPathConfig, err := dao.GetConfig("key = ?", constant.HUICrtPath)
+	if err != nil {
+		logrus.Errorf(err.Error())
+		return errors.New(err.Error())
+	}
+	keyPathConfig, err := dao.GetConfig("key = ?", constant.HUIKeyPath)
+	if err != nil {
+		logrus.Errorf(err.Error())
+		return errors.New(err.Error())
+	}
+
+	if crtPathConfig.Value != nil && *crtPathConfig.Value != "" &&
+		keyPathConfig.Value != nil && *keyPathConfig.Value != "" {
+		if err := server.ListenAndServeTLS(*crtPathConfig.Value, *keyPathConfig.Value); err != nil && err != http.ErrServerClosed {
+			logrus.Errorf("could not listen on port %d: %v", newPort, err)
+		}
+	} else {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			logrus.Errorf("could not listen on port %d: %v", newPort, err)
+			return err
+		}
 	}
 
 	logrus.Infof("server is running on port %d", newPort)

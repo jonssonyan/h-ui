@@ -8,6 +8,14 @@
           </el-button>
         </el-form-item>
         <el-form-item>
+          <el-button @click="handleRestartHUI">
+            <template #icon>
+              <i-ep-refreshRight />
+            </template>
+            {{ $t("config.restartHUI") }}
+          </el-button>
+        </el-form-item>
+        <el-form-item>
           <el-upload
             v-model:file-list="fileList"
             :http-request="handleImport"
@@ -59,6 +67,21 @@
             clearable
           />
         </el-form-item>
+        <el-form-item :label="$t('config.huiCrtPath')" prop="huiCrtPath">
+          <el-input
+            v-model="dataForm.huiCrtPath"
+            :placeholder="$t('config.huiCrtPath')"
+            clearable
+          />
+          <el-button @click="setCertPath">使用 Hysteria2 的证书</el-button>
+        </el-form-item>
+        <el-form-item :label="$t('config.huiKeyPath')" prop="huiKeyPath">
+          <el-input
+            v-model="dataForm.huiKeyPath"
+            :placeholder="$t('config.huiKeyPath')"
+            clearable
+          />
+        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -74,8 +97,10 @@ export default {
 import { Select } from "@element-plus/icons-vue";
 import {
   exportConfigApi,
+  hysteria2AcmePathApi,
   importConfigApi,
   listConfigApi,
+  restartHUIApi,
   updateConfigsApi,
 } from "@/api/config";
 import { ConfigsUpdateDto } from "@/api/config/types";
@@ -86,6 +111,8 @@ import {
 } from "element-plus/lib/components";
 import { useI18n } from "vue-i18n";
 
+const huiCrtPath = "H_UI_CRT_PATH";
+const huiKeyPath = "H_UI_KEY_PATH";
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 
@@ -124,6 +151,8 @@ const state = reactive({
   dataForm: {
     huiWebPort: "8081",
     hysteria2TrafficTime: "1",
+    huiCrtPath: "",
+    huiKeyPath: "",
   },
   fileList: [] as UploadFile[],
 });
@@ -134,6 +163,14 @@ const submitForm = () => {
   dataFormRef.value.validate((valid: boolean) => {
     if (valid) {
       let configs: ConfigsUpdateDto[] = [
+        {
+          key: huiCrtPath,
+          value: state.dataForm.huiCrtPath,
+        },
+        {
+          key: huiKeyPath,
+          value: state.dataForm.huiKeyPath,
+        },
         {
           key: huiWebPortKey,
           value: state.dataForm.huiWebPort,
@@ -206,6 +243,32 @@ const handleExport = async () => {
     a.click();
     window.URL.revokeObjectURL(url);
     ElMessage.success(t("common.success"));
+  } catch (e) {
+    /* empty */
+  }
+};
+
+const setCertPath = async () => {
+  try {
+    const { data } = await hysteria2AcmePathApi();
+    const { crtPath, keyPath } = data;
+    state.dataForm.huiCrtPath = crtPath;
+    state.dataForm.huiKeyPath = keyPath;
+  } catch (e) {
+    /* empty */
+  }
+};
+
+const handleRestartHUI = async () => {
+  try {
+    ElMessageBox.confirm("Are you sure to restart panel?", "Warning", {
+      confirmButtonText: t("common.confirm"),
+      cancelButtonText: t("common.cancel"),
+      type: "warning",
+    }).then(() => {
+      restartHUIApi();
+      ElMessage.success(t("config.restartTip"));
+    });
   } catch (e) {
     /* empty */
   }

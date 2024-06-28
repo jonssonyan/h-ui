@@ -181,3 +181,8 @@ export interface Tab {
   name: string;
   desc: string;
 }
+
+export interface Hysteria2AcmePathVo {
+  crtPath: string;
+  keyPath: string;
+}

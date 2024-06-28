@@ -5,6 +5,7 @@ import {
   ConfigsDto,
   ConfigUpdateDto,
   ConfigVo,
+  Hysteria2AcmePathVo,
   Hysteria2ServerConfig,
 } from "@/api/config/types";
 
@@ -84,5 +85,19 @@ export function importHysteria2ConfigApi(data: FormData): AxiosPromise {
       "Content-Type": "multipart/form-data",
     },
     data: data,
+  });
+}
+
+export function hysteria2AcmePathApi(): AxiosPromise<Hysteria2AcmePathVo> {
+  return request({
+    url: "/config/hysteria2AcmePath",
+    method: "get",
+  });
+}
+
+export function restartHUIApi(): AxiosPromise {
+  return request({
+    url: "/config/restartHUI",
+    method: "post",
   });
 }
