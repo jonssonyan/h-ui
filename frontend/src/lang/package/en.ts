@@ -58,6 +58,8 @@ export default {
     disableSuccess: "Hysteria2 stop successful",
     success: "Success",
     refresh: "Refresh",
+    yes: "Yes",
+    no: "No",
   },
   info: {
     expireTime: "y-M-d H:m:s",
@@ -99,6 +101,8 @@ export default {
     huiKeyPath: "H UI KEY File Path",
     restartHUI: "Restart Panel",
     restartTip: "Restarting, please refresh",
+    useHysteria2Cert: "Use Hysteria2 cert",
+    huiHttps: "Open https on the panel",
   },
   monitor: {
     cpuPercent: "CPU Usage",

@@ -58,6 +58,8 @@ export default {
     disableSuccess: "Hysteria2 已关闭",
     success: "成功",
     refresh: "刷新",
+    yes: "是",
+    no: "否",
   },
   info: {
     expireTime: "年-月-日 时:分:秒",
@@ -98,6 +100,8 @@ export default {
     huiKeyPath: "H UI KEY 证书路径",
     restartHUI: "重启面板",
     restartTip: "正在重启，请刷新",
+    useHysteria2Cert: "使用 Hysteria2 的证书",
+    huiHttps: "面板开启 https",
   },
   monitor: {
     cpuPercent: "CPU 使用率",

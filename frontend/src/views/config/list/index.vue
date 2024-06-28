@@ -67,15 +67,35 @@
             clearable
           />
         </el-form-item>
-        <el-form-item :label="$t('config.huiCrtPath')" prop="huiCrtPath">
+        <el-form-item :label="$t('config.huiHttps')" prop="huiHttps">
+          <el-select v-model="huiHttps" style="width: 50%">
+            <el-option
+              v-for="item in huiHttpsList"
+              :key="item.key"
+              :label="item.key"
+              :value="item.value"
+            />
+          </el-select>
+          <el-button v-if="huiHttps" @click="setCertPath"
+            >{{ t("config.useHysteria2Cert") }}
+          </el-button>
+        </el-form-item>
+        <el-form-item
+          v-if="huiHttps"
+          :label="$t('config.huiCrtPath')"
+          prop="huiCrtPath"
+        >
           <el-input
             v-model="dataForm.huiCrtPath"
             :placeholder="$t('config.huiCrtPath')"
             clearable
           />
-          <el-button @click="setCertPath">使用 Hysteria2 的证书</el-button>
         </el-form-item>
-        <el-form-item :label="$t('config.huiKeyPath')" prop="huiKeyPath">
+        <el-form-item
+          v-if="huiHttps"
+          :label="$t('config.huiKeyPath')"
+          prop="huiKeyPath"
+        >
           <el-input
             v-model="dataForm.huiKeyPath"
             :placeholder="$t('config.huiKeyPath')"
@@ -111,14 +131,19 @@ import {
 } from "element-plus/lib/components";
 import { useI18n } from "vue-i18n";
 
+const { t } = useI18n();
+
+const dataFormRef = ref(ElForm);
+
 const huiCrtPath = "H_UI_CRT_PATH";
 const huiKeyPath = "H_UI_KEY_PATH";
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 
-const { t } = useI18n();
-
-const dataFormRef = ref(ElForm);
+const huiHttpsList = [
+  { key: t("common.yes"), value: 1 },
+  { key: t("common.no"), value: 0 },
+];
 
 const dataFormRules = {
   huiWebPort: [
@@ -154,23 +179,16 @@ const state = reactive({
     huiCrtPath: "",
     huiKeyPath: "",
   },
+  huiHttps: 0,
   fileList: [] as UploadFile[],
 });
 
-const { dataForm, fileList } = toRefs(state);
+const { dataForm, huiHttps, fileList } = toRefs(state);
 
 const submitForm = () => {
   dataFormRef.value.validate((valid: boolean) => {
     if (valid) {
       let configs: ConfigsUpdateDto[] = [
-        {
-          key: huiCrtPath,
-          value: state.dataForm.huiCrtPath,
-        },
-        {
-          key: huiKeyPath,
-          value: state.dataForm.huiKeyPath,
-        },
         {
           key: huiWebPortKey,
           value: state.dataForm.huiWebPort,
@@ -180,6 +198,23 @@ const submitForm = () => {
           value: state.dataForm.hysteria2TrafficTime,
         },
       ];
+
+      if (state.huiHttps) {
+        if (!state.dataForm.huiCrtPath || !state.dataForm.huiKeyPath) {
+          ElMessage.error("crt and key required");
+          return;
+        }
+        configs.push(
+          {
+            key: huiCrtPath,
+            value: state.dataForm.huiCrtPath,
+          },
+          {
+            key: huiKeyPath,
+            value: state.dataForm.huiKeyPath,
+          }
+        );
+      }
       updateConfigsApi({ configUpdateDtos: configs }).then(() => {
         ElMessage.success(t("common.success"));
       });
