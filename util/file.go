@@ -3,7 +3,9 @@ package util
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"os"
+	"path/filepath"
 )
 
 func Exists(path string) bool {
@@ -58,4 +60,29 @@ func ReadLinesFromBottom(filePath string, numLines int) ([]string, int, error) {
 		numLines = len(lines)
 	}
 	return lines[:numLines], total, nil
+}
+
+func FindFile(dir, filename string) (string, error) {
+	var result string
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && info.Name() == filename {
+			absPath, err := filepath.Abs(path)
+			if err != nil {
+				return err
+			}
+			result = absPath
+			return errors.New("file found")
+		}
+		return nil
+	})
+	if err != nil && err.Error() != "file found" {
+		return "", err
+	}
+	if result == "" {
+		return "", fmt.Errorf("file %s not found in directory %s", filename, dir)
+	}
+	return result, nil
 }

@@ -28,3 +28,8 @@ type Hysteria2UrlVo struct {
 	Url    string `json:"url"`
 	QrCode []byte `json:"qrCode"`
 }
+
+type Hysteria2AcmePathVo struct {
+	CrtPath string `json:"crtPath"`
+	KeyPath string `json:"keyPath"`
+}

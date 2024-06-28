@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/constant"
+	"h-ui/model/vo"
 	"h-ui/proxy"
 	"h-ui/util"
 	"os"
@@ -125,4 +126,42 @@ func ReleaseHysteria2() {
 	if err := proxy.NewHysteria2Instance().Release(); err != nil {
 		logrus.Errorf(err.Error())
 	}
+}
+
+func Hysteria2AcmePath() (vo.Hysteria2AcmePathVo, error) {
+	hysteria2AcmePathVo := vo.Hysteria2AcmePathVo{}
+	hysteria2Config, err := GetHysteria2Config()
+	if err != nil {
+		return hysteria2AcmePathVo, err
+	}
+	if hysteria2Config.TLS != nil &&
+		hysteria2Config.TLS.Cert != nil && *hysteria2Config.TLS.Cert != "" &&
+		hysteria2Config.TLS.Key != nil && *hysteria2Config.TLS.Key != "" {
+		hysteria2AcmePathVo.CrtPath = *hysteria2Config.TLS.Cert
+		hysteria2AcmePathVo.KeyPath = *hysteria2Config.TLS.Key
+	} else if hysteria2Config.ACME != nil &&
+		hysteria2Config.ACME.Domains != nil &&
+		len(hysteria2Config.ACME.Domains) > 0 &&
+		hysteria2Config.ACME.CA != nil &&
+		*hysteria2Config.ACME.CA != "" &&
+		hysteria2Config.ACME.Dir != nil &&
+		*hysteria2Config.ACME.Dir != "" {
+		acmeDir := *hysteria2Config.ACME.Dir
+		for _, domain := range hysteria2Config.ACME.Domains {
+			crtPath, err := util.FindFile(acmeDir, fmt.Sprintf("%s.crt", domain))
+			if err != nil {
+				continue
+			}
+			keyPath, err := util.FindFile(acmeDir, fmt.Sprintf("%s.key", domain))
+			if err != nil {
+				continue
+			}
+			hysteria2AcmePathVo.CrtPath = crtPath
+			hysteria2AcmePathVo.KeyPath = keyPath
+			break
+		}
+	} else {
+		return vo.Hysteria2AcmePathVo{}, errors.New("cert is empty")
+	}
+	return hysteria2AcmePathVo, nil
 }

@@ -327,3 +327,12 @@ func ImportConfig(c *gin.Context) {
 	}
 	vo.Success(nil, c)
 }
+
+func Hysteria2AcmePath(c *gin.Context) {
+	hysteria2AcmePathVo, err := service.Hysteria2AcmePath()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(hysteria2AcmePathVo, c)
+}
