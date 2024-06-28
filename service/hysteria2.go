@@ -137,8 +137,12 @@ func Hysteria2AcmePath() (vo.Hysteria2AcmePathVo, error) {
 	if hysteria2Config.TLS != nil &&
 		hysteria2Config.TLS.Cert != nil && *hysteria2Config.TLS.Cert != "" &&
 		hysteria2Config.TLS.Key != nil && *hysteria2Config.TLS.Key != "" {
-		hysteria2AcmePathVo.CrtPath = *hysteria2Config.TLS.Cert
-		hysteria2AcmePathVo.KeyPath = *hysteria2Config.TLS.Key
+		if util.Exists(*hysteria2Config.TLS.Cert) && util.Exists(*hysteria2Config.TLS.Key) {
+			hysteria2AcmePathVo.CrtPath = *hysteria2Config.TLS.Cert
+			hysteria2AcmePathVo.KeyPath = *hysteria2Config.TLS.Key
+			return hysteria2AcmePathVo, nil
+		}
+		return hysteria2AcmePathVo, errors.New("cert not found")
 	} else if hysteria2Config.ACME != nil &&
 		hysteria2Config.ACME.Domains != nil &&
 		len(hysteria2Config.ACME.Domains) > 0 &&
@@ -158,10 +162,8 @@ func Hysteria2AcmePath() (vo.Hysteria2AcmePathVo, error) {
 			}
 			hysteria2AcmePathVo.CrtPath = crtPath
 			hysteria2AcmePathVo.KeyPath = keyPath
-			break
+			return hysteria2AcmePathVo, nil
 		}
-	} else {
-		return vo.Hysteria2AcmePathVo{}, errors.New("cert is empty")
 	}
-	return hysteria2AcmePathVo, nil
+	return vo.Hysteria2AcmePathVo{}, errors.New("cert not found")
 }
