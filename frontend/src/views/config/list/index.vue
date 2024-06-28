@@ -188,7 +188,26 @@ const { dataForm, huiHttps, fileList } = toRefs(state);
 const submitForm = () => {
   dataFormRef.value.validate((valid: boolean) => {
     if (valid) {
+      if (
+        state.huiHttps &&
+        (!state.dataForm.huiCrtPath || !state.dataForm.huiKeyPath)
+      ) {
+        ElMessage.error("crt and key required");
+        return;
+      }
+      if (!state.huiHttps) {
+        state.dataForm.huiCrtPath = "";
+        state.dataForm.huiKeyPath = "";
+      }
       let configs: ConfigsUpdateDto[] = [
+        {
+          key: huiCrtPath,
+          value: state.dataForm.huiCrtPath,
+        },
+        {
+          key: huiKeyPath,
+          value: state.dataForm.huiKeyPath,
+        },
         {
           key: huiWebPortKey,
           value: state.dataForm.huiWebPort,
@@ -199,22 +218,6 @@ const submitForm = () => {
         },
       ];
 
-      if (state.huiHttps) {
-        if (!state.dataForm.huiCrtPath || !state.dataForm.huiKeyPath) {
-          ElMessage.error("crt and key required");
-          return;
-        }
-        configs.push(
-          {
-            key: huiCrtPath,
-            value: state.dataForm.huiCrtPath,
-          },
-          {
-            key: huiKeyPath,
-            value: state.dataForm.huiKeyPath,
-          }
-        );
-      }
       updateConfigsApi({ configUpdateDtos: configs }).then(() => {
         ElMessage.success(t("common.success"));
       });
@@ -224,7 +227,7 @@ const submitForm = () => {
 
 const setConfig = async () => {
   const { data } = await listConfigApi({
-    keys: [huiWebPortKey, hysteria2TrafficTimeKey],
+    keys: [huiCrtPath, huiKeyPath, huiWebPortKey, hysteria2TrafficTimeKey],
   });
 
   data.forEach((configVo) => {
@@ -232,6 +235,13 @@ const setConfig = async () => {
       state.dataForm.huiWebPort = configVo.value;
     } else if (configVo.key === hysteria2TrafficTimeKey) {
       state.dataForm.hysteria2TrafficTime = configVo.value;
+    } else if (configVo.key === huiCrtPath) {
+      state.dataForm.huiCrtPath = configVo.value;
+    } else if (configVo.key === huiKeyPath) {
+      state.dataForm.huiKeyPath = configVo.value;
+    }
+    if (state.dataForm.huiCrtPath != "" && state.dataForm.huiKeyPath != "") {
+      state.huiHttps = 1;
     }
   });
 };
