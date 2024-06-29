@@ -41,9 +41,13 @@ func UpdateConfigs(c *gin.Context) {
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
 		if item.Key != nil && *item.Key == constant.HUIWebPort && *config.Value != *item.Value {
 			go func() {
-				if err := service.StopServer(); err != nil {
+				webServer, err := service.NewServer(nil)
+				if err != nil {
 					logrus.Errorf(err.Error())
-					// 启动失败后将端口改为以前的端口
+				}
+				if err := webServer.StopServer(); err != nil {
+					logrus.Errorf(err.Error())
+					// Change the port to the previous port after startup failure
 					if err := service.UpdateConfig(constant.HUIWebPort, *config.Value); err != nil {
 						logrus.Errorf(err.Error())
 					}
@@ -339,7 +343,11 @@ func Hysteria2AcmePath(c *gin.Context) {
 
 func RestartHUI(c *gin.Context) {
 	go func() {
-		if err := service.StopServer(); err != nil {
+		webServer, err := service.NewServer(nil)
+		if err != nil {
+			logrus.Errorf(err.Error())
+		}
+		if err := webServer.StopServer(); err != nil {
 			logrus.Errorf(err.Error())
 		}
 	}()

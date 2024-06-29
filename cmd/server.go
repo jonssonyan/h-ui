@@ -9,6 +9,7 @@ import (
 	"h-ui/router"
 	"h-ui/service"
 	"h-ui/util"
+	"net/http"
 	"os"
 )
 
@@ -22,7 +23,11 @@ func runServer() {
 	r := gin.Default()
 	router.Router(r)
 	for {
-		if err := service.StartServer(r); err != nil {
+		webServer, err := service.NewServer(r)
+		if err != nil {
+			panic(err)
+		}
+		if err := webServer.StartServer(); err != nil && err != http.ErrServerClosed {
 			panic(err)
 		}
 	}
