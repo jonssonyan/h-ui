@@ -18,7 +18,7 @@ type WebServer struct {
 	ctx       context.Context
 	cancel    context.CancelFunc
 	httpPort  int
-	httpsPort int
+	HttpsPort int
 }
 
 var webServer *WebServer
@@ -67,7 +67,7 @@ func getPort(configKey string) (int, error) {
 
 func (w *WebServer) StartServer(r *gin.Engine) error {
 	w.server.Handler = r
-	w.httpsPort = 0
+	w.HttpsPort = 0
 
 	httpsPort, err := getPort(constant.HUIWebHttpsPort)
 	if err != nil {
@@ -80,9 +80,9 @@ func (w *WebServer) StartServer(r *gin.Engine) error {
 	}
 
 	if httpsPort > 0 && crtPath != "" && keyPath != "" {
-		w.httpsPort = httpsPort
+		w.HttpsPort = httpsPort
 		go func() {
-			w.server.Addr = fmt.Sprintf(":%d", w.httpsPort)
+			w.server.Addr = fmt.Sprintf(":%d", w.HttpsPort)
 			if err := w.server.ListenAndServeTLS(crtPath, keyPath); err != nil {
 				logrus.Errorf("failed to start ListenAndServeTLS: %v", err)
 			}
@@ -132,5 +132,5 @@ func (w *WebServer) getTLSConfigPaths() (string, string, error) {
 }
 
 func (w *WebServer) IsHttps() bool {
-	return w.httpsPort > 0
+	return w.HttpsPort > 0
 }
