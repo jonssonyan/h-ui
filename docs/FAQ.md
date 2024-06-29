@@ -60,3 +60,7 @@ Hysteria2 with lower versions does not support the latest API
 ## Log export failed
 
 No log file
+
+## Enable the panel to support https
+
+Supports custom certificates or using Hysteria2 certificates. After setting the certificate, you need to restart the panel
