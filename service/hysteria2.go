@@ -73,7 +73,7 @@ func StartHysteria2() error {
 	// 代理端口
 	listen, err := strconv.Atoi(strings.Trim(*hysteria2Config.Listen, ":"))
 	if err != nil {
-		return errors.New(fmt.Sprintf("listen port: %s is invalid", *hysteria2Config.Listen))
+		return errors.New(fmt.Sprintf("hysteria port: %s is invalid", *hysteria2Config.Listen))
 	}
 	listenPortAvailable := util.IsPortAvailable(uint(listen), "udp")
 	if !listenPortAvailable {
@@ -83,7 +83,7 @@ func StartHysteria2() error {
 	// api 端口
 	apiPort, err := strconv.Atoi(strings.Trim(*hysteria2Config.TrafficStats.Listen, ":"))
 	if err != nil {
-		return errors.New(fmt.Sprintf("api port: %s is invalid", *hysteria2Config.Listen))
+		return errors.New(fmt.Sprintf("hysteria api port: %s is invalid", *hysteria2Config.Listen))
 	}
 	apiPortAvailable := util.IsPortAvailable(uint(apiPort), "tcp")
 	if !apiPortAvailable {
