@@ -2,6 +2,7 @@ package constant
 
 const (
 	HUIWebPort           = "H_UI_WEB_PORT"
+	HUIWebHttpsPort      = "H_UI_WEB_HTTPS_PORT"
 	HUICrtPath           = "H_UI_CRT_PATH"
 	HUIKeyPath           = "H_UI_KEY_PATH"
 	JwtSecret            = "JWT_SECRET"

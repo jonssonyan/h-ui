@@ -14,55 +14,79 @@ import (
 )
 
 type WebServer struct {
-	server  http.Server
-	ctx     context.Context
-	cancel  context.CancelFunc
-	newPort int
+	server    http.Server
+	ctx       context.Context
+	cancel    context.CancelFunc
+	httpPort  int
+	httpsPort int
 }
 
 var webServer *WebServer
 
-func NewServer(r *gin.Engine) (*WebServer, error) {
+func NewServer() (*WebServer, error) {
 	if webServer != nil {
 		return webServer, nil
 	}
-	config, err := dao.GetConfig("key = ?", constant.HUIWebPort)
+	httpPort, err := getPort(constant.HUIWebPort)
 	if err != nil {
-		logrus.Errorf(err.Error())
-		return nil, errors.New(err.Error())
-	}
-
-	newPort, err := strconv.Atoi(*config.Value)
-	if err != nil {
-		logrus.Errorf("conv newPort err: %v", err)
-		return nil, errors.New(fmt.Sprintf("conv newPort err: %v", err))
-	}
-	if !util.IsPortAvailable(uint(newPort), "tcp") {
-		logrus.Errorf("port is not available port: %d", newPort)
-		return nil, errors.New(fmt.Sprintf("port is not available port: %d", newPort))
+		return nil, err
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 
 	webServer = &WebServer{
 		server: http.Server{
-			Addr:    fmt.Sprintf(":%d", newPort),
-			Handler: r,
+			Addr: fmt.Sprintf(":%d", httpPort),
 		},
-		ctx:     ctx,
-		cancel:  cancel,
-		newPort: newPort,
+		ctx:      ctx,
+		cancel:   cancel,
+		httpPort: httpPort,
 	}
 	return webServer, nil
 }
 
-func (w *WebServer) StartServer() error {
+func getPort(configKey string) (int, error) {
+	config, err := dao.GetConfig("key = ?", configKey)
+	if err != nil {
+		return 0, errors.New(err.Error())
+	}
+
+	port, err := strconv.Atoi(*config.Value)
+	if err != nil {
+		logrus.Errorf("conv port err: %v", err)
+		return 0, errors.New(fmt.Sprintf("port: %s is invalid", *config.Value))
+	}
+
+	if !util.IsPortAvailable(uint(port), "tcp") {
+		logrus.Errorf("port is not available port: %d", port)
+		return 0, errors.New(fmt.Sprintf("port is not available port: %d", port))
+	}
+
+	return port, nil
+}
+
+func (w *WebServer) StartServer(r *gin.Engine) error {
+	w.server.Handler = r
+	w.httpsPort = 0
+
+	httpsPort, err := getPort(constant.HUIWebHttpsPort)
+	if err != nil {
+		return err
+	}
+
 	crtPath, keyPath, err := w.getTLSConfigPaths()
 	if err != nil {
 		return err
 	}
-	if crtPath != "" && keyPath != "" {
-		return w.server.ListenAndServeTLS(crtPath, keyPath)
+
+	if httpsPort > 0 && crtPath != "" && keyPath != "" {
+		w.httpsPort = httpsPort
+		go func() {
+			w.server.Addr = fmt.Sprintf(":%d", w.httpsPort)
+			if err := w.server.ListenAndServeTLS(crtPath, keyPath); err != nil {
+				logrus.Errorf("failed to start ListenAndServeTLS: %v", err)
+			}
+		}()
 	}
 	return w.server.ListenAndServe()
 }
@@ -105,4 +129,8 @@ func (w *WebServer) getTLSConfigPaths() (string, string, error) {
 	}
 
 	return crtPath, keyPath, nil
+}
+
+func (w *WebServer) IsHttps() bool {
+	return w.httpsPort > 0
 }

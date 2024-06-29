@@ -15,6 +15,7 @@ import (
 	"h-ui/service"
 	"h-ui/util"
 	"io"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -25,13 +26,41 @@ func UpdateConfigs(c *gin.Context) {
 		return
 	}
 
-	config, err := service.GetConfig(constant.HUIWebPort)
+	portConfig, err := service.GetConfig(constant.HUIWebPort)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
+	httpsPortConfig, err := service.GetConfig(constant.HUIWebHttpsPort)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
 
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
+		if *item.Key == constant.HUIWebPort && *portConfig.Value != *item.Value {
+			port, err := strconv.Atoi(*item.Value)
+			if err != nil {
+				vo.Fail(fmt.Sprintf("port: %s is invalid", *item.Value), c)
+				return
+			}
+			if !util.IsPortAvailable(uint(port), "tcp") {
+				vo.Fail(fmt.Sprintf("port: %s is used", *item.Value), c)
+				return
+			}
+		}
+		if *item.Key == constant.HUIWebHttpsPort && *httpsPortConfig.Value != *item.Value {
+			httpsPort, err := strconv.Atoi(*item.Value)
+			if err != nil {
+				vo.Fail(fmt.Sprintf("port: %s is invalid", *item.Value), c)
+				return
+			}
+			if !util.IsPortAvailable(uint(httpsPort), "tcp") {
+				vo.Fail(fmt.Sprintf("https port: %s is used", *item.Value), c)
+				return
+			}
+		}
 		if err = service.UpdateConfig(*item.Key, *item.Value); err != nil {
 			vo.Fail(err.Error(), c)
 			return
@@ -39,17 +68,25 @@ func UpdateConfigs(c *gin.Context) {
 	}
 
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
-		if item.Key != nil && *item.Key == constant.HUIWebPort && *config.Value != *item.Value {
+		if *item.Key == constant.HUIWebPort && *portConfig.Value != *item.Value ||
+			*item.Key == constant.HUIWebHttpsPort && *httpsPortConfig.Value != *item.Value {
 			go func() {
-				webServer, err := service.NewServer(nil)
+				webServer, err := service.NewServer()
 				if err != nil {
 					logrus.Errorf(err.Error())
 				}
 				if err := webServer.StopServer(); err != nil {
 					logrus.Errorf(err.Error())
 					// Change the port to the previous port after startup failure
-					if err := service.UpdateConfig(constant.HUIWebPort, *config.Value); err != nil {
-						logrus.Errorf(err.Error())
+					if *item.Key == constant.HUIWebPort && *portConfig.Value != *item.Value {
+						if err := service.UpdateConfig(constant.HUIWebPort, *portConfig.Value); err != nil {
+							logrus.Errorf(err.Error())
+						}
+					}
+					if *item.Key == constant.HUIWebHttpsPort && *httpsPortConfig.Value != *item.Value {
+						if err := service.UpdateConfig(constant.HUIWebHttpsPort, *httpsPortConfig.Value); err != nil {
+							logrus.Errorf(err.Error())
+						}
 					}
 				}
 			}()
@@ -343,7 +380,7 @@ func Hysteria2AcmePath(c *gin.Context) {
 
 func RestartHUI(c *gin.Context) {
 	go func() {
-		webServer, err := service.NewServer(nil)
+		webServer, err := service.NewServer()
 		if err != nil {
 			logrus.Errorf(err.Error())
 		}

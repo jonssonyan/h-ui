@@ -101,6 +101,7 @@ export default {
     restartHUI: "重启面板",
     restartTip: "正在重启，请刷新",
     useHysteria2Cert: "使用 Hysteria2 的证书",
+    huiWebHttpsPort: "H UI Web Https 端口",
     huiHttps: "面板开启 https",
   },
   monitor: {

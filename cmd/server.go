@@ -23,11 +23,11 @@ func runServer() {
 	r := gin.Default()
 	router.Router(r)
 	for {
-		webServer, err := service.NewServer(r)
+		webServer, err := service.NewServer()
 		if err != nil {
 			panic(err)
 		}
-		if err := webServer.StartServer(); err != nil && err != http.ErrServerClosed {
+		if err := webServer.StartServer(r); err != nil && err != http.ErrServerClosed {
 			panic(err)
 		}
 	}
