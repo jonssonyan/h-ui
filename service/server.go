@@ -56,7 +56,9 @@ func StartServer(r *gin.Engine) error {
 	}
 
 	if crtPathConfig.Value != nil && *crtPathConfig.Value != "" &&
-		keyPathConfig.Value != nil && *keyPathConfig.Value != "" {
+		keyPathConfig.Value != nil && *keyPathConfig.Value != "" &&
+		util.Exists(*crtPathConfig.Value) &&
+		util.Exists(*keyPathConfig.Value) {
 		if err := server.ListenAndServeTLS(*crtPathConfig.Value, *keyPathConfig.Value); err != nil && err != http.ErrServerClosed {
 			logrus.Errorf("could not listen on port %d: %v", newPort, err)
 		}
