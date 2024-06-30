@@ -33,6 +33,7 @@ func UpdateConfigs(c *gin.Context) {
 	}
 
 	needRestart := false
+	needRestartHysteria2 := false
 
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
 		key := *item.Key
@@ -49,6 +50,7 @@ func UpdateConfigs(c *gin.Context) {
 				return
 			}
 			needRestart = true
+			needRestartHysteria2 = true
 		}
 		if key == constant.HUICrtPath && crtPath != value {
 			if value != "" && !util.Exists(value) {
@@ -56,6 +58,7 @@ func UpdateConfigs(c *gin.Context) {
 				return
 			}
 			needRestart = true
+			needRestartHysteria2 = true
 		}
 		if key == constant.HUIKeyPath && keyPath != value {
 			if value != "" && !util.Exists(value) {
@@ -82,6 +85,12 @@ func UpdateConfigs(c *gin.Context) {
 				return
 			}
 		}()
+	}
+	if needRestartHysteria2 {
+		if err := service.RestartHysteria2(); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
 	}
 
 	vo.Success(nil, c)
