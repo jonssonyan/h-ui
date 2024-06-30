@@ -135,38 +135,38 @@ func GetHysteria2ApiPort() (int64, error) {
 	return apiPort, nil
 }
 
-func EnableHttps() (bool, string, string, error) {
+func GetPortAndCert() (string, string, string, string, error) {
 	configs, err := dao.ListConfig("key in ?", []string{constant.HUIWebPort, constant.HUIWebHttpsPort, constant.HUICrtPath, constant.HUIKeyPath})
 	if err != nil {
-		return false, "", "", err
+		return "", "", "", "", err
 	}
-
 	httpPort := ""
 	httpsPort := ""
 	crtPath := ""
 	keyPath := ""
 	for _, config := range configs {
+		value := *config.Value
 		if *config.Key == constant.HUIWebPort {
-			httpPort = *config.Value
+			httpPort = value
 		} else if *config.Key == constant.HUIWebHttpsPort {
-			httpsPort = *config.Value
+			httpsPort = value
 		} else if *config.Key == constant.HUICrtPath {
-			crtPath = *config.Value
+			crtPath = value
 		} else if *config.Key == constant.HUIKeyPath {
-			keyPath = *config.Value
+			keyPath = value
 		}
 	}
-	return httpsPort != "" && crtPath != "" && keyPath != "", httpPort, httpsPort, nil
+	return httpPort, httpsPort, crtPath, keyPath, nil
 }
 
 func GetLocalhost() (string, error) {
-	enable, httpPort, httpsPort, err := EnableHttps()
+	httpPort, httpsPort, crtPath, keyPath, err := GetPortAndCert()
 	if err != nil {
 		return "", err
 	}
 	protocol := "http"
 	port := httpPort
-	if enable {
+	if httpsPort != "" && crtPath != "" && keyPath != "" {
 		protocol = "https"
 		port = httpsPort
 	}
