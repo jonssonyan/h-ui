@@ -8,7 +8,9 @@ import (
 
 func Router(router *gin.Engine) {
 
-	router.Use(middleware.RedirectHttpsHandler(), middleware.LogHandler(), middleware.RateLimiterHandler())
+	router.Use(middleware.RedirectHttpsHandler())
+
+	router.Use(middleware.LogHandler(), middleware.RateLimiterHandler())
 
 	frontend.InitFrontend(router)
 
