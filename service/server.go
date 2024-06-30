@@ -97,12 +97,14 @@ func (w *WebServer) getPortAndCert() (int64, int64, string, string, error) {
 		return 0, 0, "", "", errors.New(fmt.Sprintf("https port is not available port: %d", httpsPort))
 	}
 
-	if !util.Exists(crtPath) {
-		return 0, 0, "", "", errors.New(fmt.Sprintf("crt path: %s is not exist", crtPath))
-	}
+	if httpsPort > 0 {
+		if !util.Exists(crtPath) {
+			return 0, 0, "", "", errors.New(fmt.Sprintf("crt path: %s is not exist", crtPath))
+		}
 
-	if !util.Exists(keyPath) {
-		return 0, 0, "", "", errors.New(fmt.Sprintf("key path: %s is not exist", keyPath))
+		if !util.Exists(keyPath) {
+			return 0, 0, "", "", errors.New(fmt.Sprintf("key path: %s is not exist", keyPath))
+		}
 	}
 
 	return httpPort, httpsPort, crtPath, keyPath, nil

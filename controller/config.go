@@ -62,19 +62,21 @@ func UpdateConfigs(c *gin.Context) {
 			}
 			needRestart = true
 		}
-		if key == constant.HUICrtPath && crtPath != value {
-			if !util.Exists(value) {
-				vo.Fail(fmt.Sprintf("crt path: %s is not exist", value), c)
-				return
+		if httpsPort > 0 {
+			if key == constant.HUICrtPath && crtPath != value {
+				if !util.Exists(value) {
+					vo.Fail(fmt.Sprintf("crt path: %s is not exist", value), c)
+					return
+				}
+				needRestart = true
 			}
-			needRestart = true
-		}
-		if key == constant.HUIKeyPath && keyPath != value {
-			if !util.Exists(value) {
-				vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
-				return
+			if key == constant.HUIKeyPath && keyPath != value {
+				if !util.Exists(value) {
+					vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
+					return
+				}
+				needRestart = true
 			}
-			needRestart = true
 		}
 		if err = service.UpdateConfig(key, value); err != nil {
 			vo.Fail(err.Error(), c)
