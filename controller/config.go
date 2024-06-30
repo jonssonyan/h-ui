@@ -26,73 +26,76 @@ func UpdateConfigs(c *gin.Context) {
 		return
 	}
 
-	portConfig, err := service.GetConfig(constant.HUIWebPort)
+	httpPort, httpsPort, crtPath, keyPath, err := service.GetPortAndCert()
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}
 
-	httpsPortConfig, err := service.GetConfig(constant.HUIWebHttpsPort)
-	if err != nil {
-		vo.Fail(err.Error(), c)
-		return
-	}
+	needRestart := false
 
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
-		if *item.Key == constant.HUIWebPort && *portConfig.Value != *item.Value {
-			port, err := strconv.Atoi(*item.Value)
+		key := *item.Key
+		value := *item.Value
+
+		if key == constant.HUIWebPort && strconv.FormatInt(httpPort, 10) != value {
+			port, err := strconv.Atoi(value)
 			if err != nil {
-				vo.Fail(fmt.Sprintf("port: %s is invalid", *item.Value), c)
+				vo.Fail(fmt.Sprintf("port: %s is invalid", value), c)
 				return
 			}
 			if !util.IsPortAvailable(uint(port), "tcp") {
-				vo.Fail(fmt.Sprintf("port: %s is used", *item.Value), c)
+				vo.Fail(fmt.Sprintf("port: %s is used", value), c)
 				return
 			}
+			needRestart = true
 		}
-		if *item.Key == constant.HUIWebHttpsPort && *httpsPortConfig.Value != *item.Value {
-			httpsPort, err := strconv.Atoi(*item.Value)
+		if key == constant.HUIWebHttpsPort && strconv.FormatInt(httpsPort, 10) != value {
+			httpsPort, err := strconv.Atoi(value)
 			if err != nil {
-				vo.Fail(fmt.Sprintf("port: %s is invalid", *item.Value), c)
+				vo.Fail(fmt.Sprintf("https port: %s is invalid", value), c)
 				return
 			}
 			if !util.IsPortAvailable(uint(httpsPort), "tcp") {
-				vo.Fail(fmt.Sprintf("https port: %s is used", *item.Value), c)
+				vo.Fail(fmt.Sprintf("https port: %s is used", value), c)
 				return
 			}
+			needRestart = true
 		}
-		if err = service.UpdateConfig(*item.Key, *item.Value); err != nil {
+		if key == constant.HUICrtPath && crtPath != value {
+			if !util.Exists(value) {
+				vo.Fail(fmt.Sprintf("crt path: %s is not exist", value), c)
+				return
+			}
+			needRestart = true
+		}
+		if key == constant.HUIKeyPath && keyPath != value {
+			if !util.Exists(value) {
+				vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
+				return
+			}
+			needRestart = true
+		}
+		if err = service.UpdateConfig(key, value); err != nil {
 			vo.Fail(err.Error(), c)
 			return
 		}
 	}
 
-	for _, item := range configsUpdateDto.ConfigUpdateDtos {
-		if *item.Key == constant.HUIWebPort && *portConfig.Value != *item.Value ||
-			*item.Key == constant.HUIWebHttpsPort && *httpsPortConfig.Value != *item.Value {
-			go func() {
-				webServer, err := service.NewServer()
-				if err != nil {
-					logrus.Errorf(err.Error())
-				}
-				if err := webServer.StopServer(); err != nil {
-					logrus.Errorf(err.Error())
-					// Change the port to the previous port after startup failure
-					if *item.Key == constant.HUIWebPort && *portConfig.Value != *item.Value {
-						if err := service.UpdateConfig(constant.HUIWebPort, *portConfig.Value); err != nil {
-							logrus.Errorf(err.Error())
-						}
-					}
-					if *item.Key == constant.HUIWebHttpsPort && *httpsPortConfig.Value != *item.Value {
-						if err := service.UpdateConfig(constant.HUIWebHttpsPort, *httpsPortConfig.Value); err != nil {
-							logrus.Errorf(err.Error())
-						}
-					}
-				}
-			}()
-			break
-		}
+	if needRestart {
+		go func() {
+			webServer, err := service.NewServer()
+			if err != nil {
+				logrus.Errorf(err.Error())
+				return
+			}
+			if err := webServer.StopServer(); err != nil {
+				logrus.Errorf(err.Error())
+				return
+			}
+		}()
 	}
+
 	vo.Success(nil, c)
 }
 
@@ -395,9 +398,11 @@ func RestartHUI(c *gin.Context) {
 		webServer, err := service.NewServer()
 		if err != nil {
 			logrus.Errorf(err.Error())
+			return
 		}
 		if err := webServer.StopServer(); err != nil {
 			logrus.Errorf(err.Error())
+			return
 		}
 	}()
 	vo.Success(nil, c)

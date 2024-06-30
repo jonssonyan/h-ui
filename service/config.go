@@ -135,10 +135,10 @@ func GetHysteria2ApiPort() (int64, error) {
 	return apiPort, nil
 }
 
-func GetPortAndCert() (string, string, string, string, error) {
+func GetPortAndCert() (int64, int64, string, string, error) {
 	configs, err := dao.ListConfig("key in ?", []string{constant.HUIWebPort, constant.HUIWebHttpsPort, constant.HUICrtPath, constant.HUIKeyPath})
 	if err != nil {
-		return "", "", "", "", err
+		return 0, 0, "", "", err
 	}
 	httpPort := ""
 	httpsPort := ""
@@ -156,7 +156,18 @@ func GetPortAndCert() (string, string, string, string, error) {
 			keyPath = value
 		}
 	}
-	return httpPort, httpsPort, crtPath, keyPath, nil
+
+	httpPortInt, err := strconv.ParseInt(httpPort, 10, 64)
+	if err != nil {
+		return 0, 0, "", "", errors.New(fmt.Sprintf("port: %s is invalid", httpPort))
+	}
+
+	httpsPortInt, err := strconv.ParseInt(httpsPort, 10, 64)
+	if err != nil {
+		return 0, 0, "", "", errors.New(fmt.Sprintf("https port: %s is invalid", httpPort))
+	}
+
+	return httpPortInt, httpsPortInt, crtPath, keyPath, nil
 }
 
 func GetLocalhost() (string, error) {
@@ -166,9 +177,9 @@ func GetLocalhost() (string, error) {
 	}
 	protocol := "http"
 	port := httpPort
-	if httpsPort != "" && crtPath != "" && keyPath != "" {
+	if httpsPort > 0 && crtPath != "" && keyPath != "" {
 		protocol = "https"
 		port = httpsPort
 	}
-	return fmt.Sprintf("%s://127.0.0.1:%s", protocol, port), nil
+	return fmt.Sprintf("%s://127.0.0.1:%d", protocol, port), nil
 }

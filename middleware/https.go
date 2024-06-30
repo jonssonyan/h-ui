@@ -17,14 +17,9 @@ func RedirectHttpsHandler() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		if server.IsHttps() && c.Request.TLS == nil {
-			server, err := service.NewServer()
-			if err != nil {
-				vo.Fail(err.Error(), c)
-				c.Abort()
-				return
-			}
-			c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("https://%s:%d%s", strings.Split(c.Request.Host, ":")[0], server.HttpsPort, c.Request.RequestURI))
+		httpsPort := server.GetHttps()
+		if httpsPort > 0 && c.Request.TLS == nil {
+			c.Redirect(http.StatusMovedPermanently, fmt.Sprintf("https://%s:%d%s", strings.Split(c.Request.Host, ":")[0], httpsPort, c.Request.RequestURI))
 			c.Abort()
 			return
 		}

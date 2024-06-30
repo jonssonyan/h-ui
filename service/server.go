@@ -6,19 +6,18 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"h-ui/dao"
-	"h-ui/model/constant"
 	"h-ui/util"
 	"net/http"
-	"strconv"
 )
 
 type WebServer struct {
-	server    http.Server
-	ctx       context.Context
-	cancel    context.CancelFunc
-	httpPort  int
-	HttpsPort int
+	ctx    context.Context
+	cancel context.CancelFunc
+
+	httpServer  http.Server
+	httpsServer http.Server
+	httpPort    int64
+	httpsPort   int64
 }
 
 var webServer *WebServer
@@ -27,68 +26,36 @@ func NewServer() (*WebServer, error) {
 	if webServer != nil {
 		return webServer, nil
 	}
-	httpPort, err := getPort(constant.HUIWebPort)
-	if err != nil {
-		return nil, err
-	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 
 	webServer = &WebServer{
-		server: http.Server{
-			Addr: fmt.Sprintf(":%d", httpPort),
-		},
-		ctx:      ctx,
-		cancel:   cancel,
-		httpPort: httpPort,
+		ctx:    ctx,
+		cancel: cancel,
 	}
 	return webServer, nil
 }
 
-func getPort(configKey string) (int, error) {
-	config, err := dao.GetConfig("key = ?", configKey)
-	if err != nil {
-		return 0, errors.New(err.Error())
-	}
-
-	port, err := strconv.Atoi(*config.Value)
-	if err != nil {
-		logrus.Errorf("conv port err: %v", err)
-		return 0, errors.New(fmt.Sprintf("port: %s is invalid", *config.Value))
-	}
-
-	if !util.IsPortAvailable(uint(port), "tcp") {
-		logrus.Errorf("port is not available port: %d", port)
-		return 0, errors.New(fmt.Sprintf("port is not available port: %d", port))
-	}
-
-	return port, nil
-}
-
 func (w *WebServer) StartServer(r *gin.Engine) error {
-	w.server.Handler = r
-	w.HttpsPort = 0
-
-	httpsPort, err := getPort(constant.HUIWebHttpsPort)
-	if err != nil {
-		return err
-	}
-
-	crtPath, keyPath, err := w.getTLSConfigPaths()
+	httpPort, httpsPort, crtPath, keyPath, err := w.getPortAndCert()
 	if err != nil {
 		return err
 	}
 
 	if httpsPort > 0 && crtPath != "" && keyPath != "" {
-		w.HttpsPort = httpsPort
 		go func() {
-			w.server.Addr = fmt.Sprintf(":%d", w.HttpsPort)
-			if err := w.server.ListenAndServeTLS(crtPath, keyPath); err != nil {
+			w.httpsServer.Handler = r
+			w.httpsServer.Addr = fmt.Sprintf(":%d", httpsPort)
+			w.httpsPort = httpsPort
+			if err := w.httpsServer.ListenAndServeTLS(crtPath, keyPath); err != nil {
 				logrus.Errorf("failed to start ListenAndServeTLS: %v", err)
 			}
 		}()
 	}
-	return w.server.ListenAndServe()
+	w.httpServer.Handler = r
+	w.httpServer.Addr = fmt.Sprintf(":%d", httpPort)
+	w.httpPort = httpPort
+	return w.httpServer.ListenAndServe()
 }
 
 func (w *WebServer) StopServer() error {
@@ -97,40 +64,50 @@ func (w *WebServer) StopServer() error {
 		return err
 	}
 
-	if err := w.server.Shutdown(w.ctx); err != nil {
+	if err := w.httpServer.Shutdown(w.ctx); err != nil {
 		logrus.Errorf("failed to shutdown server: %v", err)
 		return err
 	}
+
+	if w.httpsPort > 0 {
+		if err := w.httpsServer.Shutdown(w.ctx); err != nil {
+			logrus.Errorf("failed to shutdown https server: %v", err)
+			return err
+		}
+	}
+
 	w.cancel()
 	webServer = nil
 	return nil
 }
 
-func (w *WebServer) getTLSConfigPaths() (string, string, error) {
-	crtPathConfig, err := dao.GetConfig("key = ?", constant.HUICrtPath)
+func (w *WebServer) getPortAndCert() (int64, int64, string, string, error) {
+	httpPort, httpsPort, crtPath, keyPath, err := GetPortAndCert()
 	if err != nil {
-		logrus.Errorf(err.Error())
-		return "", "", errors.New(err.Error())
-	}
-	keyPathConfig, err := dao.GetConfig("key = ?", constant.HUIKeyPath)
-	if err != nil {
-		logrus.Errorf(err.Error())
-		return "", "", errors.New(err.Error())
+		return 0, 0, "", "", err
 	}
 
-	crtPath := ""
-	if crtPathConfig.Value != nil && *crtPathConfig.Value != "" && util.Exists(*crtPathConfig.Value) {
-		crtPath = *crtPathConfig.Value
+	if !util.IsPortAvailable(uint(httpPort), "tcp") {
+		logrus.Errorf("port is not available port: %d", httpPort)
+		return 0, 0, "", "", errors.New(fmt.Sprintf("port is not available port: %d", httpPort))
 	}
 
-	keyPath := ""
-	if keyPathConfig.Value != nil && *keyPathConfig.Value != "" && util.Exists(*keyPathConfig.Value) {
-		keyPath = *keyPathConfig.Value
+	if !util.IsPortAvailable(uint(httpsPort), "tcp") {
+		logrus.Errorf("https port is not available port: %d", httpsPort)
+		return 0, 0, "", "", errors.New(fmt.Sprintf("https port is not available port: %d", httpsPort))
 	}
 
-	return crtPath, keyPath, nil
+	if !util.Exists(crtPath) {
+		return 0, 0, "", "", errors.New(fmt.Sprintf("crt path: %s is not exist", crtPath))
+	}
+
+	if !util.Exists(keyPath) {
+		return 0, 0, "", "", errors.New(fmt.Sprintf("key path: %s is not exist", keyPath))
+	}
+
+	return httpPort, httpsPort, crtPath, keyPath, nil
 }
 
-func (w *WebServer) IsHttps() bool {
-	return w.HttpsPort > 0
+func (w *WebServer) GetHttps() int64 {
+	return w.httpsPort
 }
