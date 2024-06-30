@@ -82,13 +82,13 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 		return errors.New(constant.SysError)
 	}
 
-	server, err := NewServer()
+	localhost, err := GetLocalhost()
 	if err != nil {
 		return err
 	}
 
 	authType := "http"
-	authHttpUrl := fmt.Sprintf("%s/hui/hysteria2/auth", server.GetLocalHost())
+	authHttpUrl := fmt.Sprintf("%s/hui/hysteria2/auth", localhost)
 	authHttpInsecure := true
 	var auth bo.ServerConfigAuth
 	auth.Type = &authType
@@ -133,4 +133,42 @@ func GetHysteria2ApiPort() (int64, error) {
 		return 0, err
 	}
 	return apiPort, nil
+}
+
+func EnableHttps() (bool, string, string, error) {
+	configs, err := dao.ListConfig("key in ?", []string{constant.HUIWebPort, constant.HUIWebHttpsPort, constant.HUICrtPath, constant.HUIKeyPath})
+	if err != nil {
+		return false, "", "", err
+	}
+
+	httpPort := ""
+	httpsPort := ""
+	crtPath := ""
+	keyPath := ""
+	for _, config := range configs {
+		if *config.Key == constant.HUIWebPort {
+			httpPort = *config.Value
+		} else if *config.Key == constant.HUIWebHttpsPort {
+			httpsPort = *config.Value
+		} else if *config.Key == constant.HUICrtPath {
+			crtPath = *config.Value
+		} else if *config.Key == constant.HUIKeyPath {
+			keyPath = *config.Value
+		}
+	}
+	return httpsPort != "" && crtPath != "" && keyPath != "", httpPort, httpsPort, nil
+}
+
+func GetLocalhost() (string, error) {
+	enable, httpPort, httpsPort, err := EnableHttps()
+	if err != nil {
+		return "", err
+	}
+	protocol := "http"
+	port := httpPort
+	if enable {
+		protocol = "https"
+		port = httpsPort
+	}
+	return fmt.Sprintf("%s://127.0.0.1:%s", protocol, port), nil
 }

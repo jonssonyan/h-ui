@@ -134,13 +134,3 @@ func (w *WebServer) getTLSConfigPaths() (string, string, error) {
 func (w *WebServer) IsHttps() bool {
 	return w.HttpsPort > 0
 }
-
-func (w *WebServer) GetLocalHost() string {
-	protocol := "http"
-	port := w.httpPort
-	if w.IsHttps() {
-		protocol = "https"
-		port = w.HttpsPort
-	}
-	return fmt.Sprintf("%s://127.0.0.1:%d", protocol, port)
-}
