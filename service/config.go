@@ -82,8 +82,13 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 		return errors.New(constant.SysError)
 	}
 
+	server, err := NewServer()
+	if err != nil {
+		return err
+	}
+
 	authType := "http"
-	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", hUIWebPort)
+	authHttpUrl := fmt.Sprintf("%s/hui/hysteria2/auth", server.GetLocalHost())
 	authHttpInsecure := true
 	var auth bo.ServerConfigAuth
 	auth.Type = &authType

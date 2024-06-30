@@ -207,9 +207,14 @@ func ExportHysteria2Config(c *gin.Context) {
 		vo.Fail(constant.SysError, c)
 		return
 	}
+	server, err := service.NewServer()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
 
 	authType := "http"
-	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", hUIWebPort)
+	authHttpUrl := fmt.Sprintf("%s/hui/hysteria2/auth", server.GetLocalHost())
 	authHttpInsecure := true
 	var auth bo.ServerConfigAuth
 	auth.Type = &authType
@@ -286,8 +291,14 @@ func ImportHysteria2Config(c *gin.Context) {
 		return
 	}
 
+	server, err := service.NewServer()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
 	authType := "http"
-	authHttpUrl := fmt.Sprintf("http://127.0.0.1:%s/hui/hysteria2/auth", hUIWebPort)
+	authHttpUrl := fmt.Sprintf("%s/hui/hysteria2/auth", server.GetLocalHost())
 	authHttpInsecure := true
 	var auth bo.ServerConfigAuth
 	auth.Type = &authType
