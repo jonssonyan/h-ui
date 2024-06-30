@@ -50,15 +50,15 @@ func UpdateConfigs(c *gin.Context) {
 			}
 			needRestart = true
 		}
-		if key == constant.HUICrtPath && crtPath != value && value != "" {
-			if !util.Exists(value) {
+		if key == constant.HUICrtPath && crtPath != value {
+			if value != "" && !util.Exists(value) {
 				vo.Fail(fmt.Sprintf("crt path: %s is not exist", value), c)
 				return
 			}
 			needRestart = true
 		}
-		if key == constant.HUIKeyPath && keyPath != value && value != "" {
-			if !util.Exists(value) {
+		if key == constant.HUIKeyPath && keyPath != value {
+			if value != "" && !util.Exists(value) {
 				vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
 				return
 			}
