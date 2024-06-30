@@ -33,6 +33,7 @@ func UpdateConfigs(c *gin.Context) {
 	}
 
 	needRestart := false
+	needRestartHysteria2 := false
 
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
 		key := *item.Key
@@ -49,6 +50,7 @@ func UpdateConfigs(c *gin.Context) {
 				return
 			}
 			needRestart = true
+			needRestartHysteria2 = true
 		}
 		if key == constant.HUIWebHttpsPort && strconv.FormatInt(httpsPort, 10) != value {
 			httpsPort, err := strconv.Atoi(value)
@@ -61,22 +63,21 @@ func UpdateConfigs(c *gin.Context) {
 				return
 			}
 			needRestart = true
+			needRestartHysteria2 = true
 		}
-		if httpsPort > 0 {
-			if key == constant.HUICrtPath && crtPath != value {
-				if !util.Exists(value) {
-					vo.Fail(fmt.Sprintf("crt path: %s is not exist", value), c)
-					return
-				}
-				needRestart = true
+		if key == constant.HUICrtPath && crtPath != value && value != "" {
+			if !util.Exists(value) {
+				vo.Fail(fmt.Sprintf("crt path: %s is not exist", value), c)
+				return
 			}
-			if key == constant.HUIKeyPath && keyPath != value {
-				if !util.Exists(value) {
-					vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
-					return
-				}
-				needRestart = true
+			needRestart = true
+		}
+		if key == constant.HUIKeyPath && keyPath != value && value != "" {
+			if !util.Exists(value) {
+				vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
+				return
 			}
+			needRestart = true
 		}
 		if err = service.UpdateConfig(key, value); err != nil {
 			vo.Fail(err.Error(), c)
@@ -96,14 +97,14 @@ func UpdateConfigs(c *gin.Context) {
 				return
 			}
 
-			running := service.Hysteria2IsRunning()
-			if running {
-				if err = service.RestartHysteria2(); err != nil {
-					logrus.Errorf(err.Error())
-					return
-				}
-			}
 		}()
+	}
+
+	if needRestartHysteria2 && service.Hysteria2IsRunning() {
+		if err = service.RestartHysteria2(); err != nil {
+			logrus.Errorf(err.Error())
+			return
+		}
 	}
 
 	vo.Success(nil, c)
