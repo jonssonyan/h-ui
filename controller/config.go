@@ -95,6 +95,14 @@ func UpdateConfigs(c *gin.Context) {
 				logrus.Errorf(err.Error())
 				return
 			}
+
+			running := service.Hysteria2IsRunning()
+			if running {
+				if err = service.RestartHysteria2(); err != nil {
+					logrus.Errorf(err.Error())
+					return
+				}
+			}
 		}()
 	}
 
