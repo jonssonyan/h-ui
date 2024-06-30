@@ -7,16 +7,15 @@ import (
 	"sync"
 )
 
-var mutexHysteria2 sync.Mutex
-var cmdHysteria2 exec.Cmd
-
-var hysteria2Instance *Hysteria2Process
-
 type Hysteria2Process struct {
 	process
 	binPath    string
 	configPath string
 }
+
+var mutexHysteria2 sync.Mutex
+var cmdHysteria2 exec.Cmd
+var hysteria2Instance *Hysteria2Process
 
 func init() {
 	hysteria2Instance = &Hysteria2Process{process{mutex: &mutexHysteria2, cmd: &cmdHysteria2}, util.GetHysteria2BinPath(), constant.Hysteria2ConfigPath}
