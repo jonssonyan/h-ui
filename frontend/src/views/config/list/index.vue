@@ -82,17 +82,6 @@
         </el-form-item>
         <el-form-item
           v-if="huiHttps"
-          :label="$t('config.huiWebHttpsPort')"
-          prop="huiWebHttpsPort"
-        >
-          <el-input
-            v-model="dataForm.huiWebHttpsPort"
-            :placeholder="$t('config.huiWebHttpsPort')"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item
-          v-if="huiHttps"
           :label="$t('config.huiCrtPath')"
           prop="huiCrtPath"
         >
@@ -148,7 +137,6 @@ const dataFormRef = ref(ElForm);
 
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
-const huiWebHttpsPortKey = "H_UI_WEB_HTTPS_PORT";
 const huiCrtPath = "H_UI_CRT_PATH";
 const huiKeyPath = "H_UI_KEY_PATH";
 
@@ -188,7 +176,6 @@ const state = reactive({
   dataForm: {
     huiWebPort: "8081",
     hysteria2TrafficTime: "1",
-    huiWebHttpsPort: "0",
     huiCrtPath: "",
     huiKeyPath: "",
   },
@@ -202,17 +189,6 @@ const submitForm = () => {
   dataFormRef.value.validate((valid: boolean) => {
     if (valid) {
       if (state.huiHttps) {
-        if (!state.dataForm.huiWebHttpsPort) {
-          ElMessage.error("crt and key required");
-          return;
-        } else {
-          const port = parseFloat(state.dataForm.huiWebHttpsPort);
-          if (isNaN(port) || port <= 0 || port > 65535) {
-            ElMessage.error("https port must be a number between 0 and 65535");
-            return;
-          }
-        }
-
         if (!state.dataForm.huiCrtPath || !state.dataForm.huiKeyPath) {
           ElMessage.error("crt and key required");
           return;
@@ -220,7 +196,6 @@ const submitForm = () => {
       }
 
       if (!state.huiHttps) {
-        state.dataForm.huiWebHttpsPort = "0";
         state.dataForm.huiKeyPath = "";
         state.dataForm.huiKeyPath = "";
       }
@@ -233,10 +208,6 @@ const submitForm = () => {
         {
           key: hysteria2TrafficTimeKey,
           value: state.dataForm.hysteria2TrafficTime,
-        },
-        {
-          key: huiWebHttpsPortKey,
-          value: state.dataForm.huiWebHttpsPort,
         },
         {
           key: huiCrtPath,

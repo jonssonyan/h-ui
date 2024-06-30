@@ -102,7 +102,6 @@ export default {
     restartServer: "Restart Panel",
     restartTip: "Restarting, please refresh",
     useHysteria2Cert: "Use Hysteria2 cert",
-    huiWebHttpsPort: "H UI Web Https Port",
     huiHttps: "Open https on the panel",
   },
   monitor: {

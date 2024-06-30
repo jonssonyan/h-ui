@@ -14,10 +14,8 @@ type WebServer struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 
-	httpServer  http.Server
-	httpsServer http.Server
-	httpPort    int64
-	httpsPort   int64
+	server http.Server
+	port   int64
 }
 
 var webServer *WebServer
@@ -37,25 +35,19 @@ func NewServer() (*WebServer, error) {
 }
 
 func (w *WebServer) StartServer(r *gin.Engine) error {
-	httpPort, httpsPort, crtPath, keyPath, err := w.getPortAndCert()
+	port, crtPath, keyPath, err := w.getPortAndCert()
 	if err != nil {
 		return err
 	}
 
-	if httpsPort > 0 && crtPath != "" && keyPath != "" {
-		go func() {
-			w.httpsServer.Handler = r
-			w.httpsServer.Addr = fmt.Sprintf(":%d", httpsPort)
-			w.httpsPort = httpsPort
-			if err := w.httpsServer.ListenAndServeTLS(crtPath, keyPath); err != nil {
-				logrus.Errorf("failed to start ListenAndServeTLS: %v", err)
-			}
-		}()
+	w.server.Handler = r
+	w.server.Addr = fmt.Sprintf(":%d", port)
+	w.port = port
+
+	if crtPath != "" && keyPath != "" {
+		return w.server.ListenAndServeTLS(crtPath, keyPath)
 	}
-	w.httpServer.Handler = r
-	w.httpServer.Addr = fmt.Sprintf(":%d", httpPort)
-	w.httpPort = httpPort
-	return w.httpServer.ListenAndServe()
+	return w.server.ListenAndServe()
 }
 
 func (w *WebServer) StopServer() error {
@@ -64,16 +56,9 @@ func (w *WebServer) StopServer() error {
 		return err
 	}
 
-	if err := w.httpServer.Shutdown(w.ctx); err != nil {
+	if err := w.server.Shutdown(w.ctx); err != nil {
 		logrus.Errorf("failed to shutdown server: %v", err)
 		return err
-	}
-
-	if w.httpsPort > 0 {
-		if err := w.httpsServer.Shutdown(w.ctx); err != nil {
-			logrus.Errorf("failed to shutdown https server: %v", err)
-			return err
-		}
 	}
 
 	w.cancel()
@@ -81,35 +66,26 @@ func (w *WebServer) StopServer() error {
 	return nil
 }
 
-func (w *WebServer) getPortAndCert() (int64, int64, string, string, error) {
-	httpPort, httpsPort, crtPath, keyPath, err := GetPortAndCert()
+func (w *WebServer) getPortAndCert() (int64, string, string, error) {
+	port, crtPath, keyPath, err := GetPortAndCert()
 	if err != nil {
-		return 0, 0, "", "", err
+		return 0, "", "", err
 	}
 
-	if !util.IsPortAvailable(uint(httpPort), "tcp") {
-		logrus.Errorf("port is not available port: %d", httpPort)
-		return 0, 0, "", "", errors.New(fmt.Sprintf("port is not available port: %d", httpPort))
+	if !util.IsPortAvailable(uint(port), "tcp") {
+		logrus.Errorf("port is not available port: %d", port)
+		return 0, "", "", errors.New(fmt.Sprintf("port is not available port: %d", port))
 	}
 
-	if !util.IsPortAvailable(uint(httpsPort), "tcp") {
-		logrus.Errorf("https port is not available port: %d", httpsPort)
-		return 0, 0, "", "", errors.New(fmt.Sprintf("https port is not available port: %d", httpsPort))
-	}
-
-	if httpsPort > 0 {
+	if crtPath != "" && keyPath != "" {
 		if !util.Exists(crtPath) {
-			return 0, 0, "", "", errors.New(fmt.Sprintf("crt path: %s is not exist", crtPath))
+			return 0, "", "", errors.New(fmt.Sprintf("crt path: %s is not exist", crtPath))
 		}
 
 		if !util.Exists(keyPath) {
-			return 0, 0, "", "", errors.New(fmt.Sprintf("key path: %s is not exist", keyPath))
+			return 0, "", "", errors.New(fmt.Sprintf("key path: %s is not exist", keyPath))
 		}
 	}
 
-	return httpPort, httpsPort, crtPath, keyPath, nil
-}
-
-func (w *WebServer) GetHttps() int64 {
-	return w.httpsPort
+	return port, crtPath, keyPath, nil
 }

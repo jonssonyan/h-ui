@@ -26,7 +26,7 @@ func UpdateConfigs(c *gin.Context) {
 		return
 	}
 
-	httpPort, httpsPort, crtPath, keyPath, err := service.GetPortAndCert()
+	port, crtPath, keyPath, err := service.GetPortAndCert()
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
@@ -39,7 +39,7 @@ func UpdateConfigs(c *gin.Context) {
 		key := *item.Key
 		value := *item.Value
 
-		if key == constant.HUIWebPort && strconv.FormatInt(httpPort, 10) != value {
+		if key == constant.HUIWebPort && strconv.FormatInt(port, 10) != value {
 			port, err := strconv.Atoi(value)
 			if err != nil {
 				vo.Fail(fmt.Sprintf("port: %s is invalid", value), c)
@@ -47,19 +47,6 @@ func UpdateConfigs(c *gin.Context) {
 			}
 			if !util.IsPortAvailable(uint(port), "tcp") {
 				vo.Fail(fmt.Sprintf("port: %s is used", value), c)
-				return
-			}
-			needRestart = true
-			needRestartHysteria2 = true
-		}
-		if key == constant.HUIWebHttpsPort && strconv.FormatInt(httpsPort, 10) != value {
-			httpsPort, err := strconv.Atoi(value)
-			if err != nil {
-				vo.Fail(fmt.Sprintf("https port: %s is invalid", value), c)
-				return
-			}
-			if !util.IsPortAvailable(uint(httpsPort), "tcp") {
-				vo.Fail(fmt.Sprintf("https port: %s is used", value), c)
 				return
 			}
 			needRestart = true

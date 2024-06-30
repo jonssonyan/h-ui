@@ -135,21 +135,18 @@ func GetHysteria2ApiPort() (int64, error) {
 	return apiPort, nil
 }
 
-func GetPortAndCert() (int64, int64, string, string, error) {
-	configs, err := dao.ListConfig("key in ?", []string{constant.HUIWebPort, constant.HUIWebHttpsPort, constant.HUICrtPath, constant.HUIKeyPath})
+func GetPortAndCert() (int64, string, string, error) {
+	configs, err := dao.ListConfig("key in ?", []string{constant.HUIWebPort, constant.HUICrtPath, constant.HUIKeyPath})
 	if err != nil {
-		return 0, 0, "", "", err
+		return 0, "", "", err
 	}
-	httpPort := ""
-	httpsPort := ""
+	port := ""
 	crtPath := ""
 	keyPath := ""
 	for _, config := range configs {
 		value := *config.Value
 		if *config.Key == constant.HUIWebPort {
-			httpPort = value
-		} else if *config.Key == constant.HUIWebHttpsPort {
-			httpsPort = value
+			port = value
 		} else if *config.Key == constant.HUICrtPath {
 			crtPath = value
 		} else if *config.Key == constant.HUIKeyPath {
@@ -157,29 +154,22 @@ func GetPortAndCert() (int64, int64, string, string, error) {
 		}
 	}
 
-	httpPortInt, err := strconv.ParseInt(httpPort, 10, 64)
+	portInt, err := strconv.ParseInt(port, 10, 64)
 	if err != nil {
-		return 0, 0, "", "", errors.New(fmt.Sprintf("port: %s is invalid", httpPort))
+		return 0, "", "", errors.New(fmt.Sprintf("port: %s is invalid", port))
 	}
 
-	httpsPortInt, err := strconv.ParseInt(httpsPort, 10, 64)
-	if err != nil {
-		return 0, 0, "", "", errors.New(fmt.Sprintf("https port: %s is invalid", httpPort))
-	}
-
-	return httpPortInt, httpsPortInt, crtPath, keyPath, nil
+	return portInt, crtPath, keyPath, nil
 }
 
 func GetLocalhost() (string, error) {
-	httpPort, httpsPort, crtPath, keyPath, err := GetPortAndCert()
+	port, crtPath, keyPath, err := GetPortAndCert()
 	if err != nil {
 		return "", err
 	}
 	protocol := "http"
-	port := httpPort
-	if httpsPort > 0 && crtPath != "" && keyPath != "" {
+	if crtPath != "" && keyPath != "" {
 		protocol = "https"
-		port = httpsPort
 	}
 	return fmt.Sprintf("%s://127.0.0.1:%d", protocol, port), nil
 }

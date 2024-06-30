@@ -35,8 +35,6 @@ CREATE INDEX config_key_index ON config (key);
 INSERT INTO config (key, value, remark)
 VALUES ('H_UI_WEB_PORT', '8081', 'H UI Web Port');
 INSERT INTO config (key, value, remark)
-VALUES ('H_UI_WEB_HTTPS_PORT', '0', 'H UI Web Https Port');
-INSERT INTO config (key, value, remark)
 VALUES ('H_UI_CRT_PATH', '', 'H UI Crt File Path');
 INSERT INTO config (key, value, remark)
 VALUES ('H_UI_KEY_PATH', '', 'H UI Key File Path');
