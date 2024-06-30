@@ -196,7 +196,7 @@ const submitForm = () => {
       }
 
       if (!state.huiHttps) {
-        state.dataForm.huiKeyPath = "";
+        state.dataForm.huiCrtPath = "";
         state.dataForm.huiKeyPath = "";
       }
 
