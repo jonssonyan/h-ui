@@ -83,7 +83,6 @@ func UpdateConfigs(c *gin.Context) {
 				logrus.Errorf(err.Error())
 				return
 			}
-
 		}()
 	}
 
