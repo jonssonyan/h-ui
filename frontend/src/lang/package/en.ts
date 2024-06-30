@@ -99,7 +99,7 @@ export default {
     hysteria2TrafficTime: "Hysteria2 Traffic Time",
     huiCrtPath: "H UI CRT File Path",
     huiKeyPath: "H UI KEY File Path",
-    restartHUI: "Restart Panel",
+    restartServer: "Restart Panel",
     restartTip: "Restarting, please refresh",
     useHysteria2Cert: "Use Hysteria2 cert",
     huiWebHttpsPort: "H UI Web Https Port",

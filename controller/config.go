@@ -393,7 +393,7 @@ func Hysteria2AcmePath(c *gin.Context) {
 	vo.Success(hysteria2AcmePathVo, c)
 }
 
-func RestartHUI(c *gin.Context) {
+func RestartServer(c *gin.Context) {
 	go func() {
 		webServer, err := service.NewServer()
 		if err != nil {

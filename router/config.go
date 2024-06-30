@@ -18,6 +18,6 @@ func initConfigRouter(configApi *gin.RouterGroup) {
 		config.POST("/exportConfig", controller.ExportConfig)
 		config.POST("/importConfig", controller.ImportConfig)
 		config.GET("/hysteria2AcmePath", controller.Hysteria2AcmePath)
-		config.POST("/restartHUI", controller.RestartHUI)
+		config.POST("/restartServer", controller.RestartServer)
 	}
 }

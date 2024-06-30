@@ -8,11 +8,11 @@
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleRestartHUI">
+          <el-button @click="handleRestartServer">
             <template #icon>
               <i-ep-refreshRight />
             </template>
-            {{ $t("config.restartHUI") }}
+            {{ $t("config.restartServer") }}
           </el-button>
         </el-form-item>
         <el-form-item>
@@ -131,7 +131,7 @@ import {
   hysteria2AcmePathApi,
   importConfigApi,
   listConfigApi,
-  restartHUIApi,
+  restartServerApi,
   updateConfigsApi,
 } from "@/api/config";
 import { ConfigsUpdateDto } from "@/api/config/types";
@@ -335,14 +335,14 @@ const setCertPath = async () => {
   }
 };
 
-const handleRestartHUI = async () => {
+const handleRestartServer = async () => {
   try {
     ElMessageBox.confirm("Are you sure to restart panel?", "Warning", {
       confirmButtonText: t("common.confirm"),
       cancelButtonText: t("common.cancel"),
       type: "warning",
     }).then(() => {
-      restartHUIApi();
+      restartServerApi();
       ElMessage.success(t("config.restartTip"));
     });
   } catch (e) {

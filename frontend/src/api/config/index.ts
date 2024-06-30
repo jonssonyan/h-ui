@@ -95,9 +95,9 @@ export function hysteria2AcmePathApi(): AxiosPromise<Hysteria2AcmePathVo> {
   });
 }
 
-export function restartHUIApi(): AxiosPromise {
+export function restartServerApi(): AxiosPromise {
   return request({
-    url: "/config/restartHUI",
+    url: "/config/restartServer",
     method: "post",
   });
 }

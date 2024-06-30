@@ -98,7 +98,7 @@ export default {
     hysteria2TrafficTime: "Hysteria2 流量倍数",
     huiCrtPath: "H UI CRT 证书路径",
     huiKeyPath: "H UI KEY 证书路径",
-    restartHUI: "重启面板",
+    restartServer: "重启面板",
     restartTip: "正在重启，请刷新",
     useHysteria2Cert: "使用 Hysteria2 的证书",
     huiWebHttpsPort: "H UI Web Https 端口",
