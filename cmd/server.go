@@ -19,10 +19,12 @@ func runServer() {
 	middleware.InitLog()
 	dao.InitSqliteDB(port)
 	middleware.InitCron()
-	service.InitHysteria2()
+
 	r := gin.Default()
 	router.Router(r)
 	for {
+		service.InitHysteria2()
+
 		webServer, err := service.NewServer()
 		if err != nil {
 			panic(err)
