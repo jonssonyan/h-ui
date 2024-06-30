@@ -13,7 +13,7 @@ import (
 
 var logger logrus.Logger
 
-func init() {
+func initLogger() {
 	logger.SetOutput(&lumberjack.Logger{
 		Filename:   constant.Hysteria2LogPath,
 		MaxSize:    1,
@@ -24,6 +24,10 @@ func init() {
 	})
 	logger.SetFormatter(&logrus.JSONFormatter{TimestampFormat: "2006-01-02 15:04:05"})
 	logger.SetLevel(logrus.WarnLevel)
+}
+
+func init() {
+	initLogger()
 }
 
 type process struct {
