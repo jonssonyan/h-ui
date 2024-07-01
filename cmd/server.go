@@ -13,8 +13,9 @@ import (
 	"os"
 )
 
-func runServer() {
+func runServer() error {
 	defer releaseResource()
+
 	initFile()
 	middleware.InitLog()
 	dao.InitSqliteDB(port)
@@ -23,15 +24,15 @@ func runServer() {
 
 	r := gin.Default()
 	router.Router(r)
-	for {
-		webServer, err := service.NewServer()
-		if err != nil {
-			panic(err)
-		}
-		if err := webServer.StartServer(r); err != nil && err != http.ErrServerClosed {
-			panic(err)
-		}
+
+	webServer, err := service.NewServer()
+	if err != nil {
+		return err
 	}
+	if err := webServer.StartServer(r); err != nil && err != http.ErrServerClosed {
+		return err
+	}
+	return nil
 }
 
 func releaseResource() {

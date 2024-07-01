@@ -33,10 +33,14 @@ var rootCmd = &cobra.Command{
 				fmt.Println(err.Error())
 				os.Exit(1)
 			}
-			runServer()
-			return
+			for {
+				if err := runServer(); err != nil {
+					fmt.Println(err.Error())
+					os.Exit(1)
+				}
+			}
 		}
-		fmt.Println("Usage: h-ui [server] [-p <port>] [-v] [-h]")
+		fmt.Println("Usage: h-ui [-p <port>] [-v] [-h]")
 	},
 }
 
