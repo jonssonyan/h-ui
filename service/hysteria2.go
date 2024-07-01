@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/constant"
 	"h-ui/model/vo"
@@ -35,16 +36,41 @@ func InitHysteria2() error {
 }
 
 func SetHysteria2ConfigYAML() error {
-	hysteria2Config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
+	port, crtPath, keyPath, err := GetPortAndCert()
 	if err != nil {
 		return err
 	}
+	serverConfig, err := GetHysteria2Config()
+	if err != nil {
+		return err
+	}
+	if (crtPath != "" && keyPath != "") != (serverConfig.Auth != nil &&
+		serverConfig.Auth.HTTP != nil &&
+		serverConfig.Auth.HTTP.URL != nil &&
+		strings.HasPrefix(*serverConfig.Auth.HTTP.URL, "https")) {
+		protocol := "http"
+		if crtPath != "" && keyPath != "" {
+			protocol = "https"
+		}
+		url := fmt.Sprintf("%s://127.0.0.1:%d/hui/hysteria2/auth", protocol, port)
+		serverConfig.Auth.HTTP.URL = &url
+		if err := UpdateHysteria2Config(serverConfig); err != nil {
+			return err
+		}
+	}
+
+	hysteria2Config, err := yaml.Marshal(serverConfig)
+	if err != nil {
+		logrus.Errorf("marshal hysteria2 config err: %v", err)
+		return err
+	}
+
 	file, err := os.OpenFile(constant.Hysteria2ConfigPath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
 	if err != nil {
 		logrus.Errorf("create hysteria2 server config file err: %v", err)
 		return err
 	}
-	_, err = file.WriteString(*hysteria2Config.Value)
+	_, err = file.WriteString(string(hysteria2Config))
 	if err != nil {
 		logrus.Errorf("hysteria2 config.json file write err: %v", err)
 		return err
