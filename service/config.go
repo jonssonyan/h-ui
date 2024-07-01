@@ -156,6 +156,7 @@ func GetPortAndCert() (int64, string, string, error) {
 
 	portInt, err := strconv.ParseInt(port, 10, 64)
 	if err != nil {
+		logrus.Errorf("port: %s is invalid", port)
 		return 0, "", "", errors.New(fmt.Sprintf("port: %s is invalid", port))
 	}
 

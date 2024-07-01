@@ -14,8 +14,7 @@ type WebServer struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 
-	server http.Server
-	port   int64
+	server *http.Server
 }
 
 var webServer *WebServer
@@ -40,9 +39,10 @@ func (w *WebServer) StartServer(r *gin.Engine) error {
 		return err
 	}
 
-	w.server.Handler = r
-	w.server.Addr = fmt.Sprintf(":%d", port)
-	w.port = port
+	w.server = &http.Server{
+		Addr:    fmt.Sprintf(":%d", port),
+		Handler: r,
+	}
 
 	if crtPath != "" && keyPath != "" {
 		return w.server.ListenAndServeTLS(crtPath, keyPath)
@@ -52,16 +52,16 @@ func (w *WebServer) StartServer(r *gin.Engine) error {
 
 func (w *WebServer) StopServer() error {
 	if err := StopHysteria2(); err != nil {
-		logrus.Errorf(err.Error())
 		return err
 	}
+
+	defer w.cancel()
 
 	if err := w.server.Shutdown(w.ctx); err != nil {
 		logrus.Errorf("failed to shutdown server: %v", err)
 		return err
 	}
 
-	w.cancel()
 	webServer = nil
 	return nil
 }
@@ -77,12 +77,16 @@ func (w *WebServer) getPortAndCert() (int64, string, string, error) {
 		return 0, "", "", errors.New(fmt.Sprintf("port is not available port: %d", port))
 	}
 
-	if crtPath != "" && keyPath != "" {
+	if crtPath != "" {
 		if !util.Exists(crtPath) {
+			logrus.Errorf("crt path: %s is not exist", crtPath)
 			return 0, "", "", errors.New(fmt.Sprintf("crt path: %s is not exist", crtPath))
 		}
+	}
 
+	if keyPath != "" {
 		if !util.Exists(keyPath) {
+			logrus.Errorf("key path: %s is not exist", keyPath)
 			return 0, "", "", errors.New(fmt.Sprintf("key path: %s is not exist", keyPath))
 		}
 	}
