@@ -44,19 +44,15 @@ func SetHysteria2ConfigYAML() error {
 	if err != nil {
 		return err
 	}
-	if (crtPath != "" && keyPath != "") != (serverConfig.Auth != nil &&
-		serverConfig.Auth.HTTP != nil &&
-		serverConfig.Auth.HTTP.URL != nil &&
-		strings.HasPrefix(*serverConfig.Auth.HTTP.URL, "https")) {
-		protocol := "http"
-		if crtPath != "" && keyPath != "" {
-			protocol = "https"
-		}
-		url := fmt.Sprintf("%s://127.0.0.1:%d/hui/hysteria2/auth", protocol, port)
-		serverConfig.Auth.HTTP.URL = &url
-		if err := UpdateHysteria2Config(serverConfig); err != nil {
-			return err
-		}
+
+	protocol := "http"
+	if crtPath != "" && keyPath != "" {
+		protocol = "https"
+	}
+	url := fmt.Sprintf("%s://127.0.0.1:%d/hui/hysteria2/auth", protocol, port)
+	serverConfig.Auth.HTTP.URL = &url
+	if err := UpdateHysteria2Config(serverConfig); err != nil {
+		return err
 	}
 
 	hysteria2Config, err := yaml.Marshal(serverConfig)
