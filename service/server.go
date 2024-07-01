@@ -13,7 +13,7 @@ import (
 type WebServer struct {
 	ctx    context.Context
 	cancel context.CancelFunc
-	server *http.Server
+	server http.Server
 }
 
 var webServer *WebServer
@@ -37,7 +37,7 @@ func (w *WebServer) StartServer(r *gin.Engine) error {
 		return err
 	}
 
-	w.server = &http.Server{
+	w.server = http.Server{
 		Addr:    fmt.Sprintf(":%d", port),
 		Handler: r,
 	}
