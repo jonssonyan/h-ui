@@ -83,16 +83,14 @@ func Hysteria2IsRunning() bool {
 }
 
 func StartHysteria2() error {
-	config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
-	if err != nil {
-		return err
-	}
-	if config.Value == nil || *config.Value == "" {
-		return errors.New("hysteria2 config is empty")
-	}
+
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
 		return err
+	}
+
+	if hysteria2Config.Listen == nil || *hysteria2Config.Listen == "" {
+		return errors.New("hysteria2 config is empty")
 	}
 
 	listen, err := strconv.Atoi(strings.Trim(*hysteria2Config.Listen, ":"))
