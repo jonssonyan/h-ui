@@ -122,10 +122,8 @@ func RestartHysteria2() error {
 	return nil
 }
 
-func ReleaseHysteria2() {
-	if err := proxy.NewHysteria2Instance().Release(); err != nil {
-		logrus.Errorf(err.Error())
-	}
+func ReleaseHysteria2() error {
+	return proxy.NewHysteria2Instance().Release()
 }
 
 func Hysteria2AcmePath() (vo.Hysteria2AcmePathVo, error) {

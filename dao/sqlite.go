@@ -1,9 +1,9 @@
 package dao
 
 import (
+	"errors"
 	"fmt"
 	"github.com/glebarez/sqlite"
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
@@ -78,18 +78,17 @@ func sqliteInit(sqlStr string) error {
 	return nil
 }
 
-func CloseSqliteDB() {
+func CloseSqliteDB() error {
 	if sqliteDB != nil {
 		db, err := sqliteDB.DB()
 		if err != nil {
-			logrus.Errorf("sqlite err: %v", err)
-			return
+			return errors.New(fmt.Sprintf("sqlite err: %v", err))
 		}
 		if err = db.Close(); err != nil {
-			logrus.Errorf("sqlite close err: %v", err)
-			return
+			return errors.New(fmt.Sprintf("sqlite close err: %v", err))
 		}
 	}
+	return nil
 }
 
 func Paginate(pageNumParam *int64, pageSizeParam *int64) func(db *gorm.DB) *gorm.DB {

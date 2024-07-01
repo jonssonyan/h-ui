@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/middleware"
 	"h-ui/model/constant"
@@ -29,15 +30,19 @@ func runServer() error {
 	if err != nil {
 		return err
 	}
-	if err := webServer.StartServer(r); err != nil && err != http.ErrServerClosed {
+	if err = webServer.StartServer(r); err != nil && err != http.ErrServerClosed {
 		return err
 	}
 	return nil
 }
 
 func releaseResource() {
-	dao.CloseSqliteDB()
-	service.ReleaseHysteria2()
+	if err := dao.CloseSqliteDB(); err != nil {
+		logrus.Errorf(err.Error())
+	}
+	if err := service.ReleaseHysteria2(); err != nil {
+		logrus.Errorf(err.Error())
+	}
 }
 
 func initFile() {
