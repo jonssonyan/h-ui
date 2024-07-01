@@ -83,7 +83,6 @@ func Hysteria2IsRunning() bool {
 }
 
 func StartHysteria2() error {
-
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
 		return err
