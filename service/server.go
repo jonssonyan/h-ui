@@ -13,7 +13,6 @@ import (
 type WebServer struct {
 	ctx    context.Context
 	cancel context.CancelFunc
-
 	server *http.Server
 }
 
@@ -25,7 +24,6 @@ func NewServer() (*WebServer, error) {
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
-
 	webServer = &WebServer{
 		ctx:    ctx,
 		cancel: cancel,
@@ -73,22 +71,21 @@ func (w *WebServer) getPortAndCert() (int64, string, string, error) {
 	}
 
 	if !util.IsPortAvailable(uint(port), "tcp") {
-		logrus.Errorf("port is not available port: %d", port)
-		return 0, "", "", errors.New(fmt.Sprintf("port is not available port: %d", port))
+		errMsg := fmt.Sprintf("port is not available: %d", port)
+		logrus.Error(errMsg)
+		return 0, "", "", errors.New(errMsg)
 	}
 
-	if crtPath != "" {
-		if !util.Exists(crtPath) {
-			logrus.Errorf("crt path: %s is not exist", crtPath)
-			return 0, "", "", errors.New(fmt.Sprintf("crt path: %s is not exist", crtPath))
-		}
+	if crtPath != "" && !util.Exists(crtPath) {
+		errMsg := fmt.Sprintf("crt path: %s does not exist", crtPath)
+		logrus.Error(errMsg)
+		return 0, "", "", errors.New(errMsg)
 	}
 
-	if keyPath != "" {
-		if !util.Exists(keyPath) {
-			logrus.Errorf("key path: %s is not exist", keyPath)
-			return 0, "", "", errors.New(fmt.Sprintf("key path: %s is not exist", keyPath))
-		}
+	if keyPath != "" && !util.Exists(keyPath) {
+		errMsg := fmt.Sprintf("key path: %s does not exist", keyPath)
+		logrus.Error(errMsg)
+		return 0, "", "", errors.New(errMsg)
 	}
 
 	return port, crtPath, keyPath, nil
