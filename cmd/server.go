@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -17,11 +18,19 @@ import (
 func runServer() error {
 	defer releaseResource()
 
-	initFile()
+	if err := initFile(); err != nil {
+		return err
+	}
 	middleware.InitLog()
-	dao.InitSqliteDB(port)
-	middleware.InitCron()
-	service.InitHysteria2()
+	if err := dao.InitSqliteDB(port); err != nil {
+		return err
+	}
+	if err := middleware.InitCron(); err != nil {
+		return err
+	}
+	if err := service.InitHysteria2(); err != nil {
+		return err
+	}
 
 	r := gin.Default()
 	router.Router(r)
@@ -45,13 +54,15 @@ func releaseResource() {
 	}
 }
 
-func initFile() {
+func initFile() error {
 	var dirs = []string{constant.LogDir, constant.SqliteDBDir, constant.BinDir, constant.ExportPathDir}
 	for _, item := range dirs {
 		if !util.Exists(item) {
 			if err := os.Mkdir(item, os.ModePerm); err != nil {
-				panic(fmt.Sprintf("%s create err: %v", item, err))
+				logrus.Errorf("%s create err: %v", item, err)
+				return errors.New(fmt.Sprintf("%s create err: %v", item, err))
 			}
 		}
 	}
+	return nil
 }

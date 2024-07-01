@@ -14,25 +14,24 @@ import (
 	"strings"
 )
 
-func InitHysteria2() {
-	// 初始化 bin
+func InitHysteria2() error {
 	if !util.Exists(util.GetHysteria2BinPath()) {
-		// 下载最新版
 		if err := util.DownloadHysteria2(""); err != nil {
-			panic(fmt.Sprintf("download hysteris2 bin err: %v", err))
+			return errors.New(fmt.Sprintf("download hysteris2 bin err: %v", err))
 		}
 	}
 
 	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
 	if err != nil {
-		panic(fmt.Sprintf("get hysteria2 enable config err: %v", err))
+		return err
 	}
 
 	if *config.Value == "1" {
 		if err = StartHysteria2(); err != nil {
-			panic(fmt.Sprintf("start hysteria2 server err: %v", err))
+			return err
 		}
 	}
+	return nil
 }
 
 func SetHysteria2ConfigYAML() error {
@@ -70,7 +69,6 @@ func StartHysteria2() error {
 		return err
 	}
 
-	// 代理端口
 	listen, err := strconv.Atoi(strings.Trim(*hysteria2Config.Listen, ":"))
 	if err != nil {
 		return errors.New(fmt.Sprintf("hysteria port: %s is invalid", *hysteria2Config.Listen))
@@ -80,7 +78,6 @@ func StartHysteria2() error {
 		return errors.New("hysteria port has been used")
 	}
 
-	// api 端口
 	apiPort, err := strconv.Atoi(strings.Trim(*hysteria2Config.TrafficStats.Listen, ":"))
 	if err != nil {
 		return errors.New(fmt.Sprintf("hysteria api port: %s is invalid", *hysteria2Config.Listen))
