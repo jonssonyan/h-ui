@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/bo"
@@ -15,6 +14,10 @@ import (
 )
 
 func Hysteria2Auth(conPass string) (string, error) {
+	if !Hysteria2IsRunning() {
+		return "", errors.New("hysteria2 is not running")
+	}
+
 	now := time.Now().UnixMilli()
 	account, err := dao.GetAccount("con_pass = ? and deleted = 0 and (quota < 0 or quota > download + upload) and ? < expire_time and ? > kick_util_time", conPass, now, now)
 	if err != nil {
@@ -35,36 +38,27 @@ func Hysteria2Auth(conPass string) (string, error) {
 }
 
 func Hysteria2Online() (map[string]int64, error) {
-	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
+	if !Hysteria2IsRunning() {
+		return map[string]int64{}, nil
+	}
+	apiPort, err := GetHysteria2ApiPort()
+	if err != nil {
+		return nil, errors.New("get hysteria2 apiPort err")
+	}
+	jwtSecretConfig, err := dao.GetConfig("key = ?", constant.JwtSecret)
 	if err != nil {
 		return nil, err
 	}
-	if *config.Value == "1" {
-		apiPort, err := GetHysteria2ApiPort()
-		if err != nil {
-			return nil, errors.New("get hysteria2 apiPort err")
-		}
-		jwtSecretConfig, err := dao.GetConfig("key = ?", constant.JwtSecret)
-		if err != nil {
-			logrus.Errorf("jwtSecretConfig is nill")
-			return nil, errors.New(constant.SysError)
-		}
-		onlineUsers, err := proxy.NewHysteria2Api(apiPort).OnlineUsers(*jwtSecretConfig.Value)
-		if err != nil {
-			return nil, err
-		}
-		return onlineUsers, nil
+	onlineUsers, err := proxy.NewHysteria2Api(apiPort).OnlineUsers(*jwtSecretConfig.Value)
+	if err != nil {
+		return nil, err
 	}
-	return map[string]int64{}, nil
+	return onlineUsers, nil
 }
 
 func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
-	config, err := dao.GetConfig("key = ?", constant.Hysteria2Enable)
-	if err != nil {
-		return err
-	}
-	if *config.Value != "1" {
-		return errors.New("hysteria2 not enable")
+	if !Hysteria2IsRunning() {
+		return errors.New("hysteria2 is not running")
 	}
 	if err := dao.UpdateAccount(ids, map[string]interface{}{"kick_util_time": kickUtilTime}); err != nil {
 		return err
@@ -84,8 +78,7 @@ func Hysteria2Kick(ids []int64, kickUtilTime int64) error {
 	}
 	jwtSecretConfig, err := dao.GetConfig("key = ?", constant.JwtSecret)
 	if err != nil {
-		logrus.Errorf("jwtSecretConfig is nill")
-		return errors.New(constant.SysError)
+		return err
 	}
 	if err = proxy.NewHysteria2Api(apiPort).KickUsers(keys, *jwtSecretConfig.Value); err != nil {
 		return err
@@ -102,16 +95,12 @@ func Hysteria2SubscribeUrl(accountId int64, protocol string, host string) (strin
 }
 
 func Hysteria2Subscribe(conPass string, clientType string, host string) (string, string, error) {
-	config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
-	if err != nil {
-		return "", "", err
-	}
-	if config.Value == nil || *config.Value == "" {
-		return "", "", errors.New("hysteria2 config is empty")
-	}
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
 		return "", "", err
+	}
+	if hysteria2Config.Listen == nil || *hysteria2Config.Listen == "" {
+		return "", "", errors.New("hysteria2 config is empty")
 	}
 
 	account, err := dao.GetAccount("con_pass = ?", conPass)
@@ -131,7 +120,7 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 		clashConfig := bo.ClashConfig{}
 		var ClashConfigInterface []interface{}
 
-		port, err := strconv.ParseUint(strings.TrimPrefix(*hysteria2Config.Listen, ":"), 10, 64)
+		port, err := strconv.ParseUint(strings.Split(*hysteria2Config.Listen, ":")[1], 10, 64)
 		if err != nil {
 			return "", "", err
 		}
@@ -198,16 +187,12 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 }
 
 func Hysteria2Url(accountId int64, hostname string) (string, error) {
-	config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
-	if err != nil {
-		return "", err
-	}
-	if config.Value == nil || *config.Value == "" {
-		return "", errors.New("hysteria2 config is empty")
-	}
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
 		return "", err
+	}
+	if hysteria2Config.Listen == nil || *hysteria2Config.Listen == "" {
+		return "", errors.New("hysteria2 config is empty")
 	}
 
 	account, err := dao.GetAccount("id = ?", accountId)
