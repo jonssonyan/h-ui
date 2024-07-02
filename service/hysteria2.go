@@ -37,10 +37,20 @@ func setHysteria2ConfigYAML() error {
 	if err != nil {
 		return err
 	}
-	// update auth http url
-	if err := UpdateHysteria2Config(serverConfig); err != nil {
+
+	authHttpUrl, err := GetAuthHttpUrl()
+	if err != nil {
 		return err
 	}
+
+	// update auth http url
+	if *serverConfig.Auth.HTTP.URL != authHttpUrl {
+		serverConfig.Auth.HTTP.URL = &authHttpUrl
+		if err := UpdateHysteria2Config(serverConfig); err != nil {
+			return err
+		}
+	}
+
 	hysteria2Config, err := yaml.Marshal(serverConfig)
 	if err != nil {
 		return errors.New("marshal hysteria2 config err")

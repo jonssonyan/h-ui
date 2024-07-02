@@ -82,13 +82,12 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 		return errors.New(constant.SysError)
 	}
 
-	localhost, err := GetLocalhost()
+	authHttpUrl, err := GetAuthHttpUrl()
 	if err != nil {
 		return err
 	}
 
 	authType := "http"
-	authHttpUrl := fmt.Sprintf("%s/hui/hysteria2/auth", localhost)
 	authHttpInsecure := true
 	var auth bo.ServerConfigAuth
 	auth.Type = &authType
@@ -163,7 +162,7 @@ func GetPortAndCert() (int64, string, string, error) {
 	return portInt, crtPath, keyPath, nil
 }
 
-func GetLocalhost() (string, error) {
+func GetAuthHttpUrl() (string, error) {
 	port, crtPath, keyPath, err := GetPortAndCert()
 	if err != nil {
 		return "", err
@@ -172,5 +171,5 @@ func GetLocalhost() (string, error) {
 	if crtPath != "" && keyPath != "" {
 		protocol = "https"
 	}
-	return fmt.Sprintf("%s://127.0.0.1:%d", protocol, port), nil
+	return fmt.Sprintf("%s://127.0.0.1:%d/hui/hysteria2/auth", protocol, port), nil
 }
