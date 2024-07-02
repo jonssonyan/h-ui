@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/constant"
@@ -11,8 +10,6 @@ import (
 	"h-ui/proxy"
 	"h-ui/util"
 	"os"
-	"strconv"
-	"strings"
 )
 
 func InitHysteria2() error {
@@ -35,41 +32,26 @@ func InitHysteria2() error {
 	return nil
 }
 
-func SetHysteria2ConfigYAML() error {
-	port, crtPath, keyPath, err := GetPortAndCert()
-	if err != nil {
-		return err
-	}
+func setHysteria2ConfigYAML() error {
 	serverConfig, err := GetHysteria2Config()
 	if err != nil {
 		return err
 	}
-
-	protocol := "http"
-	if crtPath != "" && keyPath != "" {
-		protocol = "https"
-	}
-	url := fmt.Sprintf("%s://127.0.0.1:%d/hui/hysteria2/auth", protocol, port)
-	serverConfig.Auth.HTTP.URL = &url
+	// update auth http url
 	if err := UpdateHysteria2Config(serverConfig); err != nil {
 		return err
 	}
-
 	hysteria2Config, err := yaml.Marshal(serverConfig)
 	if err != nil {
-		logrus.Errorf("marshal hysteria2 config err: %v", err)
-		return err
+		return errors.New("marshal hysteria2 config err")
 	}
-
 	file, err := os.OpenFile(constant.Hysteria2ConfigPath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
 	if err != nil {
-		logrus.Errorf("create hysteria2 server config file err: %v", err)
-		return err
+		return errors.New("create hysteria2 server config file err")
 	}
 	_, err = file.WriteString(string(hysteria2Config))
 	if err != nil {
-		logrus.Errorf("hysteria2 config.json file write err: %v", err)
-		return err
+		return errors.New("hysteria2 config.json file write err")
 	}
 	return nil
 }
@@ -79,60 +61,24 @@ func Hysteria2IsRunning() bool {
 }
 
 func StartHysteria2() error {
-	hysteria2Config, err := GetHysteria2Config()
-	if err != nil {
-		return err
-	}
-
-	if hysteria2Config.Listen == nil || *hysteria2Config.Listen == "" {
-		return errors.New("hysteria2 config is empty")
-	}
-
-	listen, err := strconv.Atoi(strings.Trim(*hysteria2Config.Listen, ":"))
-	if err != nil {
-		return errors.New(fmt.Sprintf("hysteria port: %s is invalid", *hysteria2Config.Listen))
-	}
-	listenPortAvailable := util.IsPortAvailable(uint(listen), "udp")
-	if !listenPortAvailable {
-		return errors.New("hysteria port has been used")
-	}
-
-	apiPort, err := strconv.Atoi(strings.Trim(*hysteria2Config.TrafficStats.Listen, ":"))
-	if err != nil {
-		return errors.New(fmt.Sprintf("hysteria api port: %s is invalid", *hysteria2Config.Listen))
-	}
-	apiPortAvailable := util.IsPortAvailable(uint(apiPort), "tcp")
-	if !apiPortAvailable {
-		return errors.New("hysteria api port has been used")
-	}
-
-	// 初始化配置文件
-	if err := SetHysteria2ConfigYAML(); err != nil {
-		logrus.Errorf("set hysteria2 config.yaml err: %v", err)
+	if err := setHysteria2ConfigYAML(); err != nil {
 		return errors.New("set hysteria2 config.yaml err")
 	}
 	if err := proxy.NewHysteria2Instance().StartHysteria2(); err != nil {
-		logrus.Errorf("start hysteria2 err: %v", err)
 		return errors.New("start hysteria2 err")
 	}
 	return nil
 }
 
 func StopHysteria2() error {
-	if err := proxy.NewHysteria2Instance().StopHysteria2(); err != nil {
-		logrus.Errorf("stop hysteria2 err: %v", err)
-		return errors.New("stop hysteria2 err")
-	}
-	return nil
+	return proxy.NewHysteria2Instance().StopHysteria2()
 }
 
 func RestartHysteria2() error {
 	if err := StopHysteria2(); err != nil {
-		logrus.Errorf("stop hysteria2 err: %v", err)
 		return errors.New("stop hysteria2 err")
 	}
 	if err := StartHysteria2(); err != nil {
-		logrus.Errorf("start hysteria2 err: %v", err)
 		return errors.New("start hysteria2 err")
 	}
 	return nil
