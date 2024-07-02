@@ -16,11 +16,11 @@ import (
 func UpdateConfig(key string, value string) error {
 	if key == constant.Hysteria2Enable {
 		if value == "1" {
-			config, err := dao.GetConfig("key = ?", constant.Hysteria2Config)
+			hysteria2Config, err := GetHysteria2Config()
 			if err != nil {
 				return err
 			}
-			if config.Value == nil || *config.Value == "" {
+			if hysteria2Config.Listen == nil || *hysteria2Config.Listen == "" {
 				return errors.New("hysteria2 config is empty")
 			}
 			// 启动Hysteria2
