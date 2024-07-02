@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/skip2/go-qrcode"
+	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/vo"
 	"h-ui/service"
@@ -36,12 +37,12 @@ func Hysteria2Subscribe(c *gin.Context) {
 	}
 
 	var clientType string
-	if strings.HasPrefix(userAgent, "ClashforWindows") {
-		clientType = "ClashforWindows"
-	} else if strings.HasPrefix(userAgent, "Shadowrocket") {
-		clientType = "Shadowrocket"
-	} else if strings.HasPrefix(userAgent, "v2rayN") {
-		clientType = "v2rayN"
+	if strings.HasPrefix(userAgent, constant.ClashforWindows) {
+		clientType = constant.ClashforWindows
+	} else if strings.HasPrefix(userAgent, constant.Shadowrocket) {
+		clientType = constant.Shadowrocket
+	} else if strings.HasPrefix(userAgent, constant.V2rayN) {
+		clientType = constant.V2rayN
 	}
 
 	userInfo, configYaml, err := service.Hysteria2Subscribe(conPass, clientType, host)
@@ -50,7 +51,7 @@ func Hysteria2Subscribe(c *gin.Context) {
 		return
 	}
 
-	if clientType == "ClashforWindows" || clientType == "Shadowrocket" {
+	if clientType == constant.ClashforWindows || clientType == constant.Shadowrocket {
 		c.Header("content-disposition", "attachment; filename=hui.yaml")
 		c.Header("profile-update-interval", "12")
 		c.Header("subscription-userinfo", userInfo)

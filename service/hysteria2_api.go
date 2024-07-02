@@ -110,7 +110,7 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 
 	userInfo := ""
 	configYaml := ""
-	if clientType == "Shadowrocket" || clientType == "ClashforWindows" {
+	if clientType == constant.Shadowrocket || clientType == constant.ClashforWindows {
 		userInfo = fmt.Sprintf("upload=%d; download=%d; total=%d; expire=%d",
 			*account.Upload,
 			*account.Download,
