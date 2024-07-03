@@ -55,9 +55,11 @@ func (w *WebServer) StopServer() error {
 
 	defer w.cancel()
 
-	if err := w.server.Shutdown(w.ctx); err != nil {
-		logrus.Errorf("failed to shutdown server: %v", err)
-		return err
+	if w.server != nil {
+		if err := w.server.Shutdown(w.ctx); err != nil {
+			logrus.Errorf("failed to shutdown server: %v", err)
+			return err
+		}
 	}
 
 	webServer = nil
