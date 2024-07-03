@@ -6,7 +6,7 @@ Wants=network.target
 [Service]
 Type=simple
 WorkingDirectory=/usr/local/h-ui/
-ExecStart=/usr/local/h-ui/h-ui -p 8081
+ExecStart=/usr/local/h-ui/h-ui
 
 [Install]
 WantedBy=multi-user.target
