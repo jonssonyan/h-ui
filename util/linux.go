@@ -33,7 +33,7 @@ func IsPortAvailable(port uint, network string) bool {
 			}
 		}()
 		if err != nil {
-			logrus.Warnf("port %d is taken err: %s", port, err)
+			logrus.Errorf("port %d is taken err: %s", port, err)
 			return false
 		}
 	}
@@ -48,7 +48,7 @@ func IsPortAvailable(port uint, network string) bool {
 			}
 		}()
 		if err != nil {
-			logrus.Warnf("port %d is taken err: %s", port, err)
+			logrus.Errorf("port %d is taken err: %s", port, err)
 			return false
 		}
 	}
