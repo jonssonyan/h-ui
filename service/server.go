@@ -4,69 +4,44 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"h-ui/util"
 	"net/http"
+	"time"
 )
 
-type WebServer struct {
-	ctx    context.Context
-	cancel context.CancelFunc
-	server *http.Server
+var server *http.Server
+
+func InitServer(addr string, handler http.Handler) {
+	server = &http.Server{
+		Addr:    addr,
+		Handler: handler,
+	}
 }
 
-var webServer *WebServer
-
-func NewServer() (*WebServer, error) {
-	if webServer != nil {
-		return webServer, nil
-	}
-
-	ctx, cancel := context.WithCancel(context.Background())
-	webServer = &WebServer{
-		ctx:    ctx,
-		cancel: cancel,
-	}
-	return webServer, nil
-}
-
-func (w *WebServer) StartServer(r *gin.Engine) error {
-	port, crtPath, keyPath, err := w.getPortAndCert()
-	if err != nil {
-		return err
-	}
-
-	w.server = &http.Server{
-		Addr:    fmt.Sprintf(":%d", port),
-		Handler: r,
-	}
-
+func StartServer(crtPath string, keyPath string) error {
 	if crtPath != "" && keyPath != "" {
-		return w.server.ListenAndServeTLS(crtPath, keyPath)
+		return server.ListenAndServeTLS(crtPath, keyPath)
 	}
-	return w.server.ListenAndServe()
+	return server.ListenAndServe()
 }
 
-func (w *WebServer) StopServer() error {
+func StopServer() error {
 	if err := StopHysteria2(); err != nil {
 		return err
 	}
 
-	defer w.cancel()
-
-	if w.server != nil {
-		if err := w.server.Shutdown(w.ctx); err != nil {
-			logrus.Errorf("failed to shutdown server: %v", err)
-			return err
-		}
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		logrus.Errorf("failed to shutdown server: %v", err)
+		return err
 	}
 
-	webServer = nil
 	return nil
 }
 
-func (w *WebServer) getPortAndCert() (int64, string, string, error) {
+func GetServerPortAndCert() (int64, string, string, error) {
 	port, crtPath, keyPath, err := GetPortAndCert()
 	if err != nil {
 		return 0, "", "", err

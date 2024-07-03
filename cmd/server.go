@@ -18,10 +18,10 @@ import (
 func runServer() error {
 	defer releaseResource()
 
+	middleware.InitLog()
 	if err := initFile(); err != nil {
 		return err
 	}
-	middleware.InitLog()
 	if err := dao.InitSqliteDB(port); err != nil {
 		return err
 	}
@@ -35,11 +35,12 @@ func runServer() error {
 	r := gin.Default()
 	router.Router(r)
 
-	webServer, err := service.NewServer()
+	port, crtPath, keyPath, err := service.GetServerPortAndCert()
 	if err != nil {
 		return err
 	}
-	if err = webServer.StartServer(r); err != nil && err != http.ErrServerClosed {
+	service.InitServer(fmt.Sprintf(":%d", port), r)
+	if err := service.StartServer(crtPath, keyPath); err != nil && err != http.ErrServerClosed {
 		return err
 	}
 	return nil
