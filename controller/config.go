@@ -72,10 +72,7 @@ func UpdateConfigs(c *gin.Context) {
 
 	if needRestart {
 		go func() {
-			if err := service.StopServer(); err != nil {
-				logrus.Errorf(err.Error())
-				return
-			}
+			_ = service.StopServer()
 		}()
 	}
 
@@ -376,10 +373,7 @@ func Hysteria2AcmePath(c *gin.Context) {
 
 func RestartServer(c *gin.Context) {
 	go func() {
-		if err := service.StopServer(); err != nil {
-			logrus.Errorf(err.Error())
-			return
-		}
+		_ = service.StopServer()
 	}()
 	vo.Success(nil, c)
 }

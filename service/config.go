@@ -123,11 +123,15 @@ func GetHysteria2ApiPort() (int64, error) {
 		return 0, err
 	}
 	if hysteria2Config.TrafficStats == nil || hysteria2Config.TrafficStats.Listen == nil {
-		return 0, errors.New("hysteria2 Traffic Stats API (HTTP) Listen is nil")
+		errMsg := "hysteria2 Traffic Stats API (HTTP) Listen is nil"
+		logrus.Errorf(errMsg)
+		return 0, errors.New(errMsg)
 	}
 	apiPort, err := strconv.ParseInt(strings.Split(*hysteria2Config.TrafficStats.Listen, ":")[1], 10, 64)
 	if err != nil {
-		return 0, errors.New(fmt.Sprintf("apiPort: %s is invalid", *hysteria2Config.TrafficStats.Listen))
+		errMsg := fmt.Sprintf("apiPort: %s is invalid", *hysteria2Config.TrafficStats.Listen)
+		logrus.Errorf(errMsg)
+		return 0, errors.New(errMsg)
 	}
 	return apiPort, nil
 }

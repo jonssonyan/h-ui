@@ -55,14 +55,17 @@ func setHysteria2ConfigYAML() error {
 
 	hysteria2Config, err := yaml.Marshal(serverConfig)
 	if err != nil {
+		logrus.Errorf("marshal hysteria2 config err: %v", err)
 		return errors.New("marshal hysteria2 config err")
 	}
 	file, err := os.OpenFile(constant.Hysteria2ConfigPath, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
 	if err != nil {
+		logrus.Errorf("create hysteria2 server config file err: %v", err)
 		return errors.New("create hysteria2 server config file err")
 	}
 	_, err = file.WriteString(string(hysteria2Config))
 	if err != nil {
+		logrus.Errorf("write hysteria2 config.json file err: %v", err)
 		return errors.New("hysteria2 config.json file write err")
 	}
 	return nil
@@ -74,10 +77,10 @@ func Hysteria2IsRunning() bool {
 
 func StartHysteria2() error {
 	if err := setHysteria2ConfigYAML(); err != nil {
-		return errors.New("set hysteria2 config.yaml err")
+		return err
 	}
 	if err := proxy.NewHysteria2Instance().StartHysteria2(); err != nil {
-		return errors.New("start hysteria2 err")
+		return err
 	}
 	return nil
 }
@@ -88,10 +91,10 @@ func StopHysteria2() error {
 
 func RestartHysteria2() error {
 	if err := StopHysteria2(); err != nil {
-		return errors.New("stop hysteria2 err")
+		return err
 	}
 	if err := StartHysteria2(); err != nil {
-		return errors.New("start hysteria2 err")
+		return err
 	}
 	return nil
 }

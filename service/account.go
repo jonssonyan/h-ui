@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
@@ -98,7 +97,6 @@ func GetAccount(id int64) (entity.Account, error) {
 func ListExportAccount() ([]bo.AccountExport, error) {
 	accounts, err := dao.ListAccount(nil, nil)
 	if err != nil {
-		logrus.Errorf("ListExportAccount error: %v", err)
 		return nil, errors.New(constant.SysError)
 	}
 	var accountExports []bo.AccountExport

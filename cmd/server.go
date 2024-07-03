@@ -26,7 +26,6 @@ func runServer() error {
 		return err
 	}
 	if err := middleware.InitCron(); err != nil {
-		logrus.Errorf("init cron err: %v", err)
 		return err
 	}
 	if err := service.InitHysteria2(); err != nil {
