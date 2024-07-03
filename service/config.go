@@ -120,16 +120,14 @@ func UpsertConfig(configs []entity.Config) error {
 func GetHysteria2ApiPort() (int64, error) {
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
-		logrus.Errorf("get hysteria2 config err: %v", err)
 		return 0, err
 	}
 	if hysteria2Config.TrafficStats == nil || hysteria2Config.TrafficStats.Listen == nil {
 		return 0, errors.New("hysteria2 Traffic Stats API (HTTP) Listen is nil")
 	}
-	apiPort, err := strconv.ParseInt(strings.Trim(*hysteria2Config.TrafficStats.Listen, ":"), 10, 64)
+	apiPort, err := strconv.ParseInt(strings.Split(*hysteria2Config.TrafficStats.Listen, ":")[1], 10, 64)
 	if err != nil {
-		logrus.Errorf("apiPort string conv int64 err: %v", err)
-		return 0, err
+		return 0, errors.New(fmt.Sprintf("apiPort: %s is invalid", *hysteria2Config.TrafficStats.Listen))
 	}
 	return apiPort, nil
 }
@@ -155,7 +153,6 @@ func GetPortAndCert() (int64, string, string, error) {
 
 	portInt, err := strconv.ParseInt(port, 10, 64)
 	if err != nil {
-		logrus.Errorf("port: %s is invalid", port)
 		return 0, "", "", errors.New(fmt.Sprintf("port: %s is invalid", port))
 	}
 
