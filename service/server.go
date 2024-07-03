@@ -48,21 +48,15 @@ func GetServerPortAndCert() (int64, string, string, error) {
 	}
 
 	if !util.IsPortAvailable(uint(port), "tcp") {
-		errMsg := fmt.Sprintf("port is not available: %d", port)
-		logrus.Error(errMsg)
-		return 0, "", "", errors.New(errMsg)
+		return 0, "", "", errors.New(fmt.Sprintf("port is not available: %d", port))
 	}
 
 	if crtPath != "" && !util.Exists(crtPath) {
-		errMsg := fmt.Sprintf("crt path: %s does not exist", crtPath)
-		logrus.Error(errMsg)
-		return 0, "", "", errors.New(errMsg)
+		return 0, "", "", errors.New(fmt.Sprintf("crt path: %s does not exist", crtPath))
 	}
 
 	if keyPath != "" && !util.Exists(keyPath) {
-		errMsg := fmt.Sprintf("key path: %s does not exist", keyPath)
-		logrus.Error(errMsg)
-		return 0, "", "", errors.New(errMsg)
+		return 0, "", "", errors.New(fmt.Sprintf("key path: %s does not exist", keyPath))
 	}
 
 	return port, crtPath, keyPath, nil

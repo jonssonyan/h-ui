@@ -20,15 +20,19 @@ func runServer() error {
 
 	middleware.InitLog()
 	if err := initFile(); err != nil {
+		logrus.Errorf("init file err: %v", err)
 		return err
 	}
 	if err := dao.InitSqliteDB(port); err != nil {
+		logrus.Errorf("init sqlite db err: %v", err)
 		return err
 	}
 	if err := middleware.InitCron(); err != nil {
+		logrus.Errorf("init cron err: %v", err)
 		return err
 	}
 	if err := service.InitHysteria2(); err != nil {
+		logrus.Errorf("init Hysteria2 err: %v", err)
 		return err
 	}
 
@@ -37,10 +41,13 @@ func runServer() error {
 
 	port, crtPath, keyPath, err := service.GetServerPortAndCert()
 	if err != nil {
+		logrus.Errorf("get server port and cert err: %v", err)
 		return err
 	}
+
 	service.InitServer(fmt.Sprintf(":%d", port), r)
 	if err := service.StartServer(crtPath, keyPath); err != nil && err != http.ErrServerClosed {
+		logrus.Errorf("start server err: %v", err)
 		return err
 	}
 	return nil
@@ -60,7 +67,6 @@ func initFile() error {
 	for _, item := range dirs {
 		if !util.Exists(item) {
 			if err := os.Mkdir(item, os.ModePerm); err != nil {
-				logrus.Errorf("%s create err: %v", item, err)
 				return errors.New(fmt.Sprintf("%s create err: %v", item, err))
 			}
 		}

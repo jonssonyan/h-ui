@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/glebarez/sqlite"
-	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
@@ -38,13 +37,11 @@ func InitSqliteDB(port string) error {
 		},
 	})
 	if err != nil {
-		logrus.Errorf("sqlite open err: %v", err)
 		return errors.New(fmt.Sprintf("sqlite open err: %v", err))
 	}
 
 	var count uint
 	if err = sqliteDB.Raw("SELECT count(1) FROM sqlite_master WHERE type='table' AND (name = 'account' or name = 'config')").Scan(&count).Error; err != nil {
-		logrus.Errorf("sqlite query table err: %v", err)
 		return errors.New(fmt.Sprintf("sqlite query table err: %v", err))
 	}
 	if count == 0 {
@@ -54,7 +51,6 @@ func InitSqliteDB(port string) error {
 	}
 	if port != "" {
 		if tx := sqliteDB.Exec("UPDATE config set `value` = ? where `key` = 'H_UI_WEB_PORT'", port); tx.Error != nil {
-			logrus.Errorf("sqlite exec err: %v", tx.Error)
 			return errors.New(fmt.Sprintf("sqlite exec err: %v", tx.Error))
 		}
 	}
@@ -69,7 +65,6 @@ func sqliteInit(sqlStr string) error {
 			if s != "" {
 				tx := sqliteDB.Exec(s)
 				if tx.Error != nil {
-					logrus.Errorf("sqlite exec err: %v", tx.Error)
 					return errors.New(fmt.Sprintf("sqlite exec err: %v", tx.Error))
 				}
 			}
