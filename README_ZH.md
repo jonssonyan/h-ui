@@ -146,9 +146,10 @@ rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
     ```
 
 - 安装网络加速
+    - [TCP Brutal](https://github.com/apernet/tcp-brutal)
+    - [teddysun/across#bbrsh](https://github.com/teddysun/across#bbrsh)
     - [Chikage0o0/Linux-NetSpeed](https://github.com/ylx2016/Linux-NetSpeed)
     - [ylx2016/Linux-NetSpeed](https://github.com/ylx2016/Linux-NetSpeed)
-    - [teddysun/across#bbrsh](https://github.com/teddysun/across#bbrsh)
 
 ## 客户端
 

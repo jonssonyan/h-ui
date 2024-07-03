@@ -147,9 +147,10 @@ version of h-ui, and import the data into the management background after the de
     ```
 
 - Install Network Accelerator
+    - [TCP Brutal](https://github.com/apernet/tcp-brutal)
+    - [teddysun/across#bbrsh](https://github.com/teddysun/across#bbrsh)
     - [Chikage0o0/Linux-NetSpeed](https://github.com/ylx2016/Linux-NetSpeed)
     - [ylx2016/Linux-NetSpeed](https://github.com/ylx2016/Linux-NetSpeed)
-    - [teddysun/across#bbrsh](https://github.com/teddysun/across#bbrsh)
 
 ## Client
 
