@@ -15,7 +15,7 @@ var (
 )
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&port, "port", "p", "", "set the port for the web server")
+	rootCmd.PersistentFlags().StringVarP(&port, "port", "p", "", "the port for the web server")
 	rootCmd.PersistentFlags().BoolVarP(&version, "version", "v", false, "show version")
 }
 
