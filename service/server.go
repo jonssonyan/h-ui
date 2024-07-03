@@ -35,7 +35,7 @@ func StopServer() error {
 	defer cancel()
 	if err := server.Shutdown(ctx); err != nil {
 		logrus.Errorf("failed to shutdown server: %v", err)
-		return err
+		return errors.New("failed to shutdown server")
 	}
 
 	return nil
@@ -48,15 +48,21 @@ func GetServerPortAndCert() (int64, string, string, error) {
 	}
 
 	if !util.IsPortAvailable(uint(port), "tcp") {
-		return 0, "", "", errors.New(fmt.Sprintf("port is not available: %d", port))
+		errMsg := fmt.Sprintf("port %d is taken", port)
+		logrus.Errorf(errMsg)
+		return 0, "", "", errors.New(errMsg)
 	}
 
 	if crtPath != "" && !util.Exists(crtPath) {
-		return 0, "", "", errors.New(fmt.Sprintf("crt path: %s does not exist", crtPath))
+		errMsg := fmt.Sprintf("crt path: %s does not exist", crtPath)
+		logrus.Errorf(errMsg)
+		return 0, "", "", errors.New(errMsg)
 	}
 
 	if keyPath != "" && !util.Exists(keyPath) {
-		return 0, "", "", errors.New(fmt.Sprintf("key path: %s does not exist", keyPath))
+		errMsg := fmt.Sprintf("key path: %s does not exist", keyPath)
+		logrus.Errorf(errMsg)
+		return 0, "", "", errors.New(errMsg)
 	}
 
 	return port, crtPath, keyPath, nil

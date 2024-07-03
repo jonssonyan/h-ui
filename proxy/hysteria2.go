@@ -1,6 +1,8 @@
 package proxy
 
 import (
+	"errors"
+	"github.com/sirupsen/logrus"
 	"h-ui/model/constant"
 	"h-ui/util"
 	"os/exec"
@@ -32,19 +34,25 @@ func (h *Hysteria2Process) IsRunning() bool {
 func (h *Hysteria2Process) StartHysteria2() error {
 	if err := h.start(h.binPath, "-c", h.configPath, "server"); err != nil {
 		_ = util.RemoveFile(h.configPath)
-		return err
+		logrus.Errorf("start hysteria2 err: %v", err)
+		return errors.New("start hysteria2 err")
 	}
 	return nil
 }
 
 func (h *Hysteria2Process) StopHysteria2() error {
 	if err := h.stop(); err != nil {
-		return err
+		logrus.Errorf("stop hysteria2 err: %v", err)
+		return errors.New("stop hysteria2 err")
 	}
 	_ = util.RemoveFile(h.configPath)
 	return nil
 }
 
 func (h *Hysteria2Process) Release() error {
-	return h.release()
+	if err := h.release(); err != nil {
+		logrus.Errorf("release hysteria2 err: %v", err)
+		return errors.New("release hysteria2 err")
+	}
+	return nil
 }

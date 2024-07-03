@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/constant"
@@ -15,7 +16,8 @@ import (
 func InitHysteria2() error {
 	if !util.Exists(util.GetHysteria2BinPath()) {
 		if err := util.DownloadHysteria2(""); err != nil {
-			return errors.New(fmt.Sprintf("download hysteris2 bin err: %v", err))
+			logrus.Errorf("download hysteria2 bin err: %v", err)
+			return errors.New("download hysteria2 bin err")
 		}
 	}
 

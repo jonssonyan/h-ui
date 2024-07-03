@@ -81,7 +81,7 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 
 	running := service.Hysteria2IsRunning()
 	if running {
-		vo.Fail("please stop Hysteria2 first", c)
+		vo.Fail("please stop hysteria2 first", c)
 		return
 	}
 
@@ -103,7 +103,7 @@ func Hysteria2ChangeVersion(c *gin.Context) {
 func ListRelease(c *gin.Context) {
 	releases, err := util.ListRelease("apernet", "hysteria")
 	if err != nil {
-		vo.Fail("get Hysteria2 releases failed", c)
+		vo.Fail("get hysteria2 releases failed", c)
 		return
 	}
 

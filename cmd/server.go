@@ -20,11 +20,9 @@ func runServer() error {
 
 	middleware.InitLog()
 	if err := initFile(); err != nil {
-		logrus.Errorf("init file err: %v", err)
 		return err
 	}
 	if err := dao.InitSqliteDB(port); err != nil {
-		logrus.Errorf("init sqlite db err: %v", err)
 		return err
 	}
 	if err := middleware.InitCron(); err != nil {
@@ -32,7 +30,6 @@ func runServer() error {
 		return err
 	}
 	if err := service.InitHysteria2(); err != nil {
-		logrus.Errorf("init Hysteria2 err: %v", err)
 		return err
 	}
 
@@ -41,25 +38,20 @@ func runServer() error {
 
 	port, crtPath, keyPath, err := service.GetServerPortAndCert()
 	if err != nil {
-		logrus.Errorf("get server port and cert err: %v", err)
 		return err
 	}
 
 	service.InitServer(fmt.Sprintf(":%d", port), r)
 	if err := service.StartServer(crtPath, keyPath); err != nil && err != http.ErrServerClosed {
 		logrus.Errorf("start server err: %v", err)
-		return err
+		return errors.New("start server err")
 	}
 	return nil
 }
 
 func releaseResource() {
-	if err := dao.CloseSqliteDB(); err != nil {
-		logrus.Errorf(err.Error())
-	}
-	if err := service.ReleaseHysteria2(); err != nil {
-		logrus.Errorf(err.Error())
-	}
+	_ = dao.CloseSqliteDB()
+	_ = service.ReleaseHysteria2()
 }
 
 func initFile() error {
@@ -67,7 +59,8 @@ func initFile() error {
 	for _, item := range dirs {
 		if !util.Exists(item) {
 			if err := os.Mkdir(item, os.ModePerm); err != nil {
-				return errors.New(fmt.Sprintf("%s create err: %v", item, err))
+				logrus.Errorf("%s create err: %v", item, err)
+				return errors.New(fmt.Sprintf("%s create err", item))
 			}
 		}
 	}
