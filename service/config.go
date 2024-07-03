@@ -21,6 +21,7 @@ func UpdateConfig(key string, value string) error {
 				return err
 			}
 			if hysteria2Config.Listen == nil || *hysteria2Config.Listen == "" {
+				logrus.Errorf("hysteria2 config is empty")
 				return errors.New("hysteria2 config is empty")
 			}
 			// 启动Hysteria2
@@ -157,6 +158,7 @@ func GetPortAndCert() (int64, string, string, error) {
 
 	portInt, err := strconv.ParseInt(port, 10, 64)
 	if err != nil {
+		logrus.Errorf("port: %s is invalid", port)
 		return 0, "", "", errors.New(fmt.Sprintf("port: %s is invalid", port))
 	}
 
