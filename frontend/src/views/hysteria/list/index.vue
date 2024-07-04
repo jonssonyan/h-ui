@@ -277,6 +277,15 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'acme' && dataForm.acme.type === 'dns'"
+              :content="$t('hysteria.config.acme.dns.config')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.dns.config" prop="acme.dns.config">
+                <acme-dns-config :acme-dns-config="dataForm.acme.dns.config" />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
               v-if="tlsType === 'acme' && !dataForm.acme.type"
               :content="$t('hysteria.config.acme.disableHTTP')"
               placement="bottom"
@@ -968,6 +977,7 @@ import {
 } from "element-plus/lib/components";
 import { hysteria2ChangeVersionApi, listReleaseApi } from "@/api/hysteria2";
 import { monitorHysteria2Api } from "@/api/monitor";
+import AcmeDnsConfig from "@/views/hysteria/list/components/AcmeDnsConfig/index.vue";
 
 const { t } = useI18n();
 
