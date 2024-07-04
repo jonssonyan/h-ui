@@ -43,7 +43,7 @@ type serverConfigACME struct {
 	Dir        *string  `yaml:"dir,omitempty" json:"dir" validate:"required"`
 
 	// Type selection
-	Type *string               `yaml:"type,omitempty" json:"type" validate:"required"`
+	Type *string               `yaml:"type,omitempty" json:"type" validate:"omitempty"`
 	HTTP *serverConfigACMEHTTP `yaml:"http,omitempty" json:"http" validate:"omitempty"`
 	TLS  *serverConfigACMETLS  `yaml:"tls,omitempty" json:"tls" validate:"omitempty"`
 	DNS  *serverConfigACMEDNS  `yaml:"dns,omitempty" json:"dns" validate:"omitempty"`
