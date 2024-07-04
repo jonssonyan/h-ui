@@ -151,15 +151,28 @@ export default {
         domains: "Domains",
         email: "Email",
         ca: "The CA to use. Can be letsencrypt or zerossl.",
+        listenHost:
+          "The host address (not including the port) to listen on for the ACME challenge. If omitted, the server will listen on all interfaces.",
+        dir: "The directory to store the ACME account key and certificates.",
+        type: "ACME challenge type. Can be http, tls, or dns.",
+        http: {
+          altPort:
+            "Listening port for HTTP challenges. (Note: Changing to a port other than 80 requires port forwarding or HTTP reverse proxy, or the challenge will fail!)",
+        },
+        tls: {
+          altPort:
+            "Listening port for TLS-ALPN challenges. (Note: Changing to a port other than 443 requires port forwarding or TLS reverse proxy, or the challenge will fail!)",
+        },
+        dns: {
+          name: "DNS provider. For details, refer to ACME DNS Configuration.",
+          config: "ACME DNS Configuration",
+        },
         disableHTTP: "Disable HTTP challenge.",
         disableTLSALPN: "Disable TLS-ALPN challenge.",
         altHTTPPort:
           "Alternate HTTP challenge port. (Note: If you want to use anything other than 80, you must set up port forward/HTTP reverse proxy from 80 to that port, otherwise ACME will not be able to issue the certificate.)",
         altTLSALPNPort:
           "Alternate TLS-ALPN challenge port. (Note: If you want to use anything other than 443, you must set up port forward/SNI proxy from 443 to that port, otherwise ACME will not be able to issue the certificate.)",
-        dir: "The directory to store the ACME account key and certificates.",
-        listenHost:
-          "The host address (not including the port) to listen on for the ACME challenge. If omitted, the server will listen on all interfaces.",
       },
       obfs: {
         type: "Type",

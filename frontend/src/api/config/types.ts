@@ -30,12 +30,23 @@ export interface Hysteria2ServerConfig {
     domains: string[];
     email: string;
     ca: string;
+    listenHost: string;
+    dir: string;
+    type?: string;
+    http?: {
+      altPort: number;
+    };
+    tls?: {
+      altPort: number;
+    };
+    dns?: {
+      name: string;
+      config: Map<string, string>;
+    };
     disableHTTP: boolean;
     disableTLSALPN: boolean;
     altHTTPPort: number;
     altTLSALPNPort: number;
-    dir: string;
-    listenHost: string;
   };
   obfs?: {
     type: string;
@@ -124,12 +135,23 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     domains: [],
     email: "",
     ca: "zerossl",
+    listenHost: "0.0.0.0",
+    dir: "my_acme_dir",
+    type: "",
+    http: {
+      altPort: 8888,
+    },
+    tls: {
+      altPort: 44333,
+    },
+    dns: {
+      name: "gomommy",
+      config: new Map<string, string>(),
+    },
     disableHTTP: false,
     disableTLSALPN: false,
     altHTTPPort: 80,
     altTLSALPNPort: 443,
-    dir: "my_acme_dir",
-    listenHost: "0.0.0.0",
   },
   trafficStats: {
     listen: ":9999",

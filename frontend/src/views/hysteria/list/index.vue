@@ -206,44 +206,11 @@
             </el-tooltip>
             <el-tooltip
               v-if="tlsType === 'acme'"
-              :content="$t('hysteria.config.acme.disableHTTP')"
+              :content="$t('hysteria.config.acme.listenHost')"
               placement="bottom"
             >
-              <el-form-item label="acme.disableHTTP" prop="acme.disableHTTP">
-                <el-switch v-model="dataForm.acme.disableHTTP" />
-              </el-form-item>
-            </el-tooltip>
-            <el-tooltip
-              v-if="tlsType === 'acme'"
-              :content="$t('hysteria.config.acme.disableTLSALPN')"
-              placement="bottom"
-            >
-              <el-form-item
-                label="acme.disableTLSALPN"
-                prop="acme.disableTLSALPN"
-              >
-                <el-switch v-model="dataForm.acme.disableTLSALPN" />
-              </el-form-item>
-            </el-tooltip>
-            <el-tooltip
-              v-if="tlsType === 'acme'"
-              :content="$t('hysteria.config.acme.altHTTPPort')"
-              placement="bottom"
-            >
-              <el-form-item label="acme.altHTTPPort" prop="acme.altHTTPPort">
-                <el-input v-model="dataForm.acme.altHTTPPort" clearable />
-              </el-form-item>
-            </el-tooltip>
-            <el-tooltip
-              v-if="tlsType === 'acme'"
-              :content="$t('hysteria.config.acme.altTLSALPNPort')"
-              placement="bottom"
-            >
-              <el-form-item
-                label="acme.altTLSALPNPort"
-                prop="acme.altTLSALPNPort"
-              >
-                <el-input v-model="dataForm.acme.altTLSALPNPort" clearable />
+              <el-form-item label="acme.listenHost" prop="acme.listenHost">
+                <el-input v-model="dataForm.acme.listenHost" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -257,11 +224,98 @@
             </el-tooltip>
             <el-tooltip
               v-if="tlsType === 'acme'"
-              :content="$t('hysteria.config.acme.listenHost')"
+              :content="$t('hysteria.config.acme.type')"
               placement="bottom"
             >
-              <el-form-item label="acme.listenHost" prop="acme.listenHost">
-                <el-input v-model="dataForm.acme.listenHost" clearable />
+              <el-form-item label="acme.type" prop="acme.type">
+                <el-select
+                  v-model="dataForm.acme.type"
+                  style="width: 100%"
+                  clearable
+                >
+                  <el-option
+                    v-for="item in acmeTypes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="tlsType === 'acme' && dataForm.acme.type === 'http'"
+              :content="$t('hysteria.config.acme.http.altPort')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.http.altPort" prop="acme.http.altPort">
+                <el-input v-model="dataForm.acme.http.altPort" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="tlsType === 'acme' && dataForm.acme.type === 'tls'"
+              :content="$t('hysteria.config.acme.tls.altPort')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.tls.altPort" prop="acme.tls.altPort">
+                <el-input v-model="dataForm.acme.tls.altPort" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="tlsType === 'acme' && dataForm.acme.type === 'dns'"
+              :content="$t('hysteria.config.acme.dns.name')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.dns.name" prop="acme.dns.name">
+                <el-select v-model="dataForm.acme.dns.name" style="width: 100%">
+                  <el-option
+                    v-for="item in dnsNames"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="tlsType === 'acme' && !dataForm.acme.type"
+              :content="$t('hysteria.config.acme.disableHTTP')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.disableHTTP" prop="acme.disableHTTP">
+                <el-switch v-model="dataForm.acme.disableHTTP" />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="tlsType === 'acme' && !dataForm.acme.type"
+              :content="$t('hysteria.config.acme.disableTLSALPN')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="acme.disableTLSALPN"
+                prop="acme.disableTLSALPN"
+              >
+                <el-switch v-model="dataForm.acme.disableTLSALPN" />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="tlsType === 'acme' && !dataForm.acme.type"
+              :content="$t('hysteria.config.acme.altHTTPPort')"
+              placement="bottom"
+            >
+              <el-form-item label="acme.altHTTPPort" prop="acme.altHTTPPort">
+                <el-input v-model="dataForm.acme.altHTTPPort" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="tlsType === 'acme' && !dataForm.acme.type"
+              :content="$t('hysteria.config.acme.altTLSALPNPort')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="acme.altTLSALPNPort"
+                prop="acme.altTLSALPNPort"
+              >
+                <el-input v-model="dataForm.acme.altTLSALPNPort" clearable />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -895,6 +949,15 @@ const dataFormRules = {
 const tlsTypes = ref<string[]>(["tls", "acme"]);
 const aclTypes = ref<string[]>(["file", "inline"]);
 const acmeCas = ref<string[]>(["zerossl", "letsencrypt"]);
+const acmeTypes = ref<string[]>(["http", "tls", "dns"]);
+const dnsNames = ref<string[]>([
+  "cloudflare",
+  "duckdns",
+  "gandi",
+  "godaddy",
+  "namedotcom",
+  "vultr",
+]);
 const obfsTypes = ref<string[]>(["salamander"]);
 const resolverTypes = ref<string[]>(["tcp", "udp", "tls", "https"]);
 const masqueradeTypes = ref<string[]>(["file", "proxy", "string"]);

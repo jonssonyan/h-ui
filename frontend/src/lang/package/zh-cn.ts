@@ -150,15 +150,28 @@ export default {
         domains: "域名",
         email: "邮箱",
         ca: "要使用的 CA。可以是 letsencrypt 或 zerossl。",
+        listenHost:
+          "用于 ACME 服务器验证的监听地址（不含端口）。默认监听所有可用的地址。",
+        dir: "存储 ACME 账户密钥和证书的目录。",
+        type: "ACME 验证类型。可以是 http, tls 或 dns。",
+        http: {
+          altPort:
+            "用于 HTTP 挑战的监听端口。 （注意： 改为非 80 需要另行配置端口转发或者 HTTP 反向代理，否则证书会签署失败！）",
+        },
+        tls: {
+          altPort:
+            "用于 TLS-ALPN 挑战的监听端口。 （注意： 改为非 443 需要另行配置端口转发或者 SNI Proxy，否则证书会签署失败！）",
+        },
+        dns: {
+          name: "DNS 提供商。详细信息请参考 ACME DNS 配置。",
+          config: "ACME DNS 配置",
+        },
         disableHTTP: "禁用 HTTP 挑战。",
         disableTLSALPN: "禁用 TLS-ALPN 挑战。",
         altHTTPPort:
           "用于 HTTP 挑战的监听端口。 （注意： 改为非 80 需要另行配置端口转发或者 HTTP 反向代理，否则证书会签署失败！）",
         altTLSALPNPort:
           "用于 TLS-ALPN 挑战的监听端口。 （注意： 改为非 443 需要另行配置端口转发或者 SNI Proxy，否则证书会签署失败！）",
-        dir: "存储 ACME 账户密钥和证书的目录。",
-        listenHost:
-          "用于 ACME 服务器验证的监听地址（不含端口）。默认监听所有可用的地址。",
       },
       obfs: {
         type: "类型",
