@@ -66,7 +66,7 @@ type serverConfigACMETLS struct {
 
 type serverConfigACMEDNS struct {
 	Name   *string           `yaml:"name,omitempty" json:"name" validate:"required"`
-	Config map[string]string `yaml:"config,omitempty" json:"config" validate:"omitempty"`
+	Config map[string]string `yaml:"config,omitempty" json:"config" validate:"required"`
 }
 
 type serverConfigQUIC struct {
@@ -131,8 +131,8 @@ type serverConfigResolver struct {
 
 type serverConfigSniff struct {
 	Enable        *bool   `yaml:"enable,omitempty" json:"enable" validate:"required"`
-	Timeout       *string `yaml:"timeout,omitempty" json:"timeout" validate:"omitempty"`
-	RewriteDomain *bool   `yaml:"rewriteDomain,omitempty" json:"rewriteDomain" validate:"omitempty"`
+	Timeout       *string `yaml:"timeout,omitempty" json:"timeout" validate:"required"`
+	RewriteDomain *bool   `yaml:"rewriteDomain,omitempty" json:"rewriteDomain" validate:"required"`
 	TCPPorts      *string `yaml:"tcpPorts,omitempty" json:"tcpPorts" validate:"omitempty"`
 	UDPPorts      *string `yaml:"udpPorts,omitempty" json:"udpPorts" validate:"omitempty"`
 }
