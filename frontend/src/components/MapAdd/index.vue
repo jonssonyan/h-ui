@@ -146,10 +146,9 @@ const handleClose = (key: string): void => {
 };
 
 const handleInfo = (key: string) => {
-  const value = mapObject.value[key];
   state.dataInfo = {
     key: key,
-    value: value ? value : "",
+    value: mapObject.value[key] || "",
   };
   state.infoDialog.visible = true;
 };
