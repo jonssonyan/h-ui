@@ -1,5 +1,7 @@
 package bo
 
+import "time"
+
 type Hysteria2ServerConfig struct {
 	Listen                *string                     `yaml:"listen,omitempty" json:"listen" validate:"required"`
 	Obfs                  *serverConfigObfs           `yaml:"obfs,omitempty" json:"obfs" validate:"omitempty"`
@@ -13,6 +15,7 @@ type Hysteria2ServerConfig struct {
 	UDPIdleTimeout        *string                     `yaml:"udpIdleTimeout,omitempty" json:"udpIdleTimeout" validate:"omitempty"`
 	Auth                  *ServerConfigAuth           `yaml:"auth,omitempty" json:"auth" validate:"omitempty"`
 	Resolver              *serverConfigResolver       `yaml:"resolver,omitempty" json:"resolver" validate:"omitempty"`
+	Sniff                 *serverConfigSniff          `yaml:"sniff,omitempty" json:"sniff" validate:"omitempty"`
 	ACL                   *serverConfigACL            `yaml:"acl,omitempty" json:"acl" validate:"omitempty"`
 	Outbounds             []serverConfigOutboundEntry `yaml:"outbounds,omitempty" json:"outbounds" validate:"omitempty"`
 	TrafficStats          *ServerConfigTrafficStats   `yaml:"trafficStats,omitempty" json:"trafficStats" validate:"required"`
@@ -34,15 +37,38 @@ type serverConfigTLS struct {
 }
 
 type serverConfigACME struct {
-	Domains        []string `yaml:"domains,omitempty" json:"domains" validate:"required"`
-	Email          *string  `yaml:"email,omitempty" json:"email" validate:"required"`
-	CA             *string  `yaml:"ca,omitempty" json:"ca" validate:"required"`
-	DisableHTTP    *bool    `yaml:"disableHTTP,omitempty" json:"disableHTTP" validate:"required"`
-	DisableTLSALPN *bool    `yaml:"disableTLSALPN,omitempty" json:"disableTLSALPN" validate:"required"`
-	ListenHost     *string  `yaml:"listenHost,omitempty" json:"listenHost" validate:"required"`
-	AltHTTPPort    *int     `yaml:"altHTTPPort,omitempty" json:"altHTTPPort" validate:"required"`
-	AltTLSALPNPort *int     `yaml:"altTLSALPNPort,omitempty" json:"altTLSALPNPort" validate:"required"`
-	Dir            *string  `yaml:"dir,omitempty" json:"dir" validate:"required"`
+	// Common fields
+	Domains    []string `yaml:"domains,omitempty" json:"domains" validate:"required"`
+	Email      *string  `yaml:"email,omitempty" json:"email" validate:"required"`
+	CA         *string  `yaml:"ca,omitempty" json:"ca" validate:"required"`
+	ListenHost *string  `yaml:"listenHost,omitempty" json:"listenHost" validate:"required"`
+	Dir        *string  `yaml:"dir,omitempty" json:"dir" validate:"required"`
+
+	// Type selection
+	Type *string               `yaml:"type,omitempty" json:"type" validate:"required"`
+	HTTP *serverConfigACMEHTTP `yaml:"http,omitempty" json:"http" validate:"omitempty"`
+	TLS  *serverConfigACMETLS  `yaml:"tls,omitempty" json:"tls" validate:"omitempty"`
+	DNS  *serverConfigACMEDNS  `yaml:"dns,omitempty" json:"dns" validate:"omitempty"`
+
+	// Legacy fields for backwards compatibility
+	// Only applicable when Type is empty
+	DisableHTTP    *bool `yaml:"disableHTTP,omitempty" json:"disableHTTP" validate:"required"`
+	DisableTLSALPN *bool `yaml:"disableTLSALPN,omitempty" json:"disableTLSALPN" validate:"required"`
+	AltHTTPPort    *int  `yaml:"altHTTPPort,omitempty" json:"altHTTPPort" validate:"required"`
+	AltTLSALPNPort *int  `yaml:"altTLSALPNPort,omitempty" json:"altTLSALPNPort" validate:"required"`
+}
+
+type serverConfigACMEHTTP struct {
+	AltPort *int `yaml:"altPort,omitempty" json:"altPort" validate:"required"`
+}
+
+type serverConfigACMETLS struct {
+	AltPort *int `yaml:"altPort,omitempty" json:"altPort" validate:"required"`
+}
+
+type serverConfigACMEDNS struct {
+	Name   *string           `yaml:"name,omitempty" json:"name" validate:"required"`
+	Config map[string]string `yaml:"config,omitempty" json:"config" validate:"omitempty"`
 }
 
 type serverConfigQUIC struct {
@@ -103,6 +129,14 @@ type serverConfigResolver struct {
 	UDP   *serverConfigResolverUDP   `yaml:"udp,omitempty" json:"udp" validate:"omitempty"`
 	TLS   *serverConfigResolverTLS   `yaml:"tls,omitempty" json:"tls" validate:"omitempty"`
 	HTTPS *serverConfigResolverHTTPS `yaml:"https,omitempty" json:"https" validate:"omitempty"`
+}
+
+type serverConfigSniff struct {
+	Enable        *bool          `yaml:"enable,omitempty" json:"enable" validate:"required"`
+	Timeout       *time.Duration `yaml:"timeout,omitempty" json:"timeout" validate:"omitempty"`
+	RewriteDomain *bool          `yaml:"rewriteDomain,omitempty" json:"rewriteDomain" validate:"omitempty"`
+	TCPPorts      *string        `yaml:"tcpPorts,omitempty" json:"tcpPorts" validate:"omitempty"`
+	UDPPorts      *string        `yaml:"udpPorts,omitempty" json:"udpPorts" validate:"omitempty"`
 }
 
 type serverConfigACL struct {
