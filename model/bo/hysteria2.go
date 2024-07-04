@@ -173,7 +173,7 @@ type serverConfigOutboundEntry struct {
 
 type ServerConfigTrafficStats struct {
 	Listen *string `yaml:"listen,omitempty" json:"listen" validate:"required"`
-	Secret *string `yaml:"secret,omitempty" json:"secret" validate:"omitempty"`
+	Secret *string `yaml:"secret,omitempty" json:"-" validate:"omitempty"`
 }
 
 type serverConfigMasqueradeFile struct {
