@@ -13,9 +13,7 @@ const (
 	SystemLogPath    = "logs/h-ui.log"
 	Hysteria2LogPath = "logs/hysteria2.log"
 
-	Hysteria2Version = "app/v2.4.4"
-
 	TokenType = "Bearer"
 
-	Version = "v0.0.2"
+	Version = "v0.0.3"
 )
