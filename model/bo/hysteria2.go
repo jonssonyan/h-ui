@@ -1,7 +1,5 @@
 package bo
 
-import "time"
-
 type Hysteria2ServerConfig struct {
 	Listen                *string                     `yaml:"listen,omitempty" json:"listen" validate:"required"`
 	Obfs                  *serverConfigObfs           `yaml:"obfs,omitempty" json:"obfs" validate:"omitempty"`
@@ -132,11 +130,11 @@ type serverConfigResolver struct {
 }
 
 type serverConfigSniff struct {
-	Enable        *bool          `yaml:"enable,omitempty" json:"enable" validate:"required"`
-	Timeout       *time.Duration `yaml:"timeout,omitempty" json:"timeout" validate:"omitempty"`
-	RewriteDomain *bool          `yaml:"rewriteDomain,omitempty" json:"rewriteDomain" validate:"omitempty"`
-	TCPPorts      *string        `yaml:"tcpPorts,omitempty" json:"tcpPorts" validate:"omitempty"`
-	UDPPorts      *string        `yaml:"udpPorts,omitempty" json:"udpPorts" validate:"omitempty"`
+	Enable        *bool   `yaml:"enable,omitempty" json:"enable" validate:"required"`
+	Timeout       *string `yaml:"timeout,omitempty" json:"timeout" validate:"omitempty"`
+	RewriteDomain *bool   `yaml:"rewriteDomain,omitempty" json:"rewriteDomain" validate:"omitempty"`
+	TCPPorts      *string `yaml:"tcpPorts,omitempty" json:"tcpPorts" validate:"omitempty"`
+	UDPPorts      *string `yaml:"udpPorts,omitempty" json:"udpPorts" validate:"omitempty"`
 }
 
 type serverConfigACL struct {
