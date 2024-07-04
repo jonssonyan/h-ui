@@ -887,10 +887,7 @@
                 label="masquerade.string.headers"
                 prop="masquerade.string.headers"
               >
-                <el-input
-                  v-model="dataForm.masquerade.string.headers"
-                  clearable
-                />
+                <map-add :map-object="dataForm.masquerade.string.headers" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -1195,22 +1192,33 @@ const handleChangeEnable = async () => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      let params = deepCopy(state.dataForm);
       if (state.tlsType == "tls") {
-        params.acme = undefined;
+        state.dataForm.acme = undefined;
       } else {
-        params.tls = undefined;
-        if (params.acme?.type == "http") {
-          params.acme.tls = undefined;
-          params.acme.dns = undefined;
-        } else if (params.acme?.type == "tls") {
-          params.acme.http = undefined;
-          params.acme.dns = undefined;
-        } else if (params.acme?.type == "dns") {
-          params.acme.http = undefined;
-          params.acme.tls = undefined;
+        state.dataForm.tls = undefined;
+        if (state.dataForm.acme?.type == "http") {
+          state.dataForm.acme.tls = undefined;
+          state.dataForm.acme.dns = undefined;
+        } else if (state.dataForm.acme?.type == "tls") {
+          state.dataForm.acme.http = undefined;
+          state.dataForm.acme.dns = undefined;
+        } else if (state.dataForm.acme?.type == "dns") {
+          state.dataForm.acme.http = undefined;
+          state.dataForm.acme.tls = undefined;
         }
       }
+      if (state.dataForm.masquerade?.type == "file") {
+        state.dataForm.masquerade.proxy = undefined;
+        state.dataForm.masquerade.string = undefined;
+      } else if (state.dataForm.masquerade?.type == "proxy") {
+        state.dataForm.masquerade.file = undefined;
+        state.dataForm.masquerade.string = undefined;
+      } else if (state.dataForm.masquerade?.type == "string") {
+        state.dataForm.masquerade.file = undefined;
+        state.dataForm.masquerade.proxy = undefined;
+      }
+
+      const params = { ...state.dataForm };
       updateHysteria2ConfigApi(params).then(() => {
         ElMessage.success(t("common.success"));
         setConfig();

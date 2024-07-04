@@ -12,7 +12,15 @@ export const assignIgnoringNull = <T extends object>(
       Object.keys(source).forEach((key) => {
         const value = source[key as keyof T];
         if (value !== null && value !== undefined) {
-          target[key as keyof T] = value;
+          if (typeof value === "object" && !Array.isArray(value)) {
+            // 如果值是对象，则递归调用 assignIgnoringNull
+            target[key as keyof T] = assignIgnoringNull(
+              {} as any, // 使用 {} as any 来避免类型错误，实际运行时应为 T[keyof T]
+              value as Partial<any>
+            );
+          } else {
+            target[key as keyof T] = value as any;
+          }
         }
       });
     }
