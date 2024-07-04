@@ -1200,6 +1200,16 @@ const submitForm = () => {
         params.acme = undefined;
       } else {
         params.tls = undefined;
+        if (params.acme?.type == "http") {
+          params.acme.tls = undefined;
+          params.acme.dns = undefined;
+        } else if (params.acme?.type == "tls") {
+          params.acme.http = undefined;
+          params.acme.dns = undefined;
+        } else if (params.acme?.type == "dns") {
+          params.acme.http = undefined;
+          params.acme.tls = undefined;
+        }
       }
       updateHysteria2ConfigApi(params).then(() => {
         ElMessage.success(t("common.success"));
@@ -1221,7 +1231,7 @@ const setConfig = () => {
       assignIgnoringNull(state.dataForm, response.data);
       if (
         (state.dataForm?.tls?.cert && state.dataForm?.tls?.key) ||
-        state.dataForm?.acme?.domains.length == 0
+        state.dataForm?.acme?.domains?.length == 0
       ) {
         state.tlsType = "tls";
       } else {
