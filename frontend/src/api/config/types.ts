@@ -41,7 +41,7 @@ export interface Hysteria2ServerConfig {
     };
     dns?: {
       name: string;
-      config: Map<string, string>;
+      config: { [key: string]: string };
     };
     disableHTTP: boolean;
     disableTLSALPN: boolean;
@@ -153,7 +153,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     },
     dns: {
       name: "gomommy",
-      config: new Map<string, string>(),
+      config: {},
     },
     disableHTTP: false,
     disableTLSALPN: false,

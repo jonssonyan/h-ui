@@ -81,8 +81,8 @@ import { PropType } from "vue";
 const props = defineProps({
   acmeDnsConfig: {
     required: true,
-    type: Map as PropType<Map<string, string>>,
-    default: (): Map<string, string> => new Map<string, string>(),
+    type: {} as PropType<{ [key: string]: string }>,
+    default: () => {},
   },
 });
 
@@ -143,11 +143,11 @@ const handleAdd = () => {
 };
 
 const handleClose = (key: string): void => {
-  acmeDnsConfig.value.delete(key);
+  delete acmeDnsConfig.value[key];
 };
 
 const handleInfo = (key: string) => {
-  const value = acmeDnsConfig.value.get(key);
+  const value = acmeDnsConfig.value[key];
   state.acmeDnsConfigInfo = {
     key: key,
     value: value ? value : "",
@@ -158,11 +158,11 @@ const handleInfo = (key: string) => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      if (acmeDnsConfig.value.has(state.dataForm.key)) {
+      if (acmeDnsConfig.value[state.dataForm.key]) {
         ElMessage.error("key cannot be repeated");
         return;
       }
-      acmeDnsConfig.value.set(state.dataForm.key, state.dataForm.value);
+      acmeDnsConfig.value[state.dataForm.key] = state.dataForm.value;
       closeDialog();
     }
   });
