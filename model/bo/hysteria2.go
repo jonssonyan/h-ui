@@ -11,7 +11,7 @@ type Hysteria2ServerConfig struct {
 	SpeedTest             *bool                       `yaml:"speedTest,omitempty" json:"speedTest" validate:"omitempty"`
 	DisableUDP            *bool                       `yaml:"disableUDP,omitempty" json:"disableUDP" validate:"omitempty"`
 	UDPIdleTimeout        *string                     `yaml:"udpIdleTimeout,omitempty" json:"udpIdleTimeout" validate:"omitempty"`
-	Auth                  *ServerConfigAuth           `yaml:"auth,omitempty" json:"auth" validate:"omitempty"`
+	Auth                  *ServerConfigAuth           `yaml:"auth,omitempty" json:"-" validate:"omitempty"`
 	Resolver              *serverConfigResolver       `yaml:"resolver,omitempty" json:"resolver" validate:"omitempty"`
 	Sniff                 *serverConfigSniff          `yaml:"sniff,omitempty" json:"sniff" validate:"omitempty"`
 	ACL                   *serverConfigACL            `yaml:"acl,omitempty" json:"acl" validate:"omitempty"`
