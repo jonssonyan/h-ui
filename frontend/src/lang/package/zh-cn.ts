@@ -133,6 +133,7 @@ export default {
     speedTest: "速度测试",
     udp: "UDP",
     resolver: "DNS 解析",
+    sniff: "协议嗅探 (Sniff)",
     acl: "ACL",
     outbounds: "出站规则",
     http: "流量统计 API",
@@ -220,6 +221,15 @@ export default {
           sni: "DNS over TLS 服务器的 SNI。",
           insecure: "禁用 TLS 证书验证。",
         },
+      },
+      sniff: {
+        enable: "是否启用协议嗅探。",
+        timeout:
+          "嗅探超时时间。如果超过这个时间仍然无法确定协议/获取域名，将使用原地址发起连接。",
+        rewriteDomain:
+          "是否重写已经是域名的请求。如果启用，对于目标地址已经是域名的请求，仍会进行嗅探。",
+        tcpPorts: "TCP 端口列表。只有这些端口的 TCP 请求会被嗅探。",
+        udpPorts: "UDP 端口列表。只有这些端口的 UDP 请求会被嗅探。",
       },
       aclType: "ACL 类型",
       acl: {

@@ -94,6 +94,13 @@ export interface Hysteria2ServerConfig {
       insecure: boolean;
     };
   };
+  sniff?: {
+    enable: boolean;
+    timeout: string;
+    rewriteDomain: boolean;
+    tcpPorts?: string;
+    udpPorts?: string;
+  };
   acl?: {
     file?: string;
     inline?: string[];

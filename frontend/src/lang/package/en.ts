@@ -134,6 +134,7 @@ export default {
     speedTest: "Speed Test",
     udp: "UDP",
     resolver: "Resolver",
+    sniff: "Protocol Sniffing",
     acl: "ACL",
     outbounds: "Outbounds",
     http: "Traffic Stats API (HTTP)",
@@ -227,6 +228,17 @@ export default {
           sni: "The SNI to use for the TLS resolver.",
           insecure: "Disable TLS verification for the TLS resolver.",
         },
+      },
+      sniff: {
+        enable: "Whether to enable protocol sniffing.",
+        timeout:
+          "Sniffing timeout. If the protocol/domain cannot be determined within this time, the original address will be used to initiate the connection.",
+        rewriteDomain:
+          "Whether to rewrite requests that are already in domain name form. If enabled, requests with the target address already in domain name form will still be sniffed.",
+        tcpPorts:
+          "List of TCP ports. Only TCP requests on these ports will be sniffed.",
+        udpPorts:
+          "List of UDP ports. Only UDP requests on these ports will be sniffed.",
       },
       aclType: "ACL type",
       acl: {

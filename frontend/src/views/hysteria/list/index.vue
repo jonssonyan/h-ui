@@ -667,6 +667,51 @@
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
+          <el-tab-pane :label="$t('hysteria.sniff')" name="sniff" v-if="sniff">
+            <el-tooltip
+              :content="$t('hysteria.config.sniff.enable')"
+              placement="bottom"
+            >
+              <el-form-item label="sniff.enable" prop="sniff.enable">
+                <el-switch v-model="dataForm.sniff.enable" />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.sniff.timeout')"
+              placement="bottom"
+            >
+              <el-form-item label="sniff.timeout" prop="sniff.timeout">
+                <el-input v-model="dataForm.sniff.timeout" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.sniff.rewriteDomain')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="sniff.rewriteDomain"
+                prop="sniff.rewriteDomain"
+              >
+                <el-switch v-model="dataForm.sniff.rewriteDomain" />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.sniff.tcpPorts')"
+              placement="bottom"
+            >
+              <el-form-item label="sniff.tcpPorts" prop="sniff.tcpPorts">
+                <el-input v-model="dataForm.sniff.tcpPorts" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.sniff.udpPorts')"
+              placement="bottom"
+            >
+              <el-form-item label="sniff.udpPorts" prop="sniff.udpPorts">
+                <el-input v-model="dataForm.sniff.udpPorts" clearable />
+              </el-form-item>
+            </el-tooltip>
+          </el-tab-pane>
           <el-tab-pane :label="$t('hysteria.acl')" name="acl" v-if="acl">
             <el-tooltip
               :content="$t('hysteria.config.aclType')"
@@ -742,7 +787,7 @@
               placement="bottom"
             >
               <el-form-item
-                :label="$t('hysteria.config.trafficStats.listen')"
+                label="trafficStats.listen"
                 prop="trafficStats.listen"
               >
                 <el-input v-model="dataForm.trafficStats.listen" clearable />
@@ -976,6 +1021,7 @@ const state = reactive({
   speedTest: false,
   udp: false,
   resolver: false,
+  sniff: false,
   acl: false,
   outbounds: false,
   masquerade: false,
@@ -1000,6 +1046,7 @@ const {
   speedTest,
   udp,
   resolver,
+  sniff,
   acl,
   outbounds,
   masquerade,
@@ -1045,6 +1092,12 @@ const tabs = computed(() => {
     tabs.push({
       name: "resolver",
       desc: t("hysteria.resolver"),
+    });
+  }
+  if (!state.sniff) {
+    tabs.push({
+      name: "sniff",
+      desc: t("hysteria.sniff"),
     });
   }
   if (!state.acl) {
@@ -1187,6 +1240,9 @@ const setConfig = () => {
       if (state.dataForm?.resolver) {
         state.resolver = true;
       }
+      if (state.dataForm?.sniff) {
+        state.sniff = true;
+      }
       if (state.dataForm?.acl) {
         state.acl = true;
       }
@@ -1230,6 +1286,9 @@ const closeTabPane = (tabPaneName: string) => {
   } else if (tabPaneName === "resolver") {
     state.dataForm.resolver = undefined;
     state.resolver = false;
+  } else if (tabPaneName === "sniff") {
+    state.dataForm.sniff = undefined;
+    state.sniff = false;
   } else if (tabPaneName === "acl") {
     state.dataForm.acl = undefined;
     state.acl = false;
@@ -1302,6 +1361,15 @@ const handleDropdownClick = (command: string) => {
       },
     };
     state.resolver = true;
+  } else if (command === "sniff") {
+    state.dataForm.sniff = {
+      enable: true,
+      timeout: "2s",
+      rewriteDomain: false,
+      tcpPorts: "80,443,8000-9000",
+      udpPorts: "all",
+    };
+    state.sniff = true;
   } else if (command === "acl") {
     state.dataForm.acl = {
       file: undefined,
