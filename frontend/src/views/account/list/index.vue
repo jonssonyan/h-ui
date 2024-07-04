@@ -115,7 +115,7 @@
           prop="upload"
         >
           <template #default="scope">
-            {{ formatBytes(scope.row.download) }}
+            {{ formatBytes(scope.row.upload) }}
           </template>
         </el-table-column>
         <el-table-column
