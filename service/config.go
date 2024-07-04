@@ -99,7 +99,7 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 	hysteria2ServerConfig.Auth = &auth
 	hysteria2ServerConfig.TrafficStats.Secret = &jwtSecret
 
-	yamlConfig, err := yaml.Marshal(hysteria2ServerConfig)
+	yamlConfig, err := yaml.Marshal(&hysteria2ServerConfig)
 	if err != nil {
 		return err
 	}
@@ -107,7 +107,7 @@ func UpdateHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error
 }
 
 func SetHysteria2Config(hysteria2ServerConfig bo.Hysteria2ServerConfig) error {
-	config, err := yaml.Marshal(hysteria2ServerConfig)
+	config, err := yaml.Marshal(&hysteria2ServerConfig)
 	if err != nil {
 		return err
 	}

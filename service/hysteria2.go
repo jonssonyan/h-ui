@@ -53,7 +53,7 @@ func setHysteria2ConfigYAML() error {
 		}
 	}
 
-	hysteria2Config, err := yaml.Marshal(serverConfig)
+	hysteria2Config, err := yaml.Marshal(&serverConfig)
 	if err != nil {
 		logrus.Errorf("marshal hysteria2 config err: %v", err)
 		return errors.New("marshal hysteria2 config err")

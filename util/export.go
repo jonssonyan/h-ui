@@ -25,7 +25,7 @@ func ExportFile(filePath string, data any, t int) error {
 			return errors.New(constant.SysError)
 		}
 	} else if t == 1 {
-		bytes, err = yaml.Marshal(data)
+		bytes, err = yaml.Marshal(&data)
 		if err != nil {
 			logrus.Errorf("ExportFile Marshal yaml err filePath: %s err: %v", filePath, err)
 			return errors.New(constant.SysError)

@@ -2,7 +2,7 @@
   <div class="flex gap-2">
     <el-tag
       :key="key"
-      v-for="[key] in acmeDnsConfig"
+      v-for="(value, key) in mapObject"
       @close="handleClose(key)"
       @click="handleInfo(key)"
       size="large"
@@ -44,23 +44,23 @@
     </el-dialog>
 
     <el-dialog
-      :title="acmeDnsConfigInfoDialog.title"
-      v-model="acmeDnsConfigInfoDialog.visible"
+      :title="infoDialog.title"
+      v-model="infoDialog.visible"
       width="600px"
       append-to-body
-      @close="acmeDnsConfigInfoDialog.visible = false"
+      @close="infoDialog.visible = false"
     >
       <el-form label-position="top">
         <el-form-item label="key" prop="key">
-          <el-tag>{{ acmeDnsConfigInfo.key }}</el-tag>
+          <el-tag>{{ dataInfo.key }}</el-tag>
         </el-form-item>
         <el-form-item label="value" prop="value">
-          <el-tag>{{ acmeDnsConfigInfo.value }}</el-tag>
+          <el-tag>{{ dataInfo.value }}</el-tag>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="acmeDnsConfigInfoDialog.visible = false"
+          <el-button @click="infoDialog.visible = false"
             >{{ $t("common.cancel") }}
           </el-button>
         </div>
@@ -71,26 +71,31 @@
 
 <script lang="ts">
 export default {
-  name: "acmeDnsConfig",
+  name: "mapObject",
 };
 </script>
 
 <script setup lang="ts">
 import { PropType } from "vue";
 
+interface Form {
+  key: string;
+  value: string;
+}
+
 const props = defineProps({
-  acmeDnsConfig: {
+  mapObject: {
     required: true,
-    type: {} as PropType<{ [key: string]: string }>,
-    default: () => {},
+    type: Object as PropType<{ [key: string]: string }>,
+    default: () => ({}),
   },
 });
 
 const emit = defineEmits<{
-  (event: "update:acmeDnsConfig", value: Map<string, string>): void;
+  (event: "update:mapObject", value: { [key: string]: string }): void;
 }>();
 
-const acmeDnsConfig = useVModel(props, "acmeDnsConfig", emit);
+const mapObject = useVModel(props, "mapObject", emit);
 
 const dataFormRef = ref(ElForm);
 
@@ -111,58 +116,52 @@ const dataFormRules = {
   ],
 };
 
-interface Form {
-  key: string;
-  value: string;
-}
-
 const state = reactive({
   dataForm: {
     key: "",
     value: "",
   } as Form,
   dialog: {
-    title: "Add ACME DNS Config",
+    title: "Add",
     visible: false,
   } as DialogType,
-  acmeDnsConfigInfoDialog: {
-    title: "ACME DNS Config Info",
+  infoDialog: {
+    title: "Info",
     visible: false,
   },
-  acmeDnsConfigInfo: {
+  dataInfo: {
     key: "",
     value: "",
   } as Form,
 });
 
-const { dataForm, dialog, acmeDnsConfigInfoDialog, acmeDnsConfigInfo } =
-  toRefs(state);
+const { dataForm, dialog, infoDialog, dataInfo } = toRefs(state);
 
 const handleAdd = () => {
   state.dialog.visible = true;
 };
 
 const handleClose = (key: string): void => {
-  delete acmeDnsConfig.value[key];
+  delete mapObject.value[key];
 };
 
 const handleInfo = (key: string) => {
-  const value = acmeDnsConfig.value[key];
-  state.acmeDnsConfigInfo = {
+  const value = mapObject.value[key];
+  state.dataInfo = {
     key: key,
     value: value ? value : "",
   };
-  state.acmeDnsConfigInfoDialog.visible = true;
+  state.infoDialog.visible = true;
 };
 
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
-      if (acmeDnsConfig.value[state.dataForm.key]) {
+      if (mapObject.value[state.dataForm.key]) {
         ElMessage.error("key cannot be repeated");
         return;
       }
-      acmeDnsConfig.value[state.dataForm.key] = state.dataForm.value;
+      mapObject.value[state.dataForm.key] = state.dataForm.value;
       closeDialog();
     }
   });

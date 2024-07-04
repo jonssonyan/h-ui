@@ -282,7 +282,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.dns.config" prop="acme.dns.config">
-                <acme-dns-config :acme-dns-config="dataForm.acme.dns.config" />
+                <map-add :map-object="dataForm.acme.dns.config" />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
