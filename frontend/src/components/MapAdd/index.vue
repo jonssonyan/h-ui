@@ -85,7 +85,7 @@ interface Form {
 
 const props = defineProps({
   mapObject: {
-    required: true,
+    required: false,
     type: Object as PropType<{ [key: string]: string }>,
     default: () => ({}),
   },
