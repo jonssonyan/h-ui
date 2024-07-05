@@ -738,7 +738,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="aclTypes === 'file'"
+              v-if="aclType === 'file'"
               :content="$t('hysteria.config.acl.file')"
               placement="bottom"
             >
@@ -747,7 +747,7 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
-              v-if="aclTypes === 'inline'"
+              v-if="aclType === 'inline'"
               :content="$t('hysteria.config.acl.inline')"
               placement="bottom"
             >
