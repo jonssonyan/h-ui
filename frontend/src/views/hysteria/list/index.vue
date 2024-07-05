@@ -966,7 +966,7 @@ import {
   updateHysteria2ConfigApi,
 } from "@/api/config";
 import { useI18n } from "vue-i18n";
-import { assignIgnoringNull, deepCopy } from "@/utils/object";
+import { assignWith } from "@/utils/copy";
 import {
   UploadFile,
   UploadRawFile,
@@ -974,7 +974,6 @@ import {
 } from "element-plus/lib/components";
 import { hysteria2ChangeVersionApi, listReleaseApi } from "@/api/hysteria2";
 import { monitorHysteria2Api } from "@/api/monitor";
-import AcmeDnsConfig from "@/views/hysteria/list/components/AcmeDnsConfig/index.vue";
 
 const { t } = useI18n();
 
@@ -1236,7 +1235,7 @@ const setConfig = () => {
   });
   getHysteria2ConfigApi().then((response) => {
     if (response.data) {
-      assignIgnoringNull(state.dataForm, response.data);
+      assignWith(state.dataForm, response.data);
       if (
         (state.dataForm?.tls?.cert && state.dataForm?.tls?.key) ||
         state.dataForm?.acme?.domains?.length == 0
