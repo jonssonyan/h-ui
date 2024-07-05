@@ -28,13 +28,13 @@ import { PropType } from "vue";
 const props = defineProps({
   tags: {
     required: false,
-    type: Array as PropType<string[]>,
+    type: [] as PropType<string[]>,
     default: () => [],
   },
 });
 
 const emit = defineEmits<{
-  (event: "update:tags", value: Array<string>): void;
+  (event: "update:tags", value: string[]): void;
 }>();
 
 const tags = useVModel(props, "tags", emit);
