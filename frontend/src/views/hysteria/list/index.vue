@@ -1236,6 +1236,7 @@ const setConfig = () => {
   getHysteria2ConfigApi().then((response) => {
     if (response.data) {
       assignWith(state.dataForm, response.data);
+      console.log(state.dataForm);
       if (
         (state.dataForm?.tls?.cert && state.dataForm?.tls?.key) ||
         state.dataForm?.acme?.domains?.length == 0

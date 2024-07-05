@@ -266,7 +266,7 @@ import {
   Hysteria2ServerConfigOutbound,
 } from "@/api/config/types";
 import { PropType } from "vue";
-import { cloneDeepWith } from "@/utils/copy";
+import { deepCopy } from "@/utils/copy";
 
 const props = defineProps({
   outbounds: {
@@ -331,7 +331,7 @@ const submitForm = () => {
         ElMessage.error("name cannot be repeated");
         return;
       }
-      let outbound = cloneDeepWith(state.dataForm);
+      let outbound = deepCopy(state.dataForm);
 
       if (outbound.type === "socks5") {
         outbound.http = undefined;
