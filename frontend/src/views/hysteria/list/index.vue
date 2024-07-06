@@ -1193,7 +1193,7 @@ const submitForm = () => {
     if (valid) {
       if (state.tlsType == "tls") {
         state.dataForm.acme = undefined;
-      } else {
+      } else if (state.tlsType == "acme") {
         state.dataForm.tls = undefined;
         if (state.dataForm.acme?.type == "http") {
           state.dataForm.acme.tls = undefined;
@@ -1204,6 +1204,10 @@ const submitForm = () => {
         } else if (state.dataForm.acme?.type == "dns") {
           state.dataForm.acme.http = undefined;
           state.dataForm.acme.tls = undefined;
+        } else if (state.dataForm.acme?.type == "") {
+          state.dataForm.acme.http = undefined;
+          state.dataForm.acme.tls = undefined;
+          state.dataForm.acme.dns = undefined;
         }
       }
 
