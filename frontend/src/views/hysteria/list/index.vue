@@ -952,7 +952,6 @@ export default {
 import {
   defaultHysteria2ServerConfig,
   Hysteria2ServerConfig,
-  Hysteria2ServerConfigOutbound,
   Tab,
 } from "@/api/config/types";
 import Outbounds from "./components/Outbounds/index.vue";
@@ -1313,6 +1312,7 @@ const setConfig = () => {
       state.outbounds = !!data?.outbounds;
       state.masquerade = !!data?.masquerade;
 
+      state.dataForm = defaultHysteria2ServerConfig;
       assignWith(state.dataForm, data);
     }
   });
