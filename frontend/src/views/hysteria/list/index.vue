@@ -1217,6 +1217,38 @@ const submitForm = () => {
         state.dataForm.masquerade.proxy = undefined;
       }
 
+      if (!state.obfs) {
+        state.dataForm.obfs = undefined;
+      }
+      if (!state.quic) {
+        state.dataForm.quic = undefined;
+      }
+      if (!state.bandwidth) {
+        state.dataForm.bandwidth = undefined;
+      }
+      if (!state.speedTest) {
+        state.dataForm.speedTest = undefined;
+      }
+      if (!state.udp) {
+        state.dataForm.disableUDP = undefined;
+        state.dataForm.udpIdleTimeout = undefined;
+      }
+      if (!state.resolver) {
+        state.dataForm.resolver = undefined;
+      }
+      if (!state.sniff) {
+        state.dataForm.sniff = undefined;
+      }
+      if (!state.acl) {
+        state.dataForm.acl = undefined;
+      }
+      if (!state.outbounds) {
+        state.dataForm.outbounds = undefined;
+      }
+      if (!state.masquerade) {
+        state.dataForm.masquerade = undefined;
+      }
+
       const params = { ...state.dataForm };
       updateHysteria2ConfigApi(params).then(() => {
         ElMessage.success(t("common.success"));
@@ -1234,51 +1266,23 @@ const setConfig = () => {
     }
   });
   getHysteria2ConfigApi().then((response) => {
-    if (response.data) {
-      assignWith(state.dataForm, response.data);
-      if (
-        (state.dataForm?.tls?.cert && state.dataForm?.tls?.key) ||
-        state.dataForm?.acme?.domains?.length == 0
-      ) {
-        state.tlsType = "tls";
-      } else {
-        state.tlsType = "acme";
-      }
-      if (state.dataForm?.acl?.inline) {
-        state.aclType = "inline";
-      } else {
-        state.aclType = "file";
-      }
-      if (state.dataForm?.obfs) {
-        state.obfs = true;
-      }
-      if (state.dataForm?.quic) {
-        state.quic = true;
-      }
-      if (state.dataForm?.bandwidth) {
-        state.bandwidth = true;
-      }
-      if (state.dataForm?.speedTest) {
-        state.speedTest = true;
-      }
-      if (state.dataForm?.disableUDP || state.dataForm?.udpIdleTimeout) {
-        state.udp = true;
-      }
-      if (state.dataForm?.resolver) {
-        state.resolver = true;
-      }
-      if (state.dataForm?.sniff) {
-        state.sniff = true;
-      }
-      if (state.dataForm?.acl) {
-        state.acl = true;
-      }
-      if (state.dataForm?.outbounds) {
-        state.outbounds = true;
-      }
-      if (state.dataForm?.masquerade) {
-        state.masquerade = true;
-      }
+    const data = response.data;
+    if (data) {
+      state.tlsType = data?.tls?.cert && data?.tls?.key ? "tls" : "acme";
+      state.aclType = data?.acl?.inline ? "inline" : "file";
+
+      state.obfs = !!data?.obfs;
+      state.quic = !!data?.quic;
+      state.bandwidth = !!data?.bandwidth;
+      state.speedTest = !!data?.speedTest;
+      state.udp = !!data?.disableUDP || !!data?.udpIdleTimeout;
+      state.resolver = !!data?.resolver;
+      state.sniff = !!data?.sniff;
+      state.acl = !!data?.acl;
+      state.outbounds = !!data?.outbounds;
+      state.masquerade = !!data?.masquerade;
+
+      assignWith(state.dataForm, data);
     }
   });
 };
@@ -1294,36 +1298,24 @@ const closeTabPane = (tabPaneName: string) => {
   }
 
   if (tabPaneName === "obfs") {
-    state.dataForm.obfs = undefined;
     state.obfs = false;
   } else if (tabPaneName === "quic") {
-    state.dataForm.quic = undefined;
     state.quic = false;
   } else if (tabPaneName === "bandwidth") {
-    state.dataForm.bandwidth = undefined;
-    state.dataForm.ignoreClientBandwidth = undefined;
     state.bandwidth = false;
   } else if (tabPaneName === "speedTest") {
-    state.dataForm.speedTest = undefined;
-    state.speedTest = true;
+    state.speedTest = false;
   } else if (tabPaneName === "udp") {
-    state.dataForm.disableUDP = undefined;
-    state.dataForm.udpIdleTimeout = undefined;
     state.udp = false;
   } else if (tabPaneName === "resolver") {
-    state.dataForm.resolver = undefined;
     state.resolver = false;
   } else if (tabPaneName === "sniff") {
-    state.dataForm.sniff = undefined;
     state.sniff = false;
   } else if (tabPaneName === "acl") {
-    state.dataForm.acl = undefined;
     state.acl = false;
   } else if (tabPaneName === "outbounds") {
-    state.dataForm.outbounds = undefined;
     state.outbounds = false;
   } else if (tabPaneName === "masquerade") {
-    state.dataForm.masquerade = undefined;
     state.masquerade = false;
   }
   state.activeName = "listen";
@@ -1331,103 +1323,24 @@ const closeTabPane = (tabPaneName: string) => {
 
 const handleDropdownClick = (command: string) => {
   if (command === "obfs") {
-    state.dataForm.obfs = {
-      type: "salamander",
-      salamander: {
-        password: "cry_me_a_r1ver",
-      },
-    };
     state.obfs = true;
   } else if (command === "quic") {
-    state.dataForm.quic = {
-      initStreamReceiveWindow: 8388608,
-      maxStreamReceiveWindow: 8388608,
-      initConnReceiveWindow: 20971520,
-      maxConnReceiveWindow: 20971520,
-      maxIdleTimeout: "30s",
-      maxIncomingStreams: 1024,
-      disablePathMTUDiscovery: false,
-    };
     state.quic = true;
   } else if (command === "bandwidth") {
-    state.dataForm.bandwidth = {
-      up: "1 gbps",
-      down: "1 gbps",
-    };
-    state.dataForm.ignoreClientBandwidth = false;
     state.bandwidth = true;
   } else if (command === "speedTest") {
-    state.dataForm.speedTest = false;
     state.speedTest = true;
   } else if (command === "udp") {
-    state.dataForm.disableUDP = false;
-    state.dataForm.udpIdleTimeout = "60s";
     state.udp = true;
   } else if (command === "resolver") {
-    state.dataForm.resolver = {
-      type: "",
-      tcp: {
-        addr: "8.8.8.8:53",
-        timeout: "4s",
-      },
-      udp: {
-        addr: "8.8.4.4:53",
-        timeout: "4s",
-      },
-      tls: {
-        addr: "1.1.1.1:853",
-        timeout: "10s",
-        sni: "cloudflare-dns.com",
-        insecure: false,
-      },
-      https: {
-        addr: "1.1.1.1:443",
-        timeout: "10s",
-        sni: "cloudflare-dns.com",
-        insecure: false,
-      },
-    };
     state.resolver = true;
   } else if (command === "sniff") {
-    state.dataForm.sniff = {
-      enable: true,
-      timeout: "2s",
-      rewriteDomain: false,
-      tcpPorts: "80,443,8000-9000",
-      udpPorts: "all",
-    };
     state.sniff = true;
   } else if (command === "acl") {
-    state.dataForm.acl = {
-      file: "",
-      inline: [],
-      geoip: "",
-      geosite: "",
-      geoUpdateInterval: "",
-    };
     state.acl = true;
   } else if (command === "outbounds") {
-    state.dataForm.outbounds = [] as Hysteria2ServerConfigOutbound[];
     state.outbounds = true;
   } else if (command === "masquerade") {
-    state.dataForm.masquerade = {
-      type: "",
-      file: {
-        dir: "",
-      },
-      proxy: {
-        url: "",
-        rewriteHost: true,
-      },
-      string: {
-        content: "hello stupid world",
-        headers: {},
-        statusCode: 200,
-      },
-      listenHTTP: ":80",
-      listenHTTPS: ":443",
-      forceHTTPS: true,
-    };
     state.masquerade = true;
   }
   state.activeName = command;

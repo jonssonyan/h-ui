@@ -160,8 +160,87 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     altHTTPPort: 80,
     altTLSALPNPort: 443,
   },
+  obfs: {
+    type: "salamander",
+    salamander: {
+      password: "cry_me_a_r1ver",
+    },
+  },
+  quic: {
+    initStreamReceiveWindow: 8388608,
+    maxStreamReceiveWindow: 8388608,
+    initConnReceiveWindow: 20971520,
+    maxConnReceiveWindow: 20971520,
+    maxIdleTimeout: "30s",
+    maxIncomingStreams: 1024,
+    disablePathMTUDiscovery: false,
+  },
+  bandwidth: {
+    up: "1 gbps",
+    down: "1 gbps",
+  },
+  ignoreClientBandwidth: false,
+  speedTest: false,
+  disableUDP: false,
+  udpIdleTimeout: "60s",
+  resolver: {
+    type: "",
+    tcp: {
+      addr: "8.8.8.8:53",
+      timeout: "4s",
+    },
+    udp: {
+      addr: "8.8.4.4:53",
+      timeout: "4s",
+    },
+    tls: {
+      addr: "1.1.1.1:853",
+      timeout: "10s",
+      sni: "cloudflare-dns.com",
+      insecure: false,
+    },
+    https: {
+      addr: "1.1.1.1:443",
+      timeout: "10s",
+      sni: "cloudflare-dns.com",
+      insecure: false,
+    },
+  },
+  sniff: {
+    enable: true,
+    timeout: "2s",
+    rewriteDomain: false,
+    tcpPorts: "80,443,8000-9000",
+    udpPorts: "all",
+  },
+  acl: {
+    file: "",
+    inline: [],
+    geoip: "",
+    geosite: "",
+    geoUpdateInterval: "",
+  },
+  outbounds: [],
   trafficStats: {
     listen: ":9999",
+  },
+  masquerade: {
+    type: "",
+    file: {
+      dir: "",
+    },
+    proxy: {
+      url: "",
+      rewriteHost: true,
+    },
+    string: {
+      content: "hello stupid world",
+      headers: {},
+      statusCode: 200,
+    },
+    listenHTTP: ":80",
+    listenHTTPS: ":443",
+    forceHTTPS: true,
   },
 };
 
