@@ -1399,11 +1399,11 @@ const handleDropdownClick = (command: string) => {
     state.sniff = true;
   } else if (command === "acl") {
     state.dataForm.acl = {
-      file: undefined,
-      inline: undefined,
-      geoip: undefined,
-      geosite: undefined,
-      geoUpdateInterval: undefined,
+      file: "",
+      inline: [],
+      geoip: "",
+      geosite: "",
+      geoUpdateInterval: "",
     };
     state.acl = true;
   } else if (command === "outbounds") {
@@ -1421,7 +1421,7 @@ const handleDropdownClick = (command: string) => {
       },
       string: {
         content: "hello stupid world",
-        headers: undefined,
+        headers: {},
         statusCode: 200,
       },
       listenHTTP: ":80",
