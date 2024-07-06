@@ -45,6 +45,7 @@ declare module '@vue/runtime-core' {
     IEpCaretBottom: typeof import('~icons/ep/caret-bottom')['default']
     IEpClose: typeof import('~icons/ep/close')['default']
     IEpDownload: typeof import('~icons/ep/download')['default']
+    IEpRefresh: typeof import('~icons/ep/refresh')['default']
     IEpSetting: typeof import('~icons/ep/setting')['default']
     IEpUpload: typeof import('~icons/ep/upload')['default']
     ImputMultiple: typeof import('./../components/ImputMultiple/index.vue')['default']
