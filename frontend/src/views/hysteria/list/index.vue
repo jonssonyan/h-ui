@@ -965,7 +965,7 @@ import {
   updateHysteria2ConfigApi,
 } from "@/api/config";
 import { useI18n } from "vue-i18n";
-import { assignWith } from "@/utils/copy";
+import { assignWith, deepCopy } from "@/utils/copy";
 import {
   UploadFile,
   UploadRawFile,
@@ -1312,7 +1312,7 @@ const setConfig = () => {
       state.outbounds = !!data?.outbounds;
       state.masquerade = !!data?.masquerade;
 
-      state.dataForm = defaultHysteria2ServerConfig;
+      state.dataForm = deepCopy(defaultHysteria2ServerConfig);
       assignWith(state.dataForm, data);
     }
   });
