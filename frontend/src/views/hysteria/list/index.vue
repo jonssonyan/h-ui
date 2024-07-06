@@ -1206,6 +1206,33 @@ const submitForm = () => {
           state.dataForm.acme.tls = undefined;
         }
       }
+
+      if (state.dataForm.acl) {
+        if (state.aclType == "inline") {
+          state.dataForm.acl.file = undefined;
+        } else if (state.aclType == "file") {
+          state.dataForm.acl.inline = undefined;
+        }
+      }
+
+      if (state.dataForm.resolver?.type == "tcp") {
+        state.dataForm.resolver.udp = undefined;
+        state.dataForm.resolver.tls = undefined;
+        state.dataForm.resolver.https = undefined;
+      } else if (state.dataForm.resolver?.type == "udp") {
+        state.dataForm.resolver.tcp = undefined;
+        state.dataForm.resolver.tls = undefined;
+        state.dataForm.resolver.https = undefined;
+      } else if (state.dataForm.resolver?.type == "tls") {
+        state.dataForm.resolver.tcp = undefined;
+        state.dataForm.resolver.udp = undefined;
+        state.dataForm.resolver.https = undefined;
+      } else if (state.dataForm.resolver?.type == "https") {
+        state.dataForm.resolver.tcp = undefined;
+        state.dataForm.resolver.udp = undefined;
+        state.dataForm.resolver.tls = undefined;
+      }
+
       if (state.dataForm.masquerade?.type == "file") {
         state.dataForm.masquerade.proxy = undefined;
         state.dataForm.masquerade.string = undefined;
