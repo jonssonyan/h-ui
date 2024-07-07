@@ -19,7 +19,7 @@ func init() {
 
 func validateStr(f validator.FieldLevel) bool {
 	field := f.Field().String()
-	// 字符串必须是字母和数字的组合
+	// 字符串必须6-32位是字母或者数字或部分特殊字符的组合
 	reg := "^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$"
 	compile := regexp.MustCompile(reg)
 	return field == "" || compile.MatchString(field)
