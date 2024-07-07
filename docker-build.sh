@@ -39,18 +39,18 @@ echo_content() {
 main() {
   echo_content skyBlue "start build h-ui CPU：${arch_arr}"
 
+  if [[ ${version} != "latest" ]]; then
+    docker buildx build -t jonssonyan/h-ui:${version} --platform ${arch_arr} --push .
+    if [[ "$?" == "0" ]]; then
+      echo_content green "h-ui-linux Version：${version} CPU：${arch_arr} build success"
+    else
+      echo_content red "h-ui-linux Version：${version} CPU：${arch_arr} build failed"
+    fi
+  fi
+
   docker buildx build -t jonssonyan/h-ui:latest --platform ${arch_arr} --push .
   if [[ "$?" == "0" ]]; then
     echo_content green "h-ui Version：latest CPU：${arch_arr} build success"
-
-    if [[ ${version} != "latest" ]]; then
-      docker buildx build -t jonssonyan/h-ui:${version} --platform ${arch_arr} --push .
-      if [[ "$?" == "0" ]]; then
-        echo_content green "h-ui-linux Version：${version} CPU：${arch_arr} build success"
-      else
-        echo_content red "h-ui-linux Version：${version} CPU：${arch_arr} build failed"
-      fi
-    fi
   else
     echo_content red "h-ui-linux Version：latest CPU：${arch_arr} build failed"
   fi
