@@ -1279,8 +1279,29 @@ const submitForm = () => {
         state.dataForm.masquerade = undefined;
       }
 
+      if (state.dataForm?.udpIdleTimeout === "") {
+        state.dataForm!.udpIdleTimeout = "60s";
+      }
+      if (state.dataForm?.quic?.maxIdleTimeout === "") {
+        state.dataForm!.quic!.maxIdleTimeout = "30s";
+      }
+      if (state.dataForm?.resolver?.tcp?.timeout === "") {
+        state.dataForm!.resolver!.tcp!.timeout = "4s";
+      }
+      if (state.dataForm?.resolver?.udp?.timeout === "") {
+        state.dataForm!.resolver!.udp!.timeout = "4s";
+      }
+      if (state.dataForm?.resolver?.tls?.timeout === "") {
+        state.dataForm!.resolver!.tls!.timeout = "10s";
+      }
+      if (state.dataForm?.resolver?.https?.timeout === "") {
+        state.dataForm!.resolver!.https!.timeout = "10s";
+      }
+      if (state.dataForm?.sniff?.timeout === "") {
+        state.dataForm!.sniff!.timeout = "2s";
+      }
       if (state.dataForm?.acl?.geoUpdateInterval === "") {
-        state.dataForm!.acl!.geoUpdateInterval = undefined;
+        state.dataForm!.acl!.geoUpdateInterval = "168h";
       }
 
       const params = { ...state.dataForm };
