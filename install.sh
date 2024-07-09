@@ -72,12 +72,12 @@ check_sys() {
     exit 1
   fi
 
-  if [[ $(arch) =~ ("x86_64"|"amd64"|"arm64"|"aarch64"|"ppc64le") ]]; then
+  if [[ $(arch) =~ ("x86_64"|"amd64"|"arm64"|"aarch64") ]]; then
     get_arch=$(arch)
   fi
 
   if [[ -z "${get_arch}" ]]; then
-    echo_content red "Only supports x86_64/amd64 arm64/aarch64 ppc64le"
+    echo_content red "Only supports x86_64/amd64 arm64/aarch64"
     exit 1
   fi
 }
@@ -175,7 +175,7 @@ upgrade_h_ui_docker() {
   fi
   docker stop h-ui &&
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui &&
-  docker exec h-ui chmod +x /h-ui/h-ui &&
+  chmod +x /h-ui/h-ui &&
   docker restart h-ui
   echo_content skyBlue "---> H UI upgrade successful"
 }
