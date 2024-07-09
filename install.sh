@@ -163,33 +163,54 @@ install_h_ui_docker() {
 }
 
 update_h_ui_docker() {
-
+  if [[ ! $(command -v docker) ]]; then
+   echo_content red "---> Docker not installed"
+   exit 0
+  fi
+  if [[ -z $(docker ps -a -q -f "name=^h-ui$") ]]; then
+   echo_content red "---> H UI not installed"
+   exit 0
+  fi
+  docker stop h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui &&
+  chmod +x /h-ui/h-ui &&
+  docker restart h-ui
 }
 
 uninstall_h_ui_docker() {
-
+  if [[ ! $(command -v docker) ]]; then
+    echo_content red "---> Docker not installed"
+    exit 0
+  fi
+  if [[ -z $(docker ps -a -q -f "name=^h-ui$") ]]; then
+    echo_content red "---> H UI not installed"
+    exit 0
+  fi
+  docker rm -f h-ui &&
+  docker rmi jonssonyan/h-ui &&
+  rm -rf /h-ui/
 }
 
 install_h_ui_manual() {
   mkdir -p ${HUI_DATA_Manual}
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
-    chmod +x /usr/local/h-ui/h-ui &&
-    curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
-    systemctl daemon-reload &&
-    systemctl enable h-ui &&
-    systemctl restart h-ui
+  chmod +x /usr/local/h-ui/h-ui &&
+  curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
+  systemctl daemon-reload &&
+  systemctl enable h-ui &&
+  systemctl restart h-ui
 }
 
 update_h_ui_manual() {
   systemctl stop h-ui &&
-    curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
-    chmod +x /usr/local/h-ui/h-ui &&
-    systemctl restart h-ui
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
+  chmod +x /usr/local/h-ui/h-ui &&
+  systemctl restart h-ui
 }
 
 uninstall_h_ui_manual() {
   systemctl stop h-ui &&
-    rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
+  rm -rf /usr/local/h-ui/ /etc/systemd/system/h-ui.service
 }
 
 main() {
