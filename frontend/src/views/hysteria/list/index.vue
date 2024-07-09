@@ -1279,6 +1279,10 @@ const submitForm = () => {
         state.dataForm.masquerade = undefined;
       }
 
+      if (state.dataForm?.acl?.geoUpdateInterval === "") {
+        state.dataForm!.acl!.geoUpdateInterval = undefined;
+      }
+
       const params = { ...state.dataForm };
       updateHysteria2ConfigApi(params).then(() => {
         ElMessage.success(t("common.success"));

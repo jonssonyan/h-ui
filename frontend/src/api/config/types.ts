@@ -218,7 +218,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     inline: [],
     geoip: "",
     geosite: "",
-    geoUpdateInterval: "",
+    geoUpdateInterval: "168h",
   },
   outbounds: [],
   trafficStats: {
