@@ -104,6 +104,7 @@ export default {
     huiHttps: "面板开启 https",
   },
   monitor: {
+    huiVersion: "H UI 版本",
     cpuPercent: "CPU 使用率",
     memPercent: "内存使用率",
     diskPercent: "磁盘使用率",

@@ -6,6 +6,23 @@
           <template #header>
             <div class="flex items-center justify-between">
               <span class="text-[var(--el-text-color-secondary)]">
+                {{ $t("monitor.huiVersion") }}
+              </span>
+              <el-tag type="success">version</el-tag>
+            </div>
+          </template>
+          <div class="flex items-center justify-between mt-5">
+            <div class="text-lg text-right">
+              {{ systemMonitor.huiVersion ? systemMonitor.huiVersion : "-" }}
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :lg="6">
+        <el-card shadow="never">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <span class="text-[var(--el-text-color-secondary)]">
                 {{ $t("monitor.cpuPercent") }}
               </span>
               <el-tag type="success">%</el-tag>
@@ -65,40 +82,6 @@
           <template #header>
             <div class="flex items-center justify-between">
               <span class="text-[var(--el-text-color-secondary)]">
-                {{ $t("monitor.hysteria2UserTotal") }}
-              </span>
-              <el-tag type="success">account</el-tag>
-            </div>
-          </template>
-          <div class="flex items-center justify-between mt-5">
-            <div class="text-lg text-right">
-              {{ hysteria2Monitor.userTotal }}
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :xs="24" :sm="12" :lg="6">
-        <el-card shadow="never">
-          <template #header>
-            <div class="flex items-center justify-between">
-              <span class="text-[var(--el-text-color-secondary)]">
-                {{ $t("monitor.hysteria2DeviceTotal") }}
-              </span>
-              <el-tag type="success">device</el-tag>
-            </div>
-          </template>
-          <div class="flex items-center justify-between mt-5">
-            <div class="text-lg text-right">
-              {{ hysteria2Monitor.deviceTotal }}
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :xs="24" :sm="12" :lg="6">
-        <el-card shadow="never">
-          <template #header>
-            <div class="flex items-center justify-between">
-              <span class="text-[var(--el-text-color-secondary)]">
                 {{ $t("monitor.hysteria2Version") }}
               </span>
               <el-tag type="success">version</el-tag>
@@ -143,6 +126,40 @@
           </div>
         </el-card>
       </el-col>
+      <el-col :xs="24" :sm="12" :lg="6">
+        <el-card shadow="never">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <span class="text-[var(--el-text-color-secondary)]">
+                {{ $t("monitor.hysteria2UserTotal") }}
+              </span>
+              <el-tag type="success">account</el-tag>
+            </div>
+          </template>
+          <div class="flex items-center justify-between mt-5">
+            <div class="text-lg text-right">
+              {{ hysteria2Monitor.userTotal }}
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :lg="6">
+        <el-card shadow="never">
+          <template #header>
+            <div class="flex items-center justify-between">
+              <span class="text-[var(--el-text-color-secondary)]">
+                {{ $t("monitor.hysteria2DeviceTotal") }}
+              </span>
+              <el-tag type="success">device</el-tag>
+            </div>
+          </template>
+          <div class="flex items-center justify-between mt-5">
+            <div class="text-lg text-right">
+              {{ hysteria2Monitor.deviceTotal }}
+            </div>
+          </div>
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -158,6 +175,7 @@ import { monitorHysteria2Api, monitorSystemApi } from "@/api/monitor";
 
 const state = reactive({
   systemMonitor: {
+    huiVersion: "",
     cpuPercent: 0,
     memPercent: 0,
     diskPercent: 0,

@@ -377,7 +377,3 @@ func RestartServer(c *gin.Context) {
 	}()
 	vo.Success(nil, c)
 }
-
-func GetVersion(c *gin.Context) {
-	vo.Success(constant.Version, c)
-}

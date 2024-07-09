@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"h-ui/model/constant"
 	"h-ui/model/vo"
 	"h-ui/service"
 	"h-ui/util"
@@ -26,6 +27,7 @@ func MonitorSystem(c *gin.Context) {
 		return
 	}
 	vo.Success(vo.SystemMonitorVo{
+		HUIVersion:  constant.Version,
 		CpuPercent:  cpuPercent,
 		MemPercent:  memPercent,
 		DiskPercent: diskPercent,

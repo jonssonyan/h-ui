@@ -105,6 +105,7 @@ export default {
     huiHttps: "Open https on the panel",
   },
   monitor: {
+    huiVersion: "H UI Version",
     cpuPercent: "CPU Usage",
     memPercent: "Memory Usage",
     diskPercent: "Disk Usage",

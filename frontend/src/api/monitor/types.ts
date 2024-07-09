@@ -1,4 +1,5 @@
 export interface SystemMonitorVo {
+  huiVersion: string;
   cpuPercent: number;
   diskPercent: number;
   memPercent: number;
