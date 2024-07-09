@@ -159,7 +159,7 @@ install_h_ui_docker() {
     -v /h-ui/data:/h-ui/data \
     -v /h-ui/export:/h-ui/export \
     -v /h-ui/logs:/h-ui/logs \
-    jonssonyan/h-ui
+    jonssonyan/h-ui \
     ./h-ui -p ${h_ui_port}
 }
 
