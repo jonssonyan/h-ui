@@ -148,7 +148,7 @@ install_docker() {
 
 install_h_ui_docker() {
   if [[ -n $(docker ps -a -q -f "name=^h-ui$") ]]; then
-    echo_content red "---> H UI is already installed"
+    echo_content skyBlue "---> H UI is already installed"
     exit 0
   fi
 
@@ -186,7 +186,7 @@ upgrade_h_ui_docker() {
   latest_version=$(curl -Ls "https://api.github.com/repos/jonssonyan/h-ui/releases/latest" | grep '"tag_name":' | sed 's/.*"tag_name": "\(.*\)",.*/\1/')
   current_version=$(docker exec h-ui ./h-ui -v | sed -n 's/.*version \([^\ ]*\).*/\1/p')
   if [[ "${latest_version}" == "${current_version}" ]]; then
-    echo_content red "---> H UI is already the latest version"
+    echo_content skyBlue "---> H UI is already the latest version"
     exit 0
   fi
 
@@ -214,7 +214,7 @@ uninstall_h_ui_docker() {
 
 install_h_ui_manual() {
   if [[ $(systemctl status h-ui &> /dev/null) ]]; then
-    echo_content red "---> H UI is already installed"
+    echo_content skyBlue "---> H UI is already installed"
     exit 0
   fi
 
@@ -241,7 +241,7 @@ upgrade_h_ui_manual() {
   latest_version=$(curl -Ls "https://api.github.com/repos/jonssonyan/h-ui/releases/latest" | grep '"tag_name":' | sed 's/.*"tag_name": "\(.*\)",.*/\1/')
   current_version=$(/usr/local/h-ui/h-ui -v | sed -n 's/.*version \([^\ ]*\).*/\1/p')
   if [[ "${latest_version}" == "${current_version}" ]]; then
-    echo_content red "---> H UI is already the latest version"
+    echo_content skyBlue "---> H UI is already the latest version"
     exit 0
   fi
 
