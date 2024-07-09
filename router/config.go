@@ -19,5 +19,6 @@ func initConfigRouter(configApi *gin.RouterGroup) {
 		config.POST("/importConfig", controller.ImportConfig)
 		config.GET("/hysteria2AcmePath", controller.Hysteria2AcmePath)
 		config.POST("/restartServer", controller.RestartServer)
+		config.GET("/getVersion", controller.GetVersion)
 	}
 }
