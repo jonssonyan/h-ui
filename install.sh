@@ -6,7 +6,7 @@ init_var() {
   ECHO_TYPE="echo -e"
 
   HUI_DATA_DOCKER="/h-ui/"
-  HUI_DATA_Manual="/usr/local/h-ui/"
+  HUI_DATA_MANUAL="/usr/local/h-ui/"
 
   h_ui_port=8081
   h_ui_time_zone=Asia/Shanghai
@@ -172,8 +172,7 @@ update_h_ui_docker() {
    exit 0
   fi
   docker stop h-ui &&
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui &&
-  chmod +x /h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui && chmod +x /h-ui/h-ui &&
   docker restart h-ui
 }
 
@@ -192,9 +191,8 @@ uninstall_h_ui_docker() {
 }
 
 install_h_ui_manual() {
-  mkdir -p ${HUI_DATA_Manual}
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
-  chmod +x /usr/local/h-ui/h-ui &&
+  mkdir -p ${HUI_DATA_MANUAL}
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui && chmod +x /usr/local/h-ui/h-ui &&
   curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
   systemctl daemon-reload &&
   systemctl enable h-ui &&
@@ -210,7 +208,7 @@ update_h_ui_manual() {
 
 uninstall_h_ui_manual() {
   systemctl stop h-ui &&
-  rm -rf /usr/local/h-ui/ /etc/systemd/system/h-ui.service
+  rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
 }
 
 main() {
