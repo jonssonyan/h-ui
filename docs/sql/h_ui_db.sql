@@ -1,4 +1,4 @@
-CREATE TABLE account
+CREATE TABLE IF NOT EXISTS account
 (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
     username       TEXT    NOT NULL UNIQUE DEFAULT '',
@@ -15,14 +15,14 @@ CREATE TABLE account
     create_time    TIMESTAMP               DEFAULT CURRENT_TIMESTAMP,
     update_time    TIMESTAMP               DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX account_deleted_index ON account (deleted);
-CREATE INDEX account_username_index ON account (username);
-CREATE INDEX account_con_pass_index ON account (con_pass);
-CREATE INDEX account_pass_index ON account (pass);
+CREATE INDEX IF NOT EXISTS account_deleted_index ON account (deleted);
+CREATE INDEX IF NOT EXISTS account_username_index ON account (username);
+CREATE INDEX IF NOT EXISTS account_con_pass_index ON account (con_pass);
+CREATE INDEX IF NOT EXISTS account_pass_index ON account (pass);
 INSERT INTO account (username, pass, con_pass, quota, download, upload, expire_time, device_no, role)
-VALUES ('sysadmin', '02f382b76ca1ab7aa06ab03345c7712fd5b971fb0c0f2aef98bac9cd',
-        'sysadmin.sysadmin', -1, 0, 0, 253370736000000, 6, 'admin');
-CREATE TABLE config
+SELECT 'sysadmin', '02f382b76ca1ab7aa06ab03345c7712fd5b971fb0c0f2aef98bac9cd', 'sysadmin.sysadmin', -1, 0, 0, 253370736000000, 6, 'admin'
+    WHERE NOT EXISTS (SELECT 1 FROM account WHERE username = 'sysadmin');
+CREATE TABLE IF NOT EXISTS config
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     key         TEXT NOT NULL UNIQUE DEFAULT '',
@@ -31,18 +31,25 @@ CREATE TABLE config
     create_time TIMESTAMP            DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP            DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX config_key_index ON config (key);
+CREATE INDEX IF NOT EXISTS config_key_index ON config (key);
 INSERT INTO config (key, value, remark)
-VALUES ('H_UI_WEB_PORT', '8081', 'H UI Web Port');
+SELECT 'H_UI_WEB_PORT', '8081', 'H UI Web Port'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'H_UI_WEB_PORT');
 INSERT INTO config (key, value, remark)
-VALUES ('H_UI_CRT_PATH', '', 'H UI Crt File Path');
+SELECT 'H_UI_CRT_PATH', '', 'H UI Crt File Path'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'H_UI_CRT_PATH');
 INSERT INTO config (key, value, remark)
-VALUES ('H_UI_KEY_PATH', '', 'H UI Key File Path');
+SELECT 'H_UI_KEY_PATH', '', 'H UI Key File Path'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'H_UI_KEY_PATH');
 INSERT INTO config (key, value, remark)
-VALUES ('JWT_SECRET', hex(randomblob(10)), 'JWT Secret');
+SELECT 'JWT_SECRET', hex(randomblob(10)), 'JWT Secret'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'JWT_SECRET');
 INSERT INTO config (key, value, remark)
-VALUES ('HYSTERIA2_ENABLE', '0', 'Hysteria2 Switch');
+SELECT 'HYSTERIA2_ENABLE', '0', 'Hysteria2 Switch'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_ENABLE');
 INSERT INTO config (key, value, remark)
-VALUES ('HYSTERIA2_CONFIG', '', 'Hysteria2 Config');
+SELECT 'HYSTERIA2_CONFIG', '', 'Hysteria2 Config'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_CONFIG');
 INSERT INTO config (key, value, remark)
-VALUES ('HYSTERIA2_TRAFFIC_TIME', '1', 'Hysteria2 Traffic Time');
+SELECT 'HYSTERIA2_TRAFFIC_TIME', '1', 'Hysteria2 Traffic Time'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_TRAFFIC_TIME');
