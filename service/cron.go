@@ -8,8 +8,12 @@ import (
 	"h-ui/proxy"
 	"h-ui/util"
 	"strconv"
+	"sync"
 	"time"
 )
+
+var trafficMutex sync.Mutex
+var kickMutex sync.Mutex
 
 func CronHandleAccount() {
 	go func() {
@@ -28,33 +32,42 @@ func CronHandleAccount() {
 				return
 			}
 
-			hysteria2TrafficTime, err := dao.GetConfig("key = ?", constant.Hysteria2TrafficTime)
-			if err != nil {
-				return
-			}
-			hysteria2TrafficTimeFloat, err := strconv.ParseFloat(*hysteria2TrafficTime.Value, 64)
-			if err != nil {
-				logrus.Errorf("hysteria2TrafficTime string conv int64 err: %v", err)
-				return
-			}
-
 			// 保存流量数据
-			go saveAccountTraffic(apiPort, *jwtSecretConfig.Value, hysteria2TrafficTimeFloat)
+			go saveAccountTraffic(apiPort, *jwtSecretConfig.Value)
+
 			// 踢下线
 			go kickAccount(apiPort, *jwtSecretConfig.Value)
 		}
 	}()
 }
 
-func saveAccountTraffic(apiPort int64, jwtSecret string, hysteria2TrafficTimeFloat float64) {
+func saveAccountTraffic(apiPort int64, jwtSecret string) {
+	if !trafficMutex.TryLock() {
+		return
+	}
+	defer trafficMutex.Unlock()
+
+	hysteria2TrafficTime, err := dao.GetConfig("key = ?", constant.Hysteria2TrafficTime)
+	if err != nil {
+		return
+	}
+	hysteria2TrafficTimeFloat, err := strconv.ParseFloat(*hysteria2TrafficTime.Value, 64)
+	if err != nil {
+		logrus.Errorf("hysteria2TrafficTime string conv int64 err: %v", err)
+		return
+	}
+
 	users, err := proxy.NewHysteria2Api(apiPort).ListUsers(true, jwtSecret)
 	if err != nil {
 		return
 	}
 	if len(users) > 0 {
 		userLists := util.SplitMap(users, 10)
+		var wg sync.WaitGroup
 		for _, userList := range userLists {
+			wg.Add(1)
 			go func(userList map[string]bo.Hysteria2UserTraffic) {
+				defer wg.Done()
 				for username, traffic := range userList {
 					if err = dao.UpdateAccountTraffic(username, int64(float64(traffic.Rx)*hysteria2TrafficTimeFloat), int64(float64(traffic.Tx)*hysteria2TrafficTimeFloat)); err != nil {
 						continue
@@ -62,10 +75,16 @@ func saveAccountTraffic(apiPort int64, jwtSecret string, hysteria2TrafficTimeFlo
 				}
 			}(userList)
 		}
+		wg.Wait()
 	}
 }
 
 func kickAccount(apiPort int64, jwtSecret string) {
+	if !kickMutex.TryLock() {
+		return
+	}
+	defer kickMutex.Unlock()
+
 	users, err := proxy.NewHysteria2Api(apiPort).OnlineUsers(jwtSecret)
 	if err != nil {
 		return
@@ -78,8 +97,11 @@ func kickAccount(apiPort int64, jwtSecret string) {
 			i++
 		}
 		usernameLists := util.SplitArr(usernames, 10)
+		var wg sync.WaitGroup
 		for _, usernameList := range usernameLists {
+			wg.Add(1)
 			go func(usernameList []string) {
+				defer wg.Done()
 				now := time.Now().UnixMilli()
 				accounts, err := dao.ListAccount("username in ? and (deleted = 1 or (quota > 0 and quota < download + upload)) or ? > expire_time or ? < kick_util_time", usernameList, now, now)
 				if err != nil {
@@ -96,5 +118,6 @@ func kickAccount(apiPort int64, jwtSecret string) {
 				}
 			}(usernameList)
 		}
+		wg.Wait()
 	}
 }
