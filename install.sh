@@ -161,6 +161,7 @@ install_h_ui_docker() {
     -v /h-ui/logs:/h-ui/logs \
     jonssonyan/h-ui \
     ./h-ui -p ${h_ui_port}
+  echo_content skyBlue "---> H UI install successful"
 }
 
 upgrade_h_ui_docker() {
@@ -173,7 +174,8 @@ upgrade_h_ui_docker() {
    exit 0
   fi
   docker stop h-ui &&
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui && docker exec h-ui chmod +x /h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui &&
+  docker exec h-ui chmod +x /h-ui/h-ui &&
   docker restart h-ui
   echo_content skyBlue "---> H UI upgrade successful"
 }
@@ -190,27 +192,33 @@ uninstall_h_ui_docker() {
   docker rm -f h-ui &&
   docker rmi jonssonyan/h-ui &&
   rm -rf /h-ui/
+  echo_content skyBlue "---> H UI uninstall successful"
 }
 
 install_h_ui_manual() {
   mkdir -p ${HUI_DATA_MANUAL}
 
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui && chmod +x /usr/local/h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
+  chmod +x /usr/local/h-ui/h-ui &&
   curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
   systemctl daemon-reload &&
   systemctl enable h-ui &&
   systemctl restart h-ui
+  echo_content skyBlue "---> H UI install successful"
 }
 
 upgrade_h_ui_manual() {
   systemctl stop h-ui &&
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui && chmod +x /usr/local/h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
+  chmod +x /usr/local/h-ui/h-ui &&
   systemctl restart h-ui
+  echo_content skyBlue "---> H UI upgrade successful"
 }
 
 uninstall_h_ui_manual() {
   systemctl stop h-ui &&
   rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
+  echo_content skyBlue "---> H UI uninstall successful"
 }
 
 main() {
