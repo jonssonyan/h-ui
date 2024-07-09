@@ -190,10 +190,9 @@ upgrade_h_ui_docker() {
     exit 0
   fi
 
-  docker stop h-ui &&
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /h-ui/h-ui &&
-  chmod +x /h-ui/h-ui &&
-  docker restart h-ui
+  docker rm -f h-ui
+  docker rmi jonssonyan/h-ui
+  install_h_ui_docker
   echo_content skyBlue "---> H UI upgrade successful"
 }
 
@@ -206,8 +205,8 @@ uninstall_h_ui_docker() {
     echo_content red "---> H UI not installed"
     exit 0
   fi
-  docker rm -f h-ui &&
-  docker rmi jonssonyan/h-ui &&
+  docker rm -f h-ui
+  docker rmi jonssonyan/h-ui
   rm -rf /h-ui/
   echo_content skyBlue "---> H UI uninstall successful"
 }
