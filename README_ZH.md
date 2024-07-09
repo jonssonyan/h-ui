@@ -46,7 +46,7 @@ CPU: x86_64/amd64
 
 ## 部署
 
-### 快速部署 (推荐)
+### 快速安装 (推荐)
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install.sh)
