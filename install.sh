@@ -42,9 +42,24 @@ echo_content() {
   esac
 }
 
+can_connect() {
+  ping -c2 -i0.3 -W1 "$1" &>/dev/null
+  if [[ "$?" == "0" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 check_sys() {
   if [[ $(id -u) != "0" ]]; then
     echo_content red "You must be root to run this script"
+    exit 1
+  fi
+
+  can_connect www.google.com
+  if [[ "$?" == "1" ]]; then
+    echo_content red "---> Network connection failed"
     exit 1
   fi
 
@@ -114,24 +129,7 @@ install_docker() {
   if [[ ! $(command -v docker) ]]; then
     echo_content green "---> Install Docker"
 
-    if [[ "${release}" == "centos" ]]; then
-      ${package_manager} install -y yum-utils
-      ${package_manager}-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-      ${package_manager} makecache || ${package_manager} makecache fast
-    elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-      ${package_manager} update -y
-      ${package_manager} install -y install ca-certificates
-      install -m 0755 -d /etc/apt/keyrings
-      curl -fsSL https://download.docker.com/linux/${release}/gpg -o /etc/apt/keyrings/docker.asc
-      chmod a+r /etc/apt/keyrings/docker.asc
-      echo \
-        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/${release} \
-                    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
-      tee /etc/apt/sources.list.d/docker.list >/dev/null
-      ${package_manager} update -y
-    fi
-
-    ${package_manager} install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    bash <(curl -fsSL https://get.docker.com)
 
     setup_docker
 
