@@ -144,6 +144,7 @@ install_docker() {
 
 install_h_ui_docker() {
   mkdir -p ${HUI_DATA_DOCKER}
+
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
 
@@ -151,18 +152,18 @@ install_h_ui_docker() {
   [[ -z "${h_ui_time_zone}" ]] && h_ui_time_zone="Asia/Shanghai"
 
   docker pull jonssonyan/h-ui &&
-    docker run -d --name h-ui --restart always \
-      --network=host \
-      -e TZ=${h_ui_time_zone} \
-      -v /h-ui/bin:/h-ui/bin \
-      -v /h-ui/data:/h-ui/data \
-      -v /h-ui/export:/h-ui/export \
-      -v /h-ui/logs:/h-ui/logs \
-      jonssonyan/h-ui
-  ./h-ui -p ${h_ui_port}
+  docker run -d --name h-ui --restart always \
+    --network=host \
+    -e TZ=${h_ui_time_zone} \
+    -v /h-ui/bin:/h-ui/bin \
+    -v /h-ui/data:/h-ui/data \
+    -v /h-ui/export:/h-ui/export \
+    -v /h-ui/logs:/h-ui/logs \
+    jonssonyan/h-ui
+    ./h-ui -p ${h_ui_port}
 }
 
-update_h_ui_docker() {
+upgrade_h_ui_docker() {
   if [[ ! $(command -v docker) ]]; then
    echo_content red "---> Docker not installed"
    exit 0
@@ -172,8 +173,9 @@ update_h_ui_docker() {
    exit 0
   fi
   docker stop h-ui &&
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui && chmod +x /h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui && docker exec h-ui chmod +x /h-ui/h-ui &&
   docker restart h-ui
+  echo_content skyBlue "---> H UI upgrade successful"
 }
 
 uninstall_h_ui_docker() {
@@ -192,6 +194,7 @@ uninstall_h_ui_docker() {
 
 install_h_ui_manual() {
   mkdir -p ${HUI_DATA_MANUAL}
+
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui && chmod +x /usr/local/h-ui/h-ui &&
   curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
   systemctl daemon-reload &&
@@ -199,10 +202,9 @@ install_h_ui_manual() {
   systemctl restart h-ui
 }
 
-update_h_ui_manual() {
+upgrade_h_ui_manual() {
   systemctl stop h-ui &&
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
-  chmod +x /usr/local/h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui && chmod +x /usr/local/h-ui/h-ui &&
   systemctl restart h-ui
 }
 
@@ -224,11 +226,11 @@ main() {
   echo_content skyBlue "Github: https://github.com/jonssonyan/h-ui"
   echo_content red "\n=============================================================="
   echo_content yellow "1. Install H UI (Docker)"
-  echo_content yellow "2. Update H UI (Docker)"
+  echo_content yellow "2. Upgrade H UI (Docker)"
   echo_content yellow "3. Uninstall H UI (Docker)"
   echo_content red "\n=============================================================="
   echo_content yellow "4. Install H UI (Manual)"
-  echo_content yellow "5. Update H UI (Manual)"
+  echo_content yellow "5. Upgrade H UI (Manual)"
   echo_content yellow "6. Uninstall H UI (Manual)"
   read -r -p "Please choose: " input_option
   case ${input_option} in
@@ -237,7 +239,7 @@ main() {
     install_h_ui_docker
     ;;
   2)
-    update_h_ui_docker
+    upgrade_h_ui_docker
     ;;
   3)
     uninstall_h_ui_docker
@@ -246,7 +248,7 @@ main() {
     install_h_ui_manual
     ;;
   5)
-    update_h_ui_manual
+    upgrade_h_ui_manual
     ;;
   6)
     uninstall_h_ui_manual
