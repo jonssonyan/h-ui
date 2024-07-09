@@ -46,7 +46,13 @@ Memory: ≥ 128MB
 
 ## Deployment
 
-### Docker (Recommended)
+### Quick Install (Recommended)
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install.sh)
+```
+
+### Docker
 
 1. Install Docker
 
