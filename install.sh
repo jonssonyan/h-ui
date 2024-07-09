@@ -213,7 +213,7 @@ uninstall_h_ui_docker() {
 }
 
 install_h_ui_manual() {
-  if [[ $(systemctl status h-ui &> /dev/null) ]]; then
+  if systemctl status h-ui &> /dev/null; then
     echo_content skyBlue "---> H UI is already installed"
     exit 0
   fi
@@ -230,12 +230,9 @@ install_h_ui_manual() {
 }
 
 upgrade_h_ui_manual() {
-  if [[ ! $(systemctl status h-ui &> /dev/null) ]]; then
+  if ! systemctl status h-ui &> /dev/null; then
     echo_content red "---> H UI not installed"
     exit 0
-  fi
-  if [[ $(systemctl is-active --quiet h-ui) ]]; then
-    systemctl stop h-ui
   fi
 
   latest_version=$(curl -Ls "https://api.github.com/repos/jonssonyan/h-ui/releases/latest" | grep '"tag_name":' | sed 's/.*"tag_name": "\(.*\)",.*/\1/')
@@ -245,6 +242,10 @@ upgrade_h_ui_manual() {
     exit 0
   fi
 
+  if [[ $(systemctl is-active h-ui) == "active" ]]; then
+      systemctl stop h-ui
+  fi
+
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
   chmod +x /usr/local/h-ui/h-ui &&
   systemctl restart h-ui
@@ -252,14 +253,19 @@ upgrade_h_ui_manual() {
 }
 
 uninstall_h_ui_manual() {
-  if [[ ! $(systemctl status h-ui &> /dev/null) ]]; then
+  if ! systemctl status h-ui &> /dev/null; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
-  if [[ $(systemctl is-active --quiet h-ui) ]]; then
-    systemctl stop h-ui
+
+  if [[ $(systemctl is-active h-ui) == "active" ]]; then
+      systemctl stop h-ui
   fi
-  rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
+
+  systemctl disable h-ui.service &&
+  rm -f /etc/systemd/system/h-ui.service &&
+  systemctl daemon-reload &&
+  rm -rf /usr/local/h-ui/
   echo_content skyBlue "---> H UI uninstall successful"
 }
 
