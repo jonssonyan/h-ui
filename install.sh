@@ -5,6 +5,10 @@ export PATH
 init_var() {
   ECHO_TYPE="echo -e"
 
+  package_manager=""
+  release=""
+  get_arch=""
+
   HUI_DATA_DOCKER="/h-ui/"
   HUI_DATA_MANUAL="/usr/local/h-ui/"
 
@@ -72,8 +76,10 @@ check_sys() {
     exit 1
   fi
 
-  if [[ $(arch) =~ ("x86_64"|"amd64"|"arm64"|"aarch64") ]]; then
-    get_arch=$(arch)
+  if [[ $(arch) =~ ("x86_64"|"amd64") ]]; then
+    get_arch="amd64"
+  elif [[ $(arch) =~ ("aarch64"|"arm64") ]]; then
+    get_arch="arm64"
   fi
 
   if [[ -z "${get_arch}" ]]; then
@@ -174,7 +180,7 @@ upgrade_h_ui_docker() {
    exit 0
   fi
   docker stop h-ui &&
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /h-ui/h-ui &&
   chmod +x /h-ui/h-ui &&
   docker restart h-ui
   echo_content skyBlue "---> H UI upgrade successful"
@@ -198,7 +204,7 @@ uninstall_h_ui_docker() {
 install_h_ui_manual() {
   mkdir -p ${HUI_DATA_MANUAL}
 
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
   chmod +x /usr/local/h-ui/h-ui &&
   curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
   systemctl daemon-reload &&
@@ -209,7 +215,7 @@ install_h_ui_manual() {
 
 upgrade_h_ui_manual() {
   systemctl stop h-ui &&
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui &&
+  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
   chmod +x /usr/local/h-ui/h-ui &&
   systemctl restart h-ui
   echo_content skyBlue "---> H UI upgrade successful"
