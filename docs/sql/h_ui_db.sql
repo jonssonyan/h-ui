@@ -19,8 +19,8 @@ CREATE INDEX IF NOT EXISTS account_deleted_index ON account (deleted);
 CREATE INDEX IF NOT EXISTS account_username_index ON account (username);
 CREATE INDEX IF NOT EXISTS account_con_pass_index ON account (con_pass);
 CREATE INDEX IF NOT EXISTS account_pass_index ON account (pass);
-INSERT INTO account (username, pass, con_pass, quota, download, upload, expire_time, device_no, role)
-SELECT 'sysadmin', '02f382b76ca1ab7aa06ab03345c7712fd5b971fb0c0f2aef98bac9cd', 'sysadmin.sysadmin', -1, 0, 0, 253370736000000, 6, 'admin'
+INSERT INTO account (id, username, pass, con_pass, quota, download, upload, expire_time, device_no, role)
+SELECT 1 ,'sysadmin', '02f382b76ca1ab7aa06ab03345c7712fd5b971fb0c0f2aef98bac9cd', 'sysadmin.sysadmin', -1, 0, 0, 253370736000000, 6, 'admin'
     WHERE NOT EXISTS (SELECT 1 FROM account WHERE id = 1);
 CREATE TABLE IF NOT EXISTS config
 (
