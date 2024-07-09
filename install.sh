@@ -142,11 +142,16 @@ install_docker() {
       exit 1
     fi
   else
-    echo_content skyBlue "---> You have installed Docker"
+    echo_content skyBlue "---> Docker is already installed"
   fi
 }
 
 install_h_ui_docker() {
+  if [[ -n $(docker ps -a -q -f "name=^h-ui$") ]]; then
+    echo_content red "---> H UI is already installed"
+    exit 0
+  fi
+
   mkdir -p ${HUI_DATA_DOCKER}
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
@@ -208,6 +213,11 @@ uninstall_h_ui_docker() {
 }
 
 install_h_ui_manual() {
+  if [[ $(systemctl status h-ui.service &> /dev/null) ]]; then
+    echo_content red "---> H UI is already installed"
+    exit 0
+  fi
+
   mkdir -p ${HUI_DATA_MANUAL}
 
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
