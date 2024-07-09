@@ -213,7 +213,7 @@ uninstall_h_ui_docker() {
 }
 
 install_h_ui_manual() {
-  if [[ $(systemctl status h-ui.service &> /dev/null) ]]; then
+  if [[ $(systemctl status h-ui &> /dev/null) ]]; then
     echo_content red "---> H UI is already installed"
     exit 0
   fi
@@ -230,11 +230,11 @@ install_h_ui_manual() {
 }
 
 upgrade_h_ui_manual() {
-  if [[ ! $(systemctl status h-ui.service &> /dev/null) ]]; then
+  if [[ ! $(systemctl status h-ui &> /dev/null) ]]; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
-  if [[ $(systemctl is-active --quiet h-ui.service) ]]; then
+  if [[ $(systemctl is-active --quiet h-ui) ]]; then
     systemctl stop h-ui
   fi
 
@@ -252,11 +252,11 @@ upgrade_h_ui_manual() {
 }
 
 uninstall_h_ui_manual() {
-  if [[ ! $(systemctl status h-ui.service &> /dev/null) ]]; then
+  if [[ ! $(systemctl status h-ui &> /dev/null) ]]; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
-  if [[ $(systemctl is-active --quiet h-ui.service) ]]; then
+  if [[ $(systemctl is-active --quiet h-ui) ]]; then
     systemctl stop h-ui
   fi
   rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
