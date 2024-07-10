@@ -11,7 +11,7 @@ chmod +x ./h-ui
 - Check the system version
 
   ```bash
-  ./h-ui version
+  ./h-ui -v
   ```
 
 - Start with a custom web port
@@ -33,6 +33,7 @@ chmod +x ./h-ui
 
 - Check if h-ui is running normally
 - Check if the firewall allows ports
+- Check if the protocol is correct, http:// or https://
 
 ## h-ui startup failed
 

@@ -11,7 +11,7 @@ chmod +x ./h-ui
 - 查看系统版本
 
   ```bash
-  ./h-ui version
+  ./h-ui -v
   ```
 
 - 自定义 Web 端口启动
@@ -33,6 +33,7 @@ chmod +x ./h-ui
 
 - 检查 h-ui 运行是否正常
 - 检查防火墙是否放行端口
+- 检查协议是否正确，http:// 或者 https://
 
 ## h-ui 启动失败
 
