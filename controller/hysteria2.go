@@ -43,6 +43,8 @@ func Hysteria2Subscribe(c *gin.Context) {
 		clientType = constant.Shadowrocket
 	} else if strings.HasPrefix(userAgent, constant.V2rayN) {
 		clientType = constant.V2rayN
+	} else {
+		clientType = constant.ClashforWindows
 	}
 
 	userInfo, configYaml, err := service.Hysteria2Subscribe(conPass, clientType, host)
