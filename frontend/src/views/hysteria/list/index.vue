@@ -1255,6 +1255,7 @@ const submitForm = () => {
       }
       if (!state.bandwidth) {
         state.dataForm.bandwidth = undefined;
+        state.dataForm.ignoreClientBandwidth = undefined;
       }
       if (!state.speedTest) {
         state.dataForm.speedTest = undefined;
