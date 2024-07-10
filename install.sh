@@ -10,7 +10,7 @@ init_var() {
   get_arch=""
 
   HUI_DATA_DOCKER="/h-ui/"
-  HUI_DATA_MANUAL="/usr/local/h-ui/"
+  HUI_DATA_SYSTEMD="/usr/local/h-ui/"
 
   h_ui_port=8081
   h_ui_time_zone=Asia/Shanghai
@@ -211,13 +211,13 @@ uninstall_h_ui_docker() {
   echo_content skyBlue "---> H UI uninstall successful"
 }
 
-install_h_ui_manual() {
+install_h_ui_systemd() {
   if systemctl status h-ui &> /dev/null; then
     echo_content skyBlue "---> H UI is already installed"
     exit 0
   fi
 
-  mkdir -p ${HUI_DATA_MANUAL}
+  mkdir -p ${HUI_DATA_SYSTEMD}
 
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
   chmod +x /usr/local/h-ui/h-ui &&
@@ -228,7 +228,7 @@ install_h_ui_manual() {
   echo_content skyBlue "---> H UI install successful"
 }
 
-upgrade_h_ui_manual() {
+upgrade_h_ui_systemd() {
   if ! systemctl status h-ui &> /dev/null; then
     echo_content red "---> H UI not installed"
     exit 0
@@ -251,7 +251,7 @@ upgrade_h_ui_manual() {
   echo_content skyBlue "---> H UI upgrade successful"
 }
 
-uninstall_h_ui_manual() {
+uninstall_h_ui_systemd() {
   if ! systemctl status h-ui &> /dev/null; then
     echo_content red "---> H UI not installed"
     exit 0
@@ -284,9 +284,9 @@ main() {
   echo_content yellow "2. Upgrade H UI (Docker)"
   echo_content yellow "3. Uninstall H UI (Docker)"
   echo_content red "\n=============================================================="
-  echo_content yellow "4. Install H UI (Manual)"
-  echo_content yellow "5. Upgrade H UI (Manual)"
-  echo_content yellow "6. Uninstall H UI (Manual)"
+  echo_content yellow "4. Install H UI (systemd)"
+  echo_content yellow "5. Upgrade H UI (systemd)"
+  echo_content yellow "6. Uninstall H UI (systemd)"
   read -r -p "Please choose: " input_option
   case ${input_option} in
   1)
@@ -300,13 +300,13 @@ main() {
     uninstall_h_ui_docker
     ;;
   4)
-    install_h_ui_manual
+    install_h_ui_systemd
     ;;
   5)
-    upgrade_h_ui_manual
+    upgrade_h_ui_systemd
     ;;
   6)
-    uninstall_h_ui_manual
+    uninstall_h_ui_systemd
     ;;
   *)
     echo_content red "No such option"

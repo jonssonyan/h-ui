@@ -110,7 +110,7 @@ docker rmi jonssonyan/h-ui
 rm -rf /h-ui
 ```
 
-### Manual
+### systemd
 
 Executable files: https://github.com/jonssonyan/h-ui/releases
 

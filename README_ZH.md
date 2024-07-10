@@ -110,7 +110,7 @@ docker rmi jonssonyan/h-ui
 rm -rf /h-ui
 ```
 
-### 手动部署
+### systemd
 
 下载可执行文件: https://github.com/jonssonyan/h-ui/releases
 
