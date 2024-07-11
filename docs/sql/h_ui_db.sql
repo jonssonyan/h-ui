@@ -53,3 +53,8 @@ SELECT 'HYSTERIA2_CONFIG', '', 'Hysteria2 Config'
 INSERT INTO config (key, value, remark)
 SELECT 'HYSTERIA2_TRAFFIC_TIME', '1', 'Hysteria2 Traffic Time'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_TRAFFIC_TIME');
+INSERT INTO config (key, value, remark)
+SELECT 'HYSTERIA2_CONFIG_REMARK', '', 'Hysteria2 Config Remark'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_CONFIG_REMARK');
+SELECT 'HYSTERIA2_CONFIG_FORWARD', '', 'Hysteria2 Config Port Forward'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_CONFIG_FORWARD');
