@@ -126,6 +126,7 @@ export default {
     hysteria2Running: "Hysteria2 状态",
     hysteria2ChangeVersion: "切换",
     addOutbound: "添加出站规则",
+    extension: "扩展",
     listen: "监听地址",
     tls: "TLS",
     obfs: "混淆",
@@ -141,6 +142,8 @@ export default {
     masquerade: "伪装",
     config: {
       enable: "开启/关闭",
+      remark: "别名",
+      portHopping: "端口跳跃",
       listen:
         "当只有端口没有 IP 地址时，服务器将监听所有可用的 IPv4 和 IPv6 地址。要仅监听 IPv4，可以使用 0.0.0.0:443。要仅监听 IPv6，可以使用 [::]:443。",
       tlsType: "TLS 类型",

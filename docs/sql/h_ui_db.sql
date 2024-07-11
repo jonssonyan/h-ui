@@ -57,5 +57,5 @@ INSERT INTO config (key, value, remark)
 SELECT 'HYSTERIA2_CONFIG_REMARK', '', 'Hysteria2 Config Remark'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_CONFIG_REMARK');
 INSERT INTO config (key, value, remark)
-SELECT 'HYSTERIA2_CONFIG_FORWARD', '', 'Hysteria2 Config Port Forward'
-    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_CONFIG_FORWARD');
+SELECT 'HYSTERIA2_CONFIG_PORT_HOPPING', '', 'Hysteria2 Config Port Hopping'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_CONFIG_PORT_HOPPING');

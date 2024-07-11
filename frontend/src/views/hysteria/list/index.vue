@@ -126,6 +126,24 @@
           closable
           @tab-remove="closeTabPane"
         >
+          <el-tab-pane :label="$t('hysteria.extension')" name="extension">
+            <el-tooltip
+              :content="$t('hysteria.config.remark')"
+              placement="bottom"
+            >
+              <el-form-item label="remark" prop="remark">
+                <el-input v-model="configForm.remark" clearable />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.portHopping')"
+              placement="bottom"
+            >
+              <el-form-item label="portHopping" prop="portHopping">
+                <el-input v-model="configForm.portHopping" clearable />
+              </el-form-item>
+            </el-tooltip>
+          </el-tab-pane>
           <el-tab-pane :label="$t('hysteria.listen')" name="listen">
             <el-tooltip
               :content="$t('hysteria.config.listen')"
@@ -950,6 +968,7 @@ export default {
 
 <script setup lang="ts">
 import {
+  ConfigsUpdateDto,
   defaultHysteria2ServerConfig,
   Hysteria2ServerConfig,
   Tab,
@@ -958,9 +977,9 @@ import Outbounds from "./components/Outbounds/index.vue";
 import { CirclePlusFilled, Select } from "@element-plus/icons-vue";
 import {
   exportHysteria2ConfigApi,
-  getConfigApi,
   getHysteria2ConfigApi,
   importHysteria2ConfigApi,
+  listConfigApi,
   updateConfigsApi,
   updateHysteria2ConfigApi,
 } from "@/api/config";
@@ -977,6 +996,8 @@ import { monitorHysteria2Api } from "@/api/monitor";
 const { t } = useI18n();
 
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
+const hysteria2Remark = "HYSTERIA2_CONFIG_REMARK";
+const hysteria2ConfigPortHopping = "HYSTERIA2_CONFIG_PORT_HOPPING";
 const dataFormRef = ref(ElForm);
 
 const dataFormRules = {
@@ -1016,6 +1037,10 @@ const state = reactive({
   enableForm: {
     enable: "0",
   },
+  configForm: {
+    remark: "",
+    portHopping: "",
+  },
   dataForm: { ...defaultHysteria2ServerConfig } as Hysteria2ServerConfig,
   activeName: "listen",
   tlsType: "acme",
@@ -1040,9 +1065,10 @@ const state = reactive({
 });
 
 const {
+  enableForm,
+  configForm,
   activeName,
   dataForm,
-  enableForm,
   tlsType,
   aclType,
   obfs,
@@ -1190,6 +1216,18 @@ const handleChangeEnable = async () => {
 const submitForm = () => {
   dataFormRef.value.validate((valid: any) => {
     if (valid) {
+      let configs: ConfigsUpdateDto[] = [
+        {
+          key: hysteria2Remark,
+          value: state.configForm.remark,
+        },
+        {
+          key: hysteria2ConfigPortHopping,
+          value: state.configForm.portHopping,
+        },
+      ];
+      updateConfigsApi({ configUpdateDtos: configs });
+
       if (state.tlsType == "tls") {
         state.dataForm.acme = undefined;
       } else if (state.tlsType == "acme") {
@@ -1315,12 +1353,21 @@ const submitForm = () => {
 };
 
 const setConfig = () => {
-  getConfigApi({ key: hysteria2EnableKey }).then((response) => {
-    if (response.data) {
-      const { value } = response.data;
-      state.enableForm.enable = value;
-    }
+  listConfigApi({
+    keys: [hysteria2EnableKey, hysteria2Remark, hysteria2ConfigPortHopping],
+  }).then((response) => {
+    const data = response.data;
+    data.forEach((configVo) => {
+      if (configVo.key === hysteria2EnableKey) {
+        state.enableForm.enable = configVo.value;
+      } else if (configVo.key === hysteria2Remark) {
+        state.configForm.remark = configVo.value;
+      } else if (configVo.key === hysteria2ConfigPortHopping) {
+        state.configForm.portHopping = configVo.value;
+      }
+    });
   });
+
   getHysteria2ConfigApi().then((response) => {
     const data = response.data;
     if (data) {
@@ -1346,6 +1393,7 @@ const setConfig = () => {
 
 const closeTabPane = (tabPaneName: string) => {
   if (
+    tabPaneName === "extension" ||
     tabPaneName === "listen" ||
     tabPaneName === "tls" ||
     tabPaneName === "http"

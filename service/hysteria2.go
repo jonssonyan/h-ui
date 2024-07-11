@@ -44,12 +44,12 @@ func setHysteria2ConfigYAML() error {
 	}
 
 	// set port forward
-	hysteria2ConfigForward, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigForward)
+	hysteria2ConfigPortHopping, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigPortHopping)
 	if err != nil {
 		return err
 	}
-	if *hysteria2ConfigForward.Value != "" {
-		if err := util.PortForward(*hysteria2ConfigForward.Value, *serverConfig.Listen, util.Add); err != nil {
+	if *hysteria2ConfigPortHopping.Value != "" {
+		if err := util.PortForward(*hysteria2ConfigPortHopping.Value, *serverConfig.Listen, util.Add); err != nil {
 			return err
 		}
 	}

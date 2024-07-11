@@ -127,6 +127,7 @@ export default {
     hysteria2Running: "Hysteria2 Status",
     hysteria2ChangeVersion: "Change",
     addOutbound: "Add Outbound",
+    extension: "Extension",
     listen: "Listen",
     tls: "TLS",
     obfs: "Obfuscation",
@@ -142,6 +143,8 @@ export default {
     masquerade: "Masquerade",
     config: {
       enable: "Enable/Disable",
+      remark: "Remark",
+      portHopping: "Port Hopping",
       listen:
         "When the IP address is omitted, the server will listen on all interfaces, both IPv4 and IPv6. To listen on IPv4 only, you can use 0.0.0.0:443. To listen on IPv6 only, you can use [::]:443.",
       tlsType: "TLS type",
