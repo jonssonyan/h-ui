@@ -47,8 +47,10 @@ func PortForward(rules string, target string, option string, protocol string) er
 		}
 	case "iptables":
 		switch option {
-		case Add, Delete:
-			return IptablesForward(rules, target, option, protocol)
+		case Add:
+			return IptablesForward(rules, target, "-A", protocol)
+		case Delete:
+			return IptablesForward(rules, target, "-D", protocol)
 		default:
 			return errors.New("unsupported command option")
 		}
