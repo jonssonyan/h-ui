@@ -9,12 +9,8 @@ import (
 
 var (
 	netManager string
-
-	// Constants for command options
-	Ipv4   = "iptables"
-	Ipv6   = "ip6tables"
-	Add    = "add"
-	Delete = "delete"
+	Add        = "add"
+	Delete     = "delete"
 )
 
 func init() {
@@ -36,7 +32,7 @@ func init() {
 	netManager = ""
 }
 
-func PortForward(rules string, target string, option string, protocol string) error {
+func PortForward(rules string, target string, option string) error {
 	switch netManager {
 	case "nft":
 		switch option {
@@ -48,9 +44,9 @@ func PortForward(rules string, target string, option string, protocol string) er
 	case "iptables":
 		switch option {
 		case Add:
-			return IptablesForward(rules, target, "-A", protocol)
+			return IptablesForward(rules, target, "-A")
 		case Delete:
-			return IptablesForward(rules, target, "-D", protocol)
+			return IptablesForward(rules, target, "-D")
 		default:
 			return errors.New("unsupported command option")
 		}
@@ -58,6 +54,7 @@ func PortForward(rules string, target string, option string, protocol string) er
 		return errors.New("port forwarding not supported on this system")
 	}
 }
+
 func NftForward(rules string, target string, option string) error {
 	if netManager != "nft" {
 		return fmt.Errorf("nftables not found on the system")
@@ -93,7 +90,7 @@ func NtfRemoveByComment(comment string) error {
 	return nil
 }
 
-func IptablesForward(rules string, target string, option string, protocol string) error {
+func IptablesForward(rules string, target string, option string) error {
 	if netManager != "iptables" {
 		return fmt.Errorf("iptables not found on the system")
 	}
@@ -107,10 +104,13 @@ func IptablesForward(rules string, target string, option string, protocol string
 		startPort := strings.TrimSpace(portRange[0])
 		endPort := strings.TrimSpace(portRange[1])
 
-		cmd := exec.Command(protocol, "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", startPort+":"+endPort, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", "h-ui")
-		err := cmd.Run()
-		if err != nil {
+		Ipv4Cmd := exec.Command("iptables", "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", startPort+":"+endPort, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", "h-ui")
+		if err := Ipv4Cmd.Run(); err != nil {
 			return fmt.Errorf("failed to %s iptables rule: %v", option, err)
+		}
+		Ipv6Cmd := exec.Command("ip6tables", "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", startPort+":"+endPort, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", "h-ui")
+		if err := Ipv6Cmd.Run(); err != nil {
+			return fmt.Errorf("failed to %s ip6tables rule: %v", option, err)
 		}
 	}
 

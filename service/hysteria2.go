@@ -39,6 +39,20 @@ func setHysteria2ConfigYAML() error {
 	if err != nil {
 		return err
 	}
+	if serverConfig.Listen == nil || *serverConfig.Listen == "" {
+		return errors.New("hysteria2 config is empty")
+	}
+
+	// 设置端口转发
+	hysteria2ConfigForward, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigForward)
+	if err != nil {
+		return err
+	}
+	if *hysteria2ConfigForward.Value != "" {
+		util.PortForward(*hysteria2ConfigForward.Value, *serverConfig.Listen, util.Add)
+	} else {
+
+	}
 
 	authHttpUrl, err := GetAuthHttpUrl()
 	if err != nil {
