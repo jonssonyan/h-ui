@@ -230,5 +230,13 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 		urlConfig = "?" + strings.TrimPrefix(urlConfig, "&")
 	}
 
+	hysteria2ConfigRemark, err := dao.GetConfig("key = ?", constant.Hysteria2Remark)
+	if err != nil {
+		return "", err
+	}
+	if *hysteria2ConfigRemark.Value != "" {
+		urlConfig += fmt.Sprintf("#%s", *hysteria2ConfigRemark.Value)
+	}
+
 	return fmt.Sprintf("hysteria2://%s@%s%s", *account.ConPass, hostname, *hysteria2Config.Listen) + urlConfig, nil
 }
