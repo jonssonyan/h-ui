@@ -184,11 +184,11 @@ install_h_ui_docker() {
     exit 0
   fi
 
+  echo_content green "---> Install H UI"
   mkdir -p ${HUI_DATA_DOCKER}
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
-
   read -r -p "Please enter the Time zone of H UI (default: Asia/Shanghai): " h_ui_time_zone
   [[ -z "${h_ui_time_zone}" ]] && h_ui_time_zone="Asia/Shanghai"
 
@@ -222,6 +222,7 @@ upgrade_h_ui_docker() {
     exit 0
   fi
 
+  echo_content green "---> Upgrade H UI"
   docker rm -f h-ui
   docker rmi jonssonyan/h-ui
   install_h_ui_docker
@@ -237,6 +238,8 @@ uninstall_h_ui_docker() {
     echo_content red "---> H UI not installed"
     exit 0
   fi
+
+  echo_content green "---> Uninstall H UI"
   docker rm -f h-ui
   docker rmi jonssonyan/h-ui
   rm -rf /h-ui/
@@ -249,8 +252,8 @@ install_h_ui_systemd() {
     exit 0
   fi
 
+  echo_content green "---> Install H UI"
   mkdir -p ${HUI_DATA_SYSTEMD}
-
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
     chmod +x /usr/local/h-ui/h-ui &&
     curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
@@ -273,10 +276,10 @@ upgrade_h_ui_systemd() {
     exit 0
   fi
 
+  echo_content green "---> Upgrade H UI"
   if [[ $(systemctl is-active h-ui) == "active" ]]; then
     systemctl stop h-ui
   fi
-
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
     chmod +x /usr/local/h-ui/h-ui &&
     systemctl restart h-ui
@@ -289,10 +292,10 @@ uninstall_h_ui_systemd() {
     exit 0
   fi
 
+  echo_content green "---> Uninstall H UI"
   if [[ $(systemctl is-active h-ui) == "active" ]]; then
     systemctl stop h-ui
   fi
-
   systemctl disable h-ui.service &&
     rm -f /etc/systemd/system/h-ui.service &&
     systemctl daemon-reload &&
