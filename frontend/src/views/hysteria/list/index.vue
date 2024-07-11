@@ -1262,6 +1262,7 @@ const submitForm = () => {
       }
       if (!state.udp) {
         state.dataForm.disableUDP = undefined;
+        state.dataForm.udpIdleTimeout = undefined;
       }
       if (!state.resolver) {
         state.dataForm.resolver = undefined;
