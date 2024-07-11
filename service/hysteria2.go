@@ -48,9 +48,6 @@ func setHysteria2ConfigYAML() error {
 	if err != nil {
 		return err
 	}
-	if err := util.RemoveByComment(); err != nil {
-		return err
-	}
 	if *hysteria2ConfigForward.Value != "" {
 		if err := util.PortForward(*hysteria2ConfigForward.Value, *serverConfig.Listen, util.Add); err != nil {
 			return err
