@@ -40,9 +40,9 @@ Just the panel for Hysteria2
 
 系统: CentOS 8+/Ubuntu 20+/Debian 11+
 
-CPU: x86_64/amd64
+CPU: x86_64/amd64 arm64/aarch64
 
-内存: ≥ 128MB
+内存: ≥ 256MB
 
 ## 部署
 
