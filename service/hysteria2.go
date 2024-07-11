@@ -43,7 +43,7 @@ func setHysteria2ConfigYAML() error {
 		return errors.New("hysteria2 config is empty")
 	}
 
-	// 设置端口转发
+	// set port forward
 	hysteria2ConfigForward, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigForward)
 	if err != nil {
 		return err
@@ -103,6 +103,10 @@ func StartHysteria2() error {
 }
 
 func StopHysteria2() error {
+	// remove port forward
+	if err := util.RemoveByComment(); err != nil {
+		return err
+	}
 	return proxy.NewHysteria2Instance().StopHysteria2()
 }
 
