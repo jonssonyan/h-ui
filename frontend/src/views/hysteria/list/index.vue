@@ -484,6 +484,7 @@
             <el-tooltip
               :content="$t('hysteria.config.bandwidth.up')"
               placement="bottom"
+              :trigger-keys="[]"
             >
               <el-form-item label="bandwidth.up" prop="bandwidth.up">
                 <el-input v-model="dataForm.bandwidth.up" clearable />
@@ -492,6 +493,7 @@
             <el-tooltip
               :content="$t('hysteria.config.bandwidth.down')"
               placement="bottom"
+              :trigger-keys="[]"
             >
               <el-form-item label="bandwidth.down" prop="bandwidth.down">
                 <el-input v-model="dataForm.bandwidth.down" clearable />
