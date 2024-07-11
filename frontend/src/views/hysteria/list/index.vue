@@ -1042,7 +1042,7 @@ const state = reactive({
     portHopping: "",
   },
   dataForm: { ...defaultHysteria2ServerConfig } as Hysteria2ServerConfig,
-  activeName: "listen",
+  activeName: "extension",
   tlsType: "acme",
   aclType: "inline",
   obfs: false,
