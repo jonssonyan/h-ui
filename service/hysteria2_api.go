@@ -237,6 +237,13 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 	if *hysteria2ConfigRemark.Value != "" {
 		urlConfig += fmt.Sprintf("#%s", *hysteria2ConfigRemark.Value)
 	}
-
-	return fmt.Sprintf("hysteria2://%s@%s%s", *account.ConPass, hostname, *hysteria2Config.Listen) + urlConfig, nil
+	hysteria2ConfigPortHopping, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigPortHopping)
+	if err != nil {
+		return "", err
+	}
+	port := *hysteria2Config.Listen
+	if *hysteria2ConfigPortHopping.Value != "" {
+		port = ":" + *hysteria2ConfigPortHopping.Value
+	}
+	return fmt.Sprintf("hysteria2://%s@%s%s", *account.ConPass, hostname, port) + urlConfig, nil
 }
