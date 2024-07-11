@@ -70,13 +70,24 @@ func NftForward(rules string, target string, option string) error {
 		startPort := strings.TrimSpace(portRange[0])
 		endPort := strings.TrimSpace(portRange[1])
 
-		cmd := exec.Command("nft", option, "rule", "nat", "prerouting", "iif", "udp", "dport", fmt.Sprintf("{%s-%s}", startPort, endPort), "redirect", "to", ":"+target)
+		cmd := exec.Command("nft", option, "rule", "ip", "nat", "prerouting", "iif", "eth0", "udp", "dport", fmt.Sprintf("{%s-%s}", startPort, endPort), "redirect", "to", ":"+target, "comment", "h-ui")
 		err := cmd.Run()
 		if err != nil {
 			return fmt.Errorf("failed to %s nftables rule: %v", option, err)
 		}
 	}
 
+	return nil
+}
+
+func NtfRemoveByComment(comment string) error {
+	if netManager != "nft" {
+		return fmt.Errorf("nftables not found on the system")
+	}
+	cmd := exec.Command("nft", "delete", "ip", "nat", "prerouting", "comment ", comment)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to delete nftables comment: %s err: %v", comment, err)
+	}
 	return nil
 }
 
@@ -94,7 +105,7 @@ func IptablesForward(rules string, target string, option string, protocol string
 		startPort := strings.TrimSpace(portRange[0])
 		endPort := strings.TrimSpace(portRange[1])
 
-		cmd := exec.Command(protocol, "-t", "nat", option, "PREROUTING", "-p", "udp", "--dport", startPort+":"+endPort, "-j", "REDIRECT", "--to-port", target)
+		cmd := exec.Command(protocol, "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", startPort+":"+endPort, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", "h-ui")
 		err := cmd.Run()
 		if err != nil {
 			return fmt.Errorf("failed to %s iptables rule: %v", option, err)
@@ -102,4 +113,31 @@ func IptablesForward(rules string, target string, option string, protocol string
 	}
 
 	return nil
+}
+
+func IptablesRemoveByComment(protocol, comment string) error {
+	rules, err := iptablesRules(protocol)
+	if err != nil {
+		return err
+	}
+	for _, rule := range rules {
+		if strings.Contains(rule, comment) {
+			cmd := exec.Command(protocol, "-t", "nat", "-D", "PREROUTING", rule)
+			if err := cmd.Run(); err != nil {
+				return fmt.Errorf("failed to delete iptables rule: %v", err)
+			}
+		}
+	}
+
+	return nil
+}
+
+func iptablesRules(protocol string) ([]string, error) {
+	output, err := exec.Command(protocol, "-t", "nat", "-S", "PREROUTING").Output()
+	if err != nil {
+		return nil, fmt.Errorf("failed to list rules: %v", err)
+	}
+
+	rules := strings.Split(string(output), "\n")
+	return rules, nil
 }
