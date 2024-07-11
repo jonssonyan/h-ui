@@ -116,9 +116,9 @@ setup_docker() {
   mkdir -p /etc/docker
   cat >/etc/docker/daemon.json <<EOF
 {
-  "log-driver":"json-file",
-  "log-opts":{
-      "max-size":"100m"
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
   }
 }
 EOF
@@ -161,26 +161,26 @@ install_h_ui_docker() {
   [[ -z "${h_ui_time_zone}" ]] && h_ui_time_zone="Asia/Shanghai"
 
   docker pull jonssonyan/h-ui &&
-  docker run -d --name h-ui --restart always \
-    --network=host \
-    -e TZ=${h_ui_time_zone} \
-    -v /h-ui/bin:/h-ui/bin \
-    -v /h-ui/data:/h-ui/data \
-    -v /h-ui/export:/h-ui/export \
-    -v /h-ui/logs:/h-ui/logs \
-    jonssonyan/h-ui \
-    ./h-ui -p ${h_ui_port}
+    docker run -d --name h-ui --restart always \
+      --network=host \
+      -e TZ=${h_ui_time_zone} \
+      -v /h-ui/bin:/h-ui/bin \
+      -v /h-ui/data:/h-ui/data \
+      -v /h-ui/export:/h-ui/export \
+      -v /h-ui/logs:/h-ui/logs \
+      jonssonyan/h-ui \
+      ./h-ui -p ${h_ui_port}
   echo_content skyBlue "---> H UI install successful"
 }
 
 upgrade_h_ui_docker() {
   if [[ ! $(command -v docker) ]]; then
-   echo_content red "---> Docker not installed"
-   exit 0
+    echo_content red "---> Docker not installed"
+    exit 0
   fi
   if [[ -z $(docker ps -a -q -f "name=^h-ui$") ]]; then
-   echo_content red "---> H UI not installed"
-   exit 0
+    echo_content red "---> H UI not installed"
+    exit 0
   fi
 
   latest_version=$(curl -Ls "https://api.github.com/repos/jonssonyan/h-ui/releases/latest" | grep '"tag_name":' | sed 's/.*"tag_name": "\(.*\)",.*/\1/')
@@ -212,7 +212,7 @@ uninstall_h_ui_docker() {
 }
 
 install_h_ui_systemd() {
-  if systemctl status h-ui &> /dev/null; then
+  if systemctl status h-ui &>/dev/null; then
     echo_content skyBlue "---> H UI is already installed"
     exit 0
   fi
@@ -220,16 +220,16 @@ install_h_ui_systemd() {
   mkdir -p ${HUI_DATA_SYSTEMD}
 
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
-  chmod +x /usr/local/h-ui/h-ui &&
-  curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
-  systemctl daemon-reload &&
-  systemctl enable h-ui &&
-  systemctl restart h-ui
+    chmod +x /usr/local/h-ui/h-ui &&
+    curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
+    systemctl daemon-reload &&
+    systemctl enable h-ui &&
+    systemctl restart h-ui
   echo_content skyBlue "---> H UI install successful"
 }
 
 upgrade_h_ui_systemd() {
-  if ! systemctl status h-ui &> /dev/null; then
+  if ! systemctl status h-ui &>/dev/null; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
@@ -242,29 +242,29 @@ upgrade_h_ui_systemd() {
   fi
 
   if [[ $(systemctl is-active h-ui) == "active" ]]; then
-      systemctl stop h-ui
+    systemctl stop h-ui
   fi
 
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
-  chmod +x /usr/local/h-ui/h-ui &&
-  systemctl restart h-ui
+    chmod +x /usr/local/h-ui/h-ui &&
+    systemctl restart h-ui
   echo_content skyBlue "---> H UI upgrade successful"
 }
 
 uninstall_h_ui_systemd() {
-  if ! systemctl status h-ui &> /dev/null; then
+  if ! systemctl status h-ui &>/dev/null; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
 
   if [[ $(systemctl is-active h-ui) == "active" ]]; then
-      systemctl stop h-ui
+    systemctl stop h-ui
   fi
 
   systemctl disable h-ui.service &&
-  rm -f /etc/systemd/system/h-ui.service &&
-  systemctl daemon-reload &&
-  rm -rf /usr/local/h-ui/
+    rm -f /etc/systemd/system/h-ui.service &&
+    systemctl daemon-reload &&
+    rm -rf /usr/local/h-ui/
   echo_content skyBlue "---> H UI uninstall successful"
 }
 
