@@ -138,6 +138,13 @@ func ntfRemoveByComment(comment string) error {
 }
 
 func nftRules() ([]string, error) {
+	listOutput, err := util.Exec(fmt.Sprintf("nft list tables | grep %s", Comment))
+	if err != nil {
+		return nil, err
+	}
+	if listOutput == "" {
+		return []string{}, nil
+	}
 	output, err := util.Exec(fmt.Sprintf("nft --handle list chain inet %s prerouting", Comment))
 	if err != nil {
 		return nil, err
