@@ -68,7 +68,7 @@ func UpdateConfigs(c *gin.Context) {
 		}
 
 		if key == constant.Hysteria2ConfigPortHopping {
-			re := regexp.MustCompile("^\\d+(?:-\\d+)?(?:,\\d+(?:-\\d+)?)*$\n")
+			re := regexp.MustCompile("^\\d+(?:-\\d+)?(?:,\\d+(?:-\\d+)?)*$")
 			if value != "" && !re.MatchString(value) {
 				vo.Fail(fmt.Sprintf("port hopping: %s is invalid", value), c)
 				return
