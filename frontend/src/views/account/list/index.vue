@@ -838,7 +838,7 @@ const handleSubscribe = async (row: { [key: string]: any }) => {
       host: window.location.host,
     };
     const { data } = await hysteria2SubscribeUrlApi(dto);
-    copy(data);
+    copy(data.url);
     ElMessage.success(t("common.copySuccess"));
   } catch (e) {
     /* empty */
