@@ -79,26 +79,11 @@ func nftForward(rules string, target string, option string) error {
 		return fmt.Errorf("nftables not found on the system")
 	}
 
-	rulePairs := strings.Split(rules, ",")
-	for _, pair := range rulePairs {
-		ports := ""
-		portRange := strings.Split(pair, "-")
-		if len(portRange) == 1 {
-			ports = strings.TrimSpace(portRange[0])
-		} else if len(portRange) == 2 {
-			startPort := strings.TrimSpace(portRange[0])
-			endPort := strings.TrimSpace(portRange[1])
-			ports = fmt.Sprintf("{%s-%s}", startPort, endPort)
-		} else {
-			return fmt.Errorf("invalid port range format: %s", pair)
-		}
-
-		cmd := exec.Command("nft", option, "rule", "ip", "nat", "prerouting", "iif", "eth0", "udp", "dport", ports, "redirect", "to", ":"+target, "comment", Comment)
-		if err := cmd.Run(); err != nil {
-			errMsg := fmt.Sprintf("failed to %s nftables rule: %v", option, err)
-			logrus.Errorf(errMsg)
-			return errors.New(errMsg)
-		}
+	cmd := exec.Command("nft", option, "rule", "ip", "nat", "prerouting", "iif", "eth0", "udp", "dport", fmt.Sprintf("{%s}", rules), "redirect", "to", ":"+target, "comment", Comment)
+	if err := cmd.Run(); err != nil {
+		errMsg := fmt.Sprintf("failed to %s nftables rule: %v", option, err)
+		logrus.Errorf(errMsg)
+		return errors.New(errMsg)
 	}
 
 	return nil
