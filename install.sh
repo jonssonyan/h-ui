@@ -141,8 +141,8 @@ install_depend() {
   fi
   ${package_manager} install -y \
     curl \
-    wget \
-    systemd
+    systemd \
+    nftables
 }
 
 setup_docker() {
