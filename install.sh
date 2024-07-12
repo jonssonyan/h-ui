@@ -44,8 +44,7 @@ echo_content() {
 }
 
 can_connect() {
-  ping -c2 -i0.3 -W1 "$1" &>/dev/null
-  if [[ "$?" == "0" ]]; then
+  if ping -c2 -i0.3 -W1 "$1" &>/dev/null; then
     return 0
   else
     return 1
