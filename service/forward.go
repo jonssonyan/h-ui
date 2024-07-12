@@ -124,7 +124,6 @@ func ntfRemoveByComment(comment string) error {
 	if err != nil {
 		return err
 	}
-	comment = fmt.Sprintf("comment \"%s\"", comment)
 	for _, rule := range rules {
 		if strings.Contains(rule, comment) {
 			parts := strings.Fields(rule)
@@ -178,15 +177,13 @@ func iptablesForward(rules string, target string, option string) error {
 }
 
 func iptablesAddRule(option, ports, target string) error {
-	// iptables -t nat -A PREROUTING -i enp1s0 -p udp --dport 30000:40000 -j REDIRECT --to-port 444 -m comment --comment hui_hysteria_porthopping
-	_, err := util.Exec(fmt.Sprintf("iptables -t nat %s PREROUTING -i %s -p udp --dport %s -j REDIRECT --to-port %s -m comment --comment %s", option, ingressInterface, ports, target, Comment))
-	if err != nil {
-		return err
-	}
-	// ip6tables -t nat -A PREROUTING -i enp1s0 -p udp --dport 30000:40000 -j REDIRECT --to-port 444 -m comment --comment hui_hysteria_porthopping
-	_, err = util.Exec(fmt.Sprintf("ip6tables -t nat %s PREROUTING -i %s -p udp --dport %s -j REDIRECT --to-port %s -m comment --comment %s", option, ingressInterface, ports, target, Comment))
-	if err != nil {
-		return err
+	protocols := [2]string{"iptables", "ip6tables"}
+	for _, protocol := range protocols {
+		// iptables -t nat -A PREROUTING -i enp1s0 -p udp --dport 30000:40000 -j REDIRECT --to-port 444 -m comment --comment hui_hysteria_porthopping
+		_, err := util.Exec(fmt.Sprintf("%s -t nat %s PREROUTING -i %s -p udp --dport %s -j REDIRECT --to-port %s -m comment --comment %s", protocol, option, ingressInterface, ports, target, Comment))
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -201,7 +198,7 @@ func iptablesRemoveByComment(comment string) error {
 		for _, rule := range rules {
 			if strings.Contains(rule, comment) {
 				parts := strings.Fields(rule)
-				handle := parts[len(parts)-1]
+				handle := parts[0]
 				_, err := util.Exec(fmt.Sprintf("%s -t nat -D PREROUTING %s", protocol, strings.TrimSpace(handle)))
 				if err != nil {
 					return err
