@@ -14,6 +14,7 @@ var (
 	ingressInterface string
 	Add              = "add"
 	Delete           = "delete"
+	Table            = "hui_porthopping"
 	Comment          = "hui_hysteria_porthopping"
 )
 
@@ -31,11 +32,11 @@ func init() {
 
 func InitTableAndChain() error {
 	if netManager == "nft" {
-		_, err := util.Exec(fmt.Sprintf("nft add table inet %s", Comment))
+		_, err := util.Exec(fmt.Sprintf("nft add table inet %s", Table))
 		if err != nil {
 			return err
 		}
-		_, err = util.Exec(fmt.Sprintf("nft add chain inet %s prerouting { type nat hook prerouting priority dstnat\\; policy accept\\; }", Comment))
+		_, err = util.Exec(fmt.Sprintf("nft add chain inet %s prerouting { type nat hook prerouting priority dstnat\\; policy accept\\; }", Table))
 		if err != nil {
 			return err
 		}
@@ -111,7 +112,7 @@ func nftForward(rules string, target string, option string) error {
 	// 创建表：nft add table inet hui_hysteria_porthopping
 	// 创建链：nft add chain inet hui_hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
 	// 添加规则：nft add rule inet hui_hysteria_porthopping prerouting iifname enp1s0 udp dport {30000-40000} counter redirect to :444 comment hui_hysteria_porthopping
-	_, err := util.Exec(fmt.Sprintf("nft %s rule inet %s prerouting iifname %s udp dport {%s} counter redirect to :%s comment %s", option, Comment, ingressInterface, rules, target, Comment))
+	_, err := util.Exec(fmt.Sprintf("nft %s rule inet %s prerouting iifname %s udp dport {%s} counter redirect to :%s comment %s", option, Table, ingressInterface, rules, target, Comment))
 	if err != nil {
 		return err
 	}
@@ -128,7 +129,7 @@ func ntfRemoveByComment(comment string) error {
 		if strings.Contains(rule, comment) {
 			parts := strings.Fields(rule)
 			handle := parts[len(parts)-1]
-			_, err := util.Exec(fmt.Sprintf("nft delete rule inet %s prerouting handle %s", Comment, strings.TrimSpace(handle)))
+			_, err := util.Exec(fmt.Sprintf("nft delete rule inet %s prerouting handle %s", Table, strings.TrimSpace(handle)))
 			if err != nil {
 				return err
 			}
@@ -145,7 +146,7 @@ func nftRules() ([]string, error) {
 	if listOutput == "" {
 		return []string{}, nil
 	}
-	output, err := util.Exec(fmt.Sprintf("nft --handle list chain inet %s prerouting", Comment))
+	output, err := util.Exec(fmt.Sprintf("nft --handle list chain inet %s prerouting", Table))
 	if err != nil {
 		return nil, err
 	}
