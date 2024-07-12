@@ -158,8 +158,8 @@ EOF
 }
 
 remove_forward(){
-  if command -v nft &> /dev/null && nft list tables | grep -q hui_hysteria_porthopping; then
-    nft delete table inet hui_hysteria_porthopping
+  if command -v nft &> /dev/null && nft list tables | grep -q hui_porthopping; then
+    nft delete table inet hui_porthopping
   fi
   for num in $(iptables -t nat -L PREROUTING -v --line-numbers | grep -i "hui_hysteria_porthopping" | awk '{print $1}' | sort -rn); do
     iptables -t nat -D PREROUTING $num
