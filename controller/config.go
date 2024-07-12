@@ -61,7 +61,7 @@ func UpdateConfigs(c *gin.Context) {
 		}
 		if key == constant.HUIKeyPath && keyPath != value {
 			if value != "" && !util.Exists(value) {
-				vo.Fail(fmt.Sprintf("port hopping: %s is invalid", value), c)
+				vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
 				return
 			}
 			needRestart = true
@@ -70,7 +70,7 @@ func UpdateConfigs(c *gin.Context) {
 		if key == constant.Hysteria2ConfigPortHopping {
 			re := regexp.MustCompile("^\\d+(?:-\\d+)?(?:,\\d+(?:-\\d+)?)*$\n")
 			if !re.MatchString(value) {
-				vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
+				vo.Fail(fmt.Sprintf("port hopping: %s is invalid", value), c)
 				return
 			}
 			hysteria2ConfigPortHopping, err := service.GetConfig(constant.Hysteria2ConfigPortHopping)
