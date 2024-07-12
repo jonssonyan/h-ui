@@ -44,7 +44,7 @@ func InitTableAndChain() error {
 }
 
 func InitPortHopping() error {
-	if err := removeByComment(); err != nil {
+	if err := RemoveByComment(); err != nil {
 		return err
 	}
 
@@ -92,7 +92,7 @@ func portForward(rules string, target string, option string) error {
 	}
 }
 
-func removeByComment() error {
+func RemoveByComment() error {
 	switch netManager {
 	case "nft":
 		return ntfRemoveByComment(Comment)

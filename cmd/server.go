@@ -55,8 +55,15 @@ func runServer() error {
 }
 
 func releaseResource() {
-	_ = dao.CloseSqliteDB()
-	_ = service.ReleaseHysteria2()
+	if err := dao.CloseSqliteDB(); err != nil {
+		logrus.Errorf(err.Error())
+	}
+	if err := service.ReleaseHysteria2(); err != nil {
+		logrus.Errorf(err.Error())
+	}
+	if err := service.RemoveByComment(); err != nil {
+		logrus.Errorf(err.Error())
+	}
 }
 
 func initFile() error {
