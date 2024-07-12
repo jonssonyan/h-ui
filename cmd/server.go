@@ -32,7 +32,7 @@ func runServer() error {
 		return err
 	}
 	if err := service.InitPortHopping(); err != nil {
-		return err
+		logrus.Errorf(err.Error())
 	}
 
 	r := gin.Default()
