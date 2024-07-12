@@ -26,7 +26,7 @@ func init() {
 		netManager = "iptables"
 	}
 
-	if ii, err := util.Exec("ls /sys/class/net | grep -E '^en'"); err == nil && ii != "" {
+	if ii, err := util.Exec("ls /sys/class/net | grep -E '^en|^eth'"); err == nil && ii != "" {
 		ingressInterface = ii
 	}
 }
