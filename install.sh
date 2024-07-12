@@ -193,7 +193,8 @@ install_h_ui_docker() {
   [[ -z "${h_ui_time_zone}" ]] && h_ui_time_zone="Asia/Shanghai"
 
   docker pull jonssonyan/h-ui &&
-    docker run -d --name h-ui --restart always \
+    docker run -d --cap-add=NET_ADMIN \
+      --name h-ui --restart always \
       --network=host \
       -e TZ=${h_ui_time_zone} \
       -v /h-ui/bin:/h-ui/bin \
