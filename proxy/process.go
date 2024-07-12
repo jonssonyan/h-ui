@@ -23,7 +23,7 @@ func initLogger() {
 		LocalTime:  true,
 	})
 	logger.SetFormatter(&logrus.JSONFormatter{TimestampFormat: "2006-01-02 15:04:05"})
-	logger.SetLevel(logrus.InfoLevel)
+	logger.SetLevel(logrus.WarnLevel)
 }
 
 func init() {
