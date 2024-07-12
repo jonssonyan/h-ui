@@ -12,29 +12,23 @@ import (
 )
 
 var (
-	netManager string
-	Add        = "add"
-	Delete     = "delete"
-	Comment    = "h-ui"
+	netManager       string
+	ingressInterface string
+	Add              = "add"
+	Delete           = "delete"
+	Comment          = "h-ui"
 )
 
 func init() {
-	// Check for nftables
-	nft, err := util.Exec("command -v nft")
-	if err == nil && len(nft) > 0 {
+	if nft, err := util.Exec("command -v nft"); err == nil && nft != "" {
 		netManager = "nft"
-		return
-	}
-
-	// Check for iptables
-	iptables, err := util.Exec("command -v iptables")
-	if err == nil && len(iptables) > 0 {
+	} else if iptables, err := util.Exec("command -v iptables"); err == nil && iptables != "" {
 		netManager = "iptables"
-		return
 	}
 
-	// If neither found, set to empty
-	netManager = ""
+	if ii, err := util.Exec("ls /sys/class/net | grep -E '^en'"); err == nil && ii != "" {
+		ingressInterface = ii
+	}
 }
 
 func InitTableAndChain() error {
@@ -127,7 +121,7 @@ func nftForward(rules string, target string, option string) error {
 	// 创建表：nft add table inet hysteria_porthopping
 	// 创建链：nft add chain inet hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
 	// 添加规则：nft add rule inet hysteria_porthopping prerouting iifname eth0 udp dport {30000-40000} counter redirect to :444 comment h-ui
-	_, err := util.Exec(fmt.Sprintf("nft %s rule inet hysteria_porthopping prerouting iifname eth0 udp dport {%s} counter redirect to :%s comment %s", option, rules, target, Comment))
+	_, err := util.Exec(fmt.Sprintf("nft %s rule inet hysteria_porthopping prerouting iifname %s udp dport {%s} counter redirect to :%s comment %s", option, ingressInterface, rules, target, Comment))
 	if err != nil {
 		return err
 	}
