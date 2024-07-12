@@ -157,6 +157,12 @@ EOF
   systemctl daemon-reload
 }
 
+remove_forward(){
+  if command -v nft &> /dev/null && nft list tables | grep -q hui_hysteria_porthopping; then
+    nft delete table inet hui_hysteria_porthopping
+  fi
+}
+
 install_docker() {
   if [[ ! $(command -v docker) ]]; then
     echo_content green "---> Install Docker"
@@ -244,6 +250,7 @@ uninstall_h_ui_docker() {
   docker rm -f h-ui
   docker rmi jonssonyan/h-ui
   rm -rf /h-ui/
+  remove_forward
   echo_content skyBlue "---> H UI uninstall successful"
 }
 
@@ -316,6 +323,7 @@ uninstall_h_ui_systemd() {
     rm -f /etc/systemd/system/h-ui.service &&
     systemctl daemon-reload &&
     rm -rf /usr/local/h-ui/
+  remove_forward
   echo_content skyBlue "---> H UI uninstall successful"
 }
 
