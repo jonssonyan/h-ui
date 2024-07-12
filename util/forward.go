@@ -78,8 +78,11 @@ func nftForward(rules string, target string, option string) error {
 	if netManager != "nft" {
 		return fmt.Errorf("nftables not found on the system")
 	}
-
-	cmd := exec.Command("nft", option, "rule", "ip", "nat", "prerouting", "iif", "eth0", "udp", "dport", fmt.Sprintf("{%s}", rules), "redirect", "to", ":"+target, "comment", Comment)
+	// nft list ruleset
+	// 创建表：nft add table inet hysteria_porthopping
+	// 创建链：nft add chain inet hysteria_porthopping prerouting { type nat hook prerouting priority dstnat; policy accept; }
+	// 添加规则：nft add rule inet hysteria_porthopping prerouting iifname eth0 udp dport {30000-40000} counter redirect to :444 comment h-ui
+	cmd := exec.Command("nft", option, "rule", "inet", "hysteria_porthopping", "prerouting", "iifname", "eth0", "udp", "dport", fmt.Sprintf("{%s}", rules), "counter", "redirect", "to", ":"+target, "comment", Comment)
 	if err := cmd.Run(); err != nil {
 		errMsg := fmt.Sprintf("failed to %s nftables rule: %v", option, err)
 		logrus.Errorf(errMsg)
@@ -94,7 +97,8 @@ func ntfRemoveByComment(comment string) error {
 		return fmt.Errorf("nftables not found on the system")
 	}
 
-	cmd := exec.Command("nft", "delete", "ip", "nat", "prerouting", "comment ", comment)
+	// nft delete rule inet hysteria_porthopping prerouting comment h-ui
+	cmd := exec.Command("nft", "delete", "rule", "inet", "hysteria_porthopping", "prerouting", "comment ", comment)
 	if err := cmd.Run(); err != nil {
 		errMsg := fmt.Sprintf("failed to delete nftables comment: %s err: %v", comment, err)
 		logrus.Errorf(errMsg)
