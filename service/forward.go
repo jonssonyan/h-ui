@@ -31,11 +31,11 @@ func init() {
 
 func InitTableAndChain() error {
 	if netManager == "nft" {
-		_, err := util.Exec("nft add table inet hysteria_porthopping")
+		_, err := util.Exec(fmt.Sprintf("nft add table inet %s", Comment))
 		if err != nil {
 			return err
 		}
-		_, err = util.Exec("nft add chain inet hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\\; policy accept\\; }")
+		_, err = util.Exec(fmt.Sprintf("nft add chain inet %s prerouting { type nat hook prerouting priority dstnat\\; policy accept\\; }", Comment))
 		if err != nil {
 			return err
 		}
@@ -108,10 +108,10 @@ func nftForward(rules string, target string, option string) error {
 		return fmt.Errorf("no network interface detected")
 	}
 	// nft list ruleset
-	// 创建表：nft add table inet hysteria_porthopping
-	// 创建链：nft add chain inet hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
-	// 添加规则：nft add rule inet hysteria_porthopping prerouting iifname enp1s0 udp dport {30000-40000} counter redirect to :444 comment hui_hysteria_porthopping
-	_, err := util.Exec(fmt.Sprintf("nft %s rule inet hysteria_porthopping prerouting iifname %s udp dport {%s} counter redirect to :%s comment %s", option, ingressInterface, rules, target, Comment))
+	// 创建表：nft add table inet hui_hysteria_porthopping
+	// 创建链：nft add chain inet hui_hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
+	// 添加规则：nft add rule inet hui_hysteria_porthopping prerouting iifname enp1s0 udp dport {30000-40000} counter redirect to :444 comment hui_hysteria_porthopping
+	_, err := util.Exec(fmt.Sprintf("nft %s rule inet %s prerouting iifname %s udp dport {%s} counter redirect to :%s comment %s", option, Comment, ingressInterface, rules, target, Comment))
 	if err != nil {
 		return err
 	}
@@ -128,7 +128,7 @@ func ntfRemoveByComment(comment string) error {
 		if strings.Contains(rule, comment) {
 			parts := strings.Fields(rule)
 			handle := parts[len(parts)-1]
-			_, err := util.Exec(fmt.Sprintf("nft delete rule inet hysteria_porthopping prerouting handle %s", strings.TrimSpace(handle)))
+			_, err := util.Exec(fmt.Sprintf("nft delete rule inet %s prerouting handle %s", Comment, strings.TrimSpace(handle)))
 			if err != nil {
 				return err
 			}
@@ -138,7 +138,7 @@ func ntfRemoveByComment(comment string) error {
 }
 
 func nftRules() ([]string, error) {
-	output, err := util.Exec("nft --handle list chain inet hysteria_porthopping prerouting")
+	output, err := util.Exec(fmt.Sprintf("nft --handle list chain inet %s prerouting", Comment))
 	if err != nil {
 		return nil, err
 	}
