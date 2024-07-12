@@ -31,6 +31,9 @@ func runServer() error {
 	if err := service.InitHysteria2(); err != nil {
 		return err
 	}
+	if err := service.InitPortHopping(); err != nil {
+		return err
+	}
 
 	r := gin.Default()
 	router.Router(r)

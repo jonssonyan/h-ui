@@ -43,17 +43,6 @@ func setHysteria2ConfigYAML() error {
 		return errors.New("hysteria2 config is empty")
 	}
 
-	// set port forward
-	hysteria2ConfigPortHopping, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigPortHopping)
-	if err != nil {
-		return err
-	}
-	if *hysteria2ConfigPortHopping.Value != "" {
-		if err := util.PortForward(*hysteria2ConfigPortHopping.Value, *serverConfig.Listen, util.Add); err != nil {
-			return err
-		}
-	}
-
 	authHttpUrl, err := GetAuthHttpUrl()
 	if err != nil {
 		return err
@@ -100,10 +89,6 @@ func StartHysteria2() error {
 }
 
 func StopHysteria2() error {
-	// remove port forward
-	if err := util.RemoveByComment(); err != nil {
-		return err
-	}
 	return proxy.NewHysteria2Instance().StopHysteria2()
 }
 

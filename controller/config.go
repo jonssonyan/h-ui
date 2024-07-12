@@ -15,6 +15,7 @@ import (
 	"h-ui/service"
 	"h-ui/util"
 	"io"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -32,6 +33,7 @@ func UpdateConfigs(c *gin.Context) {
 		return
 	}
 
+	needResetPortHopping := false
 	needRestart := false
 
 	for _, item := range configsUpdateDto.ConfigUpdateDtos {
@@ -59,12 +61,35 @@ func UpdateConfigs(c *gin.Context) {
 		}
 		if key == constant.HUIKeyPath && keyPath != value {
 			if value != "" && !util.Exists(value) {
-				vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
+				vo.Fail(fmt.Sprintf("port hopping: %s is invalid", value), c)
 				return
 			}
 			needRestart = true
 		}
+
+		if key == constant.Hysteria2ConfigPortHopping {
+			re := regexp.MustCompile("^\\d+(?:-\\d+)?(?:,\\d+(?:-\\d+)?)*$\n")
+			if !re.MatchString(value) {
+				vo.Fail(fmt.Sprintf("key path: %s is not exist", value), c)
+				return
+			}
+			hysteria2ConfigPortHopping, err := service.GetConfig(constant.Hysteria2ConfigPortHopping)
+			if err != nil {
+				vo.Fail(err.Error(), c)
+				return
+			}
+			if *hysteria2ConfigPortHopping.Value != value {
+				needResetPortHopping = true
+			}
+		}
 		if err = service.UpdateConfig(key, value); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
+	}
+
+	if needResetPortHopping {
+		if err := service.InitPortHopping(); err != nil {
 			vo.Fail(err.Error(), c)
 			return
 		}

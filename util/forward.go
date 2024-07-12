@@ -39,56 +39,61 @@ func PortForward(rules string, target string, option string) error {
 	case "nft":
 		switch option {
 		case Add, Delete:
-			return NftForward(rules, target, option)
+			return nftForward(rules, target, option)
 		default:
 			return errors.New("unsupported command option")
 		}
 	case "iptables":
 		switch option {
 		case Add:
-			return IptablesForward(rules, target, "-A")
+			return iptablesForward(rules, target, "-A")
 		case Delete:
-			return IptablesForward(rules, target, "-D")
+			return iptablesForward(rules, target, "-D")
 		default:
 			return errors.New("unsupported command option")
 		}
 	default:
-		return errors.New("port forwarding not supported on this system")
+		return errors.New("port hopping not supported on this system")
 	}
 }
 
 func RemoveByComment() error {
 	switch netManager {
 	case "nft":
-		return NtfRemoveByComment(Comment)
+		return ntfRemoveByComment(Comment)
 	case "iptables":
-		if err := IptablesRemoveByComment("iptables", Comment); err != nil {
+		if err := iptablesRemoveByComment("iptables", Comment); err != nil {
 			return err
 		}
-		if err := IptablesRemoveByComment("ip6tables", Comment); err != nil {
+		if err := iptablesRemoveByComment("ip6tables", Comment); err != nil {
 			return err
 		}
 		return nil
 	default:
-		return errors.New("port forwarding not supported on this system")
+		return errors.New("port hopping not supported on this system")
 	}
 }
 
-func NftForward(rules string, target string, option string) error {
+func nftForward(rules string, target string, option string) error {
 	if netManager != "nft" {
 		return fmt.Errorf("nftables not found on the system")
 	}
 
 	rulePairs := strings.Split(rules, ",")
 	for _, pair := range rulePairs {
+		ports := ""
 		portRange := strings.Split(pair, "-")
-		if len(portRange) != 2 {
+		if len(portRange) == 1 {
+			ports = strings.TrimSpace(portRange[0])
+		} else if len(portRange) == 2 {
+			startPort := strings.TrimSpace(portRange[0])
+			endPort := strings.TrimSpace(portRange[1])
+			ports = fmt.Sprintf("{%s-%s}", startPort, endPort)
+		} else {
 			return fmt.Errorf("invalid port range format: %s", pair)
 		}
-		startPort := strings.TrimSpace(portRange[0])
-		endPort := strings.TrimSpace(portRange[1])
 
-		cmd := exec.Command("nft", option, "rule", "ip", "nat", "prerouting", "iif", "eth0", "udp", "dport", fmt.Sprintf("{%s-%s}", startPort, endPort), "redirect", "to", ":"+target, "comment", Comment)
+		cmd := exec.Command("nft", option, "rule", "ip", "nat", "prerouting", "iif", "eth0", "udp", "dport", ports, "redirect", "to", ":"+target, "comment", Comment)
 		if err := cmd.Run(); err != nil {
 			errMsg := fmt.Sprintf("failed to %s nftables rule: %v", option, err)
 			logrus.Errorf(errMsg)
@@ -99,7 +104,7 @@ func NftForward(rules string, target string, option string) error {
 	return nil
 }
 
-func NtfRemoveByComment(comment string) error {
+func ntfRemoveByComment(comment string) error {
 	if netManager != "nft" {
 		return fmt.Errorf("nftables not found on the system")
 	}
@@ -113,38 +118,52 @@ func NtfRemoveByComment(comment string) error {
 	return nil
 }
 
-func IptablesForward(rules string, target string, option string) error {
+func iptablesForward(rules string, target string, option string) error {
 	if netManager != "iptables" {
 		return fmt.Errorf("iptables not found on the system")
 	}
 
 	rulePairs := strings.Split(rules, ",")
 	for _, pair := range rulePairs {
+		ports := ""
 		portRange := strings.Split(pair, "-")
-		if len(portRange) != 2 {
+		if len(portRange) == 1 {
+			ports = strings.TrimSpace(portRange[0])
+		} else if len(portRange) == 2 {
+			startPort := strings.TrimSpace(portRange[0])
+			endPort := strings.TrimSpace(portRange[1])
+			ports = startPort + ":" + endPort
+		} else {
 			return fmt.Errorf("invalid port range format: %s", pair)
 		}
-		startPort := strings.TrimSpace(portRange[0])
-		endPort := strings.TrimSpace(portRange[1])
 
-		Ipv4Cmd := exec.Command("iptables", "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", startPort+":"+endPort, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", Comment)
-		if err := Ipv4Cmd.Run(); err != nil {
-			errMsg := fmt.Sprintf("failed to %s iptables rule: %v", option, err)
-			logrus.Errorf(errMsg)
-			return errors.New(errMsg)
-		}
-		Ipv6Cmd := exec.Command("ip6tables", "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", startPort+":"+endPort, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", Comment)
-		if err := Ipv6Cmd.Run(); err != nil {
-			errMsg := fmt.Sprintf("failed to %s ip6tables rule: %v", option, err)
-			logrus.Errorf(errMsg)
-			return errors.New(errMsg)
+		if len(ports) != 0 {
+			if err := iptablesAddRule(option, ports, target); err != nil {
+				return err
+			}
 		}
 	}
 
 	return nil
 }
 
-func IptablesRemoveByComment(protocol, comment string) error {
+func iptablesAddRule(option, ports, target string) error {
+	Ipv4Cmd := exec.Command("iptables", "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", ports, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", Comment)
+	if err := Ipv4Cmd.Run(); err != nil {
+		errMsg := fmt.Sprintf("failed to %s iptables rule: %v", option, err)
+		logrus.Errorf(errMsg)
+		return errors.New(errMsg)
+	}
+	Ipv6Cmd := exec.Command("ip6tables", "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", ports, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", Comment)
+	if err := Ipv6Cmd.Run(); err != nil {
+		errMsg := fmt.Sprintf("failed to %s ip6tables rule: %v", option, err)
+		logrus.Errorf(errMsg)
+		return errors.New(errMsg)
+	}
+	return nil
+}
+
+func iptablesRemoveByComment(protocol, comment string) error {
 	rules, err := iptablesRules(protocol)
 	if err != nil {
 		return err
