@@ -150,7 +150,7 @@ func Hysteria2Url(c *gin.Context) {
 		return
 	}
 
-	url, err := service.Hysteria2Url(strings.ToLower(*hysteria2UrlDto.ClientType), *hysteria2UrlDto.AccountId, *hysteria2UrlDto.Hostname)
+	url, err := service.Hysteria2Url(*hysteria2UrlDto.AccountId, *hysteria2UrlDto.Hostname)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return

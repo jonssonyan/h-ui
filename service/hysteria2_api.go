@@ -187,7 +187,7 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 	return userInfo, configYaml, nil
 }
 
-func Hysteria2Url(clientType string, accountId int64, hostname string) (string, error) {
+func Hysteria2Url(accountId int64, hostname string) (string, error) {
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
 		return "", err
@@ -211,6 +211,12 @@ func Hysteria2Url(clientType string, accountId int64, hostname string) (string, 
 		urlConfig += fmt.Sprintf("&obfs=salamander&obfs-password=%s", *hysteria2Config.Obfs.Salamander.Password)
 	}
 
+	if hysteria2Config.ACME != nil &&
+		hysteria2Config.ACME.Domains != nil &&
+		len(hysteria2Config.ACME.Domains) > 0 {
+		urlConfig += fmt.Sprintf("&sni=%s", hysteria2Config.ACME.Domains[0])
+	}
+
 	var insecure int64 = 0
 	if hysteria2Config.TLS != nil &&
 		hysteria2Config.TLS.Cert != nil &&
@@ -220,16 +226,6 @@ func Hysteria2Url(clientType string, accountId int64, hostname string) (string, 
 		insecure = 1
 	}
 	urlConfig += fmt.Sprintf("&insecure=%d", insecure)
-
-	if hysteria2Config.ACME != nil &&
-		hysteria2Config.ACME.Domains != nil &&
-		len(hysteria2Config.ACME.Domains) > 0 {
-		if clientType == constant.Shadowrocket {
-			urlConfig += fmt.Sprintf("&peer=%s", hysteria2Config.ACME.Domains[0])
-		} else {
-			urlConfig += fmt.Sprintf("&sni=%s", hysteria2Config.ACME.Domains[0])
-		}
-	}
 
 	if hysteria2Config.Bandwidth != nil &&
 		hysteria2Config.Bandwidth.Down != nil &&
@@ -241,13 +237,8 @@ func Hysteria2Url(clientType string, accountId int64, hostname string) (string, 
 	if err != nil {
 		return "", err
 	}
-	port := *hysteria2Config.Listen
 	if *hysteria2ConfigPortHopping.Value != "" {
-		if clientType == constant.Shadowrocket {
-			urlConfig += fmt.Sprintf("&mport=%s", *hysteria2ConfigPortHopping.Value)
-		} else {
-			port = ":" + *hysteria2ConfigPortHopping.Value
-		}
+		urlConfig += fmt.Sprintf("&mport=%s", *hysteria2ConfigPortHopping.Value)
 	}
 
 	hysteria2ConfigRemark, err := dao.GetConfig("key = ?", constant.Hysteria2Remark)
@@ -258,7 +249,7 @@ func Hysteria2Url(clientType string, accountId int64, hostname string) (string, 
 		urlConfig += fmt.Sprintf("#%s", *hysteria2ConfigRemark.Value)
 	}
 	if urlConfig != "" {
-		urlConfig = "?" + strings.TrimPrefix(urlConfig, "&")
+		urlConfig = "/?" + strings.TrimPrefix(urlConfig, "&")
 	}
-	return fmt.Sprintf("hysteria2://%s@%s%s", *account.ConPass, hostname, port) + urlConfig, nil
+	return fmt.Sprintf("hysteria2://%s@%s%s", *account.ConPass, hostname, *hysteria2Config.Listen) + urlConfig, nil
 }
