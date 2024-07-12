@@ -45,6 +45,7 @@ export default {
     cancel: "Cancel",
     copySuccess: "Copy successful",
     subscribe: "Subscribe",
+    subscribeQrCode: "Subscribe QR Code",
     nodeUrl: "Node URL",
     nodeQrCode: "Node QR Code",
     resetTraffic: "Reset traffic",
@@ -144,7 +145,8 @@ export default {
     config: {
       enable: "Enable/Disable",
       remark: "Remark",
-      portHopping: "Port Hopping, Multiple individual ports: 1234,5678,9012; A range of ports: 20000-50000; A combination of both: 1234,5000-6000,7044,8000-9000",
+      portHopping:
+        "Port Hopping, Multiple individual ports: 1234,5678,9012; A range of ports: 20000-50000; A combination of both: 1234,5000-6000,7044,8000-9000",
       listen:
         "When the IP address is omitted, the server will listen on all interfaces, both IPv4 and IPv6. To listen on IPv4 only, you can use 0.0.0.0:443. To listen on IPv6 only, you can use [::]:443.",
       tlsType: "TLS type",

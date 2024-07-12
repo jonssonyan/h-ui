@@ -23,10 +23,17 @@
             <el-button type="primary" :icon="Share" @click="handleSubscribe">
               {{ $t("common.subscribe") }}
             </el-button>
+            <el-button
+              type="primary"
+              :icon="Share"
+              @click="handleSubscribeQrCode"
+            >
+              {{ $t("common.subscribeQrCode") }}
+            </el-button>
             <el-button type="primary" :icon="Share" @click="handleNodeUrl">
               {{ $t("common.nodeUrl") }}
             </el-button>
-            <el-button type="primary" :icon="Share" @click="handleQrCode">
+            <el-button type="primary" :icon="Share" @click="handleUrlQrCode">
               {{ $t("common.nodeQrCode") }}
             </el-button>
           </div>
@@ -200,8 +207,23 @@ const handleSubscribe = async () => {
       host: window.location.host,
     };
     const { data } = await hysteria2SubscribeUrlApi(dto);
-    copy(data);
+    copy(data.url);
     ElMessage.success(t("common.copySuccess"));
+  } catch (e) {
+    /* empty */
+  }
+};
+
+const handleSubscribeQrCode = async () => {
+  try {
+    const dto: Hysteria2SubscribeUrlDto = {
+      accountId: accountStore.id,
+      protocol: window.location.protocol,
+      host: window.location.host,
+    };
+    const { data } = await hysteria2SubscribeUrlApi(dto);
+    state.qrCodeSrc = "data:image/png;base64," + data.qrCode;
+    state.qrCodeDialog.visible = true;
   } catch (e) {
     /* empty */
   }
@@ -221,7 +243,7 @@ const handleNodeUrl = async () => {
   }
 };
 
-const handleQrCode = async () => {
+const handleUrlQrCode = async () => {
   try {
     const dto: Hysteria2UrlDto = {
       accountId: accountStore.id,

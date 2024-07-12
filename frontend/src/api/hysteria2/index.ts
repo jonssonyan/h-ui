@@ -3,6 +3,7 @@ import { Hysteria2ServerConfig } from "@/api/config/types";
 import request from "@/utils/request";
 import {
   Hysteria2KickDto,
+  Hysteria2SubscribeVo,
   Hysteria2SubscribeUrlDto,
   Hysteria2UrlDto,
   Hysteria2UrlVo,
@@ -38,7 +39,7 @@ export function listReleaseApi(): AxiosPromise<string[]> {
 
 export function hysteria2SubscribeUrlApi(
   dto: Hysteria2SubscribeUrlDto
-): AxiosPromise<string> {
+): AxiosPromise<Hysteria2SubscribeVo> {
   return request({
     url: "/hysteria2/hysteria2SubscribeUrl",
     method: "get",

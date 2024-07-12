@@ -45,6 +45,7 @@ export default {
     cancel: "取消",
     copySuccess: "复制成功",
     subscribe: "订阅链接",
+    subscribeQrCode: "订阅二维码",
     nodeUrl: "节点 URL",
     nodeQrCode: "节点二维码",
     resetTraffic: "重设流量",
@@ -143,7 +144,8 @@ export default {
     config: {
       enable: "开启/关闭",
       remark: "别名",
-      portHopping: "端口跳跃，多个单端口：1234,5678,9012；端口范围：20000-50000；两者的组合：1234,5000-6000,7044,8000-9000",
+      portHopping:
+        "端口跳跃，多个单端口：1234,5678,9012；端口范围：20000-50000；两者的组合：1234,5000-6000,7044,8000-9000",
       listen:
         "当只有端口没有 IP 地址时，服务器将监听所有可用的 IPv4 和 IPv6 地址。要仅监听 IPv4，可以使用 0.0.0.0:443。要仅监听 IPv6，可以使用 [::]:443。",
       tlsType: "TLS 类型",

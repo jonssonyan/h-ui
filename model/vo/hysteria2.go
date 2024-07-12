@@ -24,6 +24,11 @@ func Hysteria2AuthFail(id string, c *gin.Context) {
 	})
 }
 
+type Hysteria2SubscribeVo struct {
+	Url    string `json:"url"`
+	QrCode []byte `json:"qrCode"`
+}
+
 type Hysteria2UrlVo struct {
 	Url    string `json:"url"`
 	QrCode []byte `json:"qrCode"`

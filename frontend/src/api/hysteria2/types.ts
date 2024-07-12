@@ -18,6 +18,12 @@ export interface Hysteria2UrlDto {
   hostname: string;
 }
 
+export interface Hysteria2SubscribeVo {
+	url: string;
+	qrCode: string;
+}
+
+
 export interface Hysteria2UrlVo {
   url: string;
   qrCode: string;

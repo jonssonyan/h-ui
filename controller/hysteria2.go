@@ -129,7 +129,16 @@ func Hysteria2SubscribeUrl(c *gin.Context) {
 		vo.Fail(err.Error(), c)
 		return
 	}
-	vo.Success(subscribeUrl, c)
+	qrCode, err := qrcode.Encode(subscribeUrl, qrcode.Medium, 300)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	subscribeVo := vo.Hysteria2SubscribeVo{
+		Url:    subscribeUrl,
+		QrCode: qrCode,
+	}
+	vo.Success(subscribeVo, c)
 }
 
 func Hysteria2Subscribe(c *gin.Context) {
