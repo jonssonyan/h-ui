@@ -3,11 +3,9 @@ package service
 import (
 	"errors"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/constant"
 	"h-ui/util"
-	"os/exec"
 	"strings"
 )
 
@@ -16,7 +14,7 @@ var (
 	ingressInterface string
 	Add              = "add"
 	Delete           = "delete"
-	Comment          = "h-ui"
+	Comment          = "hui_hysteria_porthopping"
 )
 
 func init() {
@@ -101,13 +99,7 @@ func RemoveByComment() error {
 	case "nft":
 		return ntfRemoveByComment(Comment)
 	case "iptables":
-		if err := iptablesRemoveByComment("iptables", Comment); err != nil {
-			return err
-		}
-		if err := iptablesRemoveByComment("ip6tables", Comment); err != nil {
-			return err
-		}
-		return nil
+		return iptablesRemoveByComment(Comment)
 	default:
 		return errors.New("port hopping not supported on this system")
 	}
@@ -123,7 +115,7 @@ func nftForward(rules string, target string, option string) error {
 	// nft list ruleset
 	// 创建表：nft add table inet hysteria_porthopping
 	// 创建链：nft add chain inet hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
-	// 添加规则：nft add rule inet hysteria_porthopping prerouting iifname enp1s0 udp dport {30000-40000} counter redirect to :444 comment h-ui
+	// 添加规则：nft add rule inet hysteria_porthopping prerouting iifname enp1s0 udp dport {30000-40000} counter redirect to :444 comment hui_hysteria_porthopping
 	_, err := util.Exec(fmt.Sprintf("nft %s rule inet hysteria_porthopping prerouting iifname %s udp dport {%s} counter redirect to :%s comment %s", option, ingressInterface, rules, target, Comment))
 	if err != nil {
 		return err
@@ -169,6 +161,9 @@ func iptablesForward(rules string, target string, option string) error {
 	if netManager != "iptables" {
 		return fmt.Errorf("iptables not found on the system")
 	}
+	if ingressInterface == "" {
+		return fmt.Errorf("no network interface detected")
+	}
 
 	rulePairs := strings.Split(rules, ",")
 	for _, pair := range rulePairs {
@@ -195,33 +190,34 @@ func iptablesForward(rules string, target string, option string) error {
 }
 
 func iptablesAddRule(option, ports, target string) error {
-	Ipv4Cmd := exec.Command("iptables", "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", ports, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", Comment)
-	if err := Ipv4Cmd.Run(); err != nil {
-		errMsg := fmt.Sprintf("failed to %s iptables rule: %v", option, err)
-		logrus.Errorf(errMsg)
-		return errors.New(errMsg)
+	// iptables -t nat -A PREROUTING -i enp1s0 -p udp --dport 30000:40000 -j REDIRECT --to-port 444 -m comment --comment hui_hysteria_porthopping
+	_, err := util.Exec(fmt.Sprintf("iptables -t nat %s PREROUTING -i %s -p udp --dport %s -j REDIRECT --to-port %s -m comment --comment %s", option, ingressInterface, ports, target, Comment))
+	if err != nil {
+		return err
 	}
-	Ipv6Cmd := exec.Command("ip6tables", "-t", "nat", option, "PREROUTING", "-i", "eth0", "-p", "udp", "--dport", ports, "-j", "REDIRECT", "--to-port", target, "-m", "comment", "--comment", Comment)
-	if err := Ipv6Cmd.Run(); err != nil {
-		errMsg := fmt.Sprintf("failed to %s ip6tables rule: %v", option, err)
-		logrus.Errorf(errMsg)
-		return errors.New(errMsg)
+	// ip6tables -t nat -A PREROUTING -i enp1s0 -p udp --dport 30000:40000 -j REDIRECT --to-port 444 -m comment --comment hui_hysteria_porthopping
+	_, err = util.Exec(fmt.Sprintf("ip6tables -t nat %s PREROUTING -i %s -p udp --dport %s -j REDIRECT --to-port %s -m comment --comment %s", option, ingressInterface, ports, target, Comment))
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-func iptablesRemoveByComment(protocol, comment string) error {
-	rules, err := iptablesRules(protocol)
-	if err != nil {
-		return err
-	}
-	for _, rule := range rules {
-		if strings.Contains(rule, comment) {
-			cmd := exec.Command(protocol, "-t", "nat", "-D", "PREROUTING", rule)
-			if err := cmd.Run(); err != nil {
-				errMsg := fmt.Sprintf("failed to delete iptables rule: %v", err)
-				logrus.Errorf(errMsg)
-				return errors.New(errMsg)
+func iptablesRemoveByComment(comment string) error {
+	protocols := [2]string{"iptables", "ip6tables"}
+	for _, protocol := range protocols {
+		rules, err := iptablesRules(protocol)
+		if err != nil {
+			return err
+		}
+		for _, rule := range rules {
+			if strings.Contains(rule, comment) {
+				parts := strings.Fields(rule)
+				handle := parts[len(parts)-1]
+				_, err := util.Exec(fmt.Sprintf("%s -t nat -D PREROUTING %s", protocol, strings.TrimSpace(handle)))
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}
@@ -230,7 +226,8 @@ func iptablesRemoveByComment(protocol, comment string) error {
 }
 
 func iptablesRules(protocol string) ([]string, error) {
-	output, err := util.Exec(fmt.Sprintf("%s -t nat -S PREROUTING", protocol))
+	// iptables -t nat -L PREROUTING -v --line-numbers
+	output, err := util.Exec(fmt.Sprintf("%s -t nat -L PREROUTING -v --line-numbers", protocol))
 	if err != nil {
 		return nil, err
 	}
