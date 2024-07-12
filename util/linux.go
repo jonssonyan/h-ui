@@ -7,13 +7,16 @@ import (
 	"github.com/shirou/gopsutil/mem"
 	"github.com/sirupsen/logrus"
 	"net"
+	"os"
 	"os/exec"
 	"strconv"
 	"time"
 )
 
 func Exec(cmd string) (string, error) {
-	output, err := exec.Command("bash", "-c", cmd).CombinedOutput()
+	command := exec.Command("bash", "-c", cmd)
+	command.Env = os.Environ()
+	output, err := command.CombinedOutput()
 	if err != nil {
 		logrus.Errorf("execute command failed cmd: %s err: %v", cmd, err)
 		return "", fmt.Errorf("execute command failed cmd: %s", cmd)
