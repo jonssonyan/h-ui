@@ -139,7 +139,7 @@ func ntfRemoveByComment(comment string) error {
 }
 
 func nftRules() ([]string, error) {
-	listOutput, err := util.Exec(fmt.Sprintf("nft list tables | grep %s", Comment))
+	listOutput, err := util.Exec(fmt.Sprintf("nft list tables | grep -q %s && echo 'found'", Comment))
 	if err != nil {
 		return nil, err
 	}
