@@ -67,7 +67,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install
    ```bash
    docker pull jonssonyan/h-ui
 
-   docker run -d --name h-ui --restart always \
+   docker run -d --cap-add=NET_ADMIN \
+     --name h-ui --restart always \
      --network=host \
      -v /h-ui/bin:/h-ui/bin \
      -v /h-ui/data:/h-ui/data \
@@ -79,7 +80,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install
    Custom web port, default is 8081
 
    ```bash
-   docker run -d --name h-ui --restart always \
+   docker run -d --cap-add=NET_ADMIN \
+     --name h-ui --restart always \
      --network=host \
      -v /h-ui/bin:/h-ui/bin \
      -v /h-ui/data:/h-ui/data \
@@ -92,7 +94,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install
    Set the time zone, default is Asia/Shanghai
 
    ```bash
-   docker run -d --name h-ui --restart always \
+   docker run -d --cap-add=NET_ADMIN \
+     --name h-ui --restart always \
      --network=host \
      -e TZ=Asia/Shanghai \
      -v /h-ui/bin:/h-ui/bin \
