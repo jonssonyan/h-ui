@@ -39,14 +39,12 @@ func InitTableAndChain() error {
 		if err != nil {
 			return err
 		}
-	} else if netManager == "iptables" {
-
 	}
 	return nil
 }
 
 func InitPortHopping() error {
-	if err := RemoveByComment(); err != nil {
+	if err := removeByComment(); err != nil {
 		return err
 	}
 
@@ -63,7 +61,7 @@ func InitPortHopping() error {
 	if *hysteria2ConfigPortHopping.Value != "" {
 		listen := strings.Split(*hysteria2Config.Listen, ":")
 		if len(listen) == 2 {
-			if err := PortForward(*hysteria2ConfigPortHopping.Value, listen[1], Add); err != nil {
+			if err := portForward(*hysteria2ConfigPortHopping.Value, listen[1], Add); err != nil {
 				return err
 			}
 		}
@@ -71,7 +69,7 @@ func InitPortHopping() error {
 	return nil
 }
 
-func PortForward(rules string, target string, option string) error {
+func portForward(rules string, target string, option string) error {
 	switch netManager {
 	case "nft":
 		switch option {
@@ -94,7 +92,7 @@ func PortForward(rules string, target string, option string) error {
 	}
 }
 
-func RemoveByComment() error {
+func removeByComment() error {
 	switch netManager {
 	case "nft":
 		return ntfRemoveByComment(Comment)
