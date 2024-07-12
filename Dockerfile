@@ -13,7 +13,7 @@ ARG TARGETVARIANT
 
 COPY build/h-ui-${TARGETOS}-${TARGETARCH}${TARGETVARIANT} h-ui
 
-RUN apk update && apk add --no-cache bash tzdata ca-certificates \
+RUN apk update && apk add --no-cache bash tzdata ca-certificates nftables \
     && rm -rf /var/cache/apk/* \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \

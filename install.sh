@@ -141,7 +141,8 @@ install_depend() {
   fi
   ${package_manager} install -y \
     curl \
-    wget
+    wget \
+    systemd
 }
 
 setup_docker() {
@@ -254,9 +255,20 @@ install_h_ui_systemd() {
 
   echo_content green "---> Install H UI"
   mkdir -p ${HUI_DATA_SYSTEMD}
+
+  read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
+  [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
+  read -r -p "Please enter the Time zone of H UI (default: Asia/Shanghai): " h_ui_time_zone
+  [[ -z "${h_ui_time_zone}" ]] && h_ui_time_zone="Asia/Shanghai"
+
+  timedatectl set-timezone ${h_ui_time_zone} && timedatectl set-local-rtc 0
+  systemctl restart rsyslog
+  systemctl restart crond
+
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
     chmod +x /usr/local/h-ui/h-ui &&
     curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
+    sed -i "s|^ExecStart=.*|ExecStart=/usr/local/h-ui/h-ui -p ${h_ui_port}|" "/etc/systemd/system/h-ui.service" &&
     systemctl daemon-reload &&
     systemctl enable h-ui &&
     systemctl restart h-ui
