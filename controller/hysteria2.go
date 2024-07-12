@@ -149,7 +149,14 @@ func Hysteria2Url(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	url, err := service.Hysteria2Url(*hysteria2UrlDto.AccountId, *hysteria2UrlDto.Hostname)
+
+	userAgent := c.Request.Header.Get("User-Agent")
+	var clientType string
+	if strings.HasPrefix(userAgent, constant.Shadowrocket) {
+		clientType = constant.Shadowrocket
+	}
+
+	url, err := service.Hysteria2Url(clientType, *hysteria2UrlDto.AccountId, *hysteria2UrlDto.Hostname)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return

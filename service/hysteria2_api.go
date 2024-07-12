@@ -8,6 +8,7 @@ import (
 	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/proxy"
+	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -186,7 +187,7 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 	return userInfo, configYaml, nil
 }
 
-func Hysteria2Url(accountId int64, hostname string) (string, error) {
+func Hysteria2Url(clientType string, accountId int64, hostname string) (string, error) {
 	hysteria2Config, err := GetHysteria2Config()
 	if err != nil {
 		return "", err
@@ -223,11 +224,30 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 	if hysteria2Config.ACME != nil &&
 		hysteria2Config.ACME.Domains != nil &&
 		len(hysteria2Config.ACME.Domains) > 0 {
-		urlConfig += fmt.Sprintf("&sni=%s", hysteria2Config.ACME.Domains[0])
+		if clientType == constant.Shadowrocket {
+			urlConfig += fmt.Sprintf("&peer=%s", hysteria2Config.ACME.Domains[0])
+		} else {
+			urlConfig += fmt.Sprintf("&sni=%s", hysteria2Config.ACME.Domains[0])
+		}
 	}
 
-	if urlConfig != "" {
-		urlConfig = "?" + strings.TrimPrefix(urlConfig, "&")
+	if hysteria2Config.Bandwidth != nil &&
+		hysteria2Config.Bandwidth.Down != nil &&
+		*hysteria2Config.Bandwidth.Down != "" {
+		urlConfig += fmt.Sprintf("&downmbps=%s", url.QueryEscape(*hysteria2Config.Bandwidth.Down))
+	}
+
+	hysteria2ConfigPortHopping, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigPortHopping)
+	if err != nil {
+		return "", err
+	}
+	port := *hysteria2Config.Listen
+	if *hysteria2ConfigPortHopping.Value != "" {
+		if clientType == constant.Shadowrocket {
+			urlConfig += fmt.Sprintf("&mport=%s", *hysteria2ConfigPortHopping.Value)
+		} else {
+			port = ":" + *hysteria2ConfigPortHopping.Value
+		}
 	}
 
 	hysteria2ConfigRemark, err := dao.GetConfig("key = ?", constant.Hysteria2Remark)
@@ -237,13 +257,8 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 	if *hysteria2ConfigRemark.Value != "" {
 		urlConfig += fmt.Sprintf("#%s", *hysteria2ConfigRemark.Value)
 	}
-	hysteria2ConfigPortHopping, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigPortHopping)
-	if err != nil {
-		return "", err
-	}
-	port := *hysteria2Config.Listen
-	if *hysteria2ConfigPortHopping.Value != "" {
-		port = ":" + *hysteria2ConfigPortHopping.Value
+	if urlConfig != "" {
+		urlConfig = "?" + strings.TrimPrefix(urlConfig, "&")
 	}
 	return fmt.Sprintf("hysteria2://%s@%s%s", *account.ConPass, hostname, port) + urlConfig, nil
 }
