@@ -263,7 +263,11 @@ install_h_ui_systemd() {
 
   timedatectl set-timezone ${h_ui_time_zone} && timedatectl set-local-rtc 0
   systemctl restart rsyslog
-  systemctl restart crond
+  if [[ "${release}" == "centos" ]]; then
+    systemctl restart crond
+  elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+    systemctl restart cron
+  fi
 
   curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
     chmod +x /usr/local/h-ui/h-ui &&
