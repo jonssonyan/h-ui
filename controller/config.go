@@ -171,9 +171,32 @@ func UpdateHysteria2Config(c *gin.Context) {
 	if err != nil {
 		return
 	}
+
+	hysteria2Config, err := service.GetHysteria2Config()
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+
+	needResetPortHopping := false
+	if hysteria2Config.Listen != nil &&
+		*hysteria2Config.Listen != "" &&
+		hysteria2ServerConfig.Listen == nil &&
+		*hysteria2ServerConfig.Listen != "" &&
+		*hysteria2ServerConfig.Listen != *hysteria2Config.Listen {
+		needResetPortHopping = true
+	}
+
 	if err = service.UpdateHysteria2Config(hysteria2ServerConfig); err != nil {
 		vo.Fail(err.Error(), c)
 		return
+	}
+
+	if needResetPortHopping {
+		if err := service.InitPortHopping(); err != nil {
+			vo.Fail(err.Error(), c)
+			return
+		}
 	}
 
 	running := service.Hysteria2IsRunning()
