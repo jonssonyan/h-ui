@@ -31,6 +31,9 @@ func runServer() error {
 	if err := service.InitHysteria2(); err != nil {
 		return err
 	}
+	if err := service.InitTableAndChain(); err != nil {
+		logrus.Errorf(err.Error())
+	}
 	if err := service.InitPortHopping(); err != nil {
 		logrus.Errorf(err.Error())
 	}
