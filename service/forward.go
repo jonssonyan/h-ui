@@ -120,7 +120,7 @@ func nftForward(rules string, target string, option string) error {
 	// nft list ruleset
 	// 创建表：nft add table inet hysteria_porthopping
 	// 创建链：nft add chain inet hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
-	// 添加规则：nft add rule inet hysteria_porthopping prerouting iifname eth0 udp dport {30000-40000} counter redirect to :444 comment h-ui
+	// 添加规则：nft add rule inet hysteria_porthopping prerouting iifname enp1s0 udp dport {30000-40000} counter redirect to :444 comment h-ui
 	_, err := util.Exec(fmt.Sprintf("nft %s rule inet hysteria_porthopping prerouting iifname %s udp dport {%s} counter redirect to :%s comment %s", option, ingressInterface, rules, target, Comment))
 	if err != nil {
 		return err
@@ -138,9 +138,12 @@ func ntfRemoveByComment(comment string) error {
 	if err != nil {
 		return err
 	}
+	comment = fmt.Sprintf("comment \"%s\"", comment)
 	for _, rule := range rules {
 		if strings.Contains(rule, comment) {
-			_, err := util.Exec(fmt.Sprintf("nft delete rule inet hysteria_porthopping prerouting %s", strings.TrimSpace(rule)))
+			parts := strings.Fields(rule)
+			handle := parts[len(parts)-1]
+			_, err := util.Exec(fmt.Sprintf("nft delete rule inet hysteria_porthopping prerouting handle %s", strings.TrimSpace(handle)))
 			if err != nil {
 				return err
 			}
@@ -150,7 +153,7 @@ func ntfRemoveByComment(comment string) error {
 }
 
 func nftRules() ([]string, error) {
-	output, err := util.Exec("nft list chain inet hysteria_porthopping prerouting")
+	output, err := util.Exec("nft --handle list chain inet hysteria_porthopping prerouting")
 	if err != nil {
 		return nil, err
 	}
