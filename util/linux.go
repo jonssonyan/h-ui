@@ -15,8 +15,8 @@ import (
 func Exec(cmd string) (string, error) {
 	output, err := exec.Command("bash", "-c", cmd).CombinedOutput()
 	if err != nil {
-		logrus.Errorf("execute command failed: %v", err)
-		return "", err
+		logrus.Errorf("execute command failed cmd: %s err: %v", cmd, err)
+		return "", fmt.Errorf("execute command failed cmd: %s", cmd)
 	}
 	return string(output), nil
 }

@@ -127,11 +127,9 @@ func nftForward(rules string, target string, option string) error {
 	// 创建表：nft add table inet hysteria_porthopping
 	// 创建链：nft add chain inet hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
 	// 添加规则：nft add rule inet hysteria_porthopping prerouting iifname eth0 udp dport {30000-40000} counter redirect to :444 comment h-ui
-	cmd := exec.Command("nft", option, "rule", "inet", "hysteria_porthopping", "prerouting", "iifname", "eth0", "udp", "dport", fmt.Sprintf("{%s}", rules), "counter", "redirect", "to", ":"+target, "comment", Comment)
-	if err := cmd.Run(); err != nil {
-		errMsg := fmt.Sprintf("failed to %s nftables rule: %v", option, err)
-		logrus.Errorf(errMsg)
-		return errors.New(errMsg)
+	_, err := util.Exec(fmt.Sprintf("nft %s rule inet hysteria_porthopping prerouting iifname eth0 udp dport {%s} counter redirect to :%s comment %s", option, rules, target, Comment))
+	if err != nil {
+		return err
 	}
 
 	return nil
@@ -139,17 +137,32 @@ func nftForward(rules string, target string, option string) error {
 
 func ntfRemoveByComment(comment string) error {
 	if netManager != "nft" {
-		return fmt.Errorf("nftables not found on the system")
+		return errors.New("nftables not found on the system")
 	}
 
-	// nft delete rule inet hysteria_porthopping prerouting comment h-ui
-	cmd := exec.Command("nft", "delete", "rule", "inet", "hysteria_porthopping", "prerouting", "comment ", comment)
-	if err := cmd.Run(); err != nil {
-		errMsg := fmt.Sprintf("failed to delete nftables comment: %s err: %v", comment, err)
-		logrus.Errorf(errMsg)
-		return errors.New(errMsg)
+	rules, err := nftRules()
+	if err != nil {
+		return err
+	}
+	for _, rule := range rules {
+		if strings.Contains(rule, comment) {
+			_, err := util.Exec(fmt.Sprintf("nft delete rule inet hysteria_porthopping prerouting %s", strings.TrimSpace(rule)))
+			if err != nil {
+				return err
+			}
+		}
 	}
 	return nil
+}
+
+func nftRules() ([]string, error) {
+	output, err := util.Exec("nft list chain inet hysteria_porthopping prerouting")
+	if err != nil {
+		return nil, err
+	}
+
+	rules := strings.Split(output, "\n")
+	return rules, nil
 }
 
 func iptablesForward(rules string, target string, option string) error {
@@ -219,9 +232,7 @@ func iptablesRemoveByComment(protocol, comment string) error {
 func iptablesRules(protocol string) ([]string, error) {
 	output, err := util.Exec(fmt.Sprintf("%s -t nat -S PREROUTING", protocol))
 	if err != nil {
-		errMsg := fmt.Sprintf("failed to list rules: %v", err)
-		logrus.Errorf(errMsg)
-		return nil, errors.New(errMsg)
+		return nil, err
 	}
 
 	rules := strings.Split(output, "\n")
