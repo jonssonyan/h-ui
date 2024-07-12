@@ -17,14 +17,14 @@ var (
 
 func init() {
 	// Check for nftables
-	nft, err := exec.Command("command", "-v", "nft").Output()
+	nft, err := Exec("command -v nft")
 	if err == nil && len(nft) > 0 {
 		netManager = "nft"
 		return
 	}
 
 	// Check for iptables
-	iptables, err := exec.Command("command", "-v", "iptables").Output()
+	iptables, err := Exec("command -v iptables")
 	if err == nil && len(iptables) > 0 {
 		netManager = "iptables"
 		return
@@ -183,13 +183,13 @@ func iptablesRemoveByComment(protocol, comment string) error {
 }
 
 func iptablesRules(protocol string) ([]string, error) {
-	output, err := exec.Command(protocol, "-t", "nat", "-S", "PREROUTING").Output()
+	output, err := Exec(fmt.Sprintf("%s -t nat -S PREROUTING", protocol))
 	if err != nil {
 		errMsg := fmt.Sprintf("failed to list rules: %v", err)
 		logrus.Errorf(errMsg)
 		return nil, errors.New(errMsg)
 	}
 
-	rules := strings.Split(string(output), "\n")
+	rules := strings.Split(output, "\n")
 	return rules, nil
 }
