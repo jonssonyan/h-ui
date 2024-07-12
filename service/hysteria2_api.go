@@ -215,6 +215,8 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 		hysteria2Config.ACME.Domains != nil &&
 		len(hysteria2Config.ACME.Domains) > 0 {
 		urlConfig += fmt.Sprintf("&sni=%s", hysteria2Config.ACME.Domains[0])
+		// shadowrocket
+		urlConfig += fmt.Sprintf("&peer=%s", hysteria2Config.ACME.Domains[0])
 	}
 
 	var insecure int64 = 0
@@ -230,7 +232,8 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 	if hysteria2Config.Bandwidth != nil &&
 		hysteria2Config.Bandwidth.Down != nil &&
 		*hysteria2Config.Bandwidth.Down != "" {
-		urlConfig += fmt.Sprintf("&downmbps=%s", url.QueryEscape(*hysteria2Config.Bandwidth.Down))
+		// shadowrocket
+		urlConfig += fmt.Sprintf("&downmbps=%s", url.PathEscape(*hysteria2Config.Bandwidth.Down))
 	}
 
 	hysteria2ConfigPortHopping, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigPortHopping)
@@ -238,6 +241,7 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 		return "", err
 	}
 	if *hysteria2ConfigPortHopping.Value != "" {
+		// shadowrocket
 		urlConfig += fmt.Sprintf("&mport=%s", *hysteria2ConfigPortHopping.Value)
 	}
 
