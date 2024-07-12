@@ -19,13 +19,13 @@ var (
 )
 
 func init() {
-	if nft, err := util.Exec("command -v nft"); err == nil && nft != "" {
+	if nft, err := util.Exec("command -v nft"); err == nil && strings.TrimSpace(nft) != "" {
 		netManager = "nft"
-	} else if iptables, err := util.Exec("command -v iptables"); err == nil && iptables != "" {
+	} else if iptables, err := util.Exec("command -v iptables"); err == nil && strings.TrimSpace(iptables) != "" {
 		netManager = "iptables"
 	}
 
-	if ii, err := util.Exec("ls /sys/class/net | grep -E '^en|^eth'"); err == nil && ii != "" {
+	if ii, err := util.Exec("ls /sys/class/net | grep -E '^en|^eth'"); err == nil && strings.TrimSpace(ii) != "" {
 		ingressInterface = strings.TrimSpace(ii)
 	}
 }
@@ -143,7 +143,7 @@ func nftRules() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	if listOutput == "" {
+	if strings.TrimSpace(listOutput) == "not found" {
 		return []string{}, nil
 	}
 	output, err := util.Exec(fmt.Sprintf("nft --handle list chain inet %s prerouting", Table))

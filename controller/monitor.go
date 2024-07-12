@@ -8,6 +8,7 @@ import (
 	"h-ui/service"
 	"h-ui/util"
 	"regexp"
+	"strings"
 )
 
 func MonitorSystem(c *gin.Context) {
@@ -55,7 +56,7 @@ func MonitorHysteria2(c *gin.Context) {
 	if err == nil {
 		pattern := `v\d+\.\d+\.\d+`
 		re := regexp.MustCompile(pattern)
-		matches := re.FindAllString(content, -1)
+		matches := re.FindAllString(strings.TrimSpace(content), -1)
 		if len(matches) > 0 {
 			hysteria2MonitorVo.Version = matches[0]
 		}
