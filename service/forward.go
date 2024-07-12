@@ -117,6 +117,9 @@ func nftForward(rules string, target string, option string) error {
 	if netManager != "nft" {
 		return fmt.Errorf("nftables not found on the system")
 	}
+	if ingressInterface == "" {
+		return fmt.Errorf("no network interface detected")
+	}
 	// nft list ruleset
 	// 创建表：nft add table inet hysteria_porthopping
 	// 创建链：nft add chain inet hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
