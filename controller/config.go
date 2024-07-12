@@ -181,7 +181,7 @@ func UpdateHysteria2Config(c *gin.Context) {
 	needResetPortHopping := false
 	if hysteria2Config.Listen != nil &&
 		*hysteria2Config.Listen != "" &&
-		hysteria2ServerConfig.Listen == nil &&
+		hysteria2ServerConfig.Listen != nil &&
 		*hysteria2ServerConfig.Listen != "" &&
 		*hysteria2ServerConfig.Listen != *hysteria2Config.Listen {
 		needResetPortHopping = true
