@@ -1,7 +1,7 @@
 package constant
 
 const (
-	Shadowrocket    = "Shadowrocket"
-	ClashforWindows = "ClashforWindows"
-	V2rayN          = "v2rayN"
+	Shadowrocket    = "shadowrocket"
+	ClashforWindows = "clashforwindows"
+	V2rayN          = "v2rayn"
 )

@@ -28,7 +28,7 @@ func Hysteria2Auth(c *gin.Context) {
 
 func Hysteria2Subscribe(c *gin.Context) {
 	conPass := c.Param("conPass")
-	userAgent := c.Request.Header.Get("User-Agent")
+	userAgent := strings.ToLower(c.Request.Header.Get("User-Agent"))
 	host := c.Request.Host
 
 	if host == "" {
@@ -150,7 +150,7 @@ func Hysteria2Url(c *gin.Context) {
 		return
 	}
 
-	url, err := service.Hysteria2Url(*hysteria2UrlDto.ClientType, *hysteria2UrlDto.AccountId, *hysteria2UrlDto.Hostname)
+	url, err := service.Hysteria2Url(strings.ToLower(*hysteria2UrlDto.ClientType), *hysteria2UrlDto.AccountId, *hysteria2UrlDto.Hostname)
 	if err != nil {
 		vo.Fail(err.Error(), c)
 		return
