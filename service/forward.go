@@ -4,6 +4,7 @@ import (
 	"h-ui/dao"
 	"h-ui/model/constant"
 	"h-ui/util"
+	"strings"
 )
 
 func InitPortHopping() error {
@@ -22,8 +23,11 @@ func InitPortHopping() error {
 		return err
 	}
 	if *hysteria2ConfigPortHopping.Value != "" {
-		if err := util.PortForward(*hysteria2ConfigPortHopping.Value, *hysteria2Config.Listen, util.Add); err != nil {
-			return err
+		listen := strings.Split(*hysteria2Config.Listen, ":")
+		if len(listen) == 2 {
+			if err := util.PortForward(*hysteria2ConfigPortHopping.Value, listen[1], util.Add); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
