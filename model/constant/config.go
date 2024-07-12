@@ -8,6 +8,6 @@ const (
 	Hysteria2Enable            = "HYSTERIA2_ENABLE"
 	Hysteria2Config            = "HYSTERIA2_CONFIG"
 	Hysteria2TrafficTime       = "HYSTERIA2_TRAFFIC_TIME"
-	Hysteria2Remark            = "HYSTERIA2_CONFIG_REMARK"
+	Hysteria2ConfigRemark      = "HYSTERIA2_CONFIG_REMARK"
 	Hysteria2ConfigPortHopping = "HYSTERIA2_CONFIG_PORT_HOPPING"
 )

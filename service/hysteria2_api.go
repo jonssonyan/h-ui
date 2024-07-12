@@ -9,7 +9,6 @@ import (
 	"h-ui/model/constant"
 	"h-ui/proxy"
 	"net/url"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -109,30 +108,49 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 		return "", "", err
 	}
 
+	hysteria2Name := "hysteria2"
+	hysteria2ConfigRemark, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigRemark)
+	if err != nil {
+		return "", "", err
+	}
+	if *hysteria2ConfigRemark.Value != "" {
+		hysteria2Name = *hysteria2ConfigRemark.Value
+	}
+
+	hysteria2ConfigPortHopping, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigPortHopping)
+	if err != nil {
+		return "", "", err
+	}
+
 	userInfo := ""
 	configYaml := ""
-	if clientType == constant.Shadowrocket || clientType == constant.ClashforWindows {
+	if clientType == constant.Shadowrocket || clientType == constant.Clash {
 		userInfo = fmt.Sprintf("upload=%d; download=%d; total=%d; expire=%d",
 			*account.Upload,
 			*account.Download,
 			*account.Quota,
 			*account.ExpireTime/1000)
 
-		clashConfig := bo.ClashConfig{}
-		var ClashConfigInterface []interface{}
-
-		port, err := strconv.ParseUint(strings.Split(*hysteria2Config.Listen, ":")[1], 10, 64)
-		if err != nil {
-			return "", "", err
-		}
-
 		hysteria2 := bo.Hysteria2{
-			Name:     "hysteria2",
+			Name:     hysteria2Name,
 			Type:     "hysteria2",
 			Server:   strings.Split(host, ":")[0],
-			Port:     uint(port),
+			Port:     strings.Split(*hysteria2Config.Listen, ":")[1],
+			Ports:    *hysteria2ConfigPortHopping.Value,
 			Password: conPass,
 		}
+
+		if hysteria2Config.Bandwidth != nil {
+			if hysteria2Config.Bandwidth.Up != nil &&
+				*hysteria2Config.Bandwidth.Up != "" {
+				hysteria2.Up = *hysteria2Config.Bandwidth.Up
+			}
+			if hysteria2Config.Bandwidth.Down != nil &&
+				*hysteria2Config.Bandwidth.Down != "" {
+				hysteria2.Down = *hysteria2Config.Bandwidth.Down
+			}
+		}
+
 		if hysteria2Config.Obfs != nil &&
 			hysteria2Config.Obfs.Type != nil &&
 			*hysteria2Config.Obfs.Type == "salamander" &&
@@ -143,40 +161,32 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 			hysteria2.ObfsPassword = *hysteria2Config.Obfs.Salamander.Password
 		}
 
-		if hysteria2Config.Bandwidth != nil {
-			if hysteria2Config.Bandwidth.Up != nil &&
-				*hysteria2Config.Bandwidth.Up != "" {
-				up, err := strconv.ParseUint(strings.Split(*hysteria2Config.Bandwidth.Up, " ")[0], 10, 64)
-				if err != nil {
-					return "", "", err
-				}
-
-				hysteria2.Up = int(up)
-			}
-			if hysteria2Config.Bandwidth.Down != nil &&
-				*hysteria2Config.Bandwidth.Down != "" {
-				down, err := strconv.ParseUint(strings.Split(*hysteria2Config.Bandwidth.Down, " ")[0], 10, 64)
-				if err != nil {
-					return "", "", err
-				}
-
-				hysteria2.Down = int(down)
-			}
+		if hysteria2Config.ACME != nil &&
+			hysteria2Config.ACME.Domains != nil &&
+			len(hysteria2Config.ACME.Domains) > 0 {
+			hysteria2.Sni = hysteria2Config.ACME.Domains[0]
 		}
 
-		ClashConfigInterface = append(ClashConfigInterface, hysteria2)
+		if hysteria2Config.TLS != nil &&
+			hysteria2Config.TLS.Cert != nil &&
+			*hysteria2Config.TLS.Cert != "" &&
+			hysteria2Config.TLS.Key != nil &&
+			*hysteria2Config.TLS.Key != "" {
+			hysteria2.SkipCertVerify = true
+		}
 
-		proxyGroups := make([]bo.ProxyGroup, 0)
 		proxyGroup := bo.ProxyGroup{
 			Name:    "PROXY",
 			Type:    "select",
-			Proxies: []string{"hysteria2"},
+			Proxies: []string{hysteria2Name},
 		}
 
-		proxyGroups = append(proxyGroups, proxyGroup)
-		clashConfig.ProxyGroups = proxyGroups
-		clashConfig.Proxies = ClashConfigInterface
-
+		clashConfig := bo.ClashConfig{
+			ProxyGroups: []bo.ProxyGroup{
+				proxyGroup,
+			},
+			Proxies: []interface{}{hysteria2},
+		}
 		clashConfigYaml, err := yaml.Marshal(&clashConfig)
 		if err != nil {
 			return "", "", err
@@ -245,7 +255,7 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 		urlConfig += fmt.Sprintf("&mport=%s", *hysteria2ConfigPortHopping.Value)
 	}
 
-	hysteria2ConfigRemark, err := dao.GetConfig("key = ?", constant.Hysteria2Remark)
+	hysteria2ConfigRemark, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigRemark)
 	if err != nil {
 		return "", err
 	}

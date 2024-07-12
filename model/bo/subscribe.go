@@ -4,10 +4,11 @@ type Hysteria2 struct {
 	Name           string `yaml:"name"`
 	Type           string `yaml:"type"`
 	Server         string `yaml:"server"`
-	Port           uint   `yaml:"port"`
-	Up             int    `yaml:"up,omitempty"`
-	Down           int    `yaml:"down,omitempty"`
+	Port           string `yaml:"port"`
+	Ports          string `yaml:"ports"`
 	Password       string `yaml:"password"`
+	Up             string `yaml:"up,omitempty"`
+	Down           string `yaml:"down,omitempty"`
 	Obfs           string `yaml:"obfs,omitempty"`
 	ObfsPassword   string `yaml:"obfs-password,omitempty"`
 	Sni            string `yaml:"sni,omitempty"`

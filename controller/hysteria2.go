@@ -143,14 +143,14 @@ func Hysteria2Subscribe(c *gin.Context) {
 	}
 
 	var clientType string
-	if strings.HasPrefix(userAgent, constant.ClashforWindows) {
-		clientType = constant.ClashforWindows
-	} else if strings.HasPrefix(userAgent, constant.Shadowrocket) {
+	if strings.HasPrefix(userAgent, constant.Shadowrocket) {
 		clientType = constant.Shadowrocket
+	} else if strings.HasPrefix(userAgent, constant.Clash) {
+		clientType = constant.Clash
 	} else if strings.HasPrefix(userAgent, constant.V2rayN) {
 		clientType = constant.V2rayN
 	} else {
-		clientType = constant.ClashforWindows
+		clientType = constant.Clash
 	}
 
 	userInfo, configYaml, err := service.Hysteria2Subscribe(conPass, clientType, host)
@@ -159,7 +159,7 @@ func Hysteria2Subscribe(c *gin.Context) {
 		return
 	}
 
-	if clientType == constant.ClashforWindows || clientType == constant.Shadowrocket {
+	if clientType == constant.Shadowrocket || clientType == constant.Clash {
 		c.Header("content-disposition", "attachment; filename=hui.yaml")
 		c.Header("profile-update-interval", "12")
 		c.Header("subscription-userinfo", userInfo)
