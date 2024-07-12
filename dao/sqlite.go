@@ -45,9 +45,17 @@ func InitSqliteDB(port string) error {
 		return err
 	}
 	if port != "" {
-		if tx := sqliteDB.Exec("UPDATE config set `value` = ? where `key` = 'H_UI_WEB_PORT'", port); tx.Error != nil {
+		var result string
+		if tx := sqliteDB.Exec("SELECT `value` from config where `key` = 'H_UI_WEB_PORT'").Scan(&result); tx.Error != nil {
 			logrus.Errorf("sqlite exec err: %v", tx.Error)
 			return errors.New("sqlite exec err")
+		}
+
+		if result == "8081" {
+			if tx := sqliteDB.Exec("UPDATE config set `value` = ? where `key` = 'H_UI_WEB_PORT'", port); tx.Error != nil {
+				logrus.Errorf("sqlite exec err: %v", tx.Error)
+				return errors.New("sqlite exec err")
+			}
 		}
 	}
 	return nil
