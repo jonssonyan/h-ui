@@ -167,9 +167,9 @@ remove_forward(){
     done
   fi
   if command -v ip6tables &> /dev/null;then
-  for num in $(ip6tables -t nat -L PREROUTING -v --line-numbers | grep -i "hui_hysteria_porthopping" | awk '{print $1}' | sort -rn); do
-    ip6tables -t nat -D PREROUTING $num
-  done
+    for num in $(ip6tables -t nat -L PREROUTING -v --line-numbers | grep -i "hui_hysteria_porthopping" | awk '{print $1}' | sort -rn); do
+      ip6tables -t nat -D PREROUTING $num
+    done
   fi
 }
 
