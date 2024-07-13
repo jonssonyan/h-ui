@@ -161,12 +161,16 @@ remove_forward(){
   if command -v nft &> /dev/null && nft list tables | grep -q hui_porthopping; then
     nft delete table inet hui_porthopping
   fi
-  for num in $(iptables -t nat -L PREROUTING -v --line-numbers | grep -i "hui_hysteria_porthopping" | awk '{print $1}' | sort -rn); do
-    iptables -t nat -D PREROUTING $num
-  done
+  if command -v iptables &> /dev/null;then
+    for num in $(iptables -t nat -L PREROUTING -v --line-numbers | grep -i "hui_hysteria_porthopping" | awk '{print $1}' | sort -rn); do
+      iptables -t nat -D PREROUTING $num
+    done
+  fi
+  if command -v ip6tables &> /dev/null;then
   for num in $(ip6tables -t nat -L PREROUTING -v --line-numbers | grep -i "hui_hysteria_porthopping" | awk '{print $1}' | sort -rn); do
     ip6tables -t nat -D PREROUTING $num
   done
+  fi
 }
 
 install_docker() {
