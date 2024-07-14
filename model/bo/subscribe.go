@@ -5,7 +5,7 @@ type Hysteria2 struct {
 	Type           string `yaml:"type"`
 	Server         string `yaml:"server"`
 	Port           string `yaml:"port"`
-	Ports          string `yaml:"ports"`
+	Ports          string `yaml:"ports,omitempty"`
 	Password       string `yaml:"password"`
 	Up             string `yaml:"up,omitempty"`
 	Down           string `yaml:"down,omitempty"`
