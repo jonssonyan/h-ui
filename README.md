@@ -201,10 +201,6 @@ Go >= 1.20, Node.js >= 18.12.0
 
 ## Other
 
-Contact me: https://t.me/jonssonyan_channel
-
-If you want to chat on Telegram, you can see here: https://t.me/jonssonyan_chat
-
 You can subscribe to my channel on YouTube: https://www.youtube.com/@jonssonyan
 
 ## Contributors
