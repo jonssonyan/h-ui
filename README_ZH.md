@@ -200,10 +200,6 @@ Go >= 1.20, Node.js >= 18.12.0
 
 ## 其他
 
-联系我: https://t.me/jonssonyan_channel
-
-如果你想在 Telegram 交流，可以看这里：https://t.me/jonssonyan_chat
-
 你可以在 YouTube 上订阅我的频道: https://www.youtube.com/@jonssonyan
 
 ## 贡献者
