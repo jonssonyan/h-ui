@@ -5,7 +5,7 @@ export PATH
 init_var() {
   ECHO_TYPE="echo -e"
 
-  version=0.0.5
+  version=0.0.6
 
   arch_arr="linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x"
 }
