@@ -97,17 +97,16 @@ func CloseSqliteDB() error {
 	return nil
 }
 
-func Paginate(pageNumParam *int64, pageSizeParam *int64) func(db *gorm.DB) *gorm.DB {
-	var pageNum int64 = 1
-	var pageSize int64 = 10
-	if pageNumParam == nil || *pageNumParam == 0 {
-		pageNum = *pageNumParam
+func Paginate(pageNum *int64, pageSize *int64) func(db *gorm.DB) *gorm.DB {
+	var num int64 = 1
+	var size int64 = 10
+	if pageNum != nil && *pageNum > 0 {
+		num = *pageNum
 	}
-	if pageSizeParam == nil || *pageSizeParam == 0 {
-		pageSize = *pageSizeParam
+	if pageSize != nil && *pageSize > 0 {
+		size = *pageSize
 	}
 	return func(db *gorm.DB) *gorm.DB {
-		offset := (pageNum - 1) * pageSize
-		return db.Offset(int(offset)).Limit(int(pageSize))
+		return db.Offset(int((num - 1) * size)).Limit(int(size))
 	}
 }

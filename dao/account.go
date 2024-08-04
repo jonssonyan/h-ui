@@ -88,9 +88,7 @@ func GetAccount(query interface{}, args ...interface{}) (entity.Account, error) 
 func PageAccount(accountPageDto dto.AccountPageDto) ([]entity.Account, int64, error) {
 	var accounts []entity.Account
 	var total int64
-	tx := sqliteDB.Model(&entity.Account{}).
-		Scopes(Paginate(accountPageDto.PageNum, accountPageDto.PageSize)).
-		Order("role,create_time desc")
+	tx := sqliteDB.Model(&entity.Account{})
 	if accountPageDto.Username != nil && *accountPageDto.Username != "" {
 		tx.Where("username like ?", fmt.Sprintf("%%%s%%", *accountPageDto.Username))
 	}
@@ -98,7 +96,9 @@ func PageAccount(accountPageDto dto.AccountPageDto) ([]entity.Account, int64, er
 		tx.Where("deleted = ?", *accountPageDto.Deleted)
 	}
 	tx.Count(&total)
-	if tx := tx.Find(&accounts); tx.Error != nil {
+	if tx.Scopes(Paginate(accountPageDto.PageNum, accountPageDto.PageSize)).
+		Order("role,create_time desc").
+		Find(&accounts); tx.Error != nil {
 		logrus.Errorf("%v", tx.Error)
 		return accounts, 0, errors.New(constant.SysError)
 	}
