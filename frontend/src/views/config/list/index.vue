@@ -137,8 +137,8 @@ const dataFormRef = ref(ElForm);
 
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
-const huiCrtPath = "H_UI_CRT_PATH";
-const huiKeyPath = "H_UI_KEY_PATH";
+const huiCrtPathKey = "H_UI_CRT_PATH";
+const huiKeyPathKey = "H_UI_KEY_PATH";
 
 const huiHttpsList = [
   { key: t("common.yes"), value: 1 },
@@ -210,11 +210,11 @@ const submitForm = () => {
           value: state.dataForm.hysteria2TrafficTime,
         },
         {
-          key: huiCrtPath,
+          key: huiCrtPathKey,
           value: state.dataForm.huiCrtPath,
         },
         {
-          key: huiKeyPath,
+          key: huiKeyPathKey,
           value: state.dataForm.huiKeyPath,
         },
       ];
@@ -228,7 +228,12 @@ const submitForm = () => {
 
 const setConfig = async () => {
   const { data } = await listConfigApi({
-    keys: [huiCrtPath, huiKeyPath, huiWebPortKey, hysteria2TrafficTimeKey],
+    keys: [
+      huiCrtPathKey,
+      huiKeyPathKey,
+      huiWebPortKey,
+      hysteria2TrafficTimeKey,
+    ],
   });
 
   data.forEach((configVo) => {
@@ -236,9 +241,9 @@ const setConfig = async () => {
       state.dataForm.huiWebPort = configVo.value;
     } else if (configVo.key === hysteria2TrafficTimeKey) {
       state.dataForm.hysteria2TrafficTime = configVo.value;
-    } else if (configVo.key === huiCrtPath) {
+    } else if (configVo.key === huiCrtPathKey) {
       state.dataForm.huiCrtPath = configVo.value;
-    } else if (configVo.key === huiKeyPath) {
+    } else if (configVo.key === huiKeyPathKey) {
       state.dataForm.huiKeyPath = configVo.value;
     }
   });
