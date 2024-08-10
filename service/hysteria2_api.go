@@ -30,7 +30,7 @@ func Hysteria2Auth(conPass string) (string, error) {
 		return "", err
 	}
 	device, exist := onlineUsers[*account.Username]
-	if exist && *account.DeviceNo < device {
+	if exist && *account.DeviceNo <= device {
 		return "", errors.New("device limited")
 	}
 
