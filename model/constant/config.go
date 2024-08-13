@@ -10,4 +10,5 @@ const (
 	Hysteria2TrafficTime       = "HYSTERIA2_TRAFFIC_TIME"
 	Hysteria2ConfigRemark      = "HYSTERIA2_CONFIG_REMARK"
 	Hysteria2ConfigPortHopping = "HYSTERIA2_CONFIG_PORT_HOPPING"
+	ResetTrafficCron           = "RESET_TRAFFIC_CRON"
 )

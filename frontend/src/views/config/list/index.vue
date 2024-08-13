@@ -102,6 +102,28 @@
             clearable
           />
         </el-form-item>
+        <el-tooltip :content="$t('config.resetTrafficCronTip')" placement="bottom">
+          <el-form-item
+            :label="$t('config.resetTrafficCron')"
+            prop="resetTrafficCron"
+          >
+            <el-select
+              v-model="dataForm.resetTrafficCron"
+              filterable
+              allow-create
+              clearable
+              :placeholder="$t('config.resetTrafficCron')"
+              style="width: 50%"
+            >
+              <el-option
+                v-for="item in cronResetTraffic"
+                :key="item.value"
+                :label="item.key"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-tooltip>
       </el-form>
     </el-card>
   </div>
@@ -139,10 +161,16 @@ const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 const huiCrtPathKey = "H_UI_CRT_PATH";
 const huiKeyPathKey = "H_UI_KEY_PATH";
+const resetTrafficCronKey = "RESET_TRAFFIC_CRON";
 
 const huiHttpsList = [
   { key: t("common.yes"), value: 1 },
   { key: t("common.no"), value: 0 },
+];
+
+const cronResetTraffic = [
+  { key: t("config.resetTrafficMonth"), value: "@monthly" },
+  { key: t("config.resetTrafficWeek"), value: "@weekly" },
 ];
 
 const dataFormRules = {
@@ -178,6 +206,7 @@ const state = reactive({
     hysteria2TrafficTime: "1",
     huiCrtPath: "",
     huiKeyPath: "",
+    resetTrafficCron: "",
   },
   huiHttps: 0,
   fileList: [] as UploadFile[],
@@ -217,6 +246,10 @@ const submitForm = () => {
           key: huiKeyPathKey,
           value: state.dataForm.huiKeyPath,
         },
+        {
+          key: resetTrafficCronKey,
+          value: state.dataForm.resetTrafficCron,
+        },
       ];
 
       updateConfigsApi({ configUpdateDtos: configs }).then(() => {
@@ -233,6 +266,7 @@ const setConfig = async () => {
       huiKeyPathKey,
       huiWebPortKey,
       hysteria2TrafficTimeKey,
+      resetTrafficCronKey,
     ],
   });
 
@@ -245,6 +279,8 @@ const setConfig = async () => {
       state.dataForm.huiCrtPath = configVo.value;
     } else if (configVo.key === huiKeyPathKey) {
       state.dataForm.huiKeyPath = configVo.value;
+    } else if (configVo.key === resetTrafficCronKey) {
+      state.dataForm.resetTrafficCron = configVo.value;
     }
   });
 

@@ -82,6 +82,18 @@ func UpdateConfigs(c *gin.Context) {
 				needResetPortHopping = true
 			}
 		}
+
+		if key == constant.ResetTrafficCron {
+			resetTrafficCron, err := service.GetConfig(constant.ResetTrafficCron)
+			if err != nil {
+				vo.Fail(err.Error(), c)
+				return
+			}
+			if *resetTrafficCron.Value != value {
+				needRestart = true
+			}
+		}
+
 		if err = service.UpdateConfig(key, value); err != nil {
 			vo.Fail(err.Error(), c)
 			return
@@ -407,6 +419,9 @@ func ImportConfig(c *gin.Context) {
 		vo.Fail(err.Error(), c)
 		return
 	}
+	go func() {
+		_ = service.StopServer()
+	}()
 	vo.Success(nil, c)
 }
 

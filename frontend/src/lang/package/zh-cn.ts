@@ -105,6 +105,11 @@ export default {
     restartTip: "正在重启，请刷新",
     useHysteria2Cert: "使用 Hysteria2 的证书",
     huiHttps: "面板开启 https",
+    resetTrafficCron: "重设流量计划任务",
+    resetTrafficCronTip:
+      "计划任务表达式，参考：https://pkg.go.dev/github.com/robfig/cron?utm_source=godoc#hdr-Predefined_schedules",
+    resetTrafficMonth: "每月运行一次，每月第一天午夜",
+    resetTrafficWeek: "每周运行一次，周六/周日午夜",
   },
   monitor: {
     huiVersion: "H UI 版本",

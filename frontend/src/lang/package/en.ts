@@ -106,6 +106,11 @@ export default {
     restartTip: "Restarting, please refresh",
     useHysteria2Cert: "Use Hysteria2 cert",
     huiHttps: "Open https on the panel",
+    resetTrafficCron: "Reset traffic schedule task",
+    resetTrafficCronTip:
+      "Scheduled task expression, reference: https://pkg.go.dev/github.com/robfig/cron?utm_source=godoc#hdr-Predefined_schedules",
+    resetTrafficMonth: "Run once a month, midnight, first of month",
+    resetTrafficWeek: "Run once a week, midnight between Sat/Sun",
   },
   monitor: {
     huiVersion: "H UI Version",

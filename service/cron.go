@@ -41,6 +41,23 @@ func CronHandleAccount() {
 	}()
 }
 
+func CronResetTraffic() {
+	accounts, err := dao.ListAccount(nil, nil)
+	if err != nil {
+		return
+	}
+	var ids []int64
+	for _, item := range accounts {
+		ids = append(ids, *item.Id)
+	}
+	idsList := util.SplitArr(ids, 100)
+	for _, item := range idsList {
+		if err := dao.UpdateAccount(item, map[string]interface{}{"download": 0, "upload": 0}); err != nil {
+			continue
+		}
+	}
+}
+
 func saveAccountTraffic(apiPort int64, jwtSecret string) {
 	if !trafficMutex.TryLock() {
 		return

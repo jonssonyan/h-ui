@@ -63,3 +63,6 @@ SELECT 'HYSTERIA2_CONFIG_REMARK', '', 'Hysteria2 Config Remark'
 INSERT INTO config (key, value, remark)
 SELECT 'HYSTERIA2_CONFIG_PORT_HOPPING', '', 'Hysteria2 Config Port Hopping'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'HYSTERIA2_CONFIG_PORT_HOPPING');
+INSERT INTO config (key, value, remark)
+SELECT 'RESET_TRAFFIC_CRON', '', 'Reset Traffic Cron'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'RESET_TRAFFIC_CRON');
