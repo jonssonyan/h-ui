@@ -42,6 +42,9 @@ export interface AccountVo extends IdDto {
 
   online: boolean;
   device: number;
+
+  loginAt: number;
+  conAt: number;
 }
 
 export interface AccountLoginVo {

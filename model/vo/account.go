@@ -14,6 +14,9 @@ type AccountVo struct {
 
 	Online bool  `json:"online"` // online status
 	Device int64 `json:"device"` // Number of online devices
+
+	LoginAt int64 `json:"loginAt"`
+	ConAt   int64 `json:"conAt"`
 }
 type AccountPageVo struct {
 	AccountVos []AccountVo `json:"records"`

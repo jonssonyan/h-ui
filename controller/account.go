@@ -71,6 +71,8 @@ func PageAccount(c *gin.Context) {
 				Id:         *item.Id,
 				CreateTime: *item.CreateTime,
 			},
+			LoginAt: *item.LoginAt,
+			ConAt:   *item.ConAt,
 		}
 		if value, exists := onlineUsers[*item.Username]; exists {
 			accountVo.Online = true
@@ -201,6 +203,15 @@ func ResetTraffic(c *gin.Context) {
 func GetAccountInfo(c *gin.Context) {
 	accountInfoVo, err := service.GetAccountInfo(c)
 	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	// 更新最近登录时间
+	now := time.Now().UnixMilli()
+	if err = service.UpdateAccount(entity.Account{
+		BaseEntity: entity.BaseEntity{Id: &accountInfoVo.Id},
+		LoginAt:    &now,
+	}); err != nil {
 		vo.Fail(err.Error(), c)
 		return
 	}

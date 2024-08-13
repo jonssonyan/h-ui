@@ -158,15 +158,41 @@
           :label="$t('account.expireTime')"
           align="center"
           prop="expireTime"
+          width="160"
         >
           <template #default="scope">
             {{ timestampToDateTime(scope.row.expireTime) }}
           </template>
         </el-table-column>
         <el-table-column
+          key="loginAt"
+          :label="$t('account.loginAt')"
+          align="center"
+          prop="loginAt"
+          width="160"
+        >
+          <template #default="scope">
+            {{
+              scope.row.loginAt ? timestampToDateTime(scope.row.loginAt) : "-"
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          key="conAt"
+          :label="$t('account.conAt')"
+          align="center"
+          prop="conAt"
+          width="160"
+        >
+          <template #default="scope">
+            {{ scope.row.conAt ? timestampToDateTime(scope.row.conAt) : "-" }}
+          </template>
+        </el-table-column>
+        <el-table-column
           :label="$t('common.createTime')"
           align="center"
           prop="createTime"
+          width="160"
         >
           <template #default="scope">
             {{ timestampToDateTime(scope.row.createTime) }}

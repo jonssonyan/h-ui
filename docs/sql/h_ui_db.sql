@@ -15,6 +15,10 @@ CREATE TABLE IF NOT EXISTS account
     create_time    TIMESTAMP               DEFAULT CURRENT_TIMESTAMP,
     update_time    TIMESTAMP               DEFAULT CURRENT_TIMESTAMP
 );
+ALTER TABLE account
+    ADD COLUMN login_at INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE account
+    ADD COLUMN con_at INTEGER NOT NULL DEFAULT 0;
 CREATE INDEX IF NOT EXISTS account_deleted_index ON account (deleted);
 CREATE INDEX IF NOT EXISTS account_username_index ON account (username);
 CREATE INDEX IF NOT EXISTS account_con_pass_index ON account (con_pass);

@@ -6,11 +6,13 @@ import (
 	"github.com/skip2/go-qrcode"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
+	"h-ui/model/entity"
 	"h-ui/model/vo"
 	"h-ui/service"
 	"h-ui/util"
 	"os"
 	"strings"
+	"time"
 )
 
 func Hysteria2Auth(c *gin.Context) {
@@ -18,9 +20,19 @@ func Hysteria2Auth(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	username, err := service.Hysteria2Auth(*hysteria2AuthDto.Auth)
+	id, username, err := service.Hysteria2Auth(*hysteria2AuthDto.Auth)
 	if err != nil || username == "" {
 		vo.Hysteria2AuthFail("", c)
+		return
+	}
+
+	// 更新最近连接时间
+	now := time.Now().UnixMilli()
+	if err = service.UpdateAccount(entity.Account{
+		BaseEntity: entity.BaseEntity{Id: &id},
+		ConAt:      &now,
+	}); err != nil {
+		vo.Fail(err.Error(), c)
 		return
 	}
 	vo.Hysteria2AuthSuccess(username, c)

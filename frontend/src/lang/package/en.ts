@@ -88,6 +88,8 @@ export default {
     device: "Online Devices",
     role: "Role",
     unit: "Unit",
+    loginAt: "Last login time",
+    conAt: "Last connection time",
     createTime: "Create Time",
     releaseSuccess: "Release successful",
     kick: "Kick",

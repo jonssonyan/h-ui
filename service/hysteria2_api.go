@@ -13,28 +13,28 @@ import (
 	"time"
 )
 
-func Hysteria2Auth(conPass string) (string, error) {
+func Hysteria2Auth(conPass string) (int64, string, error) {
 	if !Hysteria2IsRunning() {
-		return "", errors.New("hysteria2 is not running")
+		return 0, "", errors.New("hysteria2 is not running")
 	}
 
 	now := time.Now().UnixMilli()
 	account, err := dao.GetAccount("con_pass = ? and deleted = 0 and (quota < 0 or quota > download + upload) and ? < expire_time and ? > kick_util_time", conPass, now, now)
 	if err != nil {
-		return "", err
+		return 0, "", err
 	}
 
 	// 限制设备数
 	onlineUsers, err := Hysteria2Online()
 	if err != nil {
-		return "", err
+		return 0, "", err
 	}
 	device, exist := onlineUsers[*account.Username]
 	if exist && *account.DeviceNo <= device {
-		return "", errors.New("device limited")
+		return 0, "", errors.New("device limited")
 	}
 
-	return *account.Username, nil
+	return *account.Id, *account.Username, nil
 }
 
 func Hysteria2Online() (map[string]int64, error) {

@@ -87,6 +87,8 @@ export default {
     device: "在线设备数",
     role: "角色",
     unit: "单位",
+    loginAt: "最近登录时间",
+    conAt: "最近连接时间",
     createTime: "注册时间",
     releaseSuccess: "解除成功",
     kick: "下线",

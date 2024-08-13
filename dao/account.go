@@ -44,7 +44,7 @@ func UpdateAccount(ids []int64, updates map[string]interface{}) error {
 func UpsertAccount(accounts []entity.Account) error {
 	if tx := sqliteDB.Model(&entity.Account{}).Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "username"}},
-		DoUpdates: clause.AssignmentColumns([]string{"pass", "con_pass", "quota", "download", "upload", "expire_time", "kick_util_time", "device_no", "role", "deleted", "create_time", "update_time"}),
+		DoUpdates: clause.AssignmentColumns([]string{"pass", "con_pass", "quota", "download", "upload", "expire_time", "kick_util_time", "device_no", "role", "deleted", "create_time", "update_time", "login_at", "con_at"}),
 	}).Create(accounts); tx.Error != nil {
 		logrus.Errorf("%v", tx.Error)
 		return errors.New(constant.SysError)

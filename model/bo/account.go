@@ -24,4 +24,6 @@ type AccountExport struct {
 	Deleted      int64     `json:"deleted"`
 	CreateTime   time.Time `json:"createTime"`
 	UpdateTime   time.Time `json:"updateTime"`
+	LoginAt      int64     `json:"loginAt"`
+	ConAt        int64     `json:"conAt"`
 }

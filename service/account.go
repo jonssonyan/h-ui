@@ -68,6 +68,12 @@ func UpdateAccount(account entity.Account) error {
 	if account.Deleted != nil {
 		updates["deleted"] = *account.Deleted
 	}
+	if account.LoginAt != nil && *account.LoginAt > 0 {
+		updates["login_at"] = *account.LoginAt
+	}
+	if account.ConAt != nil && *account.ConAt > 0 {
+		updates["con_at"] = *account.ConAt
+	}
 	return dao.UpdateAccount([]int64{*account.Id}, updates)
 }
 
@@ -116,6 +122,8 @@ func ListExportAccount() ([]bo.AccountExport, error) {
 			Deleted:      *item.Deleted,
 			CreateTime:   *item.CreateTime,
 			UpdateTime:   *item.UpdateTime,
+			LoginAt:      *item.LoginAt,
+			ConAt:        *item.ConAt,
 		}
 		accountExports = append(accountExports, accountExport)
 	}
