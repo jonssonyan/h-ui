@@ -245,7 +245,23 @@ upgrade_h_ui_docker() {
   echo_content green "---> Upgrade H UI"
   docker rm -f h-ui
   docker rmi jonssonyan/h-ui
-  install_h_ui_docker
+
+  read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
+  [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
+  read -r -p "Please enter the Time zone of H UI (default: Asia/Shanghai): " h_ui_time_zone
+  [[ -z "${h_ui_time_zone}" ]] && h_ui_time_zone="Asia/Shanghai"
+
+  docker pull jonssonyan/h-ui &&
+    docker run -d --cap-add=NET_ADMIN \
+      --name h-ui --restart always \
+      --network=host \
+      -e TZ=${h_ui_time_zone} \
+      -v /h-ui/bin:/h-ui/bin \
+      -v /h-ui/data:/h-ui/data \
+      -v /h-ui/export:/h-ui/export \
+      -v /h-ui/logs:/h-ui/logs \
+      jonssonyan/h-ui \
+      ./h-ui -p ${h_ui_port}
   echo_content skyBlue "---> H UI upgrade successful"
 }
 
