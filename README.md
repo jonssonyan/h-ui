@@ -48,8 +48,16 @@ Memory: ≥ 256MB
 
 ### Quick Install (Recommended)
 
+Install Latest Version
+
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install.sh)
+```
+
+Install [Custom Version](https://github.com/jonssonyan/h-ui/releases)
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install.sh) v0.0.1
 ```
 
 ### Docker

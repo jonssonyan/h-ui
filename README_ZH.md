@@ -48,8 +48,16 @@ CPU: x86_64/amd64 arm64/aarch64
 
 ### 快速安装 (推荐)
 
+安装最新版
+
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install.sh)
+```
+
+安装[自定义版本](https://github.com/jonssonyan/h-ui/releases)
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install.sh) v0.0.1
 ```
 
 ### 容器部署
