@@ -2,6 +2,10 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
+hui_systemd_version="${1:-latest}"
+hui_docker_version="${1:-latest}"
+hui_docker_version=":${hui_docker_version#v}"
+
 init_var() {
   ECHO_TYPE="echo -e"
 
@@ -217,7 +221,7 @@ install_h_ui_docker() {
       -v /h-ui/data:/h-ui/data \
       -v /h-ui/export:/h-ui/export \
       -v /h-ui/logs:/h-ui/logs \
-      jonssonyan/h-ui \
+      jonssonyan/h-ui"${hui_docker_version}" \
       ./h-ui -p ${h_ui_port}
   echo_content skyBlue "---> H UI install successful"
 }
