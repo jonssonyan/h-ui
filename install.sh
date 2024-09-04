@@ -277,7 +277,7 @@ uninstall_h_ui_docker() {
 
   echo_content green "---> Uninstall H UI"
   docker rm -f h-ui
-  docker rmi jonssonyan/h-ui
+  docker images jonssonyan/h-ui -q | xargs -r docker rmi -f
   rm -rf /h-ui/
   remove_forward
   echo_content skyBlue "---> H UI uninstall successful"
