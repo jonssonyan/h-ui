@@ -3,8 +3,7 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
 hui_systemd_version="${1:-latest}"
-hui_docker_version="${1:-latest}"
-hui_docker_version=":${hui_docker_version#v}"
+hui_docker_version=":${hui_systemd_version#v}"
 
 init_var() {
   ECHO_TYPE="echo -e"
@@ -161,16 +160,16 @@ EOF
   systemctl daemon-reload
 }
 
-remove_forward(){
-  if command -v nft &> /dev/null && nft list tables | grep -q hui_porthopping; then
+remove_forward() {
+  if command -v nft &>/dev/null && nft list tables | grep -q hui_porthopping; then
     nft delete table inet hui_porthopping
   fi
-  if command -v iptables &> /dev/null;then
+  if command -v iptables &>/dev/null; then
     for num in $(iptables -t nat -L PREROUTING -v --line-numbers | grep -i "hui_hysteria_porthopping" | awk '{print $1}' | sort -rn); do
       iptables -t nat -D PREROUTING $num
     done
   fi
-  if command -v ip6tables &> /dev/null;then
+  if command -v ip6tables &>/dev/null; then
     for num in $(ip6tables -t nat -L PREROUTING -v --line-numbers | grep -i "hui_hysteria_porthopping" | awk '{print $1}' | sort -rn); do
       ip6tables -t nat -D PREROUTING $num
     done
@@ -291,7 +290,13 @@ install_h_ui_systemd() {
   fi
 
   export GIN_MODE=release
-  curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch} -o /usr/local/h-ui/h-ui &&
+
+  bin_url=https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-${get_arch}
+  if [[ "latest" != "${hui_systemd_version}" ]]; then
+    bin_url=https://github.com/jonssonyan/h-ui/releases/download/${hui_systemd_version}/h-ui-linux-${get_arch}
+  fi
+
+  curl -fsSL "${bin_url}" -o /usr/local/h-ui/h-ui &&
     chmod +x /usr/local/h-ui/h-ui &&
     curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service &&
     sed -i "s|^ExecStart=.*|ExecStart=/usr/local/h-ui/h-ui -p ${h_ui_port}|" "/etc/systemd/system/h-ui.service" &&
