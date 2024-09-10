@@ -3,6 +3,8 @@ version: '3'
 services:
   h-ui:
     image: jonssonyan/h-ui
+    cap_add:
+      - NET_ADMIN
     container_name: h-ui
     restart: always
     network_mode: host
