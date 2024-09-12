@@ -52,16 +52,16 @@ type serverConfigACME struct {
 	// Only applicable when Type is empty
 	DisableHTTP    *bool `yaml:"disableHTTP,omitempty" json:"disableHTTP" validate:"required"`
 	DisableTLSALPN *bool `yaml:"disableTLSALPN,omitempty" json:"disableTLSALPN" validate:"required"`
-	AltHTTPPort    *int  `yaml:"altHTTPPort,omitempty" json:"altHTTPPort,string" validate:"required"`
-	AltTLSALPNPort *int  `yaml:"altTLSALPNPort,omitempty" json:"altTLSALPNPort,string" validate:"required"`
+	AltHTTPPort    *int  `yaml:"altHTTPPort,omitempty" json:"altHTTPPort" validate:"required"`
+	AltTLSALPNPort *int  `yaml:"altTLSALPNPort,omitempty" json:"altTLSALPNPort" validate:"required"`
 }
 
 type serverConfigACMEHTTP struct {
-	AltPort *int `yaml:"altPort,omitempty" json:"altPort,string" validate:"required"`
+	AltPort *int `yaml:"altPort,omitempty" json:"altPort" validate:"required"`
 }
 
 type serverConfigACMETLS struct {
-	AltPort *int `yaml:"altPort,omitempty" json:"altPort,string" validate:"required"`
+	AltPort *int `yaml:"altPort,omitempty" json:"altPort" validate:"required"`
 }
 
 type serverConfigACMEDNS struct {
@@ -70,12 +70,12 @@ type serverConfigACMEDNS struct {
 }
 
 type serverConfigQUIC struct {
-	InitStreamReceiveWindow     *uint64 `yaml:"initStreamReceiveWindow,omitempty" json:"initStreamReceiveWindow,string" validate:"omitempty"`
-	MaxStreamReceiveWindow      *uint64 `yaml:"maxStreamReceiveWindow,omitempty" json:"maxStreamReceiveWindow,string" validate:"omitempty"`
-	InitConnectionReceiveWindow *uint64 `yaml:"initConnReceiveWindow,omitempty" json:"initConnReceiveWindow,string" validate:"omitempty"`
-	MaxConnectionReceiveWindow  *uint64 `yaml:"maxConnReceiveWindow,omitempty" json:"maxConnReceiveWindow,string" validate:"omitempty"`
+	InitStreamReceiveWindow     *uint64 `yaml:"initStreamReceiveWindow,omitempty" json:"initStreamReceiveWindow" validate:"omitempty"`
+	MaxStreamReceiveWindow      *uint64 `yaml:"maxStreamReceiveWindow,omitempty" json:"maxStreamReceiveWindow" validate:"omitempty"`
+	InitConnectionReceiveWindow *uint64 `yaml:"initConnReceiveWindow,omitempty" json:"initConnReceiveWindow" validate:"omitempty"`
+	MaxConnectionReceiveWindow  *uint64 `yaml:"maxConnReceiveWindow,omitempty" json:"maxConnReceiveWindow" validate:"omitempty"`
 	MaxIdleTimeout              *string `yaml:"maxIdleTimeout,omitempty" json:"maxIdleTimeout" validate:"omitempty"`
-	MaxIncomingStreams          *int64  `yaml:"maxIncomingStreams,omitempty" json:"maxIncomingStreams,string" validate:"omitempty"`
+	MaxIncomingStreams          *int64  `yaml:"maxIncomingStreams,omitempty" json:"maxIncomingStreams" validate:"omitempty"`
 	DisablePathMTUDiscovery     *bool   `yaml:"disablePathMTUDiscovery,omitempty" json:"disablePathMTUDiscovery" validate:"omitempty"`
 }
 

@@ -266,7 +266,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.http.altPort" prop="acme.http.altPort">
-                <el-input v-model="dataForm.acme.http.altPort" clearable />
+                <el-input v-model.number="dataForm.acme.http.altPort" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -275,7 +275,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.tls.altPort" prop="acme.tls.altPort">
-                <el-input v-model="dataForm.acme.tls.altPort" clearable />
+                <el-input v-model.number="dataForm.acme.tls.altPort" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -330,7 +330,7 @@
               placement="bottom"
             >
               <el-form-item label="acme.altHTTPPort" prop="acme.altHTTPPort">
-                <el-input v-model="dataForm.acme.altHTTPPort" clearable />
+                <el-input v-model.number="dataForm.acme.altHTTPPort" clearable />
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -342,7 +342,7 @@
                 label="acme.altTLSALPNPort"
                 prop="acme.altTLSALPNPort"
               >
-                <el-input v-model="dataForm.acme.altTLSALPNPort" clearable />
+                <el-input v-model.number="dataForm.acme.altTLSALPNPort" clearable />
               </el-form-item>
             </el-tooltip>
           </el-tab-pane>
@@ -392,7 +392,7 @@
                 prop="quic.initStreamReceiveWindow"
               >
                 <el-input
-                  v-model="dataForm.quic.initStreamReceiveWindow"
+                  v-model.number="dataForm.quic.initStreamReceiveWindow"
                   clearable
                 />
               </el-form-item>
@@ -406,7 +406,7 @@
                 prop="quic.maxStreamReceiveWindow"
               >
                 <el-input
-                  v-model="dataForm.quic.maxStreamReceiveWindow"
+                  v-model.number="dataForm.quic.maxStreamReceiveWindow"
                   clearable
                 />
               </el-form-item>
@@ -420,7 +420,7 @@
                 prop="quic.initConnReceiveWindow"
               >
                 <el-input
-                  v-model="dataForm.quic.initConnReceiveWindow"
+                  v-model.number="dataForm.quic.initConnReceiveWindow"
                   clearable
                 />
               </el-form-item>
@@ -434,7 +434,7 @@
                 prop="quic.maxConnReceiveWindow"
               >
                 <el-input
-                  v-model="dataForm.quic.maxConnReceiveWindow"
+                  v-model.number="dataForm.quic.maxConnReceiveWindow"
                   clearable
                 />
               </el-form-item>
@@ -459,7 +459,7 @@
                 prop="quic.maxIncomingStreams"
               >
                 <el-input
-                  v-model="dataForm.quic.maxIncomingStreams"
+                  v-model.number="dataForm.quic.maxIncomingStreams"
                   clearable
                 />
               </el-form-item>
