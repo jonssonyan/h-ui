@@ -66,3 +66,12 @@ SELECT 'HYSTERIA2_CONFIG_PORT_HOPPING', '', 'Hysteria2 Config Port Hopping'
 INSERT INTO config (key, value, remark)
 SELECT 'RESET_TRAFFIC_CRON', '', 'Reset Traffic Cron'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'RESET_TRAFFIC_CRON');
+INSERT INTO config (key, value, remark)
+SELECT 'TELEGRAM_ENABLE', '0', 'Telegram Switch'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_ENABLE');
+INSERT INTO config (key, value, remark)
+SELECT 'TELEGRAM_TOKEN', '', 'Telegram Token'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_TOKEN');
+INSERT INTO config (key, value, remark)
+SELECT 'TELEGRAM_CHAT_ID', '', 'Telegram Chat ID'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_CHAT_ID');
