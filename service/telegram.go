@@ -41,32 +41,31 @@ func valid() (string, int64, error) {
 	return *token.Value, chatId, nil
 }
 
-func NewBotApi() (*tgbotapi.BotAPI, error) {
+func init() {
 	token, _, err := valid()
 	if err != nil {
-		return nil, err
-	}
-	// 新建对象
-	if bot != nil {
-		return bot, nil
+		return
 	}
 	bot, err = tgbotapi.NewBotAPI(token)
 	if err != nil {
 		logrus.Errorf("new bot api err: %v", err)
-		return nil, err
+		return
 	}
 	bot.Debug = false
 	logrus.Infof("Authorized on account %s", bot.Self.UserName)
-
-	return bot, nil
+	// 初始化 menu
+	commands := []tgbotapi.BotCommand{
+		{Command: "status", Description: "状态"},
+	}
+	setCommands := tgbotapi.NewSetMyCommands(commands...)
+	if _, err := bot.Request(setCommands); err != nil {
+		logrus.Errorf("unable to set commands err: %v", err)
+		return
+	}
 }
 
 func GetMe() (tgbotapi.User, error) {
-	botApi, err := NewBotApi()
-	if err != nil {
-		return tgbotapi.User{}, err
-	}
-	user, err := botApi.GetMe()
+	user, err := bot.GetMe()
 	if err != nil {
 		logrus.Errorf("tg api GetMe err: %v", err)
 		return tgbotapi.User{}, err
@@ -74,23 +73,15 @@ func GetMe() (tgbotapi.User, error) {
 	return user, nil
 }
 
-func GetUpdatesChan() (tgbotapi.UpdatesChannel, error) {
-	botApi, err := NewBotApi()
-	if err != nil {
-		return nil, err
-	}
+func GetUpdatesChan() tgbotapi.UpdatesChannel {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
-	return botApi.GetUpdatesChan(u), nil
+	return bot.GetUpdatesChan(u)
 }
 
 func SendWithMessage(chatId int64, text string) error {
-	botApi, err := NewBotApi()
-	if err != nil {
-		return err
-	}
 	message := tgbotapi.NewMessage(chatId, text)
-	if _, err = botApi.Send(message); err != nil {
+	if _, err := bot.Send(message); err != nil {
 		logrus.Errorf("tg api SendMessage err: %v chatId: %d text: %s", err, chatId, text)
 		return err
 	}
