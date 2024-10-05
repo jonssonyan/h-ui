@@ -6,45 +6,57 @@ import (
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/constant"
+	"strconv"
 )
 
 var bot *tgbotapi.BotAPI
 
-func NewBotApi() (*tgbotapi.BotAPI, error) {
-	// 参数校验
+// 参数校验
+func valid() (string, int64, error) {
 	enable, err := dao.GetConfig("key = ?", constant.TelegramEnable)
 	if err != nil {
-		return nil, err
+		return "", 0, err
 	}
 	if enable.Value == nil || *enable.Value != "1" {
-		return nil, errors.New("telegram not enable")
+		return "", 0, errors.New("telegram not enable")
 	}
 	token, err := dao.GetConfig("key = ?", constant.TelegramToken)
 	if err != nil {
-		return nil, err
+		return "", 0, err
 	}
 	if token.Value == nil || *token.Value == "" {
-		return nil, errors.New("telegram token not set")
+		return "", 0, errors.New("telegram token not set")
 	}
 	chatIdStr, err := dao.GetConfig("key = ?", constant.TelegramChatId)
 	if err != nil {
-		return nil, err
+		return "", 0, err
 	}
 	if chatIdStr.Value == nil || *chatIdStr.Value == "" {
-		return nil, errors.New("telegram chatId not set")
+		return "", 0, errors.New("telegram chatId not set")
+	}
+	chatId, err := strconv.ParseInt(*chatIdStr.Value, 10, 64)
+	if err != nil {
+		return "", 0, err
+	}
+	return *token.Value, chatId, nil
+}
+
+func NewBotApi() (*tgbotapi.BotAPI, error) {
+	token, _, err := valid()
+	if err != nil {
+		return nil, err
 	}
 	// 新建对象
 	if bot != nil {
 		return bot, nil
 	}
-	bot, err = tgbotapi.NewBotAPI(*token.Value)
+	bot, err = tgbotapi.NewBotAPI(token)
 	if err != nil {
 		logrus.Errorf("new bot api err: %v", err)
 		return nil, err
 	}
 	bot.Debug = false
 	logrus.Infof("Authorized on account %s", bot.Self.UserName)
-	// 初始化菜单
 
 	return bot, nil
 }
