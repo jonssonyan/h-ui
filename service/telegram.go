@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/constant"
+	"os"
 )
 
 var bot *tgbotapi.BotAPI
@@ -46,7 +47,7 @@ func InitTelegramBot() error {
 		logrus.Errorf("new bot api err: %v", err)
 		return err
 	}
-	bot.Debug = true
+	bot.Debug = os.Getenv(constant.TelegramDebug) == "true"
 	logrus.Infof("Authorized on account %s", bot.Self.UserName)
 	// 初始化 menu
 	commands := []tgbotapi.BotCommand{

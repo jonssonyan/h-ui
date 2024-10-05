@@ -14,4 +14,5 @@ const (
 	TelegramEnable             = "TELEGRAM_ENABLE"
 	TelegramToken              = "TELEGRAM_TOKEN"
 	TelegramUsername           = "TELEGRAM_USERNAME"
+	TelegramDebug              = "TELEGRAM_DEBUG"
 )
