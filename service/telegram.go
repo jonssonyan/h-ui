@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
@@ -51,7 +52,8 @@ func InitTelegramBot() error {
 	logrus.Infof("Authorized on account %s", bot.Self.UserName)
 	// 初始化 menu
 	commands := []tgbotapi.BotCommand{
-		{Command: "status", Description: "Status"},
+		{Command: "status", Description: "系统状态"},
+		{Command: "restart", Description: "重启系统"},
 	}
 	setCommands := tgbotapi.NewSetMyCommands(commands...)
 	if _, err := bot.Request(setCommands); err != nil {
@@ -81,6 +83,10 @@ func handleMsg(update tgbotapi.Update, username string) {
 			if err := handleStatus(update); err != nil {
 				logrus.Errorf("handleStatus err: %v", err)
 			}
+		case "restart":
+			if err := handleRestart(update); err != nil {
+				logrus.Errorf("handleRestart err: %v", err)
+			}
 		default:
 			if err := handleDefault(update); err != nil {
 				logrus.Errorf("handleDefault err: %v", err)
@@ -90,7 +96,38 @@ func handleMsg(update tgbotapi.Update, username string) {
 }
 
 func handleStatus(update tgbotapi.Update) error {
-	if err := SendWithMessage(update.Message.Chat.ID, "你好"); err != nil {
+	text := "【系统状态】\n"
+	systemMonitorVo, err := MonitorSystem()
+	if err != nil {
+		return err
+	}
+	hysteria2MonitorVo, err := MonitorHysteria2()
+	if err != nil {
+		return err
+	}
+	text += fmt.Sprintf("H UI 版本：%s\n", systemMonitorVo.HUIVersion)
+	text += fmt.Sprintf("CPU 使用率：%.1f%%\n", systemMonitorVo.CpuPercent)
+	text += fmt.Sprintf("内存使用率：%.1f%%\n", systemMonitorVo.MemPercent)
+	text += fmt.Sprintf("磁盘使用率：%.1f%%\n", systemMonitorVo.DiskPercent)
+
+	text += fmt.Sprintf("Hysteria2 版本：%s\n", hysteria2MonitorVo.Version)
+	var status = "运行"
+	if !hysteria2MonitorVo.Running {
+		status = "停止"
+	}
+	text += fmt.Sprintf("Hysteria2 状态：%s\n", status)
+	text += fmt.Sprintf("在线用户数：%d\n", hysteria2MonitorVo.UserTotal)
+	text += fmt.Sprintf("在线设备数：%d\n", hysteria2MonitorVo.DeviceTotal)
+
+	if err := SendWithMessage(update.Message.Chat.ID, text); err != nil {
+		return err
+	}
+	return nil
+}
+
+func handleRestart(update tgbotapi.Update) error {
+
+	if err := SendWithMessage(update.Message.Chat.ID, "重启成功"); err != nil {
 		return err
 	}
 	return nil
