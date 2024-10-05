@@ -105,19 +105,19 @@ func handleStatus(update tgbotapi.Update) error {
 	if err != nil {
 		return err
 	}
-	text += fmt.Sprintf("H UI 版本：%s\n", systemMonitorVo.HUIVersion)
-	text += fmt.Sprintf("CPU 使用率：%.1f%%\n", systemMonitorVo.CpuPercent)
-	text += fmt.Sprintf("内存使用率：%.1f%%\n", systemMonitorVo.MemPercent)
-	text += fmt.Sprintf("磁盘使用率：%.1f%%\n", systemMonitorVo.DiskPercent)
+	text += fmt.Sprintf("H UI 版本: %s\n", systemMonitorVo.HUIVersion)
+	text += fmt.Sprintf("CPU 使用率: %.1f%%\n", systemMonitorVo.CpuPercent)
+	text += fmt.Sprintf("内存使用率: %.1f%%\n", systemMonitorVo.MemPercent)
+	text += fmt.Sprintf("磁盘使用率: %.1f%%\n", systemMonitorVo.DiskPercent)
 
-	text += fmt.Sprintf("Hysteria2 版本：%s\n", hysteria2MonitorVo.Version)
+	text += fmt.Sprintf("Hysteria2 版本: %s\n", hysteria2MonitorVo.Version)
 	var status = "运行"
 	if !hysteria2MonitorVo.Running {
 		status = "停止"
 	}
-	text += fmt.Sprintf("Hysteria2 状态：%s\n", status)
-	text += fmt.Sprintf("在线用户数：%d\n", hysteria2MonitorVo.UserTotal)
-	text += fmt.Sprintf("在线设备数：%d\n", hysteria2MonitorVo.DeviceTotal)
+	text += fmt.Sprintf("Hysteria2 状态: %s\n", status)
+	text += fmt.Sprintf("在线用户数: %d\n", hysteria2MonitorVo.UserTotal)
+	text += fmt.Sprintf("在线设备数: %d\n", hysteria2MonitorVo.DeviceTotal)
 
 	if err := SendWithMessage(update.Message.Chat.ID, text); err != nil {
 		return err
@@ -126,7 +126,7 @@ func handleStatus(update tgbotapi.Update) error {
 }
 
 func handleRestart(update tgbotapi.Update) error {
-
+	_ = StopServer()
 	if err := SendWithMessage(update.Message.Chat.ID, "重启成功"); err != nil {
 		return err
 	}
