@@ -37,6 +37,9 @@ func runServer() error {
 	if err := service.InitPortHopping(); err != nil {
 		logrus.Errorf(err.Error())
 	}
+	if err := service.InitTelegramBot(); err != nil {
+		logrus.Errorf(err.Error())
+	}
 
 	r := gin.Default()
 	router.Router(r)

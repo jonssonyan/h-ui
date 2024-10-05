@@ -73,5 +73,5 @@ INSERT INTO config (key, value, remark)
 SELECT 'TELEGRAM_TOKEN', '', 'Telegram Token'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_TOKEN');
 INSERT INTO config (key, value, remark)
-SELECT 'TELEGRAM_CHAT_ID', '', 'Telegram Chat ID'
-    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_CHAT_ID');
+SELECT 'TELEGRAM_USERNAME', '', 'Telegram Username'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_USERNAME');
