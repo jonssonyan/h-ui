@@ -75,3 +75,9 @@ SELECT 'TELEGRAM_TOKEN', '', 'Telegram Token'
 INSERT INTO config (key, value, remark)
 SELECT 'TELEGRAM_USERNAME', '', 'Telegram Username'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_USERNAME');
+INSERT INTO config (key, value, remark)
+SELECT 'TELEGRAM_LOGIN_JOB_ENABLE', '0', 'TELEGRAM LOGIN Notification'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_LOGIN_JOB_ENABLE');
+INSERT INTO config (key, value, remark)
+SELECT 'TELEGRAM_LOGIN_JOB_TEXT', '', 'TELEGRAM LOGIN Notification Text'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_LOGIN_JOB_TEXT');
