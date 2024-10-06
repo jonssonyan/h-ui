@@ -123,7 +123,6 @@ func handleChatId(update tgbotapi.Update) error {
 }
 
 func handleStatus(update tgbotapi.Update) error {
-	text := "【H UI】\n"
 	systemMonitorVo, err := MonitorSystem()
 	if err != nil {
 		return err
@@ -132,6 +131,7 @@ func handleStatus(update tgbotapi.Update) error {
 	if err != nil {
 		return err
 	}
+	text := "【H UI】\n"
 	text += fmt.Sprintf("H UI Version: %s\n", systemMonitorVo.HUIVersion)
 	text += fmt.Sprintf("CPU Usage: %.1f%%\n", systemMonitorVo.CpuPercent)
 	text += fmt.Sprintf("Memory Usage: %.1f%%\n", systemMonitorVo.MemPercent)
