@@ -55,11 +55,11 @@ func InitTelegramBot() error {
 	logrus.Infof("Authorized on account %s", bot.Self.UserName)
 	// 初始化 menu
 	commands := []tgbotapi.BotCommand{
-		{Command: "status", Description: "系统状态"},
-		{Command: "restart", Description: "重启系统"},
+		{Command: "status", Description: "System Status"},
+		{Command: "restart", Description: "System Restart"},
 	}
 	if chatId == "" {
-		commands = append(commands, tgbotapi.BotCommand{Command: "chatid", Description: "获取chatId"})
+		commands = append(commands, tgbotapi.BotCommand{Command: "chatid", Description: "Get chatId"})
 	}
 	setCommands := tgbotapi.NewSetMyCommands(commands...)
 	if _, err := bot.Request(setCommands); err != nil {
@@ -122,19 +122,19 @@ func handleStatus(update tgbotapi.Update) error {
 	if err != nil {
 		return err
 	}
-	text += fmt.Sprintf("H UI 版本: %s\n", systemMonitorVo.HUIVersion)
-	text += fmt.Sprintf("CPU 使用率: %.1f%%\n", systemMonitorVo.CpuPercent)
-	text += fmt.Sprintf("内存使用率: %.1f%%\n", systemMonitorVo.MemPercent)
-	text += fmt.Sprintf("磁盘使用率: %.1f%%\n", systemMonitorVo.DiskPercent)
+	text += fmt.Sprintf("H UI Version: %s\n", systemMonitorVo.HUIVersion)
+	text += fmt.Sprintf("CPU Usage: %.1f%%\n", systemMonitorVo.CpuPercent)
+	text += fmt.Sprintf("Memory Usage: %.1f%%\n", systemMonitorVo.MemPercent)
+	text += fmt.Sprintf("Disk Usage: %.1f%%\n", systemMonitorVo.DiskPercent)
 
-	text += fmt.Sprintf("Hysteria2 版本: %s\n", hysteria2MonitorVo.Version)
-	var status = "运行"
+	text += fmt.Sprintf("Hysteria2 Version: %s\n", hysteria2MonitorVo.Version)
+	var status = "Running"
 	if !hysteria2MonitorVo.Running {
-		status = "停止"
+		status = "Stop"
 	}
-	text += fmt.Sprintf("Hysteria2 状态: %s\n", status)
-	text += fmt.Sprintf("在线用户数: %d\n", hysteria2MonitorVo.UserTotal)
-	text += fmt.Sprintf("在线设备数: %d\n", hysteria2MonitorVo.DeviceTotal)
+	text += fmt.Sprintf("Hysteria2 Status: %s\n", status)
+	text += fmt.Sprintf("Number of online users: %d\n", hysteria2MonitorVo.UserTotal)
+	text += fmt.Sprintf("Number of online devices: %d\n", hysteria2MonitorVo.DeviceTotal)
 
 	if err := SendWithMessage(update.Message.Chat.ID, text); err != nil {
 		return err
@@ -144,7 +144,7 @@ func handleStatus(update tgbotapi.Update) error {
 
 func handleRestart(update tgbotapi.Update) error {
 	_ = StopServer()
-	if err := SendWithMessage(update.Message.Chat.ID, "重启成功"); err != nil {
+	if err := SendWithMessage(update.Message.Chat.ID, "Restart successful"); err != nil {
 		return err
 	}
 	return nil

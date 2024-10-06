@@ -127,6 +127,18 @@ export default {
   log: {
     numLine: "Number of lines",
   },
+  telegram: {
+    placeholder: "Placeholder",
+    enable: "Enable",
+    disable: "Disable",
+    telegramEnable: "Enable/Disable",
+    telegramToken: "Telegram Token",
+    telegramChatId: "Telegram ChatId",
+    telegramJob: "Job List",
+    telegramLoginJob: "Login reminder",
+    telegramLoginJobEnable: "Enable/Disable",
+    telegramLoginJobText: "Content template",
+  },
   hysteria: {
     enable: "Enable",
     disable: "Disable",
