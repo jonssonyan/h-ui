@@ -48,10 +48,66 @@
             <el-input v-model="dataForm.telegramUsername" clearable />
           </el-form-item>
         </el-tooltip>
-        <el-tooltip :content="$t('telegram.telegramJob')" placement="bottom">
-          <el-form-item :label="$t('telegram.telegramJob')" prop="telegramJob">
-          </el-form-item>
-        </el-tooltip>
+        <el-form-item :label="$t('telegram.telegramJob')" prop="telegramJob">
+          <el-tabs class="tabs">
+            <el-tab-pane name="telegramLoginJob">
+              <template #label>
+                <span>
+                  {{ $t("telegram.telegramLoginJob") }}
+                </span>
+                <el-badge
+                  is-dot
+                  v-show="
+                    dataForm.telegramLoginJobEnable &&
+                    dataForm.telegramLoginJobEnable === '1'
+                  "
+                />
+              </template>
+              <el-tooltip
+                :content="$t('telegram.telegramLoginJobEnable')"
+                placement="bottom"
+              >
+                <el-form-item prop="telegramLoginJobEnable">
+                  <el-switch
+                    v-model="dataForm.telegramLoginJobEnable"
+                    active-value="1"
+                    inactive-value="0"
+                    :active-text="$t('telegram.enable')"
+                    :inactive-text="$t('telegram.disable')"
+                    style="height: 32px; margin-bottom: 8px"
+                  />
+                </el-form-item>
+              </el-tooltip>
+              <el-tooltip
+                :content="$t('telegram.telegramLoginJobText')"
+                placement="bottom"
+              >
+                <el-form-item
+                  :label="$t('telegram.telegramLoginJobText')"
+                  prop="telegramLoginJobText"
+                >
+                  <el-input
+                    v-model="dataForm.telegramLoginJobText"
+                    type="textarea"
+                    clearable
+                  />
+                </el-form-item>
+              </el-tooltip>
+              <el-tooltip
+                :content="$t('telegram.placeholder')"
+                placement="bottom"
+              >
+                <el-form-item>
+                  <el-alert type="info" :closable="false">
+                    <p>[time] - 时间</p>
+                    <p>[username] - 用户名</p>
+                    <p>[ip] - IP地址</p>
+                  </el-alert>
+                </el-form-item>
+              </el-tooltip>
+            </el-tab-pane>
+          </el-tabs>
+        </el-form-item>
       </el-form>
     </el-card>
   </div>
@@ -65,6 +121,19 @@ export default {
 
 <script setup lang="ts">
 import { Select } from "@element-plus/icons-vue";
+import { listConfigApi, updateConfigsApi } from "@/api/config";
+import { ConfigsUpdateDto } from "@/api/config/types";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
+
+const dataFormRef = ref(ElForm);
+
+const telegramEnable = "TELEGRAM_ENABLE";
+const telegramToken = "TELEGRAM_TOKEN";
+const telegramUsername = "TELEGRAM_USERNAME";
+const telegramLoginJobEnable = "TELEGRAM_LOGIN_JOB_ENABLE";
+const telegramLoginJobText = "TELEGRAM_LOGIN_JOB_TEXT";
 
 const dataFormRules = {
   telegramToken: [
@@ -85,20 +154,110 @@ const dataFormRules = {
 
 const state = reactive({
   dataForm: {
-    telegramEnable: 0,
+    telegramEnable: "0",
     telegramToken: "",
     telegramUsername: "",
-    telegramLoginJobEnable: 0,
+    telegramLoginJobEnable: "0",
     telegramLoginJobText: "",
   },
 });
 
 const { dataForm } = toRefs(state);
+
+const submitForm = () => {
+  dataFormRef.value.validate((valid: boolean) => {
+    if (valid) {
+      if (
+        state.dataForm.telegramEnable &&
+        state.dataForm.telegramEnable === "1"
+      ) {
+        if (!state.dataForm.telegramToken || !state.dataForm.telegramUsername) {
+          ElMessage.error("token and username required");
+          return;
+        }
+      }
+
+      if (
+        state.dataForm.telegramLoginJobEnable &&
+        state.dataForm.telegramLoginJobEnable === "1"
+      ) {
+        if (!state.dataForm.telegramLoginJobText) {
+          ElMessage.error("text required");
+          return;
+        }
+      }
+
+      let configs: ConfigsUpdateDto[] = [
+        {
+          key: telegramEnable,
+          value: state.dataForm.telegramEnable,
+        },
+        {
+          key: telegramToken,
+          value: state.dataForm.telegramToken,
+        },
+        {
+          key: telegramUsername,
+          value: state.dataForm.telegramUsername,
+        },
+        {
+          key: telegramLoginJobEnable,
+          value: state.dataForm.telegramLoginJobEnable,
+        },
+        {
+          key: telegramLoginJobText,
+          value: state.dataForm.telegramLoginJobText,
+        },
+      ];
+
+      updateConfigsApi({ configUpdateDtos: configs }).then(() => {
+        ElMessage.success(t("common.success"));
+      });
+    }
+  });
+};
+
+const setConfig = async () => {
+  const { data } = await listConfigApi({
+    keys: [
+      telegramEnable,
+      telegramToken,
+      telegramUsername,
+      telegramLoginJobEnable,
+      telegramLoginJobText,
+    ],
+  });
+
+  data.forEach((configVo) => {
+    if (configVo.key === telegramEnable) {
+      state.dataForm.telegramEnable = configVo.value;
+    } else if (configVo.key === telegramToken) {
+      state.dataForm.telegramToken = configVo.value;
+    } else if (configVo.key === telegramUsername) {
+      state.dataForm.telegramUsername = configVo.value;
+    } else if (configVo.key === telegramLoginJobEnable) {
+      state.dataForm.telegramLoginJobEnable = configVo.value;
+    } else if (configVo.key === telegramLoginJobText) {
+      state.dataForm.telegramLoginJobText = configVo.value;
+    }
+  });
+};
+onMounted(() => {
+  setConfig();
+});
 </script>
 
 <style lang="scss" scoped>
 .el-card .el-form {
   max-width: 1000px;
   margin: 0 auto;
+}
+
+.el-tabs {
+  width: 100%;
+}
+
+.el-alert {
+  margin: 20px 0 0;
 }
 </style>
