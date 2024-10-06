@@ -46,7 +46,11 @@
             :label="$t('telegram.telegramChatId')"
             prop="telegramChatId"
           >
-            <el-input v-model="dataForm.telegramChatId" clearable />
+            <el-input
+              v-model="dataForm.telegramChatId"
+              type="password"
+              clearable
+            />
           </el-form-item>
         </el-tooltip>
         <el-form-item :label="$t('telegram.telegramJob')" prop="telegramJob">
@@ -165,7 +169,7 @@ const submitForm = () => {
         state.dataForm.telegramEnable &&
         state.dataForm.telegramEnable === "1"
       ) {
-        if (!state.dataForm.telegramToken ) {
+        if (!state.dataForm.telegramToken) {
           ElMessage.error("token required");
           return;
         }
