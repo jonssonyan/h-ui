@@ -144,13 +144,6 @@ const dataFormRules = {
       trigger: ["change", "blur"],
     },
   ],
-  telegramChatId: [
-    {
-      required: true,
-      message: "Required",
-      trigger: ["change", "blur"],
-    },
-  ],
 };
 
 const state = reactive({
