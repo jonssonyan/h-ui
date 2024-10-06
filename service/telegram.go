@@ -55,9 +55,11 @@ func InitTelegramBot() error {
 	logrus.Infof("Authorized on account %s", bot.Self.UserName)
 	// 初始化 menu
 	commands := []tgbotapi.BotCommand{
-		{Command: "chatid", Description: "获取chatId"},
 		{Command: "status", Description: "系统状态"},
 		{Command: "restart", Description: "重启系统"},
+	}
+	if chatId == "" {
+		commands = append(commands, tgbotapi.BotCommand{Command: "chatid", Description: "获取chatId"})
 	}
 	setCommands := tgbotapi.NewSetMyCommands(commands...)
 	if _, err := bot.Request(setCommands); err != nil {
@@ -207,7 +209,7 @@ func TelegramLoginRemind(username string, ip string) {
 		return
 	}
 
-	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[time]", time.Now().Format("20060102150405"))
+	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[time]", time.Now().Format("2006-01-02 15:04:05"))
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[username]", username)
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[ip]", ip)
 
