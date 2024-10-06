@@ -13,7 +13,7 @@ const (
 	ResetTrafficCron           = "RESET_TRAFFIC_CRON"
 	TelegramEnable             = "TELEGRAM_ENABLE"
 	TelegramToken              = "TELEGRAM_TOKEN"
-	TelegramUsername           = "TELEGRAM_USERNAME"
+	TelegramChatId             = "TELEGRAM_CHAT_ID"
 	TelegramDebug              = "TELEGRAM_DEBUG"
 	TelegramLoginJobEnable     = "TELEGRAM_LOGIN_JOB_ENABLE"
 	TelegramLoginJobText       = "TELEGRAM_LOGIN_JOB_TEXT"

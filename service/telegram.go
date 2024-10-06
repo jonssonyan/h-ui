@@ -8,6 +8,7 @@ import (
 	"h-ui/dao"
 	"h-ui/model/constant"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -30,18 +31,18 @@ func valid() (string, string, error) {
 	if token.Value == nil || *token.Value == "" {
 		return "", "", errors.New("telegram token not set")
 	}
-	username, err := dao.GetConfig("key = ?", constant.TelegramUsername)
+	chatId, err := dao.GetConfig("key = ?", constant.TelegramChatId)
 	if err != nil {
 		return "", "", err
 	}
-	if username.Value == nil || *username.Value == "" {
-		return "", "", errors.New("telegram username not set")
+	if chatId.Value == nil || *chatId.Value == "" {
+		return "", "", errors.New("telegram chatId not set")
 	}
-	return *token.Value, *username.Value, nil
+	return *token.Value, *chatId.Value, nil
 }
 
 func InitTelegramBot() error {
-	token, username, err := valid()
+	token, chatId, err := valid()
 	if err != nil {
 		return err
 	}
@@ -66,7 +67,7 @@ func InitTelegramBot() error {
 	go func() {
 		updates := getUpdatesChan()
 		for update := range updates {
-			handleMsg(update, username)
+			handleMsg(update, chatId)
 		}
 	}()
 	return nil
@@ -78,8 +79,8 @@ func getUpdatesChan() tgbotapi.UpdatesChannel {
 	return bot.GetUpdatesChan(u)
 }
 
-func handleMsg(update tgbotapi.Update, username string) {
-	if update.Message != nil && update.Message.IsCommand() && update.SentFrom().UserName == username {
+func handleMsg(update tgbotapi.Update, chatId string) {
+	if update.Message != nil && update.Message.IsCommand() && strconv.FormatInt(update.Message.Chat.ID, 10) == chatId {
 		switch update.Message.Command() {
 		case "status":
 			if err := handleStatus(update); err != nil {
@@ -157,34 +158,25 @@ func SendWithMessage(chatId int64, text string) error {
 	return nil
 }
 
-func SendWithMessageToChannel(username string, text string) error {
-	message := tgbotapi.NewMessageToChannel(username, text)
-	if _, err := bot.Send(message); err != nil {
-		logrus.Errorf("tg api SendMessage err: %v username: %s text: %s", err, username, text)
-		return err
-	}
-	return nil
-}
-
 // TelegramLoginRemind 登录提醒
 func TelegramLoginRemind(username string, ip string) {
 	configs, err := dao.ListConfig("key in ?", []string{
 		constant.TelegramEnable,
-		constant.TelegramUsername,
+		constant.TelegramChatId,
 		constant.TelegramLoginJobEnable,
 		constant.TelegramLoginJobText})
 	if err != nil {
 		return
 	}
-	var telegramEnable, telegramUsername, telegramLoginJobEnable, telegramLoginJobText = "0", "", "0", ""
+	var telegramEnable, telegramChatId, telegramLoginJobEnable, telegramLoginJobText = "0", "", "0", ""
 	for _, item := range configs {
 		if item.Value != nil {
 			key := *item.Key
 			value := *item.Value
 			if key == constant.TelegramEnable {
 				telegramEnable = value
-			} else if key == constant.TelegramUsername {
-				telegramUsername = value
+			} else if key == constant.TelegramChatId {
+				telegramChatId = value
 			} else if key == constant.TelegramLoginJobEnable {
 				telegramLoginJobEnable = value
 			} else if key == constant.TelegramLoginJobText {
@@ -193,14 +185,21 @@ func TelegramLoginRemind(username string, ip string) {
 		}
 	}
 
-	if telegramEnable != "1" || telegramUsername == "" || telegramLoginJobEnable != "1" || telegramLoginJobText == "" {
+	if telegramEnable != "1" || telegramChatId == "" || telegramLoginJobEnable != "1" || telegramLoginJobText == "" {
+		return
+	}
+
+	chatId, err := strconv.ParseInt(telegramChatId, 10, 64)
+	if err != nil {
+		logrus.Errorf("parse chatId err: %v", err)
 		return
 	}
 
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[time]", time.Now().Format("20060102150405"))
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[username]", username)
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[ip]", ip)
-	if err = SendWithMessageToChannel(telegramUsername, telegramLoginJobText); err != nil {
+
+	if err = SendWithMessage(chatId, telegramLoginJobText); err != nil {
 		return
 	}
 }
