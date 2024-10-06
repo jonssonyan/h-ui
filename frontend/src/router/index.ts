@@ -83,25 +83,25 @@ export const asyncRoutes: any[] = [
       },
     ],
   },
-  // {
-  //   path: "/telegram",
-  //   component: "Layout",
-  //   redirect: "/list",
-  //   name: "Telegram",
-  //   meta: { title: "telegram", icon: "telegram", roles: ["admin"] },
-  //   children: [
-  //     {
-  //       path: "list",
-  //       component: "telegram/list/index",
-  //       name: "TelegramList",
-  //       meta: {
-  //         title: "telegramList",
-  //         icon: "telegram",
-  //         roles: ["admin"],
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    path: "/telegram",
+    component: "Layout",
+    redirect: "/list",
+    name: "Telegram",
+    meta: { title: "telegram", icon: "telegram", roles: ["admin"] },
+    children: [
+      {
+        path: "list",
+        component: "telegram/list/index",
+        name: "TelegramList",
+        meta: {
+          title: "telegramList",
+          icon: "telegram",
+          roles: ["admin"],
+        },
+      },
+    ],
+  },
   {
     path: "/hysteria",
     component: "Layout",
