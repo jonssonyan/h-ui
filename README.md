@@ -31,6 +31,7 @@ Just the panel for Hysteria2
 - User subscription link, node URL, import and export users
 - Managing Hysteria2 configurations and Hysteria2 versions
 - Change the Web port, modify the Hysteria2 traffic multiplier
+- Telegram notification
 - View, import, and export system logs and Hysteria2 logs
 - I18n: English, 简体中文
 - Page adaptation, support night mode, custom page themes

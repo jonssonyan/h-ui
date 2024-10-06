@@ -31,6 +31,7 @@ Just the panel for Hysteria2
 - 用户订阅链接、节点URL、导入和导出用户
 - 管理 Hysteria2 配置和 Hysteria2 版本
 - 更改 Web 端口、修改 Hysteria2 流量倍数
+- Telegram 通知
 - 查看、导入和导出系统日志和 Hysteria2 日志
 - 多国语言支持: English, 简体中文
 - 页面适配、支持夜间模式、自定义页面主题
