@@ -213,7 +213,7 @@ func TelegramLoginRemind(username string, ip string) {
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[username]", username)
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[ip]", ip)
 
-	if err = SendWithMessage(chatId, telegramLoginJobText); err != nil {
+	if err = SendWithMessage(chatId, fmt.Sprintf("【H UI】\n%s", telegramLoginJobText)); err != nil {
 		return
 	}
 }

@@ -79,5 +79,5 @@ INSERT INTO config (key, value, remark)
 SELECT 'TELEGRAM_LOGIN_JOB_ENABLE', '0', 'TELEGRAM LOGIN Notification'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_LOGIN_JOB_ENABLE');
 INSERT INTO config (key, value, remark)
-SELECT 'TELEGRAM_LOGIN_JOB_TEXT', '【H UI】\n[time], [username] logged into the panel, IP address is [ip]', 'TELEGRAM LOGIN Notification Text'
+SELECT 'TELEGRAM_LOGIN_JOB_TEXT', '[time], [username] logged into the panel, IP address is [ip]', 'TELEGRAM LOGIN Notification Text'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_LOGIN_JOB_TEXT');
