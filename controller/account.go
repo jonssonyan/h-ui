@@ -35,6 +35,7 @@ func Login(c *gin.Context) {
 		TokenType:   constant.TokenType,
 		AccessToken: token,
 	}
+	service.TelegramLoginRemind(*loginDto.Username, c.ClientIP())
 	vo.Success(jwtVo, c)
 }
 

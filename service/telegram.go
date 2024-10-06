@@ -8,6 +8,8 @@ import (
 	"h-ui/dao"
 	"h-ui/model/constant"
 	"os"
+	"strings"
+	"time"
 )
 
 var bot *tgbotapi.BotAPI
@@ -153,4 +155,51 @@ func SendWithMessage(chatId int64, text string) error {
 		return err
 	}
 	return nil
+}
+
+func SendWithMessageToChannel(username string, text string) error {
+	message := tgbotapi.NewMessageToChannel(username, text)
+	if _, err := bot.Send(message); err != nil {
+		logrus.Errorf("tg api SendMessage err: %v username: %s text: %s", err, username, text)
+		return err
+	}
+	return nil
+}
+
+// TelegramLoginRemind 登录提醒
+func TelegramLoginRemind(username string, ip string) {
+	configs, err := dao.ListConfig("key in ?", []string{
+		constant.TelegramEnable,
+		constant.TelegramUsername,
+		constant.TelegramLoginJobEnable,
+		constant.TelegramLoginJobText})
+	if err != nil {
+		return
+	}
+	var telegramEnable, telegramUsername, telegramLoginJobEnable, telegramLoginJobText = "0", "", "0", ""
+	for _, item := range configs {
+		if item.Value != nil {
+			value := *item.Value
+			if value == constant.TelegramEnable {
+				telegramEnable = value
+			} else if value == constant.TelegramUsername {
+				telegramUsername = value
+			} else if value == constant.TelegramLoginJobEnable {
+				telegramLoginJobEnable = value
+			} else if value == constant.TelegramLoginJobText {
+				telegramLoginJobText = value
+			}
+		}
+	}
+
+	if telegramEnable != "1" || telegramUsername == "" || telegramLoginJobEnable != "1" || telegramLoginJobText == "" {
+		return
+	}
+
+	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[time]", time.Now().Format("20060102150405"))
+	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[username]", username)
+	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[ip]", ip)
+	if err = SendWithMessageToChannel(telegramUsername, telegramLoginJobText); err != nil {
+		return
+	}
 }
