@@ -34,18 +34,19 @@
             :label="$t('telegram.telegramToken')"
             prop="telegramToken"
           >
-            <el-input v-model="dataForm.telegramToken" type="password" clearable />
+            <el-input
+              v-model="dataForm.telegramToken"
+              type="password"
+              clearable
+            />
           </el-form-item>
         </el-tooltip>
-        <el-tooltip
-          :content="$t('telegram.telegramUsername')"
-          placement="bottom"
-        >
+        <el-tooltip :content="$t('telegram.telegramChatId')" placement="bottom">
           <el-form-item
-            :label="$t('telegram.telegramUsername')"
-            prop="telegramUsername"
+            :label="$t('telegram.telegramChatId')"
+            prop="telegramChatId"
           >
-            <el-input v-model="dataForm.telegramUsername" clearable />
+            <el-input v-model="dataForm.telegramChatId" clearable />
           </el-form-item>
         </el-tooltip>
         <el-form-item :label="$t('telegram.telegramJob')" prop="telegramJob">
@@ -131,7 +132,7 @@ const dataFormRef = ref(ElForm);
 
 const telegramEnable = "TELEGRAM_ENABLE";
 const telegramToken = "TELEGRAM_TOKEN";
-const telegramUsername = "TELEGRAM_USERNAME";
+const telegramChatId = "TELEGRAM_CHAT_ID";
 const telegramLoginJobEnable = "TELEGRAM_LOGIN_JOB_ENABLE";
 const telegramLoginJobText = "TELEGRAM_LOGIN_JOB_TEXT";
 
@@ -143,7 +144,7 @@ const dataFormRules = {
       trigger: ["change", "blur"],
     },
   ],
-  telegramUsername: [
+  telegramChatId: [
     {
       required: true,
       message: "Required",
@@ -156,7 +157,7 @@ const state = reactive({
   dataForm: {
     telegramEnable: "0",
     telegramToken: "",
-    telegramUsername: "",
+    telegramChatId: "",
     telegramLoginJobEnable: "0",
     telegramLoginJobText: "",
   },
@@ -171,8 +172,8 @@ const submitForm = () => {
         state.dataForm.telegramEnable &&
         state.dataForm.telegramEnable === "1"
       ) {
-        if (!state.dataForm.telegramToken || !state.dataForm.telegramUsername) {
-          ElMessage.error("token and username required");
+        if (!state.dataForm.telegramToken || !state.dataForm.telegramChatId) {
+          ElMessage.error("token and chatId required");
           return;
         }
       }
@@ -197,8 +198,8 @@ const submitForm = () => {
           value: state.dataForm.telegramToken,
         },
         {
-          key: telegramUsername,
-          value: state.dataForm.telegramUsername,
+          key: telegramChatId,
+          value: state.dataForm.telegramChatId,
         },
         {
           key: telegramLoginJobEnable,
@@ -222,7 +223,7 @@ const setConfig = async () => {
     keys: [
       telegramEnable,
       telegramToken,
-      telegramUsername,
+      telegramChatId,
       telegramLoginJobEnable,
       telegramLoginJobText,
     ],
@@ -233,8 +234,8 @@ const setConfig = async () => {
       state.dataForm.telegramEnable = configVo.value;
     } else if (configVo.key === telegramToken) {
       state.dataForm.telegramToken = configVo.value;
-    } else if (configVo.key === telegramUsername) {
-      state.dataForm.telegramUsername = configVo.value;
+    } else if (configVo.key === telegramChatId) {
+      state.dataForm.telegramChatId = configVo.value;
     } else if (configVo.key === telegramLoginJobEnable) {
       state.dataForm.telegramLoginJobEnable = configVo.value;
     } else if (configVo.key === telegramLoginJobText) {

@@ -132,7 +132,7 @@ export default {
     disable: "关闭",
     telegramEnable: "开启/关闭",
     telegramToken: "Telegram Token",
-    telegramUsername: "Telegram 用户名",
+    telegramChatId: "Telegram ChatId",
     telegramJob: "任务列表",
     telegramLoginJob: "登录提醒",
     telegramLoginJobEnable: "开启/关闭",
