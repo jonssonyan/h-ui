@@ -15,6 +15,8 @@ import (
 
 var bot *tgbotapi.BotAPI
 
+var done = make(chan bool)
+
 // 参数校验
 func valid() (string, string, error) {
 	enable, err := dao.GetConfig("key = ?", constant.TelegramEnable)
@@ -67,12 +69,20 @@ func InitTelegramBot() error {
 		return err
 	}
 	// 处理消息
-	go func() {
+	go func(done chan bool) {
 		updates := getUpdatesChan()
-		for update := range updates {
-			handleMsg(update, chatId)
+		for {
+			select {
+			case update, ok := <-updates:
+				if !ok {
+					return
+				}
+				handleMsg(update, chatId)
+			case <-done:
+				break
+			}
 		}
-	}()
+	}(done)
 	return nil
 }
 
@@ -147,6 +157,7 @@ func handleRestart(update tgbotapi.Update) error {
 	if err := SendWithMessage(update.Message.Chat.ID, "Restart successful"); err != nil {
 		return err
 	}
+	done <- true
 	return nil
 }
 
