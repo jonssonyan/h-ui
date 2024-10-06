@@ -94,6 +94,17 @@ func UpdateConfigs(c *gin.Context) {
 			}
 		}
 
+		if key == constant.TelegramEnable {
+			telegramEnable, err := service.GetConfig(constant.TelegramEnable)
+			if err != nil {
+				vo.Fail(err.Error(), c)
+				return
+			}
+			if *telegramEnable.Value != value {
+				needRestart = true
+			}
+		}
+
 		if err = service.UpdateConfig(key, value); err != nil {
 			vo.Fail(err.Error(), c)
 			return
