@@ -179,14 +179,15 @@ func TelegramLoginRemind(username string, ip string) {
 	var telegramEnable, telegramUsername, telegramLoginJobEnable, telegramLoginJobText = "0", "", "0", ""
 	for _, item := range configs {
 		if item.Value != nil {
+			key := *item.Key
 			value := *item.Value
-			if value == constant.TelegramEnable {
+			if key == constant.TelegramEnable {
 				telegramEnable = value
-			} else if value == constant.TelegramUsername {
+			} else if key == constant.TelegramUsername {
 				telegramUsername = value
-			} else if value == constant.TelegramLoginJobEnable {
+			} else if key == constant.TelegramLoginJobEnable {
 				telegramLoginJobEnable = value
-			} else if value == constant.TelegramLoginJobText {
+			} else if key == constant.TelegramLoginJobText {
 				telegramLoginJobText = value
 			}
 		}
