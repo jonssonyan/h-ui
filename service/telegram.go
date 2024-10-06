@@ -55,7 +55,7 @@ func InitTelegramBot() error {
 	logrus.Infof("Authorized on account %s", bot.Self.UserName)
 	// 初始化 menu
 	commands := []tgbotapi.BotCommand{
-		{Command: "chatId", Description: "获取chatId"},
+		{Command: "chatid", Description: "获取chatId"},
 		{Command: "status", Description: "系统状态"},
 		{Command: "restart", Description: "重启系统"},
 	}
@@ -83,7 +83,7 @@ func getUpdatesChan() tgbotapi.UpdatesChannel {
 func handleMsg(update tgbotapi.Update, chatId string) {
 	if update.Message != nil && update.Message.IsCommand() && (chatId == "" || strconv.FormatInt(update.Message.Chat.ID, 10) == chatId) {
 		switch update.Message.Command() {
-		case "getChatId":
+		case "chatid":
 			if err := handleChatId(update); err != nil {
 				logrus.Errorf("handleStatus err: %v", err)
 			}
