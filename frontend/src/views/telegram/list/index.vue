@@ -88,6 +88,8 @@ const state = reactive({
     telegramEnable: 0,
     telegramToken: "",
     telegramUsername: "",
+    telegramLoginJobEnable: 0,
+    telegramLoginJobText: "",
   },
 });
 

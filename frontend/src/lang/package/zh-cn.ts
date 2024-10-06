@@ -133,6 +133,9 @@ export default {
     telegramToken: "Telegram Token",
     telegramUsername: "Telegram 用户名",
     telegramJob: "任务",
+    telegramLoginJob: "登录提醒",
+    telegramLoginJobEnable: "开启/关闭",
+    telegramLoginJobText: "登录提醒模板",
   },
   hysteria: {
     enable: "开启",
