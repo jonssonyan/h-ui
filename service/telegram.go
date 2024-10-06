@@ -113,7 +113,7 @@ func handleChatId(update tgbotapi.Update) error {
 }
 
 func handleStatus(update tgbotapi.Update) error {
-	text := "【系统状态】\n"
+	text := "【H UI】\n"
 	systemMonitorVo, err := MonitorSystem()
 	if err != nil {
 		return err
