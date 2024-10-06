@@ -35,8 +35,8 @@ func valid() (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
-	if chatId.Value == nil || *chatId.Value == "" {
-		return "", "", errors.New("telegram chatId not set")
+	if chatId.Value == nil {
+		return "", "", errors.New("telegram chatId is nil")
 	}
 	return *token.Value, *chatId.Value, nil
 }
@@ -81,9 +81,9 @@ func getUpdatesChan() tgbotapi.UpdatesChannel {
 }
 
 func handleMsg(update tgbotapi.Update, chatId string) {
-	if update.Message != nil && update.Message.IsCommand() && strconv.FormatInt(update.Message.Chat.ID, 10) == chatId {
+	if update.Message != nil && update.Message.IsCommand() && (chatId == "" || strconv.FormatInt(update.Message.Chat.ID, 10) == chatId) {
 		switch update.Message.Command() {
-		case "chatId":
+		case "getChatId":
 			if err := handleChatId(update); err != nil {
 				logrus.Errorf("handleStatus err: %v", err)
 			}

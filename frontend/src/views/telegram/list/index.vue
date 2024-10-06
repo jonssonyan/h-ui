@@ -165,8 +165,8 @@ const submitForm = () => {
         state.dataForm.telegramEnable &&
         state.dataForm.telegramEnable === "1"
       ) {
-        if (!state.dataForm.telegramToken || !state.dataForm.telegramChatId) {
-          ElMessage.error("token and chatId required");
+        if (!state.dataForm.telegramToken ) {
+          ElMessage.error("token required");
           return;
         }
       }
