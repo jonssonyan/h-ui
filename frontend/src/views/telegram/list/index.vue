@@ -34,7 +34,7 @@
             :label="$t('telegram.telegramToken')"
             prop="telegramToken"
           >
-            <el-input v-model="dataForm.telegramToken" clearable />
+            <el-input v-model="dataForm.telegramToken" type="password" clearable />
           </el-form-item>
         </el-tooltip>
         <el-tooltip
