@@ -30,8 +30,9 @@ type serverConfigObfs struct {
 }
 
 type serverConfigTLS struct {
-	Cert *string `yaml:"cert,omitempty" json:"cert" validate:"required"`
-	Key  *string `yaml:"key,omitempty"  json:"key" validate:"required"`
+	Cert     *string `yaml:"cert,omitempty" json:"cert" validate:"required"`
+	Key      *string `yaml:"key,omitempty"  json:"key" validate:"required"`
+	SNIGuard *string `yaml:"sniGuard,omitempty" json:"sniGuard" validate:"omitempty"`
 }
 
 type serverConfigACME struct {
