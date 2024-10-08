@@ -189,6 +189,26 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="tlsType === 'tls'"
+              :content="$t('hysteria.config.tls.sniGuard')"
+              placement="bottom"
+            >
+              <el-form-item label="sniGuard" prop="tls.sniGuard">
+                <el-select
+                  v-model="dataForm.tls.sniGuard"
+                  style="width: 100%"
+                  clearable
+                >
+                  <el-option
+                    v-for="item in tlsSniGuards"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
               v-if="tlsType === 'acme'"
               :content="$t('hysteria.config.acme.domains')"
               placement="bottom"
@@ -1032,6 +1052,7 @@ const dataFormRules = {
 };
 
 const tlsTypes = ref<string[]>(["tls", "acme"]);
+const tlsSniGuards = ref<string[]>(["dns-san", "disable", "strict"]);
 const aclTypes = ref<string[]>(["file", "inline"]);
 const acmeCas = ref<string[]>(["zerossl", "letsencrypt"]);
 const acmeTypes = ref<string[]>(["http", "tls", "dns"]);

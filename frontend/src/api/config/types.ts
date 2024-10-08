@@ -25,6 +25,7 @@ export interface Hysteria2ServerConfig {
   tls?: {
     cert: string;
     key: string;
+    sniGuard?: string;
   };
   acme?: {
     domains: string[];
@@ -137,6 +138,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
   tls: {
     cert: "",
     key: "",
+    sniGuard: "",
   },
   acme: {
     domains: [],

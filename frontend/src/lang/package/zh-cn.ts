@@ -171,6 +171,8 @@ export default {
       tls: {
         cert: "CERT 路径",
         key: "KEY 路径",
+        sniGuard:
+          "验证客户端发送的 SNI。 与证书信息匹配时才建立连接， 否则终止 TLS 握手。 设置为 strict 以启用该功能。 设置为 disable 以禁用该功能。 默认为 dns-san， 仅当证书中包含「证书主题背景的备用名称」扩展且该扩展中包含域名时才启用该功能。",
       },
       acme: {
         domains: "域名",
