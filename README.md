@@ -210,6 +210,8 @@ Go >= 1.20, Node.js >= 18.12.0
 
 ## Other
 
+Telegram Channel: https://t.me/jonssonyan_channel
+
 You can subscribe to my channel on YouTube: https://www.youtube.com/@jonssonyan
 
 ## Contributors
