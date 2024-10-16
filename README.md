@@ -8,8 +8,6 @@ English / [简体中文](README_ZH.md)
 
 Just the panel for Hysteria2
 
-仅仅是 Hysteria2 的面板
-
 <p>
 <a href="https://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/github/license/jonssonyan/h-ui" alt="License: GPL-3.0"></a>
 <a href="https://github.com/jonssonyan/h-ui/stargazers"><img src="https://img.shields.io/github/stars/jonssonyan/h-ui" alt="GitHub stars"></a>

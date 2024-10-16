@@ -6,8 +6,6 @@
 
 [English](README.md) / 简体中文
 
-Just the panel for Hysteria2
-
 仅仅是 Hysteria2 的面板
 
 <p>
