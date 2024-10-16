@@ -375,33 +375,33 @@ main() {
   echo_content skyBlue "Author: jonssonyan <https://jonssonyan.com>"
   echo_content skyBlue "Github: https://github.com/jonssonyan/h-ui"
   echo_content red "\n=============================================================="
-  echo_content yellow "1. Install H UI (Docker)"
-  echo_content yellow "2. Upgrade H UI (Docker)"
-  echo_content yellow "3. Uninstall H UI (Docker)"
+  echo_content yellow "1. Install H UI (systemd)"
+  echo_content yellow "2. Upgrade H UI (systemd)"
+  echo_content yellow "3. Uninstall H UI (systemd)"
   echo_content red "\n=============================================================="
-  echo_content yellow "4. Install H UI (systemd)"
-  echo_content yellow "5. Upgrade H UI (systemd)"
-  echo_content yellow "6. Uninstall H UI (systemd)"
+  echo_content yellow "4. Install H UI (Docker)"
+  echo_content yellow "5. Upgrade H UI (Docker)"
+  echo_content yellow "6. Uninstall H UI (Docker)"
   read -r -p "Please choose: " input_option
   case ${input_option} in
   1)
+    install_h_ui_systemd
+    ;;
+  2)
+    upgrade_h_ui_systemd
+    ;;
+  3)
+    uninstall_h_ui_systemd
+    ;;
+  4)
     install_docker
     install_h_ui_docker
     ;;
-  2)
+  5)
     upgrade_h_ui_docker
     ;;
-  3)
-    uninstall_h_ui_docker
-    ;;
-  4)
-    install_h_ui_systemd
-    ;;
-  5)
-    upgrade_h_ui_systemd
-    ;;
   6)
-    uninstall_h_ui_systemd
+    uninstall_h_ui_docker
     ;;
   *)
     echo_content red "No such option"
