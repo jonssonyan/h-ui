@@ -59,6 +59,28 @@ bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install
 bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install.sh) v0.0.1
 ```
 
+### systemd
+
+下载可执行文件: https://github.com/jonssonyan/h-ui/releases
+
+```bash
+mkdir -p /usr/local/h-ui/
+curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui && chmod +x /usr/local/h-ui/h-ui
+curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service
+# 自定义 Web 端口，默认 8081
+# sed -i "s|^ExecStart=.*|ExecStart=/usr/local/h-ui/h-ui -p 8081|" "/etc/systemd/system/h-ui.service"
+systemctl daemon-reload
+systemctl enable h-ui
+systemctl restart h-ui
+```
+
+卸载
+
+```bash
+systemctl stop h-ui
+rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
+```
+
 ### 容器部署
 
 1. 安装 Docker
@@ -118,28 +140,6 @@ bash <(curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/install
 docker rm -f h-ui
 docker rmi jonssonyan/h-ui
 rm -rf /h-ui
-```
-
-### systemd
-
-下载可执行文件: https://github.com/jonssonyan/h-ui/releases
-
-```bash
-mkdir -p /usr/local/h-ui/
-curl -fsSL https://github.com/jonssonyan/h-ui/releases/latest/download/h-ui-linux-amd64 -o /usr/local/h-ui/h-ui && chmod +x /usr/local/h-ui/h-ui
-curl -fsSL https://raw.githubusercontent.com/jonssonyan/h-ui/main/h-ui.service -o /etc/systemd/system/h-ui.service
-# 自定义 Web 端口，默认 8081
-# sed -i "s|^ExecStart=.*|ExecStart=/usr/local/h-ui/h-ui -p 8081|" "/etc/systemd/system/h-ui.service"
-systemctl daemon-reload
-systemctl enable h-ui
-systemctl restart h-ui
-```
-
-卸载
-
-```bash
-systemctl stop h-ui
-rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
 ```
 
 ## 默认安装信息
