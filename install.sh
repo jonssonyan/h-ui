@@ -284,7 +284,7 @@ uninstall_h_ui_docker() {
 }
 
 install_h_ui_systemd() {
-  if systemctl status h-ui &>/dev/null; then
+  if systemctl status h-ui >/dev/null 2>&1; then
     echo_content skyBlue "---> H UI is already installed"
     exit 0
   fi
@@ -323,7 +323,7 @@ install_h_ui_systemd() {
 }
 
 upgrade_h_ui_systemd() {
-  if ! systemctl status h-ui &>/dev/null; then
+  if ! systemctl status h-ui >/dev/null 2>&1; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
@@ -346,7 +346,7 @@ upgrade_h_ui_systemd() {
 }
 
 uninstall_h_ui_systemd() {
-  if ! systemctl status h-ui &>/dev/null; then
+  if ! systemctl status h-ui >/dev/null 2>&1; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
