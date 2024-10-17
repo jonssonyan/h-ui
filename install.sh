@@ -323,7 +323,7 @@ install_h_ui_systemd() {
 }
 
 upgrade_h_ui_systemd() {
-  if ! systemctl status h-ui >/dev/null 2>&1; then
+  if ! systemctl list-units --type=service --all | grep -q 'h-ui.service'; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
@@ -346,7 +346,7 @@ upgrade_h_ui_systemd() {
 }
 
 uninstall_h_ui_systemd() {
-  if ! systemctl status h-ui >/dev/null 2>&1; then
+  if ! systemctl list-units --type=service --all | grep -q 'h-ui.service'; then
     echo_content red "---> H UI not installed"
     exit 0
   fi
@@ -358,7 +358,8 @@ uninstall_h_ui_systemd() {
   systemctl disable h-ui.service &&
     rm -f /etc/systemd/system/h-ui.service &&
     systemctl daemon-reload &&
-    rm -rf /usr/local/h-ui/
+    rm -rf /usr/local/h-ui/ &&
+    systemctl reset-failed
   remove_forward
   echo_content skyBlue "---> H UI uninstall successful"
 }
