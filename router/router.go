@@ -8,7 +8,7 @@ import (
 
 func Router(router *gin.Engine) {
 
-	router.Use(middleware.LogHandler(), middleware.RateLimiterHandler())
+	router.Use(middleware.FilterHandler(), middleware.LogHandler(), middleware.RateLimiterHandler())
 
 	frontend.InitFrontend(router)
 
