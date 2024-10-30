@@ -316,3 +316,17 @@ func ReleaseKickAccount(c *gin.Context) {
 	}
 	vo.Success(nil, c)
 }
+
+func VerifyDefaultPass(c *gin.Context) {
+	info, err := service.GetAccountInfo(c)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	account, err := service.GetAccount(info.Id)
+	if err != nil {
+		vo.Fail(err.Error(), c)
+		return
+	}
+	vo.Success(account.Pass != nil && *account.Pass == "02f382b76ca1ab7aa06ab03345c7712fd5b971fb0c0f2aef98bac9cd", c)
+}
