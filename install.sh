@@ -223,7 +223,8 @@ install_h_ui_docker() {
       -v /h-ui/export:/h-ui/export \
       -v /h-ui/logs:/h-ui/logs \
       jonssonyan/h-ui"${hui_docker_version}" \
-      ./h-ui -p ${h_ui_port}
+      ./h-ui -p ${h_ui_port} &&
+      docker exec h-ui ./h-ui reset
   echo_content skyBlue "---> H UI install successful"
 }
 
@@ -320,7 +321,8 @@ install_h_ui_systemd() {
     sed -i "s|^ExecStart=.*|ExecStart=/usr/local/h-ui/h-ui -p ${h_ui_port}|" "/etc/systemd/system/h-ui.service" &&
     systemctl daemon-reload &&
     systemctl enable h-ui &&
-    systemctl restart h-ui
+    systemctl restart h-ui &&
+    ${HUI_DATA_SYSTEMD}/h-ui rerest
   echo_content skyBlue "---> H UI install successful"
 }
 
