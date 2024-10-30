@@ -265,25 +265,29 @@ onMounted(() => {
   getAccountApi({ id: accountStore.id }).then((response) => {
     Object.assign(state.account, response.data);
   });
-  listConfigApi({
-    keys: [huiCrtPathKey, huiKeyPathKey],
-  }).then((response) => {
-    let huiCrtPath = "";
-    let huiKeyPath = "";
-    response.data.forEach((configVo) => {
-      if (configVo.key === huiCrtPathKey) {
-        huiCrtPath = configVo.value;
-      } else if (configVo.key === huiKeyPathKey) {
-        huiKeyPath = configVo.value;
+  if (accountStore.roles.indexOf("admin") != -1) {
+    listConfigApi({
+      keys: [huiCrtPathKey, huiKeyPathKey],
+    }).then((response) => {
+      let huiCrtPath = "";
+      let huiKeyPath = "";
+      response.data.forEach((configVo) => {
+        if (configVo.key === huiCrtPathKey) {
+          huiCrtPath = configVo.value;
+        } else if (configVo.key === huiKeyPathKey) {
+          huiKeyPath = configVo.value;
+        }
+      });
+      if (huiCrtPath === "" || huiKeyPath === "") {
+        ElNotification({
+          title: t("common.noHttps"),
+          dangerouslyUseHTMLString: true,
+          message: t("common.noHttpsTip"),
+          type: "warning",
+        });
       }
     });
-    if (huiCrtPath === "" || huiKeyPath === "") {
-      ElMessage.error({
-        dangerouslyUseHTMLString: true,
-        message: t("common.noHttps"),
-      });
-    }
-  });
+  }
 });
 </script>
 

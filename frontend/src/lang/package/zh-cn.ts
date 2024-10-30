@@ -61,7 +61,8 @@ export default {
     refresh: "刷新",
     yes: "是",
     no: "否",
-		noHttps:`您的系统存在安全隐患，<a href="/#/config/list?focus=huiHttps" style="color: #00BFFF">点击这里</a>开启HTTPS`
+		noHttps:`安全隐患`,
+		noHttpsTip:`HTTPS未开启，<a href="/#/config/list?focus=huiHttps" style="color: #00BFFF">点击这里</a>开启`
   },
   info: {
     expireTime: "年-月-日 时:分:秒",

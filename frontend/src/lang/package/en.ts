@@ -61,7 +61,8 @@ export default {
     refresh: "Refresh",
     yes: "Yes",
     no: "No",
-		noHttps:`Your system has security risks. <a href="/#/config/listfocus=huiHttps" style="color: #00BFFF">Click here</a> to enable HTTPS`
+		noHttps:`Security Risks`,
+		noHttpsTip:`HTTPS is not enabled. <a href="/#/config/listfocus=huiHttps" style="color: #00BFFF">Click here</a> to enable`
   },
   info: {
     expireTime: "y-M-d H:m:s",
