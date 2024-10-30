@@ -61,9 +61,9 @@ export default {
     refresh: "Refresh",
     yes: "Yes",
     no: "No",
-		securityRisk:`Security Risks`,
-		defaultPassTip: `Please change the default login password as soon as possible, It is recommended to set a strong password to protect your account security. <a href="/#/account/list?focus=change-pass" style="color: #00BFFF">Click here</a> to change`,
-		noHttpsTip:`Your website is not using HTTPS, making data transmission insecure, Please enable HTTPS as soon as possible to protect user information. <a href="/#/config/list?focus=huiHttps" style="color: #00BFFF">Click here</a> to enable`
+    securityRisk: "Security Risks",
+    defaultPassTip: `Please change the default login password as soon as possible, It is recommended to set a strong password to protect your account security. <a href="/#/account/list?focus=change-pass" style="color: #00BFFF">Click here</a> to change`,
+    noHttpsTip: `Your website is not using HTTPS, making data transmission insecure, Please enable HTTPS as soon as possible to protect user information. <a href="/#/config/list?focus=huiHttps" style="color: #00BFFF">Click here</a> to enable`,
   },
   info: {
     expireTime: "y-M-d H:m:s",
