@@ -85,9 +85,9 @@ export const asyncRoutes: any[] = [
           icon: "users",
           roles: ["admin"],
         },
-				props: (route: RouteLocationNormalized) => ({
-					focus: route.query.focus,
-				}),
+        props: (route: RouteLocationNormalized) => ({
+          focus: route.query.focus,
+        }),
       },
     ],
   },
