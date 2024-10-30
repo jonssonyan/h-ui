@@ -322,6 +322,7 @@ install_h_ui_systemd() {
     systemctl daemon-reload &&
     systemctl enable h-ui &&
     systemctl restart h-ui &&
+    cd ${HUI_DATA_SYSTEMD} &&
     ${HUI_DATA_SYSTEMD}/h-ui reset
   echo_content skyBlue "---> H UI install successful"
 }
