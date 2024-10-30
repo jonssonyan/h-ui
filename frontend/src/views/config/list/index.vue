@@ -158,7 +158,7 @@ const { t } = useI18n();
 const route = useRoute();
 
 const dataFormRef = ref(ElForm);
-const huiHttpsRef = ref<InstanceType<typeof ElSelect> | null>(null);
+const huiHttpsRef = ref(ElSelect);
 
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
