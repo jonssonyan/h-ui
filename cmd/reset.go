@@ -34,7 +34,10 @@ func runReset(cmd *cobra.Command, args []string) {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-	if err = dao.UpdateAccount([]int64{1}, map[string]interface{}{"username": username, "pass": util.SHA224String(password)}); err != nil {
+	if err = dao.UpdateAccount([]int64{1}, map[string]interface{}{
+		"username": username,
+		"pass":     util.SHA224String(password),
+		"con_pass": fmt.Sprintf("%s.%s", username, password)}); err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
