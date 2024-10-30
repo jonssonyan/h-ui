@@ -207,7 +207,6 @@ install_h_ui_docker() {
 
   echo_content green "---> Install H UI"
   mkdir -p ${HUI_DATA_DOCKER}
-  export HUI_DATA=${HUI_DATA_DOCKER}
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
@@ -294,8 +293,8 @@ install_h_ui_systemd() {
   fi
 
   echo_content green "---> Install H UI"
-  mkdir -p ${HUI_DATA_SYSTEMD}
-  export HUI_DATA=${HUI_DATA_SYSTEMD}
+  mkdir -p ${HUI_DATA_SYSTEMD} &&
+  echo "HUI_DATA=\"\${HUI_DATA_SYSTEMD}\"" | sudo tee -a /etc/environment && source /etc/environment
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
