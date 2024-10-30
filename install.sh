@@ -18,6 +18,8 @@ init_var() {
 
   h_ui_port=8081
   h_ui_time_zone=Asia/Shanghai
+
+  ssh_local_forwarded_port=8082
 }
 
 echo_content() {
@@ -364,6 +366,14 @@ uninstall_h_ui_systemd() {
   echo_content skyBlue "---> H UI uninstall successful"
 }
 
+ssh_local_port_forwarding() {
+  read -r -p "Please enter the port of SSH local forwarding (default: 8082): " ssh_local_forwarded_port
+  [[ -z "${ssh_local_forwarded_port}" ]] && ssh_local_forwarded_port="8082"
+  read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
+  [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
+  ssh -N -f -L 0.0.0.0:${ssh_local_forwarded_port}:localhost:${h_ui_port} localhost
+}
+
 main() {
   cd "$HOME" || exit 0
   init_var
@@ -383,6 +393,8 @@ main() {
   echo_content yellow "4. Install H UI (Docker)"
   echo_content yellow "5. Upgrade H UI (Docker)"
   echo_content yellow "6. Uninstall H UI (Docker)"
+  echo_content red "\n=============================================================="
+  echo_content yellow "7. SSH local port forwarding (Failed after restarting the server)"
   read -r -p "Please choose: " input_option
   case ${input_option} in
   1)
@@ -403,6 +415,9 @@ main() {
     ;;
   6)
     uninstall_h_ui_docker
+    ;;
+  7)
+    ssh_local_port_forwarding
     ;;
   *)
     echo_content red "No such option"
