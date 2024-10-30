@@ -1,4 +1,9 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  RouteLocationNormalized,
+  RouteRecordRaw,
+} from "vue-router";
 
 export const Layout = () => import("@/layout/index.vue");
 
@@ -137,6 +142,9 @@ export const asyncRoutes: any[] = [
           icon: "setting",
           roles: ["admin"],
         },
+        props: (route: RouteLocationNormalized) => ({
+          focus: route.query.focus,
+        }),
       },
     ],
   },

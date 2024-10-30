@@ -68,7 +68,7 @@
           />
         </el-form-item>
         <el-form-item :label="$t('config.huiHttps')" prop="huiHttps">
-          <el-select v-model="huiHttps" style="width: 50%">
+          <el-select v-model="huiHttps" style="width: 50%" ref="huiHttpsRef">
             <el-option
               v-for="item in huiHttpsList"
               :key="item.key"
@@ -152,10 +152,13 @@ import {
   UploadRequestOptions,
 } from "element-plus/lib/components";
 import { useI18n } from "vue-i18n";
+import { useRoute } from "vue-router";
 
 const { t } = useI18n();
+const route = useRoute();
 
 const dataFormRef = ref(ElForm);
+const huiHttpsRef = ref<InstanceType<typeof ElSelect> | null>(null);
 
 const huiWebPortKey = "H_UI_WEB_PORT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
@@ -364,6 +367,14 @@ const handleRestartServer = async () => {
 
 onMounted(() => {
   setConfig();
+  if (route.query.focus === "huiHttps") {
+    nextTick(() => {
+      const input = huiHttpsRef.value.$el.querySelector(".el-input__inner");
+      if (input) {
+        input.focus();
+      }
+    });
+  }
 });
 </script>
 

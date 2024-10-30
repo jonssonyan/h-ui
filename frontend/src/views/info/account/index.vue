@@ -166,9 +166,13 @@ import {
 } from "@/api/hysteria2/types";
 import { hysteria2SubscribeUrlApi, hysteria2UrlApi } from "@/api/hysteria2";
 import copy from "copy-to-clipboard";
+import { listConfigApi } from "@/api/config";
 
 const { t } = useI18n();
 const accountStore = useAccountStore();
+
+const huiCrtPathKey = "H_UI_CRT_PATH";
+const huiKeyPathKey = "H_UI_KEY_PATH";
 
 const date: Date = new Date();
 
@@ -260,6 +264,25 @@ const handleUrlQrCode = async () => {
 onMounted(() => {
   getAccountApi({ id: accountStore.id }).then((response) => {
     Object.assign(state.account, response.data);
+  });
+  listConfigApi({
+    keys: [huiCrtPathKey, huiKeyPathKey],
+  }).then((response) => {
+    let huiCrtPath = "";
+    let huiKeyPath = "";
+    response.data.forEach((configVo) => {
+      if (configVo.key === huiCrtPathKey) {
+        huiCrtPath = configVo.value;
+      } else if (configVo.key === huiKeyPathKey) {
+        huiKeyPath = configVo.value;
+      }
+    });
+    if (huiCrtPath === "" || huiKeyPath === "") {
+      ElMessage.error({
+        dangerouslyUseHTMLString: true,
+        message: t("common.noHttps"),
+      });
+    }
   });
 });
 </script>
