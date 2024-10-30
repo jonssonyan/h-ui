@@ -23,7 +23,7 @@ func runServer(port string) error {
 	if err := initFile(); err != nil {
 		return err
 	}
-	if err := dao.InitSqliteDB(port); err != nil {
+	if err := dao.InitSql(port); err != nil {
 		return err
 	}
 	if err := middleware.InitCron(); err != nil {

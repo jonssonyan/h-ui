@@ -18,7 +18,7 @@ var sqlInitStr = "CREATE TABLE IF NOT EXISTS account\n(\n    id             INTE
 
 var sqliteDB *gorm.DB
 
-func InitSqliteDB(port string) error {
+func InitSqliteDB() error {
 	var err error
 	sqliteDB, err = gorm.Open(sqlite.Open(constant.SqliteDBPath), &gorm.Config{
 		TranslateError: true,
@@ -40,8 +40,14 @@ func InitSqliteDB(port string) error {
 		logrus.Errorf("sqlite open err: %v", err)
 		return errors.New("sqlite open err")
 	}
+	return nil
+}
 
-	if err = sqliteInit(sqlInitStr); err != nil {
+func InitSql(port string) error {
+	if err := InitSqliteDB(); err != nil {
+		return err
+	}
+	if err := sqliteInit(sqlInitStr); err != nil {
 		return err
 	}
 	if port != "" {
