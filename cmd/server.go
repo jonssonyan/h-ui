@@ -15,10 +15,11 @@ import (
 	"os"
 )
 
-func runServer() error {
+func runServer(port string) error {
 	defer releaseResource()
 
 	middleware.InitLog()
+	service.InitForward()
 	if err := initFile(); err != nil {
 		return err
 	}
@@ -44,12 +45,12 @@ func runServer() error {
 	r := gin.Default()
 	router.Router(r)
 
-	port, crtPath, keyPath, err := service.GetServerPortAndCert()
+	serverPort, crtPath, keyPath, err := service.GetServerPortAndCert()
 	if err != nil {
 		return err
 	}
 
-	service.InitServer(fmt.Sprintf(":%d", port), r)
+	service.InitServer(fmt.Sprintf(":%d", serverPort), r)
 	if err := service.StartServer(crtPath, keyPath); err != nil && err != http.ErrServerClosed {
 		logrus.Errorf("start server err: %v", err)
 		return errors.New("start server err")

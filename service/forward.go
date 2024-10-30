@@ -18,7 +18,7 @@ var (
 	Comment          = "hui_hysteria_porthopping"
 )
 
-func init() {
+func InitForward() {
 	if nft, err := util.Exec("command -v nft"); err == nil && strings.TrimSpace(nft) != "" {
 		netManager = "nft"
 	} else if iptables, err := util.Exec("command -v iptables"); err == nil && strings.TrimSpace(iptables) != "" {
