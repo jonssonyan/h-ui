@@ -24,7 +24,7 @@ func valid() (string, string, error) {
 		return "", "", err
 	}
 	if enable.Value == nil || *enable.Value != "1" {
-		return "", "", nil
+		return "", "", errors.New("telegram not enable")
 	}
 	token, err := dao.GetConfig("key = ?", constant.TelegramToken)
 	if err != nil {
@@ -46,6 +46,9 @@ func valid() (string, string, error) {
 func InitTelegramBot() error {
 	token, chatId, err := valid()
 	if err != nil {
+		if err.Error() == "telegram not enable" {
+			return nil
+		}
 		return err
 	}
 	bot, err = tgbotapi.NewBotAPI(token)
