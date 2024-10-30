@@ -372,12 +372,10 @@ onMounted(() => {
   setConfig();
   if (route.query.focus === "huiHttps") {
     nextTick(() => {
-      setTimeout(() => {
-        const input = huiHttpsRef.value.$el.querySelector(".el-input__inner");
-        if (input) {
-          input.focus();
-        }
-      }, 50);
+      const input = huiHttpsRef.value.$el.querySelector(".el-input__inner");
+      if (input) {
+        input.focus();
+      }
     });
   }
 });

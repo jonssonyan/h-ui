@@ -920,7 +920,7 @@ onMounted(() => {
   handleQuery();
   if (route.query.focus === "change-pass") {
     nextTick(() => {
-      state.dialog.visible = true;
+      handleUpdate({ id: 1 });
       setTimeout(() => {
         const inputPass = dataFormPassRef.value.$el.querySelector(
           ".el-input__wrapper input"
@@ -928,7 +928,7 @@ onMounted(() => {
         if (inputPass) {
           inputPass.focus();
         }
-      }, 50);
+      }, 100);
     });
   }
 });
