@@ -224,7 +224,7 @@ install_h_ui_docker() {
       -v /h-ui/logs:/h-ui/logs \
       jonssonyan/h-ui"${hui_docker_version}" \
       ./h-ui -p ${h_ui_port} &&
-      docker exec h-ui ./h-ui reset
+    docker exec h-ui ./h-ui reset
   echo_content skyBlue "---> H UI install successful"
 }
 
@@ -322,7 +322,7 @@ install_h_ui_systemd() {
     systemctl daemon-reload &&
     systemctl enable h-ui &&
     systemctl restart h-ui &&
-    ${HUI_DATA_SYSTEMD}/h-ui rerest
+    ${HUI_DATA_SYSTEMD}/h-ui reset
   echo_content skyBlue "---> H UI install successful"
 }
 
@@ -376,6 +376,17 @@ ssh_local_port_forwarding() {
   ssh -N -f -L 0.0.0.0:${ssh_local_forwarded_port}:localhost:${h_ui_port} localhost
 }
 
+reset_sysadmin() {
+  if systemctl list-units --type=service --all | grep -q 'h-ui.service'; then
+    ${HUI_DATA_SYSTEMD}/h-ui reset
+    echo_content skyBlue "---> H UI (systemd) reset sysadmin username and password successful"
+  fi
+  if [[ $(command -v docker) && -n $(docker ps -a -q -f "name=^h-ui$") ]]; then
+    docker exec h-ui ./h-ui reset
+    echo_content skyBlue "---> H UI (Docker) reset sysadmin username and password successful"
+  fi
+}
+
 main() {
   cd "$HOME" || exit 0
   init_var
@@ -397,6 +408,7 @@ main() {
   echo_content yellow "6. Uninstall H UI (Docker)"
   echo_content red "\n=============================================================="
   echo_content yellow "7. SSH local port forwarding (Failed after restarting the server)"
+  echo_content yellow "8. Reset sysadmin username and password"
   read -r -p "Please choose: " input_option
   case ${input_option} in
   1)
@@ -420,6 +432,9 @@ main() {
     ;;
   7)
     ssh_local_port_forwarding
+    ;;
+  8)
+    reset_sysadmin
     ;;
   *)
     echo_content red "No such option"
