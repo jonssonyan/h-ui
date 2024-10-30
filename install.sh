@@ -207,6 +207,7 @@ install_h_ui_docker() {
 
   echo_content green "---> Install H UI"
   mkdir -p ${HUI_DATA_DOCKER}
+  export HUI_DATA=${HUI_DATA_DOCKER}
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
@@ -294,6 +295,7 @@ install_h_ui_systemd() {
 
   echo_content green "---> Install H UI"
   mkdir -p ${HUI_DATA_SYSTEMD}
+  export HUI_DATA=${HUI_DATA_SYSTEMD}
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
@@ -322,7 +324,6 @@ install_h_ui_systemd() {
     systemctl daemon-reload &&
     systemctl enable h-ui &&
     systemctl restart h-ui &&
-    cd ${HUI_DATA_SYSTEMD} &&
     ${HUI_DATA_SYSTEMD}/h-ui reset
   echo_content skyBlue "---> H UI install successful"
 }

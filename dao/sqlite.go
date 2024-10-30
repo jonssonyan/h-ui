@@ -2,6 +2,7 @@ package dao
 
 import (
 	"errors"
+	"fmt"
 	"github.com/glebarez/sqlite"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -20,7 +21,7 @@ var sqliteDB *gorm.DB
 
 func InitSqliteDB() error {
 	var err error
-	sqliteDB, err = gorm.Open(sqlite.Open(constant.SqliteDBPath), &gorm.Config{
+	sqliteDB, err = gorm.Open(sqlite.Open(fmt.Sprintf("%s%s", os.Getenv("HUI_DATA"), constant.SqliteDBPath)), &gorm.Config{
 		TranslateError: true,
 		Logger: logger.New(
 			log.New(os.Stdout, "\r\n", log.LstdFlags),
