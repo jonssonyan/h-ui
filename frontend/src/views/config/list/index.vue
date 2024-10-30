@@ -102,7 +102,10 @@
             clearable
           />
         </el-form-item>
-        <el-tooltip :content="$t('config.resetTrafficCronTip')" placement="bottom">
+        <el-tooltip
+          :content="$t('config.resetTrafficCronTip')"
+          placement="bottom"
+        >
           <el-form-item
             :label="$t('config.resetTrafficCron')"
             prop="resetTrafficCron"
@@ -369,10 +372,12 @@ onMounted(() => {
   setConfig();
   if (route.query.focus === "huiHttps") {
     nextTick(() => {
-      const input = huiHttpsRef.value.$el.querySelector(".el-input__inner");
-      if (input) {
-        input.focus();
-      }
+      setTimeout(() => {
+        const input = huiHttpsRef.value.$el.querySelector(".el-input__inner");
+        if (input) {
+          input.focus();
+        }
+      }, 50);
     });
   }
 });

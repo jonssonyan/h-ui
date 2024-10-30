@@ -153,7 +153,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { getAccountApi } from "@/api/account";
+import { getAccountApi, verifyDefaultPassApi } from "@/api/account";
 import { AccountVo } from "@/api/account/types";
 import { useAccountStore } from "@/store/modules/account";
 import { timestampToDateTime } from "@/utils/time";
@@ -266,6 +266,16 @@ onMounted(() => {
     Object.assign(state.account, response.data);
   });
   if (accountStore.roles.indexOf("admin") != -1) {
+    verifyDefaultPassApi().then((response) => {
+      if (response.data) {
+        ElNotification({
+          title: t("common.securityRisk"),
+          dangerouslyUseHTMLString: true,
+          message: t("common.defaultPassTip"),
+          type: "warning",
+        });
+      }
+    });
     listConfigApi({
       keys: [huiCrtPathKey, huiKeyPathKey],
     }).then((response) => {
@@ -280,7 +290,7 @@ onMounted(() => {
       });
       if (huiCrtPath === "" || huiKeyPath === "") {
         ElNotification({
-          title: t("common.noHttps"),
+          title: t("common.securityRisk"),
           dangerouslyUseHTMLString: true,
           message: t("common.noHttpsTip"),
           type: "warning",

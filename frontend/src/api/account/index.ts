@@ -142,3 +142,14 @@ export function releaseKickAccountApi(data: IdDto): AxiosPromise {
     data: data,
   });
 }
+
+/**
+ * 是否默认密码
+ * @param data
+ */
+export function verifyDefaultPassApi(): AxiosPromise {
+  return request({
+    url: "/account/verifyDefaultPass",
+    method: "get",
+  });
+}

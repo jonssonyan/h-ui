@@ -61,8 +61,9 @@ export default {
     refresh: "刷新",
     yes: "是",
     no: "否",
-		noHttps:`安全隐患`,
-		noHttpsTip:`HTTPS未开启，<a href="/#/config/list?focus=huiHttps" style="color: #00BFFF">点击这里</a>开启`
+    securityRisk: `安全隐患`,
+    defaultPassTip: `请尽快修改默认登录密码，建议设置强密码以保护您的账户安全。<a href="/#/account/list?focus=change-pass" style="color: #00BFFF">点击这里</a>修改`,
+    noHttpsTip: `您的网站未启用 HTTPS，数据传输不安全，请尽快开启 HTTPS 以保护用户信息。<a href="/#/config/list?focus=huiHttps" style="color: #00BFFF">点击这里</a>开启`,
   },
   info: {
     expireTime: "年-月-日 时:分:秒",

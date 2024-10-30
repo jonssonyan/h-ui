@@ -303,6 +303,7 @@
             clearable
             type="password"
             show-password
+            ref="dataFormPassRef"
           />
         </el-form-item>
         <el-form-item :label="$t('account.conPass')" prop="conPass">
@@ -313,6 +314,7 @@
             clearable
             type="password"
             show-password
+            ref="dataFormConPassRef"
           />
         </el-form-item>
         <el-form-item :label="$t('account.quota')" prop="quota">
@@ -459,17 +461,21 @@ import {
   UploadRequestOptions,
 } from "element-plus/lib/components";
 import { useI18n } from "vue-i18n";
+
 import {
   Hysteria2SubscribeUrlDto,
   Hysteria2UrlDto,
 } from "@/api/hysteria2/types";
 import copy from "copy-to-clipboard";
+import { useRoute } from "vue-router";
 
 const { t } = useI18n();
-
+const route = useRoute();
 const queryFormRef = ref(ElForm); // 查询表单
 const dataFormRef = ref(ElForm); // 用户表单
 const kickFormRef = ref(ElForm); // 下线表单
+const dataFormPassRef = ref(ElInput);
+const dataFormConPassRef = ref(ElInput);
 
 const dataFormAddRules = {
   username: [
@@ -912,6 +918,19 @@ const resetTraffic = async (row: { [key: string]: any }) => {
 onMounted(() => {
   // 初始化用户列表数据
   handleQuery();
+  if (route.query.focus === "change-pass") {
+    nextTick(() => {
+      state.dialog.visible = true;
+      setTimeout(() => {
+        const inputPass = dataFormPassRef.value.$el.querySelector(
+          ".el-input__wrapper input"
+        );
+        if (inputPass) {
+          inputPass.focus();
+        }
+      }, 50);
+    });
+  }
 });
 </script>
 
