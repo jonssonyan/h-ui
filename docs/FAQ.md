@@ -20,6 +20,12 @@ chmod +x ./h-ui
   ./h-ui -p [port]
   ```
 
+- Reset sysadmin username and password
+
+  ```bash
+  ./h-ui reset
+  ```
+
 ## Meaning of folders in project
 
 - bin: Hysteria2 executable and configuration files

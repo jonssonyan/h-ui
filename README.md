@@ -145,7 +145,7 @@ rm -rf /h-ui
 ## Default Installation Information
 
 - Panel Port: 8081
-- Username/Password: sysadmin
+- Username/Password: Random 6 characters
 
 ## System Upgrade
 
