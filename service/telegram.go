@@ -24,7 +24,7 @@ func valid() (string, string, error) {
 		return "", "", err
 	}
 	if enable.Value == nil || *enable.Value != "1" {
-		return "", "", errors.New("telegram not enable")
+		return "", "", nil
 	}
 	token, err := dao.GetConfig("key = ?", constant.TelegramToken)
 	if err != nil {
