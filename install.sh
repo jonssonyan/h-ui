@@ -60,17 +60,20 @@ version_ge() {
   local v1=${1#v}
   local v2=${2#v}
 
-  if [[ "${v1}" == "" || "${v1}" == "latest" ]]; then
+  if [[ -z "$v1" || "$v1" == "latest" ]]; then
     return 0
   fi
 
   local v1_parts=(${v1//./ })
   local v2_parts=(${v2//./ })
 
-  for ((i = 0; i < 3; i++)); do
-    if ((${v1_parts[i]} < ${v2_parts[i]})); then
+  for ((i = 0; i < ${#v1_parts[@]}; i++)); do
+    local part1=${v1_parts[i]:-0}
+    local part2=${v2_parts[i]:-0}
+
+    if ((part1 < part2)); then
       return 1
-    elif ((${v1_parts[i]} > ${v2_parts[i]})); then
+    elif ((part1 > part2)); then
       return 0
     fi
   done
