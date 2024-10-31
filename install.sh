@@ -56,6 +56,27 @@ can_connect() {
   fi
 }
 
+version_ge() {
+  local v1=${1#v}
+  local v2=${2#v}
+
+  if [[ "${v1}" == "" || "${v1}" == "latest" ]]; then
+    return 0
+  fi
+
+  local v1_parts=(${v1//./ })
+  local v2_parts=(${v2//./ })
+
+  for ((i = 0; i < 3; i++)); do
+    if ((${v1_parts[i]} < ${v2_parts[i]})); then
+      return 1
+    elif ((${v1_parts[i]} > ${v2_parts[i]})); then
+      return 0
+    fi
+  done
+  return 0
+}
+
 check_sys() {
   if [[ $(id -u) != "0" ]]; then
     echo_content red "You must be root to run this script"
@@ -226,7 +247,12 @@ install_h_ui_docker() {
       ./h-ui -p ${h_ui_port}
   sleep 3
   echo_content yellow "h-ui Panel Port: ${h_ui_port}"
-  echo_content yellow "$(docker exec h-ui ./h-ui reset)"
+  if version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
+    echo_content yellow "$(docker exec h-ui ./h-ui reset)"
+  else
+    echo_content yellow "h-ui Login Username: sysadmin"
+    echo_content yellow "h-ui Login Password: sysadmin"
+  fi
   echo_content skyBlue "---> H UI install successful"
 }
 
@@ -329,7 +355,12 @@ install_h_ui_systemd() {
     systemctl restart h-ui
   sleep 3
   echo_content yellow "h-ui Panel Port: ${h_ui_port}"
-  echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
+  if version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
+    echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
+  else
+    echo_content yellow "h-ui Login Username: sysadmin"
+    echo_content yellow "h-ui Login Password: sysadmin"
+  fi
   echo_content skyBlue "---> H UI install successful"
 }
 
@@ -385,6 +416,11 @@ ssh_local_port_forwarding() {
 }
 
 reset_sysadmin() {
+  if ! version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
+    echo_content red "---> H UI version must be greater than or equal to v0.0.12"
+    exit 0
+  fi
+
   if systemctl list-units --type=service --all | grep -q 'h-ui.service'; then
     echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
     echo_content skyBlue "---> H UI (systemd) reset sysadmin username and password successful"
