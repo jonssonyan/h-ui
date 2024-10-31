@@ -224,6 +224,9 @@ install_h_ui_docker() {
       -v /h-ui/logs:/h-ui/logs \
       jonssonyan/h-ui"${hui_docker_version}" \
       ./h-ui -p ${h_ui_port}
+  sleep 3
+  echo_content yellow "h-ui Panel Port: ${h_ui_port}"
+  echo_content yellow "$(docker exec h-ui ./h-ui reset)"
   echo_content skyBlue "---> H UI install successful"
 }
 
@@ -324,6 +327,9 @@ install_h_ui_systemd() {
     systemctl daemon-reload &&
     systemctl enable h-ui &&
     systemctl restart h-ui
+  sleep 3
+  echo_content yellow "h-ui Panel Port: ${h_ui_port}"
+  echo_content yellow "$(${HUI_DATA}h-ui reset)"
   echo_content skyBlue "---> H UI install successful"
 }
 
