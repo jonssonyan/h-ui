@@ -920,15 +920,16 @@ onMounted(() => {
   handleQuery();
   if (route.query.focus === "change-pass") {
     nextTick(() => {
-      handleUpdate({ id: 1 });
-      setTimeout(() => {
-        const inputPass = dataFormPassRef.value.$el.querySelector(
-          ".el-input__wrapper input"
-        );
-        if (inputPass) {
-          inputPass.focus();
-        }
-      }, 100);
+      handleUpdate({ id: 1 }).then(() => {
+        setTimeout(() => {
+          const inputPass = dataFormPassRef.value.$el.querySelector(
+            ".el-input__wrapper input"
+          );
+          if (inputPass) {
+            inputPass.focus();
+          }
+        }, 50);
+      });
     });
   }
 });
