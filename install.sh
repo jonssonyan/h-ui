@@ -250,7 +250,7 @@ install_h_ui_docker() {
       ./h-ui -p ${h_ui_port}
   sleep 3
   echo_content yellow "h-ui Panel Port: ${h_ui_port}"
-  if version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
+  if version_ge "$(docker exec h-ui ./h-ui -v | sed -n 's/.*version \([^\ ]*\).*/\1/p')" "v0.0.12"; then
     echo_content yellow "$(docker exec h-ui ./h-ui reset)"
   else
     echo_content yellow "h-ui Login Username: sysadmin"
@@ -358,7 +358,7 @@ install_h_ui_systemd() {
     systemctl restart h-ui
   sleep 3
   echo_content yellow "h-ui Panel Port: ${h_ui_port}"
-  if version_ge "$(${HUI_DATA_SYSTEMD}h-ui -v)" "v0.0.12"; then
+  if version_ge "$(/usr/local/h-ui/h-ui -v | sed -n 's/.*version \([^\ ]*\).*/\1/p')" "v0.0.12"; then
     echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
   else
     echo_content yellow "h-ui Login Username: sysadmin"
@@ -420,7 +420,7 @@ ssh_local_port_forwarding() {
 
 reset_sysadmin() {
   if systemctl list-units --type=service --all | grep -q 'h-ui.service'; then
-    if ! version_ge "$(${HUI_DATA_SYSTEMD}h-ui -v)" "v0.0.12"; then
+    if ! version_ge "$(/usr/local/h-ui/h-ui -v | sed -n 's/.*version \([^\ ]*\).*/\1/p')" "v0.0.12"; then
       echo_content red "---> H UI (systemd) version must be greater than or equal to v0.0.12"
       exit 0
     fi
@@ -428,7 +428,7 @@ reset_sysadmin() {
     echo_content skyBlue "---> H UI (systemd) reset sysadmin username and password successful"
   fi
   if [[ $(command -v docker) && -n $(docker ps -a -q -f "name=^h-ui$") ]]; then
-    if ! version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
+    if ! version_ge "$(docker exec h-ui ./h-ui -v | sed -n 's/.*version \([^\ ]*\).*/\1/p')" "v0.0.12"; then
       echo_content red "---> H UI (Docker) version must be greater than or equal to v0.0.12"
       exit 0
     fi
