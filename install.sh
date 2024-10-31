@@ -71,9 +71,9 @@ version_ge() {
     local part1=${v1_parts[i]:-0}
     local part2=${v2_parts[i]:-0}
 
-    if ((part1 < part2)); then
+    if [[ "$part1" < "$part2" ]]; then
       return 1
-    elif ((part1 > part2)); then
+    elif [[ "$part1" > "$part2" ]]; then
       return 0
     fi
   done
