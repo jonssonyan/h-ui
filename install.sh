@@ -355,7 +355,7 @@ install_h_ui_systemd() {
     systemctl restart h-ui
   sleep 3
   echo_content yellow "h-ui Panel Port: ${h_ui_port}"
-  if version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
+  if version_ge "$(${HUI_DATA_SYSTEMD}h-ui -v)" "v0.0.12"; then
     echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
   else
     echo_content yellow "h-ui Login Username: sysadmin"
