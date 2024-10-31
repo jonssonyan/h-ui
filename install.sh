@@ -297,7 +297,7 @@ install_h_ui_systemd() {
   echo_content green "---> Install H UI"
   mkdir -p ${HUI_DATA_SYSTEMD} &&
     sed -i '/^HUI_DATA=/d' /etc/environment &&
-    echo "HUI_DATA=${HUI_DATA_SYSTEMD}" | tee -a /etc/environment > /dev/null &&
+    echo "HUI_DATA=${HUI_DATA_SYSTEMD}" | tee -a /etc/environment >/dev/null &&
     export HUI_DATA="${HUI_DATA_SYSTEMD}"
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
@@ -329,7 +329,7 @@ install_h_ui_systemd() {
     systemctl restart h-ui
   sleep 3
   echo_content yellow "h-ui Panel Port: ${h_ui_port}"
-  echo_content yellow "$(${HUI_DATA}h-ui reset)"
+  echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
   echo_content skyBlue "---> H UI install successful"
 }
 
@@ -385,11 +385,11 @@ ssh_local_port_forwarding() {
 
 reset_sysadmin() {
   if systemctl list-units --type=service --all | grep -q 'h-ui.service'; then
-    ${HUI_DATA_SYSTEMD}h-ui reset
+    echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
     echo_content skyBlue "---> H UI (systemd) reset sysadmin username and password successful"
   fi
   if [[ $(command -v docker) && -n $(docker ps -a -q -f "name=^h-ui$") ]]; then
-    docker exec h-ui ./h-ui reset
+    echo_content yellow "$(docker exec h-ui ./h-ui reset)"
     echo_content skyBlue "---> H UI (Docker) reset sysadmin username and password successful"
   fi
 }
