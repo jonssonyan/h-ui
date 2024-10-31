@@ -381,6 +381,7 @@ ssh_local_port_forwarding() {
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
   ssh -N -f -L 0.0.0.0:${ssh_local_forwarded_port}:localhost:${h_ui_port} localhost
+  echo_content skyBlue "---> SSH local port forwarding successful"
 }
 
 reset_sysadmin() {
