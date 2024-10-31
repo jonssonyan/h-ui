@@ -145,7 +145,9 @@ rm -rf /h-ui
 ## Default Installation Information
 
 - Panel Port: 8081
-- Username/Password: Random 6 characters
+- SSH local forwarded port: 8082
+- Login Username/Password: Random 6 characters
+- Connection Password: {Login Username}.{Login Password}
 
 ## System Upgrade
 

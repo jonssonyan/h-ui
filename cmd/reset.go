@@ -45,6 +45,7 @@ func runReset(cmd *cobra.Command, args []string) {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
-	fmt.Println(fmt.Sprintf("h-ui sysadmin username: %s", username))
-	fmt.Println(fmt.Sprintf("h-ui sysadmin password: %s", password))
+	fmt.Println(fmt.Sprintf("h-ui sysadmin login username: %s", username))
+	fmt.Println(fmt.Sprintf("h-ui sysadmin login password: %s", password))
+	fmt.Println(fmt.Sprintf("h-ui sysadmin connection password: %s", fmt.Sprintf("%s.%s", username, password)))
 }
