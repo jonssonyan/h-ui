@@ -416,16 +416,19 @@ ssh_local_port_forwarding() {
 }
 
 reset_sysadmin() {
-  if ! version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
-    echo_content red "---> H UI version must be greater than or equal to v0.0.12"
-    exit 0
-  fi
-
   if systemctl list-units --type=service --all | grep -q 'h-ui.service'; then
+    if ! version_ge "$(${HUI_DATA_SYSTEMD}h-ui -v)" "v0.0.12"; then
+      echo_content red "---> H UI version must be greater than or equal to v0.0.12"
+      exit 0
+    fi
     echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
     echo_content skyBlue "---> H UI (systemd) reset sysadmin username and password successful"
   fi
   if [[ $(command -v docker) && -n $(docker ps -a -q -f "name=^h-ui$") ]]; then
+    if ! version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
+      echo_content red "---> H UI version must be greater than or equal to v0.0.12"
+      exit 0
+    fi
     echo_content yellow "$(docker exec h-ui ./h-ui reset)"
     echo_content skyBlue "---> H UI (Docker) reset sysadmin username and password successful"
   fi
