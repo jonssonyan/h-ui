@@ -421,7 +421,7 @@ ssh_local_port_forwarding() {
 reset_sysadmin() {
   if systemctl list-units --type=service --all | grep -q 'h-ui.service'; then
     if ! version_ge "$(${HUI_DATA_SYSTEMD}h-ui -v)" "v0.0.12"; then
-      echo_content red "---> H UI version must be greater than or equal to v0.0.12"
+      echo_content red "---> H UI (systemd) version must be greater than or equal to v0.0.12"
       exit 0
     fi
     echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
@@ -429,7 +429,7 @@ reset_sysadmin() {
   fi
   if [[ $(command -v docker) && -n $(docker ps -a -q -f "name=^h-ui$") ]]; then
     if ! version_ge "$(docker exec h-ui ./h-ui -v)" "v0.0.12"; then
-      echo_content red "---> H UI version must be greater than or equal to v0.0.12"
+      echo_content red "---> H UI (Docker) version must be greater than or equal to v0.0.12"
       exit 0
     fi
     echo_content yellow "$(docker exec h-ui ./h-ui reset)"
