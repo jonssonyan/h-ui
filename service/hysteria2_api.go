@@ -229,15 +229,15 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 		urlConfig += fmt.Sprintf("&peer=%s", hysteria2Config.ACME.Domains[0])
 	}
 
-	var insecure int64 = 0
-	if hysteria2Config.TLS != nil &&
-		hysteria2Config.TLS.Cert != nil &&
-		*hysteria2Config.TLS.Cert != "" &&
-		hysteria2Config.TLS.Key != nil &&
-		*hysteria2Config.TLS.Key != "" {
-		insecure = 1
-	}
-	urlConfig += fmt.Sprintf("&insecure=%d", insecure)
+	//var insecure int64 = 0
+	//if hysteria2Config.TLS != nil &&
+	//	hysteria2Config.TLS.Cert != nil &&
+	//	*hysteria2Config.TLS.Cert != "" &&
+	//	hysteria2Config.TLS.Key != nil &&
+	//	*hysteria2Config.TLS.Key != "" {
+	//	insecure = 1
+	//}
+	//urlConfig += fmt.Sprintf("&insecure=%d", insecure)
 
 	if hysteria2Config.Bandwidth != nil &&
 		hysteria2Config.Bandwidth.Down != nil &&
