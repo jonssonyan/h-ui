@@ -109,7 +109,11 @@ check_sys() {
 
   if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
     release="centos"
-    version=$(rpm -q --queryformat '%{VERSION}' centos-release)
+    if rpm -q centos-stream-release &> /dev/null; then
+        version=$(rpm -q --queryformat '%{VERSION}' centos-stream-release)
+    elif rpm -q centos-release &> /dev/null; then
+        version=$(rpm -q --queryformat '%{VERSION}' centos-release)
+    fi
   elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
     release="debian"
     version=$(cat /etc/debian_version)
