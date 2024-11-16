@@ -109,7 +109,11 @@ check_sys() {
 
   if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
     release="centos"
-    version=$(rpm -q --queryformat '%{VERSION}' centos-release)
+    if rpm -q centos-stream-release &> /dev/null; then
+        version=$(rpm -q --queryformat '%{VERSION}' centos-stream-release)
+    elif rpm -q centos-release &> /dev/null; then
+        version=$(rpm -q --queryformat '%{VERSION}' centos-release)
+    fi
   elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
     release="debian"
     version=$(cat /etc/debian_version)
@@ -323,9 +327,10 @@ install_h_ui_systemd() {
 
   echo_content green "---> Install H UI"
   mkdir -p ${HUI_DATA_SYSTEMD} &&
-    sed -i '/^HUI_DATA=/d' /etc/environment &&
-    echo "HUI_DATA=${HUI_DATA_SYSTEMD}" | tee -a /etc/environment >/dev/null &&
     export HUI_DATA="${HUI_DATA_SYSTEMD}"
+
+  sed -i '/^HUI_DATA=/d' /etc/environment &&
+    echo "HUI_DATA=${HUI_DATA_SYSTEMD}" | tee -a /etc/environment >/dev/null
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
@@ -422,6 +427,7 @@ reset_sysadmin() {
       echo_content red "---> H UI (systemd) version must be greater than or equal to v0.0.12"
       exit 0
     fi
+    export HUI_DATA="${HUI_DATA_SYSTEMD}"
     echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
     echo_content skyBlue "---> H UI (systemd) reset sysadmin username and password successful"
   fi
