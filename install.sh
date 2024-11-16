@@ -426,6 +426,7 @@ reset_sysadmin() {
       echo_content red "---> H UI (systemd) version must be greater than or equal to v0.0.12"
       exit 0
     fi
+    export HUI_DATA="${HUI_DATA_SYSTEMD}"
     echo_content yellow "$(${HUI_DATA_SYSTEMD}h-ui reset)"
     echo_content skyBlue "---> H UI (systemd) reset sysadmin username and password successful"
   fi
