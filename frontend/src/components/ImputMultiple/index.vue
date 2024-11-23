@@ -1,27 +1,26 @@
 <template>
-  <div class="flex gap-2">
-    <el-tag
-      :key="item"
-      v-for="item in tags"
-      closable
-      @close="handleClose(item)"
-      size="large"
-    >
-      {{ item }}
-    </el-tag>
-    <el-input
-      v-if="inputVisible"
-      ref="inputRef"
-      v-model="tag"
-      class="w-50"
-      @keyup.enter="handleConfirm"
-      @blur="handleConfirm"
-    />
-    <el-button v-else @click="showInput">+</el-button>
-  </div>
+  <draggable class="flex gap-2" :list="tags" item-key="id" animation="200">
+    <template #item="{ element }">
+      <el-tag closable @close="handleClose(element)" size="large">
+        {{ element }}
+      </el-tag>
+    </template>
+    <template #footer>
+      <el-input
+        v-if="inputVisible"
+        ref="inputRef"
+        v-model="tag"
+        class="w-50"
+        @keyup.enter="handleConfirm"
+        @blur="handleConfirm"
+      />
+      <el-button v-else @click="showInput">+</el-button>
+    </template>
+  </draggable>
 </template>
 
 <script setup lang="ts">
+import draggable from "vuedraggable";
 import { ElInput } from "element-plus";
 import { PropType } from "vue";
 
