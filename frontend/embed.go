@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/fs"
 	"net/http"
+	"strings"
 )
 
 //go:embed dist/*
@@ -14,7 +15,7 @@ var staticFiles embed.FS
 func InitFrontend(router *gin.Engine, huiContext *string) {
 
 	relativePath := "/"
-	if huiContext != nil && *huiContext != "" {
+	if huiContext != nil && strings.HasPrefix(*huiContext, "/") {
 		relativePath = *huiContext
 	}
 	router.GET(relativePath, func(c *gin.Context) {
