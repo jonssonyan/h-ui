@@ -67,13 +67,13 @@ func UpdateConfigs(c *gin.Context) {
 			needRestart = true
 		}
 
-		if key == constant.HUIContext {
-			huiContext, err := service.GetConfig(constant.HUIContext)
+		if key == constant.HUIWebContext {
+			huiWebContext, err := service.GetConfig(constant.HUIWebContext)
 			if err != nil {
 				vo.Fail(err.Error(), c)
 				return
 			}
-			if *huiContext.Value != value {
+			if *huiWebContext.Value != value {
 				needRestart = true
 			}
 		}

@@ -12,11 +12,11 @@ import (
 //go:embed dist/*
 var staticFiles embed.FS
 
-func InitFrontend(router *gin.Engine, huiContext *string) {
+func InitFrontend(router *gin.Engine, huiWebContext *string) {
 
 	relativePath := "/"
-	if huiContext != nil && strings.HasPrefix(*huiContext, "/") {
-		relativePath = *huiContext
+	if huiWebContext != nil && strings.HasPrefix(*huiWebContext, "/") {
+		relativePath = *huiWebContext
 	}
 	router.GET(relativePath, func(c *gin.Context) {
 		indexHTML, err := staticFiles.ReadFile("dist/index.html")

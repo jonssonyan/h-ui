@@ -6,11 +6,11 @@ import (
 	"h-ui/middleware"
 )
 
-func Router(router *gin.Engine, huiContext *string) {
+func Router(router *gin.Engine, huiWebContext *string) {
 
 	router.Use(middleware.FilterHandler(), middleware.LogHandler(), middleware.RateLimiterHandler())
 
-	frontend.InitFrontend(router, huiContext)
+	frontend.InitFrontend(router, huiWebContext)
 
 	authApi := router.Group("/hui")
 	{

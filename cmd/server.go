@@ -42,7 +42,7 @@ func runServer(port string) error {
 		logrus.Errorf(err.Error())
 	}
 
-	config, err := dao.GetConfig("key = ?", constant.HUIContext)
+	config, err := dao.GetConfig("key = ?", constant.HUIWebContext)
 	if err != nil {
 		return err
 	}

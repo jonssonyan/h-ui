@@ -57,10 +57,10 @@
             clearable
           />
         </el-form-item>
-        <el-form-item :label="$t('config.huiContext')" prop="huiContext">
+        <el-form-item :label="$t('config.huiWebContext')" prop="huiWebContext">
           <el-input
-            v-model="dataForm.huiContext"
-            :placeholder="$t('config.huiContext')"
+            v-model="dataForm.huiWebContext"
+            :placeholder="$t('config.huiWebContext')"
             clearable
           />
         </el-form-item>
@@ -171,7 +171,7 @@ const dataFormRef = ref(ElForm);
 const huiHttpsRef = ref(ElSelect);
 
 const huiWebPortKey = "H_UI_WEB_PORT";
-const huiContext = "H_UI_CONTEXT";
+const huiWebContext = "H_UI_WEB_CONTEXT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 const huiCrtPathKey = "H_UI_CRT_PATH";
 const huiKeyPathKey = "H_UI_KEY_PATH";
@@ -200,7 +200,7 @@ const dataFormRules = {
       trigger: ["change", "blur"],
     },
   ],
-	huiContext: [
+	huiWebContext: [
 		{
 			pattern: /^\//,
 			message: "field must start with /",
@@ -224,7 +224,7 @@ const dataFormRules = {
 const state = reactive({
   dataForm: {
     huiWebPort: "8081",
-    huiContext: "/",
+    huiWebContext: "/",
     hysteria2TrafficTime: "1",
     huiCrtPath: "",
     huiKeyPath: "",
@@ -257,8 +257,8 @@ const submitForm = () => {
           value: state.dataForm.huiWebPort,
         },
         {
-          key: huiContext,
-          value: state.dataForm.huiContext,
+          key: huiWebContext,
+          value: state.dataForm.huiWebContext,
         },
         {
           key: hysteria2TrafficTimeKey,
@@ -289,7 +289,7 @@ const setConfig = async () => {
   const { data } = await listConfigApi({
     keys: [
       huiCrtPathKey,
-      huiContext,
+      huiWebContext,
       huiKeyPathKey,
       huiWebPortKey,
       hysteria2TrafficTimeKey,
@@ -300,8 +300,8 @@ const setConfig = async () => {
   data.forEach((configVo) => {
     if (configVo.key === huiWebPortKey) {
       state.dataForm.huiWebPort = configVo.value;
-    } else if (configVo.key === huiContext) {
-      state.dataForm.huiContext = configVo.value;
+    } else if (configVo.key === huiWebContext) {
+      state.dataForm.huiWebContext = configVo.value;
     } else if (configVo.key === hysteria2TrafficTimeKey) {
       state.dataForm.hysteria2TrafficTime = configVo.value;
     } else if (configVo.key === huiCrtPathKey) {
