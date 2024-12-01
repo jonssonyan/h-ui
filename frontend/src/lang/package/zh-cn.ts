@@ -101,6 +101,7 @@ export default {
   },
   config: {
     huiWebPort: "H UI Web 端口",
+    huiContext: "H UI 上下文",
     hysteria2TrafficTime: "Hysteria2 流量倍数",
     huiCrtPath: "H UI CRT 证书路径",
     huiKeyPath: "H UI KEY 证书路径",

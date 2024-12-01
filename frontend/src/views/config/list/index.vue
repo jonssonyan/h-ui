@@ -57,6 +57,13 @@
             clearable
           />
         </el-form-item>
+        <el-form-item :label="$t('config.huiContext')" prop="huiContext">
+          <el-input
+            v-model="dataForm.huiContext"
+            :placeholder="$t('config.huiContext')"
+            clearable
+          />
+        </el-form-item>
         <el-form-item
           :label="$t('config.hysteria2TrafficTime')"
           prop="hysteria2TrafficTime"
@@ -164,6 +171,7 @@ const dataFormRef = ref(ElForm);
 const huiHttpsRef = ref(ElSelect);
 
 const huiWebPortKey = "H_UI_WEB_PORT";
+const huiContext = "H_UI_CONTEXT";
 const hysteria2TrafficTimeKey = "HYSTERIA2_TRAFFIC_TIME";
 const huiCrtPathKey = "H_UI_CRT_PATH";
 const huiKeyPathKey = "H_UI_KEY_PATH";
@@ -192,6 +200,13 @@ const dataFormRules = {
       trigger: ["change", "blur"],
     },
   ],
+	huiContext: [
+		{
+			pattern: /^\//,
+			message: "field must start with /",
+			trigger: ["change", "blur"],
+		},
+	],
   hysteria2TrafficTime: [
     {
       required: true,
@@ -209,6 +224,7 @@ const dataFormRules = {
 const state = reactive({
   dataForm: {
     huiWebPort: "8081",
+    huiContext: "/",
     hysteria2TrafficTime: "1",
     huiCrtPath: "",
     huiKeyPath: "",
@@ -241,6 +257,10 @@ const submitForm = () => {
           value: state.dataForm.huiWebPort,
         },
         {
+          key: huiContext,
+          value: state.dataForm.huiContext,
+        },
+        {
           key: hysteria2TrafficTimeKey,
           value: state.dataForm.hysteria2TrafficTime,
         },
@@ -269,6 +289,7 @@ const setConfig = async () => {
   const { data } = await listConfigApi({
     keys: [
       huiCrtPathKey,
+      huiContext,
       huiKeyPathKey,
       huiWebPortKey,
       hysteria2TrafficTimeKey,
@@ -279,6 +300,8 @@ const setConfig = async () => {
   data.forEach((configVo) => {
     if (configVo.key === huiWebPortKey) {
       state.dataForm.huiWebPort = configVo.value;
+    } else if (configVo.key === huiContext) {
+      state.dataForm.huiContext = configVo.value;
     } else if (configVo.key === hysteria2TrafficTimeKey) {
       state.dataForm.hysteria2TrafficTime = configVo.value;
     } else if (configVo.key === huiCrtPathKey) {
