@@ -40,6 +40,9 @@ INSERT INTO config (key, value, remark)
 SELECT 'H_UI_WEB_PORT', '8081', 'H UI Web Port'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'H_UI_WEB_PORT');
 INSERT INTO config (key, value, remark)
+SELECT 'H_UI_CONTENT', '', 'H UI Context'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'H_UI_CONTENT');
+INSERT INTO config (key, value, remark)
 SELECT 'H_UI_CRT_PATH', '', 'H UI Crt File Path'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'H_UI_CRT_PATH');
 INSERT INTO config (key, value, remark)

@@ -1,8 +1,8 @@
 package constant
 
 const (
-	HUIContext                 = "H_UI_CONTENT"
 	HUIWebPort                 = "H_UI_WEB_PORT"
+	HUIContext                 = "H_UI_CONTENT"
 	HUICrtPath                 = "H_UI_CRT_PATH"
 	HUIKeyPath                 = "H_UI_KEY_PATH"
 	JwtSecret                  = "JWT_SECRET"
