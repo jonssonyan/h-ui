@@ -200,13 +200,18 @@ const dataFormRules = {
       trigger: ["change", "blur"],
     },
   ],
-	huiWebContext: [
-		{
-			pattern: /^\//,
-			message: "field must start with /",
-			trigger: ["change", "blur"],
-		},
-	],
+  huiWebContext: [
+    {
+      required: true,
+      message: "Required",
+      trigger: ["change", "blur"],
+    },
+    {
+      pattern: /^\//,
+      message: "field must start with /",
+      trigger: ["change", "blur"],
+    },
+  ],
   hysteria2TrafficTime: [
     {
       required: true,
