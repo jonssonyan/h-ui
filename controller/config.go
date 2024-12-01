@@ -67,6 +67,17 @@ func UpdateConfigs(c *gin.Context) {
 			needRestart = true
 		}
 
+		if key == constant.HUIContext {
+			huiContext, err := service.GetConfig(constant.HUIContext)
+			if err != nil {
+				vo.Fail(err.Error(), c)
+				return
+			}
+			if *huiContext.Value != value {
+				needRestart = true
+			}
+		}
+
 		if key == constant.Hysteria2ConfigPortHopping {
 			re := regexp.MustCompile("^\\d+(?:-\\d+)?(?:,\\d+(?:-\\d+)?)*$")
 			if value != "" && !re.MatchString(value) {
