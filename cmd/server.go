@@ -42,8 +42,13 @@ func runServer(port string) error {
 		logrus.Errorf(err.Error())
 	}
 
+	config, err := dao.GetConfig(constant.HUIContext)
+	if err != nil {
+		return err
+	}
+
 	r := gin.Default()
-	router.Router(r)
+	router.Router(r, config.Value)
 
 	serverPort, crtPath, keyPath, err := service.GetServerPortAndCert()
 	if err != nil {

@@ -11,9 +11,13 @@ import (
 //go:embed dist/*
 var staticFiles embed.FS
 
-func InitFrontend(router *gin.Engine) {
+func InitFrontend(router *gin.Engine, huiContext *string) {
 
-	router.GET("/", func(c *gin.Context) {
+	relativePath := "/"
+	if huiContext != nil && *huiContext != "" {
+		relativePath = *huiContext
+	}
+	router.GET(relativePath, func(c *gin.Context) {
 		indexHTML, err := staticFiles.ReadFile("dist/index.html")
 		if err != nil {
 			c.String(http.StatusInternalServerError, "Internal Server Error")

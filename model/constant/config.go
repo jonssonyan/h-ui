@@ -1,6 +1,7 @@
 package constant
 
 const (
+	HUIContext                 = "H_UI_CONTENT"
 	HUIWebPort                 = "H_UI_WEB_PORT"
 	HUICrtPath                 = "H_UI_CRT_PATH"
 	HUIKeyPath                 = "H_UI_KEY_PATH"
