@@ -207,7 +207,7 @@ const dataFormRules = {
       trigger: ["change", "blur"],
     },
     {
-      pattern: /^\/[a-z0-9]+$/,
+      pattern: /^\/([a-z0-9]+(\/[a-z0-9]+)*)?$/,
       message: "field must start with / and contain only lowercase letters (a-z) and numbers (0-9)",
       trigger: ["change", "blur"],
     },
