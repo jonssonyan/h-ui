@@ -123,7 +123,7 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 	}
 
 	userInfo := ""
-	configYaml := ""
+	configStr := ""
 	if clientType == constant.Shadowrocket || clientType == constant.Clash {
 		userInfo = fmt.Sprintf("upload=%d; download=%d; total=%d; expire=%d",
 			*account.Upload,
@@ -185,10 +185,16 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 		if err != nil {
 			return "", "", err
 		}
-		configYaml = string(clashConfigYaml)
+		configStr = string(clashConfigYaml)
+	} else if clientType == constant.V2rayN {
+		hysteria2Url, err := Hysteria2Url(*account.Id, strings.Split(host, ":")[0])
+		if err != nil {
+			return "", "", err
+		}
+		configStr = hysteria2Url
 	}
 
-	return userInfo, configYaml, nil
+	return userInfo, configStr, nil
 }
 
 func Hysteria2Url(accountId int64, hostname string) (string, error) {
