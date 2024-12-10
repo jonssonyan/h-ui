@@ -167,14 +167,6 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 			hysteria2.Sni = hysteria2Config.ACME.Domains[0]
 		}
 
-		if hysteria2Config.TLS != nil &&
-			hysteria2Config.TLS.Cert != nil &&
-			*hysteria2Config.TLS.Cert != "" &&
-			hysteria2Config.TLS.Key != nil &&
-			*hysteria2Config.TLS.Key != "" {
-			hysteria2.SkipCertVerify = true
-		}
-
 		proxyGroup := bo.ProxyGroup{
 			Name:    "PROXY",
 			Type:    "select",
