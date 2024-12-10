@@ -164,12 +164,14 @@ func Hysteria2Subscribe(c *gin.Context) {
 	}
 
 	var clientType string
-	if strings.HasPrefix(userAgent, constant.Shadowrocket) {
+	if strings.Contains(userAgent, constant.Shadowrocket) {
 		clientType = constant.Shadowrocket
-	} else if strings.HasPrefix(userAgent, constant.Clash) {
+	} else if strings.Contains(userAgent, constant.Clash) {
 		clientType = constant.Clash
-	} else if strings.HasPrefix(userAgent, constant.V2rayN) {
+	} else if strings.Contains(userAgent, constant.V2rayN) {
 		clientType = constant.V2rayN
+	} else if strings.Contains(userAgent, constant.NekoBox) {
+		clientType = constant.NekoBox
 	} else {
 		clientType = constant.Clash
 	}

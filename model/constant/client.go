@@ -4,4 +4,5 @@ const (
 	Shadowrocket = "shadowrocket"
 	Clash        = "clash"
 	V2rayN       = "v2rayn"
+	NekoBox      = "nekobox"
 )
