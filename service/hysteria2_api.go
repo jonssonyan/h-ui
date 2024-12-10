@@ -167,6 +167,8 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 			hysteria2.Sni = hysteria2Config.ACME.Domains[0]
 		}
 
+		hysteria2.SkipCertVerify = false
+
 		proxyGroup := bo.ProxyGroup{
 			Name:    "PROXY",
 			Type:    "select",
@@ -221,15 +223,7 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 		urlConfig += fmt.Sprintf("&peer=%s", hysteria2Config.ACME.Domains[0])
 	}
 
-	var insecure int64 = 0
-	//if hysteria2Config.TLS != nil &&
-	//	hysteria2Config.TLS.Cert != nil &&
-	//	*hysteria2Config.TLS.Cert != "" &&
-	//	hysteria2Config.TLS.Key != nil &&
-	//	*hysteria2Config.TLS.Key != "" {
-	//	insecure = 1
-	//}
-	urlConfig += fmt.Sprintf("&insecure=%d", insecure)
+	urlConfig += "&insecure=0"
 
 	if hysteria2Config.Bandwidth != nil &&
 		hysteria2Config.Bandwidth.Down != nil &&
