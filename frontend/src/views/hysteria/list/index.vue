@@ -32,6 +32,14 @@
             {{ $t("common.export") }}
           </el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button @click="handleReset">
+            <template #icon>
+              <i-ep-refresh />
+            </template>
+            {{ $t("common.reset") }}
+          </el-button>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -1227,6 +1235,28 @@ const handleExport = async () => {
   } catch (e) {
     /* empty */
   }
+};
+
+const handleReset = () => {
+  state.configForm = {
+    remark: "",
+    portHopping: "",
+  };
+  state.dataForm = deepCopy(defaultHysteria2ServerConfig);
+  state.activeName = "extension";
+  state.tlsType = "acme";
+  state.aclType = "inline";
+  state.obfs = false;
+  state.quic = false;
+  state.bandwidth = false;
+  state.speedTest = false;
+  state.udp = false;
+  state.resolver = false;
+  state.sniff = false;
+  state.acl = false;
+  state.outbounds = false;
+  state.masquerade = false;
+  state.fileList = [];
 };
 
 const handleChangeEnable = async () => {
