@@ -160,7 +160,7 @@
                   v-model="configForm.clashExtension"
                   type="textarea"
                   :autosize="{ minRows: 3 }"
-                  @keydown="(e) => e.stopPropagation()"
+                  @keydown="(e:KeyboardEvent) => e.stopPropagation()"
                 />
               </el-form-item>
             </el-tooltip>
