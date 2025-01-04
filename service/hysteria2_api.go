@@ -186,6 +186,15 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 			return "", "", err
 		}
 		configStr = string(clashConfigYaml)
+		if clientType == constant.Clash {
+			clashExtension, err := GetConfig(constant.ClashExtension)
+			if err != nil {
+				return "", "", err
+			}
+			if clashExtension.Value != nil && *clashExtension.Value != "" {
+				configStr = fmt.Sprintf("%s%s", configStr, *clashExtension.Value)
+			}
+		}
 	} else if clientType == constant.V2rayN {
 		hysteria2Url, err := Hysteria2Url(*account.Id, strings.Split(host, ":")[0])
 		if err != nil {
