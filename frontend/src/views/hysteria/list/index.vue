@@ -151,6 +151,19 @@
                 <el-input v-model="configForm.portHopping" clearable />
               </el-form-item>
             </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.clashExtension')"
+              placement="bottom"
+            >
+              <el-form-item label="clashExtension" prop="clashExtension">
+                <el-input
+                  v-model="configForm.clashExtension"
+                  type="textarea"
+                  :autosize="{ minRows: 3 }"
+                  @keydown="(e) => e.stopPropagation()"
+                />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
           <el-tab-pane :label="$t('hysteria.listen')" name="listen">
             <el-tooltip
@@ -1040,6 +1053,7 @@ const { t } = useI18n();
 const hysteria2EnableKey = "HYSTERIA2_ENABLE";
 const hysteria2Remark = "HYSTERIA2_CONFIG_REMARK";
 const hysteria2ConfigPortHopping = "HYSTERIA2_CONFIG_PORT_HOPPING";
+const clashExtension = "CLASH_EXTENSION";
 const dataFormRef = ref(ElForm);
 
 const dataFormRules = {
@@ -1083,6 +1097,7 @@ const state = reactive({
   configForm: {
     remark: "",
     portHopping: "",
+    clashExtension: "",
   },
   dataForm: { ...defaultHysteria2ServerConfig } as Hysteria2ServerConfig,
   activeName: "extension",
@@ -1241,6 +1256,7 @@ const handleReset = () => {
   state.configForm = {
     remark: "",
     portHopping: "",
+    clashExtension: "",
   };
   state.dataForm = deepCopy(defaultHysteria2ServerConfig);
   state.activeName = "extension";
@@ -1289,6 +1305,10 @@ const submitForm = () => {
         {
           key: hysteria2ConfigPortHopping,
           value: state.configForm.portHopping,
+        },
+        {
+          key: clashExtension,
+          value: state.configForm.clashExtension,
         },
       ];
       updateConfigsApi({ configUpdateDtos: configs });
@@ -1419,7 +1439,12 @@ const submitForm = () => {
 
 const setConfig = () => {
   listConfigApi({
-    keys: [hysteria2EnableKey, hysteria2Remark, hysteria2ConfigPortHopping],
+    keys: [
+      hysteria2EnableKey,
+      hysteria2Remark,
+      hysteria2ConfigPortHopping,
+      clashExtension,
+    ],
   }).then((response) => {
     const data = response.data;
     data.forEach((configVo) => {
@@ -1429,6 +1454,8 @@ const setConfig = () => {
         state.configForm.remark = configVo.value;
       } else if (configVo.key === hysteria2ConfigPortHopping) {
         state.configForm.portHopping = configVo.value;
+      } else if (configVo.key === clashExtension) {
+        state.configForm.clashExtension = configVo.value;
       }
     });
   });
