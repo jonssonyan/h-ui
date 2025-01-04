@@ -26,7 +26,8 @@ func InitForward() {
 	}
 
 	if ii, err := util.Exec("ls /sys/class/net | grep -E '^en|^eth'"); err == nil && strings.TrimSpace(ii) != "" {
-		ingressInterface = strings.TrimSpace(ii)
+		iiList := strings.Split(ii, "\n")
+		ingressInterface = strings.TrimSpace(iiList[0])
 	}
 }
 
