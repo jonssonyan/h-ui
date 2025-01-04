@@ -84,3 +84,6 @@ SELECT 'TELEGRAM_LOGIN_JOB_ENABLE', '0', 'TELEGRAM LOGIN Notification'
 INSERT INTO config (key, value, remark)
 SELECT 'TELEGRAM_LOGIN_JOB_TEXT', '[time], [username] logged into the panel, IP address is [ip]', 'TELEGRAM LOGIN Notification Text'
     WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'TELEGRAM_LOGIN_JOB_TEXT');
+INSERT INTO config (key, value, remark)
+SELECT 'CLASH_EXTENSION', '', 'Clash Subscription Extension'
+    WHERE NOT EXISTS (SELECT 1 FROM config WHERE key = 'CLASH_EXTENSION');
