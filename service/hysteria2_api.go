@@ -157,8 +157,7 @@ func Hysteria2Subscribe(conPass string, clientType string, host string) (string,
 			hysteria2Config.Obfs.Salamander != nil &&
 			hysteria2Config.Obfs.Salamander.Password != nil &&
 			*hysteria2Config.Obfs.Salamander.Password != "" {
-			hysteria2.Obfs = "salamander"
-			hysteria2.ObfsPassword = *hysteria2Config.Obfs.Salamander.Password
+			hysteria2.Obfs = *hysteria2Config.Obfs.Salamander.Password
 		}
 
 		if hysteria2Config.ACME != nil &&
