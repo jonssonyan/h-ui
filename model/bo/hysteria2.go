@@ -151,6 +151,7 @@ type serverConfigOutboundDirect struct {
 	BindIPv4   *string `yaml:"bindIPv4,omitempty" json:"bindIPv4" validate:"required"`
 	BindIPv6   *string `yaml:"bindIPv6,omitempty" json:"bindIPv6" validate:"required"`
 	BindDevice *string `yaml:"bindDevice,omitempty" json:"bindDevice" validate:"required"`
+	FastOpen   *bool   `yaml:"fastOpen,omitempty" json:"fastOpen" validate:"required"`
 }
 
 type serverConfigOutboundSOCKS5 struct {
