@@ -303,6 +303,7 @@ export default {
           bindIPv4: "The local IPv4 address to bind to.",
           bindIPv6: "The local IPv6 address to bind to.",
           bindDevice: "The local network interface to bind to.",
+          fastOpen: "Enable TCP fast open.",
         },
       },
       trafficStats: {

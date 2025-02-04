@@ -263,6 +263,7 @@ export interface Hysteria2ServerConfigOutbound {
     bindIPv4?: string;
     bindIPv6?: string;
     bindDevice?: string;
+    fastOpen?: boolean;
   };
 }
 
@@ -284,6 +285,7 @@ export const defaultHysteria2ServerConfigOutbound: Hysteria2ServerConfigOutbound
       bindIPv4: undefined,
       bindIPv6: undefined,
       bindDevice: undefined,
+      fastOpen: false,
     },
   };
 

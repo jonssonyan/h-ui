@@ -128,6 +128,14 @@
               <el-input v-model="dataForm.direct.bindDevice" clearable />
             </el-form-item>
           </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.direct.fastOpen')"
+            placement="bottom"
+          >
+            <el-form-item label="direct.fastOpen" prop="direct.fastOpen">
+              <el-switch v-model="dataForm.direct.fastOpen" />
+            </el-form-item>
+          </el-tooltip>
         </template>
       </el-form>
       <template #footer>
@@ -239,6 +247,14 @@
           >
             <el-form-item label="direct.bindDevice" prop="direct.bindDevice">
               <el-tag>{{ outboundInfo.direct.bindDevice }}</el-tag>
+            </el-form-item>
+          </el-tooltip>
+          <el-tooltip
+            :content="$t('hysteria.config.outbounds.direct.fastOpen')"
+            placement="bottom"
+          >
+            <el-form-item label="direct.fastOpen" prop="direct.fastOpen">
+              <el-tag>{{ outboundInfo.direct.fastOpen }}</el-tag>
             </el-form-item>
           </el-tooltip>
         </template>

@@ -291,6 +291,7 @@ export default {
           bindIPv4: "要绑定的本地 IPv4 地址。",
           bindIPv6: "要绑定的本地 IPv6 地址。",
           bindDevice: "要绑定的本地网卡。",
+          fastOpen: "启用 TCP 快速打开。",
         },
       },
       trafficStats: {
