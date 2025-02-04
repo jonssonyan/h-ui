@@ -185,6 +185,7 @@ type serverConfigMasqueradeFile struct {
 type serverConfigMasqueradeProxy struct {
 	URL         *string `yaml:"url,omitempty" json:"url" validate:"required"`
 	RewriteHost *bool   `yaml:"rewriteHost,omitempty" json:"rewriteHost" validate:"required"`
+	Insecure    *bool   `yaml:"insecure,omitempty" json:"insecure" validate:"required"`
 }
 
 type serverConfigMasqueradeString struct {
