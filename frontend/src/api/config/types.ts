@@ -121,6 +121,7 @@ export interface Hysteria2ServerConfig {
     proxy?: {
       url: string;
       rewriteHost: boolean;
+      insecure: boolean;
     };
     string?: {
       content: string;
@@ -234,6 +235,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     proxy: {
       url: "",
       rewriteHost: true,
+      insecure: false,
     },
     string: {
       content: "hello stupid world",

@@ -937,6 +937,18 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="dataForm.masquerade.type === 'proxy'"
+              :content="$t('hysteria.config.masquerade.proxy.insecure')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="masquerade.proxy.insecure"
+                prop="masquerade.proxy.insecure"
+              >
+                <el-switch v-model="dataForm.masquerade.proxy.insecure" />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
               v-if="dataForm.masquerade.type === 'string'"
               :content="$t('hysteria.config.masquerade.string.content')"
               placement="bottom"

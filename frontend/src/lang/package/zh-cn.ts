@@ -306,6 +306,7 @@ export default {
           url: "要代理的网站的 URL。",
           rewriteHost:
             "是否重写 Host 头以匹配被代理的网站。如果目标网站通过 Host 识别请求的网站，这个选项是必须的。",
+          insecure: "禁用对代理网站的 TLS 验证。",
         },
         string: {
           content: "要返回的字符串。",
