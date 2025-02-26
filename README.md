@@ -27,7 +27,7 @@ Just the panel for Hysteria2
 - Limit user traffic, user online status, force users to log off, number of online users, reset user traffic
 - Limit the number of users' online devices at the same time, the number of online devices
 - User subscription link, node URL, import and export users
-- Managing Hysteria2 configurations and Hysteria2 versions
+- Managing Hysteria2 configurations and Hysteria2 versions, port hopping
 - Change the Web port, modify the Hysteria2 traffic multiplier
 - Telegram notification
 - View, import, and export system logs and Hysteria2 logs
