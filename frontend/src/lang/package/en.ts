@@ -112,7 +112,7 @@ export default {
     huiHttps: "Open https on the panel",
     resetTrafficCron: "Reset traffic schedule task",
     resetTrafficCronTip:
-      "Scheduled task expression, reference: https://pkg.go.dev/github.com/robfig/cron?utm_source=godoc#hdr-Predefined_schedules",
+      "Scheduled task expression, reference: https://pkg.go.dev/github.com/robfig/cron/v3",
     resetTrafficMonth: "Run once a month, midnight, first of month",
     resetTrafficWeek: "Run once a week, midnight between Sat/Sun",
   },
