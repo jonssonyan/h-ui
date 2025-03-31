@@ -15,6 +15,8 @@ import (
 	"h-ui/service"
 	"h-ui/util"
 	"io"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -461,4 +463,47 @@ func RestartServer(c *gin.Context) {
 		_ = service.StopServer()
 	}()
 	vo.Success(nil, c)
+}
+
+func UploadCertFile(c *gin.Context) {
+	file, err := c.FormFile("file")
+	if err != nil {
+		vo.Fail(constant.SysError, c)
+		return
+	}
+	ext := filepath.Ext(file.Filename)
+	if ext != ".crt" && ext != ".key" {
+		vo.Fail("file format not supported", c)
+		return
+	}
+	if file.Size > 1024*1024 {
+		vo.Fail("the file is too big", c)
+		return
+	}
+	err = filepath.WalkDir(constant.BinDir, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		fileExt := filepath.Ext(path)
+		if !d.IsDir() && fileExt == ext {
+			if err := os.Remove(path); err != nil {
+				return fmt.Errorf("failed to delete file: %s, error: %v", path, err)
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		logrus.Errorf("error during file deletion: %v", err)
+		vo.Fail("delete file failed", c)
+		return
+	}
+
+	safeFilename := filepath.Base(file.Filename)
+	certPath := filepath.Join(constant.BinDir, safeFilename)
+
+	if err := c.SaveUploadedFile(file, certPath); err != nil {
+		vo.Fail("file upload failed", c)
+		return
+	}
+	vo.Success(certPath, c)
 }
