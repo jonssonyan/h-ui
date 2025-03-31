@@ -101,3 +101,11 @@ export function restartServerApi(): AxiosPromise {
     method: "post",
   });
 }
+
+export function uploadCertFileApi(data: FormData): AxiosPromise {
+  return request({
+    url: "/config/uploadCertFile",
+    method: "post",
+    data,
+  });
+}

@@ -106,6 +106,8 @@ export default {
     hysteria2TrafficTime: "Hysteria2 Traffic Time",
     huiCrtPath: "H UI CRT File Path",
     huiKeyPath: "H UI KEY File Path",
+    uploadCrtFile: "Upload CRT File",
+    uploadKeyFile: "Upload KEY File",
     restartServer: "Restart Panel",
     restartTip: "Restarting, please refresh",
     useHysteria2Cert: "Use Hysteria2 cert",
