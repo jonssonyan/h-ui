@@ -498,8 +498,13 @@ func UploadCertFile(c *gin.Context) {
 		return
 	}
 
+	wd, err := os.Getwd()
+	if err != nil {
+		vo.Fail(constant.SysError, c)
+		return
+	}
 	safeFilename := filepath.Base(file.Filename)
-	certPath := filepath.Join(constant.BinDir, safeFilename)
+	certPath := filepath.Join(wd, constant.BinDir, safeFilename)
 
 	if err := c.SaveUploadedFile(file, certPath); err != nil {
 		vo.Fail("file upload failed", c)

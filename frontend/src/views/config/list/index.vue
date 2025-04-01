@@ -101,10 +101,17 @@
           <el-upload
             style="height: 32px"
             ref="uploadCrtFile"
-            :http-request="uploadCertFile"
             action=""
-            :limit="1"
+            :file-list="crtFileList"
+            :http-request="uploadCertFile"
             accept=".crt"
+            :before-upload="
+              () => {
+                crtFileList = [];
+              }
+            "
+            :show-file-list="false"
+            :limit="1"
           >
             <template #trigger>
               <el-button>{{ t("config.uploadCrtFile") }}</el-button>
@@ -125,10 +132,17 @@
           <el-upload
             style="height: 32px"
             ref="uploadKeyFile"
-            :http-request="uploadCertFile"
             action=""
-            :limit="1"
+            :file-list="keyFileList"
+            :http-request="uploadCertFile"
             accept=".key"
+            :before-upload="
+              () => {
+                keyFileList = [];
+              }
+            "
+            :show-file-list="false"
+            :limit="1"
           >
             <template #trigger>
               <el-button>{{ t("config.uploadKeyFile") }}</el-button>
@@ -190,6 +204,7 @@ import {
 } from "element-plus/lib/components";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+import { UploadUserFile } from "element-plus";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -263,10 +278,13 @@ const state = reactive({
     resetTrafficCron: "",
   },
   huiHttps: 0,
-  fileList: [] as UploadFile[],
+  fileList: [] as UploadUserFile[],
+  crtFileList: [] as UploadUserFile[],
+  keyFileList: [] as UploadUserFile[],
 });
 
-const { dataForm, huiHttps, fileList } = toRefs(state);
+const { dataForm, huiHttps, fileList, crtFileList, keyFileList } =
+  toRefs(state);
 
 const submitForm = () => {
   dataFormRef.value.validate((valid: boolean) => {
@@ -410,6 +428,15 @@ const setCertPath = async () => {
 
 const uploadCertFile = async (params: UploadRequestOptions) => {
   try {
+    if (
+      !params.file.name.endsWith(".crt") &&
+      !params.file.name.endsWith(".key")
+    ) {
+      ElMessage.error("file format not supported");
+    }
+    if (params.file.size > 1024 * 1024) {
+      ElMessage.error("the file is too big");
+    }
     let formData = new FormData();
     formData.append("file", params.file);
     const { data } = await uploadCertFileApi(formData);
