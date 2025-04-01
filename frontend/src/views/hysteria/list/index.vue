@@ -197,7 +197,30 @@
               placement="bottom"
             >
               <el-form-item label="cert" prop="tls.cert">
-                <el-input v-model="dataForm.tls.cert" clearable />
+                <el-input
+                  v-model="dataForm.tls.cert"
+                  style="width: 50%"
+                  clearable
+                />
+                <el-upload
+                  style="height: 32px"
+                  ref="uploadCrtFile"
+                  action=""
+                  :file-list="crtFileList"
+                  :http-request="uploadCertFile"
+                  accept=".crt"
+                  :before-upload="
+                    () => {
+                      crtFileList = [];
+                    }
+                  "
+                  :show-file-list="false"
+                  :limit="1"
+                >
+                  <template #trigger>
+                    <el-button>{{ t("config.uploadCrtFile") }}</el-button>
+                  </template>
+                </el-upload>
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -206,7 +229,30 @@
               placement="bottom"
             >
               <el-form-item label="key" prop="tls.key">
-                <el-input v-model="dataForm.tls.key" clearable />
+                <el-input
+                  v-model="dataForm.tls.key"
+                  style="width: 50%"
+                  clearable
+                />
+                <el-upload
+                  style="height: 32px"
+                  ref="uploadKeyFile"
+                  action=""
+                  :file-list="keyFileList"
+                  :http-request="uploadCertFile"
+                  accept=".key"
+                  :before-upload="
+                    () => {
+                      keyFileList = [];
+                    }
+                  "
+                  :show-file-list="false"
+                  :limit="1"
+                >
+                  <template #trigger>
+                    <el-button>{{ t("config.uploadKeyFile") }}</el-button>
+                  </template>
+                </el-upload>
               </el-form-item>
             </el-tooltip>
             <el-tooltip
@@ -1049,6 +1095,7 @@ import {
   listConfigApi,
   updateConfigsApi,
   updateHysteria2ConfigApi,
+  uploadCertFileApi,
 } from "@/api/config";
 import { useI18n } from "vue-i18n";
 import { assignWith, deepCopy } from "@/utils/copy";
@@ -1059,6 +1106,7 @@ import {
 } from "element-plus/lib/components";
 import { hysteria2ChangeVersionApi, listReleaseApi } from "@/api/hysteria2";
 import { monitorHysteria2Api } from "@/api/monitor";
+import { UploadUserFile } from "element-plus";
 
 const { t } = useI18n();
 
@@ -1132,6 +1180,8 @@ const state = reactive({
     version: "",
     running: false,
   },
+  crtFileList: [] as UploadUserFile[],
+  keyFileList: [] as UploadUserFile[],
 });
 
 const {
@@ -1155,6 +1205,8 @@ const {
   hysteria2Version,
   hysteria2Versions,
   hysteria2Monitor,
+  crtFileList,
+  keyFileList,
 } = toRefs(state);
 
 const tabs = computed(() => {
@@ -1574,6 +1626,33 @@ const handleHysteria2ChangeVersion = async () => {
   await hysteria2ChangeVersionApi({ version: state.hysteria2Version });
   ElMessage.success(t("common.success"));
   await setHysteria2Monitor();
+};
+
+const uploadCertFile = async (params: UploadRequestOptions) => {
+  try {
+    if (!state.dataForm.tls) {
+      return;
+    }
+    if (
+      !params.file.name.endsWith(".crt") &&
+      !params.file.name.endsWith(".key")
+    ) {
+      ElMessage.error("file format not supported");
+    }
+    if (params.file.size > 1024 * 1024) {
+      ElMessage.error("the file is too big");
+    }
+    let formData = new FormData();
+    formData.append("file", params.file);
+    const { data } = await uploadCertFileApi(formData);
+    if (params.file.name.endsWith(".crt")) {
+      state.dataForm.tls.cert = data;
+    } else if (params.file.name.endsWith(".key")) {
+      state.dataForm.tls.key = data;
+    }
+  } catch (e) {
+    /* empty */
+  }
 };
 
 onMounted(() => {
