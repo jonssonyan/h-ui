@@ -20,6 +20,9 @@ init_var() {
   h_ui_time_zone=Asia/Shanghai
 
   ssh_local_forwarded_port=8082
+
+  translation_file_base_url="https://raw.githubusercontent.com/jonssonyan/h-ui/refs/heads/main/local/"
+  translation_file="en.json"
 }
 
 echo_content() {
@@ -109,10 +112,10 @@ check_sys() {
 
   if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
     release="centos"
-    if rpm -q centos-stream-release &> /dev/null; then
-        version=$(rpm -q --queryformat '%{VERSION}' centos-stream-release)
-    elif rpm -q centos-release &> /dev/null; then
-        version=$(rpm -q --queryformat '%{VERSION}' centos-release)
+    if rpm -q centos-stream-release &>/dev/null; then
+      version=$(rpm -q --queryformat '%{VERSION}' centos-stream-release)
+    elif rpm -q centos-release &>/dev/null; then
+      version=$(rpm -q --queryformat '%{VERSION}' centos-release)
     fi
   elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
     release="debian"
@@ -174,7 +177,31 @@ install_depend() {
   ${package_manager} install -y \
     curl \
     systemd \
-    nftables
+    nftables \
+    jq
+}
+
+select_language() {
+  clear
+  echo_content red "\n=============================================================="
+  echo_content skyBlue "Please select language"
+  echo_content yellow "1. English (Default)"
+  echo_content yellow "2. 简体中文"
+  echo_content red "\n=============================================================="
+  read -r -p "Please choose: " input_option
+  case ${input_option} in
+  2)
+    translation_file="zh_cn.json"
+    ;;
+  esac
+  if [ ! -f "${translation_file}" ]; then
+    curl -fsSL "${translation_file_base_url}${translation_file}" -o "./${translation_file}"
+  fi
+}
+
+get_translation() {
+  local key=$1
+  echo $(jq -r "${key}" "${translation_file}")
 }
 
 setup_docker() {
@@ -446,6 +473,7 @@ main() {
   init_var
   check_sys
   install_depend
+  select_language
   clear
   echo_content red "\n=============================================================="
   echo_content skyBlue "Recommended OS: CentOS 8+/Ubuntu 20+/Debian 11+"
@@ -453,16 +481,16 @@ main() {
   echo_content skyBlue "Author: jonssonyan <https://jonssonyan.com>"
   echo_content skyBlue "Github: https://github.com/jonssonyan/h-ui"
   echo_content red "\n=============================================================="
-  echo_content yellow "1. Install H UI (systemd)"
-  echo_content yellow "2. Upgrade H UI (systemd)"
-  echo_content yellow "3. Uninstall H UI (systemd)"
+  echo_content yellow "1. $(get_translation ".menu.install_hui_systemd")"
+  echo_content yellow "2. $(get_translation ".menu.upgrade_h_ui_systemd")"
+  echo_content yellow "3. $(get_translation ".menu.uninstall_h_ui_systemd")"
   echo_content red "\n=============================================================="
-  echo_content yellow "4. Install H UI (Docker)"
-  echo_content yellow "5. Upgrade H UI (Docker)"
-  echo_content yellow "6. Uninstall H UI (Docker)"
+  echo_content yellow "4. $(get_translation ".menu.install_h_ui_docker")"
+  echo_content yellow "5. $(get_translation ".menu.upgrade_h_ui_docker")"
+  echo_content yellow "6. $(get_translation ".menu.uninstall_h_ui_docker")"
   echo_content red "\n=============================================================="
-  echo_content yellow "7. SSH local port forwarding (Failed after restarting the server)"
-  echo_content yellow "8. Reset sysadmin username and password"
+  echo_content yellow "7. $(get_translation ".menu.ssh_local_port_forwarding")"
+  echo_content yellow "8. $(get_translation ".menu.reset_sysadmin")"
   read -r -p "Please choose: " input_option
   case ${input_option} in
   1)

@@ -1,0 +1,12 @@
+{
+  "menu": {
+    "install_hui_systemd": "Install H UI (systemd)",
+    "upgrade_h_ui_systemd": "Upgrade H UI (systemd)",
+    "uninstall_h_ui_systemd": "Uninstall H UI (systemd)",
+    "install_h_ui_docker": "Install H UI (Docker)",
+    "upgrade_h_ui_docker": "Upgrade H UI (Docker)",
+    "uninstall_h_ui_docker": "Uninstall H UI (Docker)",
+    "ssh_local_port_forwarding": "SSH local port forwarding (Invalid after restarting the server)",
+    "reset_sysadmin": "Reset sysadmin username and password"
+  }
+}
