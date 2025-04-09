@@ -482,9 +482,9 @@ main() {
         |_| |_|    \____/|___|
 '
   echo_content red "=============================================================="
-  echo_content skyBlue "${get_translation ".menu.recommend_os"}: CentOS 8+/Ubuntu 20+/Debian 11+"
-  echo_content skyBlue "${get_translation ".menu.description"}"
-  echo_content skyBlue "${get_translation ".menu.author"}: jonssonyan <https://jonssonyan.com>"
+  echo_content skyBlue "$(get_translation ".menu.recommend_os"): CentOS 8+/Ubuntu 20+/Debian 11+"
+  echo_content skyBlue "$(get_translation ".menu.description")"
+  echo_content skyBlue "$(get_translation ".menu.author"): jonssonyan <https://jonssonyan.com>"
   echo_content skyBlue "Github: https://github.com/jonssonyan/h-ui"
   echo_content red "=============================================================="
   echo_content yellow "1. $(get_translation ".menu.install_hui_systemd")"
