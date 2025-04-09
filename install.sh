@@ -194,9 +194,7 @@ select_language() {
     translation_file="zh_cn.json"
     ;;
   esac
-  if [ ! -f "${translation_file}" ]; then
-    curl -fsSL "${translation_file_base_url}${translation_file}" -o "./${translation_file}"
-  fi
+  curl -fsSL "${translation_file_base_url}${translation_file}" -o "./${translation_file}"
 }
 
 get_translation() {
