@@ -22,6 +22,7 @@ init_var() {
   ssh_local_forwarded_port=8082
 
   translation_file_base_url="https://raw.githubusercontent.com/jonssonyan/h-ui/refs/heads/main/local/"
+  translation_file_content=""
   translation_file="en.json"
 }
 
@@ -194,12 +195,11 @@ select_language() {
     translation_file="zh_cn.json"
     ;;
   esac
-  curl -fsSL "${translation_file_base_url}${translation_file}" -o "./${translation_file}"
+  translation_file_content=$(curl -fsSL "${translation_file_base_url}${translation_file}")
 }
 
 get_translation() {
-  local key=$1
-  echo $(jq -r "${key}" "${translation_file}")
+  echo "${translation_file_content}" | jq -r "$1"
 }
 
 setup_docker() {
