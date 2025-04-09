@@ -475,6 +475,14 @@ main() {
   install_depend
   select_language
   clear
+  echo_content yellow '
+         _   _     _    _ ___
+        | | | |   | |  | |_ _|
+        | |_| |   | |  | || |
+        |  _  |   | |  | || |
+        | | | |   | |__| || |
+        |_| |_|    \____/|___|
+'
   echo_content red "\n=============================================================="
   echo_content skyBlue "Recommended OS: CentOS 8+/Ubuntu 20+/Debian 11+"
   echo_content skyBlue "Description: Quick Installation of H UI"
