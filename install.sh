@@ -183,11 +183,11 @@ install_depend() {
 
 select_language() {
   clear
-  echo_content red "\n=============================================================="
+  echo_content red "=============================================================="
   echo_content skyBlue "Please select language"
   echo_content yellow "1. English (Default)"
   echo_content yellow "2. 简体中文"
-  echo_content red "\n=============================================================="
+  echo_content red "=============================================================="
   read -r -p "Please choose: " input_option
   case ${input_option} in
   2)
@@ -483,22 +483,23 @@ main() {
         | | | |   | |__| || |
         |_| |_|    \____/|___|
 '
-  echo_content red "\n=============================================================="
+  echo_content red "=============================================================="
   echo_content skyBlue "Recommended OS: CentOS 8+/Ubuntu 20+/Debian 11+"
   echo_content skyBlue "Description: Quick Installation of H UI"
   echo_content skyBlue "Author: jonssonyan <https://jonssonyan.com>"
   echo_content skyBlue "Github: https://github.com/jonssonyan/h-ui"
-  echo_content red "\n=============================================================="
+  echo_content red "=============================================================="
   echo_content yellow "1. $(get_translation ".menu.install_hui_systemd")"
   echo_content yellow "2. $(get_translation ".menu.upgrade_h_ui_systemd")"
   echo_content yellow "3. $(get_translation ".menu.uninstall_h_ui_systemd")"
-  echo_content red "\n=============================================================="
+  echo_content red "=============================================================="
   echo_content yellow "4. $(get_translation ".menu.install_h_ui_docker")"
   echo_content yellow "5. $(get_translation ".menu.upgrade_h_ui_docker")"
   echo_content yellow "6. $(get_translation ".menu.uninstall_h_ui_docker")"
-  echo_content red "\n=============================================================="
+  echo_content red "=============================================================="
   echo_content yellow "7. $(get_translation ".menu.ssh_local_port_forwarding")"
   echo_content yellow "8. $(get_translation ".menu.reset_sysadmin")"
+  echo_content red "=============================================================="
   read -r -p "Please choose: " input_option
   case ${input_option} in
   1)
