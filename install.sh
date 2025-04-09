@@ -21,8 +21,8 @@ init_var() {
 
   ssh_local_forwarded_port=8082
 
-  translation_file_base_url="https://raw.githubusercontent.com/jonssonyan/h-ui/refs/heads/main/local/"
   translation_file_content=""
+  translation_file_base_url="https://raw.githubusercontent.com/jonssonyan/h-ui/refs/heads/main/local/"
   translation_file="en.json"
 }
 
