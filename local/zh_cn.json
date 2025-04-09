@@ -1,5 +1,8 @@
 {
   "menu": {
+    "recommend_os": "推荐系统",
+    "description": "描述: 一键安装 H UI",
+    "author": "作者",
     "install_hui_systemd": "安装 H UI (systemd)",
     "upgrade_h_ui_systemd": "更新 H UI (systemd)",
     "uninstall_h_ui_systemd": "卸载 H UI (systemd)",

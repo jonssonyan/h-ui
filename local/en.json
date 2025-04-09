@@ -1,5 +1,8 @@
 {
   "menu": {
+    "recommend_os": "Recommended OS",
+    "description": "Description: Quick Installation of H UI",
+    "author": "Author",
     "install_hui_systemd": "Install H UI (systemd)",
     "upgrade_h_ui_systemd": "Upgrade H UI (systemd)",
     "uninstall_h_ui_systemd": "Uninstall H UI (systemd)",
