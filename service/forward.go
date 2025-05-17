@@ -63,8 +63,11 @@ func InitPortHopping() error {
 	if *hysteria2ConfigPortHopping.Value != "" {
 		listen := strings.Split(*hysteria2Config.Listen, ":")
 		if len(listen) == 2 {
-			if err := portForward(*hysteria2ConfigPortHopping.Value, listen[1], Add); err != nil {
-				return err
+			portHoppings := strings.Split(*hysteria2ConfigPortHopping.Value, ",")
+			for _, item := range portHoppings {
+				if err := portForward(item, listen[1], Add); err != nil {
+					return err
+				}
 			}
 		}
 	}
