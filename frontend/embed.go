@@ -6,18 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/fs"
 	"net/http"
+	"path"
 	"strings"
 )
 
 //go:embed dist/*
 var staticFiles embed.FS
 
-func InitFrontend(router *gin.Engine, huiWebContext *string) {
-
-	relativePath := "/"
-	if huiWebContext != nil && strings.HasPrefix(*huiWebContext, "/") {
-		relativePath = *huiWebContext
-	}
+func InitFrontend(router *gin.Engine, relativePath string) {
 	router.GET(relativePath, func(c *gin.Context) {
 		indexHTML, err := staticFiles.ReadFile("dist/index.html")
 		if err != nil {
@@ -27,7 +23,7 @@ func InitFrontend(router *gin.Engine, huiWebContext *string) {
 		c.Data(http.StatusOK, "text/html", indexHTML)
 	})
 
-	router.GET("/favicon.ico", func(c *gin.Context) {
+	router.GET(path.Join(relativePath, "favicon.ico"), func(c *gin.Context) {
 		indexHTML, err := staticFiles.ReadFile("dist/favicon.ico")
 		if err != nil {
 			c.String(http.StatusInternalServerError, "Internal Server Error")
@@ -36,10 +32,13 @@ func InitFrontend(router *gin.Engine, huiWebContext *string) {
 		c.Data(http.StatusOK, "image/x-icon", indexHTML)
 	})
 
-	router.StaticFS("/assets", http.FS(getStaticFS()))
+	router.StaticFS(path.Join(relativePath, "assets"), http.FS(getStaticFS()))
 
 	router.NoRoute(func(c *gin.Context) {
 		filePath := c.Request.URL.Path
+		if relativePath != "/" && !strings.HasPrefix(filePath, relativePath) {
+			c.String(http.StatusNotFound, "404")
+		}
 		fileContent, err := getFileContent(filePath)
 		if err != nil {
 			c.String(http.StatusNotFound, "404")
