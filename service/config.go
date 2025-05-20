@@ -174,5 +174,13 @@ func GetAuthHttpUrl() (string, error) {
 	if crtPath != "" && keyPath != "" {
 		protocol = "https"
 	}
-	return fmt.Sprintf("%s://127.0.0.1:%d/hui/hysteria2/auth", protocol, port), nil
+	config, err := dao.GetConfig("key = ?", constant.HUIWebContext)
+	if err != nil {
+		return "", err
+	}
+	webContext := ""
+	if config.Value != nil && strings.HasPrefix(*config.Value, "/") {
+		webContext = *config.Value
+	}
+	return fmt.Sprintf("%s://127.0.0.1:%d%s/hui/hysteria2/auth", protocol, port, webContext), nil
 }
