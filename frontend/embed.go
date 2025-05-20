@@ -63,13 +63,13 @@ func getFileContent(filePath string) ([]byte, error) {
 }
 
 func replaceRelativePaths(htmlContent string, basePath string) string {
-	if basePath != "/" {
-		htmlContent = strings.ReplaceAll(htmlContent, "/__dynamic_base__/", basePath+"/")
-		injection := fmt.Sprintf(`
+	if basePath == "/" {
+		basePath = ""
+	}
+	htmlContent = strings.ReplaceAll(htmlContent, "/__dynamic_base__/", basePath+"/")
+	injection := fmt.Sprintf(`
 	<script>
 		window.__dynamic_base__ = "%s";
 	</script>`, basePath)
-		htmlContent = strings.Replace(htmlContent, "</head>", injection+"</head>", 1)
-	}
-	return htmlContent
+	return strings.Replace(htmlContent, "</head>", injection+"</head>", 1)
 }
