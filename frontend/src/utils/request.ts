@@ -1,9 +1,10 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse } from "axios";
 import { useAccountStoreHook } from "@/store/modules/account";
 
+const dynamicBase = (window as any).__dynamic_base__ || "";
 // 创建 axios 实例
 const service = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE + "/hui",
+  baseURL: `${dynamicBase}${import.meta.env.VITE_APP_BASE_API}`,
   timeout: 50000,
   headers: { "Content-Type": "application/json;charset=utf-8" },
 });

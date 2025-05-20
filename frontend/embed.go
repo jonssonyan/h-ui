@@ -38,6 +38,7 @@ func InitFrontend(router *gin.Engine, relativePath string) {
 		filePath := c.Request.URL.Path
 		if relativePath != "/" && !strings.HasPrefix(filePath, relativePath) {
 			c.String(http.StatusNotFound, "404")
+			return
 		}
 		fileContent, err := getFileContent(filePath)
 		if err != nil {
@@ -62,7 +63,7 @@ func getFileContent(filePath string) ([]byte, error) {
 }
 
 func replaceRelativePaths(htmlContent string, basePath string) string {
-	if basePath != "" && basePath != "/" {
+	if basePath != "/" {
 		htmlContent = strings.ReplaceAll(htmlContent, "/__dynamic_base__/", basePath+"/")
 		injection := fmt.Sprintf(`
 	<script>

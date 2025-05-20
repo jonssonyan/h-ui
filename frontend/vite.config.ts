@@ -21,10 +21,12 @@ const pathSrc = path.resolve(__dirname, "src");
 const INVALID_CHAR_REGEX = /[\u0000-\u001F"#$&*+,:;<=>?[\]^`{|}\u007F]/g;
 const DRIVE_LETTER_REGEX = /^[a-z]:/i;
 
+import { dynamicBase } from "vite-plugin-dynamic-base";
+
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd());
   return {
-    base: "./",
+    base: mode === "production" ? "/__dynamic_base__/" : "/",
     resolve: {
       alias: {
         "@": pathSrc,
@@ -48,13 +50,14 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       open: true, // 运行是否自动打开浏览器
       proxy: {
         // 反向代理解决跨域
-        [env.VITE_APP_BASE + "/hui"]: {
+        [env.VITE_APP_BASE_API]: {
           target: "http://127.0.0.1:8081",
           changeOrigin: true,
         },
       },
     },
     plugins: [
+      dynamicBase({}),
       vue(),
       UnoCSS({
         /* options */
