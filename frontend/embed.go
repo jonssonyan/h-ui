@@ -20,7 +20,7 @@ func InitFrontend(router *gin.Engine, relativePath string) {
 			c.String(http.StatusInternalServerError, "Internal Server Error")
 			return
 		}
-		c.Data(http.StatusOK, "text/html", indexHTML)
+		c.Data(http.StatusOK, "text/html", []byte(replaceRelativePaths(string(indexHTML), relativePath)))
 	})
 
 	router.GET(path.Join(relativePath, "favicon.ico"), func(c *gin.Context) {
@@ -59,4 +59,16 @@ func getFileContent(filePath string) ([]byte, error) {
 		return nil, err
 	}
 	return fileContent, nil
+}
+
+func replaceRelativePaths(htmlContent string, basePath string) string {
+	if basePath != "" && basePath != "/" {
+		htmlContent = strings.ReplaceAll(htmlContent, "/__dynamic_base__/", basePath+"/")
+		injection := fmt.Sprintf(`
+	<script>
+		window.__dynamic_base__ = "%s";
+	</script>`, basePath)
+		htmlContent = strings.Replace(htmlContent, "</head>", injection+"</head>", 1)
+	}
+	return htmlContent
 }
