@@ -179,7 +179,7 @@ func GetAuthHttpUrl() (string, error) {
 		return "", err
 	}
 	webContext := ""
-	if config.Value != nil && *config.Value != "" && strings.HasPrefix(*config.Value, "/") {
+	if config.Value != nil && *config.Value != "/" && strings.HasPrefix(*config.Value, "/") {
 		webContext = *config.Value
 	}
 	return fmt.Sprintf("%s://127.0.0.1:%d%s/hui/hysteria2/auth", protocol, port, webContext), nil
