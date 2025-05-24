@@ -276,27 +276,14 @@ onMounted(() => {
         });
       }
     });
-    listConfigApi({
-      keys: [huiCrtPathKey, huiKeyPathKey],
-    }).then((response) => {
-      let huiCrtPath = "";
-      let huiKeyPath = "";
-      response.data.forEach((configVo) => {
-        if (configVo.key === huiCrtPathKey) {
-          huiCrtPath = configVo.value;
-        } else if (configVo.key === huiKeyPathKey) {
-          huiKeyPath = configVo.value;
-        }
+    if (window.location.protocol !== "https:") {
+      ElNotification({
+        title: t("common.securityRisk"),
+        dangerouslyUseHTMLString: true,
+        message: t("common.noHttpsTip"),
+        type: "warning",
       });
-      if (huiCrtPath === "" || huiKeyPath === "") {
-        ElNotification({
-          title: t("common.securityRisk"),
-          dangerouslyUseHTMLString: true,
-          message: t("common.noHttpsTip"),
-          type: "warning",
-        });
-      }
-    });
+    }
   }
 });
 </script>
