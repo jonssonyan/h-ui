@@ -134,6 +134,7 @@ check_sys() {
   major_version=$(echo "${version}" | cut -d. -f1)
 
   case $release in
+  rocky) ;;
   centos)
     if [[ $major_version -ge 6 ]]; then
       echo_content green "Supported CentOS version detected: $version"
