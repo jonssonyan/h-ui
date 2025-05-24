@@ -119,6 +119,7 @@ check_sys() {
       version=$(rpm -q --queryformat '%{VERSION}' centos-release)
     fi
   elif [[ -n $(find /etc -name "rocky-release") ]] || grep </proc/version -q -i "rocky"; then
+    release="rocky"
     if rpm -q rocky-release &>/dev/null; then
       version=$(rpm -q --queryformat '%{VERSION}' rocky-release)
     fi
@@ -368,7 +369,7 @@ install_h_ui_systemd() {
 
   timedatectl set-timezone ${h_ui_time_zone} && timedatectl set-local-rtc 0
   systemctl restart rsyslog
-  if [[ "${release}" == "centos" ]]; then
+  if [[ "${release}" == "centos" || "${release}" == "rocky" ]]; then
     systemctl restart crond
   elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
     systemctl restart cron
