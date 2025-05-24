@@ -166,13 +166,9 @@ import {
 } from "@/api/hysteria2/types";
 import { hysteria2SubscribeUrlApi, hysteria2UrlApi } from "@/api/hysteria2";
 import copy from "copy-to-clipboard";
-import { listConfigApi } from "@/api/config";
 
 const { t } = useI18n();
 const accountStore = useAccountStore();
-
-const huiCrtPathKey = "H_UI_CRT_PATH";
-const huiKeyPathKey = "H_UI_KEY_PATH";
 
 const date: Date = new Date();
 
