@@ -91,7 +91,15 @@ func Hysteria2SubscribeUrl(accountId int64, protocol string, host string) (strin
 	if err != nil {
 		return "", err
 	}
-	return fmt.Sprintf("%s//%s/hui/%s", protocol, host, *account.ConPass), nil
+	config, err := dao.GetConfig("key = ?", constant.HUIWebContext)
+	if err != nil {
+		return "", err
+	}
+	webContext := ""
+	if config.Value != nil && *config.Value != "/" && strings.HasPrefix(*config.Value, "/") {
+		webContext = *config.Value
+	}
+	return fmt.Sprintf("%s//%s%s/hui/%s", protocol, host, webContext, *account.ConPass), nil
 }
 
 func Hysteria2Subscribe(conPass string, clientType string, host string) (string, string, error) {
