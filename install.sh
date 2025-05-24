@@ -111,17 +111,17 @@ check_sys() {
     exit 1
   fi
 
-  if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
+  if [[ -n $(find /etc -name "rocky-release") ]] || grep </proc/version -q -i "rocky"; then
+    release="rocky"
+    if rpm -q rocky-release &>/dev/null; then
+      version=$(rpm -q --queryformat '%{VERSION}' rocky-release)
+    fi
+  elif [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
     release="centos"
     if rpm -q centos-stream-release &>/dev/null; then
       version=$(rpm -q --queryformat '%{VERSION}' centos-stream-release)
     elif rpm -q centos-release &>/dev/null; then
       version=$(rpm -q --queryformat '%{VERSION}' centos-release)
-    fi
-  elif [[ -n $(find /etc -name "rocky-release") ]] || grep </proc/version -q -i "rocky"; then
-    release="rocky"
-    if rpm -q rocky-release &>/dev/null; then
-      version=$(rpm -q --queryformat '%{VERSION}' rocky-release)
     fi
   elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
     release="debian"
