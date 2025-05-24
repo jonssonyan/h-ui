@@ -11,6 +11,7 @@ import (
 	"h-ui/model/vo"
 	"h-ui/service"
 	"h-ui/util"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -156,6 +157,11 @@ func Hysteria2SubscribeUrl(c *gin.Context) {
 
 func Hysteria2Subscribe(c *gin.Context) {
 	conPass := c.Param("conPass")
+	conPass, err := url.QueryUnescape(conPass)
+	if err != nil {
+		vo.Fail("url decode err", c)
+		return
+	}
 	userAgent := strings.ToLower(c.Request.Header.Get("User-Agent"))
 	host := c.Request.Host
 

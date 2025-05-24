@@ -99,7 +99,7 @@ func Hysteria2SubscribeUrl(accountId int64, protocol string, host string) (strin
 	if config.Value != nil && *config.Value != "/" && strings.HasPrefix(*config.Value, "/") {
 		webContext = *config.Value
 	}
-	return fmt.Sprintf("%s//%s%s/hui/%s", protocol, host, webContext, *account.ConPass), nil
+	return fmt.Sprintf("%s//%s%s/hui/%s", protocol, host, webContext, url.QueryEscape(*account.ConPass)), nil
 }
 
 func Hysteria2Subscribe(conPass string, clientType string, host string) (string, string, error) {
