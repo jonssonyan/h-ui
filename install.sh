@@ -90,7 +90,7 @@ check_sys() {
     exit 1
   fi
 
-  can_connect www.google.com
+  can_connect github.com
   if [[ "$?" == "1" ]]; then
     echo_content red "---> Network connection failed"
     exit 1
