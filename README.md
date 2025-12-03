@@ -146,8 +146,18 @@ rm -rf /h-ui
 
 - Panel Port: 8081
 - SSH local forwarded port: 8082
+
+Automatic Installation ([install.sh](install.sh)):
+
 - Login Username/Password: Random 6 characters
 - Connection Password: {Login Username}.{Login Password}
+
+Manual Installation:
+
+- Login Username/Password: sysadmin/sysadmin
+- Connection Password: sysadmin.sysadmin
+
+Note: Only the system administrator can log in.
 
 ## System Upgrade
 
