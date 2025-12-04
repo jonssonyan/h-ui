@@ -33,6 +33,9 @@ func UpdateConfig(keys []string, updates map[string]interface{}) error {
 
 func GetConfig(query interface{}, args ...interface{}) (entity.Config, error) {
 	var config entity.Config
+	if sqliteDB == nil {
+		return config, errors.New(constant.SysError)
+	}
 	if tx := sqliteDB.Model(&entity.Config{}).
 		Where(query, args...).First(&config); tx.Error != nil {
 		if tx.Error == gorm.ErrRecordNotFound {

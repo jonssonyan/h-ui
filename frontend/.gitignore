@@ -3,6 +3,8 @@ node_modules
 dist
 dist-ssr
 *.local
+!dist/
+!dist/index.html
 
 # Editor directories and files
 .idea
