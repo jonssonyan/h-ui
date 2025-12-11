@@ -1,3 +1,4 @@
+
 package frontend
 
 import (
@@ -10,7 +11,6 @@ import (
 	"strings"
 )
 
-//go:embed dist/*
 var staticFiles embed.FS
 
 func InitFrontend(router *gin.Engine, relativePath string) {
