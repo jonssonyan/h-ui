@@ -54,28 +54,11 @@ func InitTelegramBot() error {
 		}
 		return err
 	}
-	dnsServers := os.Getenv(constant.TelegramDNSServers)
-	if dnsServers != "" {
-		for _, s := range strings.Split(dnsServers, ",") {
-			addr := strings.TrimSpace(s)
-			if addr == "" {
-				continue
-			}
-			r := &net.Resolver{PreferGo: true, Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
-				d := net.Dialer{}
-				return d.DialContext(ctx, "udp", net.JoinHostPort(addr, "53"))
-			}}
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-			_, err := r.LookupHost(ctx, "api.telegram.org")
-			cancel()
-			if err == nil {
-				net.DefaultResolver = r
-				break
-			}
-		}
+	client, err := telegramHTTPClient()
+	if err != nil {
+		return err
 	}
-	httpClient := &http.Client{Timeout: 5 * time.Second}
-	bot, err = tgbotapi.NewBotAPIWithClient(token, tgbotapi.APIEndpoint, httpClient)
+	bot, err = tgbotapi.NewBotAPIWithClient(token, tgbotapi.APIEndpoint, client)
 	if err != nil {
 		logrus.Errorf("new bot api err: %v", err)
 		return err
@@ -108,6 +91,78 @@ func InitTelegramBot() error {
 		}
 	}(done)
 	return nil
+}
+
+func newResolver(dnsServer string) *net.Resolver {
+	return &net.Resolver{
+		PreferGo: true,
+		Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
+			d := net.Dialer{
+				Timeout: 2 * time.Second,
+			}
+			return d.DialContext(ctx, "udp", net.JoinHostPort(dnsServer, "53"))
+		},
+	}
+}
+
+func testTelegramDNS(resolver *net.Resolver) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	ips, err := resolver.LookupIP(ctx, "ip", "api.telegram.org")
+	if err != nil {
+		return err
+	}
+	if len(ips) == 0 {
+		return errors.New("dns resolved but no ip returned")
+	}
+	return nil
+}
+
+func telegramHTTPClient() (*http.Client, error) {
+	dnsServers := strings.Split(os.Getenv(constant.TelegramDNSServers), ",")
+
+	for _, s := range dnsServers {
+		dns := strings.TrimSpace(s)
+		if dns == "" {
+			continue
+		}
+
+		resolver := newResolver(dns)
+
+		if err := testTelegramDNS(resolver); err != nil {
+			logrus.Warnf("telegram dns %s unavailable: %v", dns, err)
+			continue
+		}
+
+		dialer := &net.Dialer{
+			Timeout:  5 * time.Second, // TCP dial
+			Resolver: resolver,
+		}
+
+		transport := &http.Transport{
+			DialContext:           dialer.DialContext,
+			TLSHandshakeTimeout:   5 * time.Second,
+			ResponseHeaderTimeout: 10 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+			MaxIdleConns:          100,
+			IdleConnTimeout:       90 * time.Second,
+			DisableCompression:    false,
+		}
+
+		logrus.Infof("using telegram dns %s", dns)
+
+		return &http.Client{
+			Transport: transport,
+			Timeout:   30 * time.Second,
+		}, nil
+	}
+
+	logrus.Warn("no custom telegram dns available, fallback to default resolver")
+
+	return &http.Client{
+		Timeout: 30 * time.Second,
+	}, nil
 }
 
 func getUpdatesChan() tgbotapi.UpdatesChannel {
