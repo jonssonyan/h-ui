@@ -93,7 +93,10 @@ func (p *process) stop() error {
 		return nil
 	}
 
-	_ = p.cmd.Process.Signal(syscall.SIGTERM)
+	if err := p.cmd.Process.Signal(syscall.SIGTERM); err != nil {
+		logrus.Errorf("send SIGTERM failed: %v", err)
+	}
+
 	done := make(chan error, 1)
 	go func() {
 		done <- p.cmd.Wait()
@@ -105,15 +108,13 @@ func (p *process) stop() error {
 			logrus.Errorf("process exit with error: %v", err)
 			return errors.New("cmd stop err")
 		}
-
 	case <-time.After(3 * time.Second):
 		if err := p.cmd.Process.Kill(); err != nil {
-			logrus.Errorf("force kill failed: %v", err)
+			logrus.Errorf("SIGKILL failed: %v", err)
 			return errors.New("cmd stop err")
-
 		}
 		if err := <-done; err != nil {
-			logrus.Errorf("wait after kill failed:: %v", err)
+			logrus.Errorf("wait after kill failed: %v", err)
 			return errors.New("cmd stop err")
 		}
 	}
