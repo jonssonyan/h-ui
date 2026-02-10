@@ -75,10 +75,9 @@ func InitTelegramBot() error {
 			}
 		}
 	}
-	httpClient := &http.Client{Timeout: 15 * time.Second}
+	httpClient := &http.Client{Timeout: 5 * time.Second}
 	bot, err = tgbotapi.NewBotAPIWithClient(token, tgbotapi.APIEndpoint, httpClient)
 	if err != nil {
-		logrus.Errorf("telegram init failed: %v", err)
 		return fmt.Errorf("telegram init failed: %w", err)
 	}
 	bot.Debug = os.Getenv(constant.TelegramDebug) == "true"
@@ -191,10 +190,7 @@ func handleDefault(update tgbotapi.Update) error {
 }
 
 func GetMe() (tgbotapi.User, error) {
-	if bot == nil {
-		return tgbotapi.User{}, fmt.Errorf("telegram init failed")
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	type result struct {
 		u tgbotapi.User
@@ -219,10 +215,7 @@ func GetMe() (tgbotapi.User, error) {
 }
 
 func SendWithMessage(chatId int64, text string) error {
-	if bot == nil {
-		return fmt.Errorf("telegram init failed")
-	}
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	ch := make(chan error, 1)
 	go func() {
