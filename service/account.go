@@ -12,7 +12,7 @@ import (
 	"h-ui/model/vo"
 )
 
-func login(username string, pass string) (string, error) {
+func Login(username string, pass string) (string, error) {
 	account, err := dao.GetAccount("username = ? and pass = ? and role = 'admin' and deleted = 0", username, pass)
 	if err != nil {
 		return "", err
@@ -25,8 +25,6 @@ func login(username string, pass string) (string, error) {
 	}
 	return GenToken(accountBo)
 }
-
-var Login = login
 
 func PageAccount(accountPageDto dto.AccountPageDto) ([]entity.Account, int64, error) {
 	return dao.PageAccount(accountPageDto)
@@ -83,7 +81,7 @@ func ResetTraffic(id int64) error {
 	return dao.UpdateAccount([]int64{id}, map[string]interface{}{"download": 0, "upload": 0})
 }
 
-func existAccountUsername(username string, id int64) bool {
+func ExistAccountUsername(username string, id int64) bool {
 	var err error
 	if id != 0 {
 		_, err = dao.GetAccount("username = ? and id != ?", username, id)
@@ -97,8 +95,6 @@ func existAccountUsername(username string, id int64) bool {
 	}
 	return true
 }
-
-var ExistAccountUsername = existAccountUsername
 
 func GetAccount(id int64) (entity.Account, error) {
 	return dao.GetAccount("id = ?", id)
