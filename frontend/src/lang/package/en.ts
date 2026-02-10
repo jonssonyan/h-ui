@@ -75,6 +75,7 @@ export default {
       "I want to be a shooting star, cutting through the darkness, just to illuminate your dreams, good night🌛！",
   },
   account: {
+    remark: "Remark",
     username: "Username",
     pass: "Pass",
     conPass: "ConPass",

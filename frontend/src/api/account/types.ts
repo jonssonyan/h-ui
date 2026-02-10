@@ -1,6 +1,7 @@
 export interface AccountPageDto extends BaseDto {
   username?: string;
   deleted?: number;
+  remark?: string;
 }
 
 export interface AccountUpdateDto extends IdDto {
@@ -11,6 +12,7 @@ export interface AccountUpdateDto extends IdDto {
   expireTime: number;
   deviceNo: number;
   deleted: number;
+  remark: string;
 }
 
 export interface AccountSaveDto {
@@ -21,6 +23,7 @@ export interface AccountSaveDto {
   expireTime: number;
   deviceNo: number;
   deleted: number;
+  remark: string;
 }
 
 export interface AccountLoginDto {
@@ -45,6 +48,7 @@ export interface AccountVo extends IdDto {
 
   loginAt: number;
   conAt: number;
+  remark: string;
 }
 
 export interface AccountLoginVo {
@@ -66,6 +70,7 @@ export interface AccountForm extends IdDto {
   expireTime: number;
   deviceNo: number;
   deleted: number;
+  remark: string;
 }
 
 export interface KickAccountForm {

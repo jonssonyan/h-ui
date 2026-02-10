@@ -3,6 +3,15 @@
     <github-corner class="github-corner" />
     <div class="search">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
+        <el-form-item :label="$t('account.remark')" prop="remark">
+          <el-input
+            v-model="queryParams.remark"
+            :placeholder="$t('account.remark')"
+            clearable
+            style="width: 200px"
+            @keyup.enter="handleQuery"
+          />
+        </el-form-item>
         <el-form-item :label="$t('account.username')" prop="username">
           <el-input
             v-model="queryParams.username"
@@ -75,6 +84,12 @@
           :label="$t('common.id')"
           align="center"
           prop="id"
+        />
+        <el-table-column
+          key="remark"
+          :label="$t('account.remark')"
+          align="center"
+          prop="remark"
         />
         <el-table-column
           key="username"
@@ -287,6 +302,14 @@
         :model="dataForm"
         label-width="100px"
       >
+        <el-form-item :label="$t('account.remark')" prop="remark">
+          <el-input
+            v-model="dataForm.remark"
+            :placeholder="$t('account.remark')"
+            maxlength="50"
+            clearable
+          />
+        </el-form-item>
         <el-form-item :label="$t('account.username')" prop="username">
           <el-input
             v-model="dataForm.username"
@@ -478,6 +501,14 @@ const dataFormPassRef = ref(ElInput);
 const dataFormConPassRef = ref(ElInput);
 
 const dataFormAddRules = {
+  remark: [
+    {
+      min: 1,
+      max: 32,
+      message: "Remark format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
   username: [
     {
       required: true,
@@ -538,6 +569,14 @@ const dataFormAddRules = {
 };
 
 const dataFormUpdateRules = {
+  remark: [
+    {
+      min: 1,
+      max: 32,
+      message: "Remark format is incorrect",
+      trigger: ["change", "blur"],
+    },
+  ],
   username: [
     {
       pattern: /^[a-zA-Z0-9!@#$%^&*()_+-=]{6,32}$/,
@@ -615,6 +654,7 @@ const state = reactive({
     kickUtilTime: getHourLater(),
   } as KickAccountForm,
   queryParams: {
+    remark: undefined,
     username: undefined,
     deleted: undefined,
     pageNum: 1,
