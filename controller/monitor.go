@@ -1,10 +1,9 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
 	"h-ui/model/vo"
 	"h-ui/service"
-
-	"github.com/gin-gonic/gin"
 )
 
 func MonitorSystem(c *gin.Context) {
