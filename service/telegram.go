@@ -41,7 +41,6 @@ func valid() (string, string, error) {
 		return "", "", err
 	}
 	if chatId.Value == nil {
-		logrus.Error("telegram chatId is nil")
 		return "", "", errors.New("telegram chatId is nil")
 	}
 	return *token.Value, *chatId.Value, nil
@@ -77,16 +76,12 @@ func InitTelegramBot() error {
 		}
 	}
 	httpClient := &http.Client{Timeout: 15 * time.Second}
-	logrus.Info("creating telegram bot api")
 	bot, err = tgbotapi.NewBotAPIWithClient(token, tgbotapi.APIEndpoint, httpClient)
 	if err != nil {
 		logrus.Errorf("telegram init failed: %v", err)
 		return fmt.Errorf("telegram init failed: %w", err)
 	}
-	logrus.Info("telegram bot api created")
 	bot.Debug = os.Getenv(constant.TelegramDebug) == "true"
-	logrus.Infof("telegram debug=%v", bot.Debug)
-	logrus.Infof("authorized on account %s", bot.Self.UserName)
 	commands := []tgbotapi.BotCommand{
 		{Command: "status", Description: "System Status"},
 		{Command: "restart", Description: "System Restart"},
@@ -99,7 +94,6 @@ func InitTelegramBot() error {
 		logrus.Errorf("unable to set commands err: %v", err)
 		return err
 	}
-	logrus.Info("telegram commands set")
 	go func(done chan bool) {
 		updates := getUpdatesChan()
 		for {
@@ -114,7 +108,6 @@ func InitTelegramBot() error {
 			}
 		}
 	}(done)
-	logrus.Info("telegram init done")
 	return nil
 }
 
