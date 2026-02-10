@@ -74,6 +74,9 @@ func UpdateAccount(account entity.Account) error {
 	if account.ConAt != nil && *account.ConAt > 0 {
 		updates["con_at"] = *account.ConAt
 	}
+	if account.Remark != nil && *account.Remark != "" {
+		updates["remark"] = *account.Remark
+	}
 	return dao.UpdateAccount([]int64{*account.Id}, updates)
 }
 
@@ -124,6 +127,7 @@ func ListExportAccount() ([]bo.AccountExport, error) {
 			UpdateTime:   *item.UpdateTime,
 			LoginAt:      *item.LoginAt,
 			ConAt:        *item.ConAt,
+			Remark:       *item.Remark,
 		}
 		accountExports = append(accountExports, accountExport)
 	}

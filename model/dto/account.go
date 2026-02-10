@@ -4,6 +4,7 @@ type AccountPageDto struct {
 	BaseDto
 	Username *string `json:"username" form:"username" validate:"omitempty,min=1,max=32"`
 	Deleted  *int64  `json:"deleted" form:"deleted" validate:"omitempty,oneof=0 1"`
+	Remark   *string `json:"remark" form:"remark" validate:"omitempty,min=1,max=32"`
 }
 
 type LoginDto struct {
@@ -19,6 +20,7 @@ type AccountSaveDto struct {
 	ExpireTime *int64  `json:"expireTime" form:"expireTime" validate:"required,min=0"`
 	DeviceNo   *int64  `json:"deviceNo" form:"deviceNo" validate:"required,min=1"`
 	Deleted    *int64  `json:"deleted" form:"deleted" validate:"required,oneof=0 1"`
+	Remark     *string `json:"remark" form:"remark" validate:"omitempty,min=1,max=32"`
 }
 
 type AccountUpdateDto struct {
@@ -30,4 +32,5 @@ type AccountUpdateDto struct {
 	ExpireTime *int64  `json:"expireTime" form:"expireTime" validate:"omitempty,min=0"`
 	DeviceNo   *int64  `json:"deviceNo" form:"deviceNo" validate:"omitempty,min=1"`
 	Deleted    *int64  `json:"deleted" form:"deleted" validate:"omitempty,oneof=0 1"`
+	Remark     *string `json:"remark" form:"remark" validate:"omitempty,min=1,max=32"`
 }

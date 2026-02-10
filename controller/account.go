@@ -76,6 +76,7 @@ func PageAccount(c *gin.Context) {
 			},
 			LoginAt: *item.LoginAt,
 			ConAt:   *item.ConAt,
+			Remark:  *item.Remark,
 		}
 		if value, exists := onlineUsers[*item.Username]; exists {
 			accountVo.Online = true
@@ -112,6 +113,7 @@ func SaveAccount(c *gin.Context) {
 		ExpireTime: accountSaveDto.ExpireTime,
 		DeviceNo:   accountSaveDto.DeviceNo,
 		Deleted:    accountSaveDto.Deleted,
+		Remark:     accountSaveDto.Remark,
 	}
 	err = service.SaveAccount(account)
 	if err != nil {
@@ -180,6 +182,7 @@ func UpdateAccount(c *gin.Context) {
 		ExpireTime: accountUpdateDto.ExpireTime,
 		DeviceNo:   accountUpdateDto.DeviceNo,
 		Deleted:    accountUpdateDto.Deleted,
+		Remark:     accountUpdateDto.Remark,
 		BaseEntity: entity.BaseEntity{
 			Id: accountUpdateDto.Id,
 		},
@@ -244,6 +247,7 @@ func GetAccount(c *gin.Context) {
 		DeviceNo:   *account.DeviceNo,
 		Role:       *account.Role,
 		Deleted:    *account.Deleted,
+		Remark:     *account.Remark,
 	}
 	vo.Success(accountVo, c)
 }

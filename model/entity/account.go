@@ -14,6 +14,7 @@ type Account struct {
 	Deleted      *int64  `gorm:"column:deleted;default:0" json:"deleted"`
 	BaseEntity   `gorm:"embedded"`
 
-	LoginAt *int64 `gorm:"column:login_at;default:0" json:"loginAt"`
-	ConAt   *int64 `gorm:"column:con_at;default:0" json:"conAt"`
+	LoginAt *int64  `gorm:"column:login_at;default:0" json:"loginAt"`
+	ConAt   *int64  `gorm:"column:con_at;default:0" json:"conAt"`
+	Remark  *string `gorm:"column:remark;default:''" json:"remark"`
 }

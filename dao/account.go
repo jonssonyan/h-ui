@@ -44,7 +44,7 @@ func UpdateAccount(ids []int64, updates map[string]interface{}) error {
 func UpsertAccount(accounts []entity.Account) error {
 	if tx := sqliteDB.Model(&entity.Account{}).Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "username"}},
-		DoUpdates: clause.AssignmentColumns([]string{"pass", "con_pass", "quota", "download", "upload", "expire_time", "kick_util_time", "device_no", "role", "deleted", "create_time", "update_time", "login_at", "con_at"}),
+		DoUpdates: clause.AssignmentColumns([]string{"pass", "con_pass", "quota", "download", "upload", "expire_time", "kick_util_time", "device_no", "role", "deleted", "create_time", "update_time", "login_at", "con_at", "remark"}),
 	}).Create(accounts); tx.Error != nil {
 		logrus.Errorf("%v", tx.Error)
 		return errors.New(constant.SysError)
@@ -94,6 +94,9 @@ func PageAccount(accountPageDto dto.AccountPageDto) ([]entity.Account, int64, er
 	}
 	if accountPageDto.Deleted != nil {
 		tx.Where("deleted = ?", *accountPageDto.Deleted)
+	}
+	if accountPageDto.Remark != nil && *accountPageDto.Remark != "" {
+		tx.Where("remark like ?", fmt.Sprintf("%%%s%%", *accountPageDto.Remark))
 	}
 	tx.Count(&total)
 	if tx.Scopes(Paginate(accountPageDto.PageNum, accountPageDto.PageSize)).

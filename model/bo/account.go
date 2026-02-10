@@ -26,4 +26,5 @@ type AccountExport struct {
 	UpdateTime   time.Time `json:"updateTime"`
 	LoginAt      int64     `json:"loginAt"`
 	ConAt        int64     `json:"conAt"`
+	Remark       string    `json:"remark"`
 }
