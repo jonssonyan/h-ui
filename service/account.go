@@ -74,7 +74,7 @@ func UpdateAccount(account entity.Account) error {
 	if account.ConAt != nil && *account.ConAt > 0 {
 		updates["con_at"] = *account.ConAt
 	}
-	if account.Remark != nil && *account.Remark != "" {
+	if account.Remark != nil {
 		updates["remark"] = *account.Remark
 	}
 	return dao.UpdateAccount([]int64{*account.Id}, updates)
