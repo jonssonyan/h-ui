@@ -22,53 +22,39 @@ var done = make(chan bool)
 
 // 参数校验
 func valid() (string, string, error) {
-	logrus.Info("telegram validation start")
 	enable, err := dao.GetConfig("key = ?", constant.TelegramEnable)
 	if err != nil {
-		logrus.Errorf("get TELEGRAM_ENABLE err: %v", err)
 		return "", "", err
 	}
 	if enable.Value == nil || *enable.Value != "1" {
-		logrus.Info("telegram disabled")
 		return "", "", errors.New("telegram not enable")
 	}
-	logrus.Info("telegram enabled")
 	token, err := dao.GetConfig("key = ?", constant.TelegramToken)
 	if err != nil {
-		logrus.Errorf("get TELEGRAM_TOKEN err: %v", err)
 		return "", "", err
 	}
 	if token.Value == nil || *token.Value == "" {
-		logrus.Error("telegram token missing")
 		return "", "", errors.New("telegram token not set")
 	}
-	logrus.Infof("telegram token length=%d", len(*token.Value))
 	chatId, err := dao.GetConfig("key = ?", constant.TelegramChatId)
 	if err != nil {
-		logrus.Errorf("get TELEGRAM_CHAT_ID err: %v", err)
 		return "", "", err
 	}
 	if chatId.Value == nil {
 		logrus.Error("telegram chatId is nil")
 		return "", "", errors.New("telegram chatId is nil")
 	}
-	logrus.Infof("telegram chatId=%s", *chatId.Value)
-	logrus.Info("telegram validation done")
 	return *token.Value, *chatId.Value, nil
 }
 
 func InitTelegramBot() error {
-	logrus.Info("telegram init start")
 	token, chatId, err := valid()
 	if err != nil {
-		logrus.Errorf("telegram validation err: %v", err)
 		if err.Error() == "telegram not enable" {
-			logrus.Info("telegram not enabled")
 			return nil
 		}
 		return err
 	}
-	logrus.Infof("telegram token length=%d chatId=%s", len(token), chatId)
 	dnsServers := os.Getenv(constant.TelegramDNSServers)
 	if dnsServers != "" {
 		for _, s := range strings.Split(dnsServers, ",") {
