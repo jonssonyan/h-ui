@@ -78,7 +78,7 @@ func InitTelegramBot() error {
 	httpClient := &http.Client{Timeout: 5 * time.Second}
 	bot, err = tgbotapi.NewBotAPIWithClient(token, tgbotapi.APIEndpoint, httpClient)
 	if err != nil {
-		return fmt.Errorf("telegram init failed: %w", err)
+		return fmt.Errorf("telegram init failed: %v", err)
 	}
 	bot.Debug = os.Getenv(constant.TelegramDebug) == "true"
 	commands := []tgbotapi.BotCommand{
@@ -227,7 +227,7 @@ func SendWithMessage(chatId int64, text string) error {
 	case err := <-ch:
 		if err != nil {
 			logrus.Warnf("tg api SendMessage err: %v chatId: %d text: %s", err, chatId, text)
-			return fmt.Errorf("telegram send failed: %w", err)
+			return fmt.Errorf("telegram send failed: %v", err)
 		}
 		return nil
 	case <-ctx.Done():
