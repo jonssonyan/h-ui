@@ -3,15 +3,14 @@ package proxy
 import (
 	"bufio"
 	"errors"
+	"github.com/sirupsen/logrus"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"h-ui/model/constant"
 	"io"
 	"os/exec"
 	"sync"
 	"syscall"
 	"time"
-
-	"github.com/sirupsen/logrus"
-	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var logger logrus.Logger
