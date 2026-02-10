@@ -190,50 +190,21 @@ func handleDefault(update tgbotapi.Update) error {
 }
 
 func GetMe() (tgbotapi.User, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	type result struct {
-		u tgbotapi.User
-		e error
+	user, err := bot.GetMe()
+	if err != nil {
+		logrus.Errorf("tg api GetMe err: %v", err)
+		return tgbotapi.User{}, err
 	}
-	ch := make(chan result, 1)
-	go func() {
-		user, err := bot.GetMe()
-		ch <- result{user, err}
-	}()
-	select {
-	case r := <-ch:
-		if r.e != nil {
-			logrus.Warnf("tg api GetMe err: %v", r.e)
-			return tgbotapi.User{}, r.e
-		}
-		return r.u, nil
-	case <-ctx.Done():
-		logrus.Warnf("tg api GetMe timeout")
-		return tgbotapi.User{}, ctx.Err()
-	}
+	return user, nil
 }
 
 func SendWithMessage(chatId int64, text string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	ch := make(chan error, 1)
-	go func() {
-		message := tgbotapi.NewMessage(chatId, text)
-		_, err := bot.Send(message)
-		ch <- err
-	}()
-	select {
-	case err := <-ch:
-		if err != nil {
-			logrus.Warnf("tg api SendMessage err: %v chatId: %d text: %s", err, chatId, text)
-			return fmt.Errorf("telegram send failed: %v", err)
-		}
-		return nil
-	case <-ctx.Done():
-		logrus.Warnf("tg api SendMessage timeout chatId: %d text: %s", chatId, text)
-		return ctx.Err()
+	message := tgbotapi.NewMessage(chatId, text)
+	if _, err := bot.Send(message); err != nil {
+		logrus.Errorf("tg api SendMessage err: %v chatId: %d text: %s", err, chatId, text)
+		return err
 	}
+	return nil
 }
 
 // TelegramLoginRemind 登录提醒
