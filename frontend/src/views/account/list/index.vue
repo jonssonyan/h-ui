@@ -503,7 +503,7 @@ const dataFormConPassRef = ref(ElInput);
 const dataFormAddRules = {
   remark: [
     {
-      min: 1,
+      min: 0,
       max: 32,
       message: "Remark format is incorrect",
       trigger: ["change", "blur"],
@@ -571,7 +571,7 @@ const dataFormAddRules = {
 const dataFormUpdateRules = {
   remark: [
     {
-      min: 1,
+      min: 0,
       max: 32,
       message: "Remark format is incorrect",
       trigger: ["change", "blur"],
