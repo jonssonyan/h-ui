@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"h-ui/model/constant"
 	"h-ui/model/dto"
 	"h-ui/model/entity"
@@ -12,7 +11,6 @@ import (
 	"h-ui/service"
 	"h-ui/util"
 	"io"
-	"net/http"
 	"strings"
 	"time"
 )
@@ -37,14 +35,7 @@ func Login(c *gin.Context) {
 		TokenType:   constant.TokenType,
 		AccessToken: token,
 	}
-	if err := service.TelegramLoginRemind(*loginDto.Username, c.ClientIP()); err != nil {
-		logrus.Warnf("telegram remind failed: %v", err)
-		if service.Telegram2FAEnabled(*loginDto.Username) {
-			c.JSON(http.StatusServiceUnavailable, gin.H{"code": "tg_unavailable"})
-			return
-		}
-		jwtVo.TelegramWarning = true
-	}
+	_ = service.TelegramLoginRemind(*loginDto.Username, c.ClientIP())
 	vo.Success(jwtVo, c)
 }
 

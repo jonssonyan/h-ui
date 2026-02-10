@@ -265,7 +265,7 @@ func SendWithMessage(chatId int64, text string) error {
 }
 
 // TelegramLoginRemind 登录提醒
-func telegramLoginRemind(username string, ip string) error {
+func TelegramLoginRemind(username string, ip string) error {
 	configs, err := dao.ListConfig("key in ?", []string{
 		constant.TelegramEnable,
 		constant.TelegramChatId,
@@ -310,15 +310,3 @@ func telegramLoginRemind(username string, ip string) error {
 	}
 	return nil
 }
-
-var TelegramLoginRemind = telegramLoginRemind
-
-func telegram2FAEnabled(username string) bool {
-	config, err := dao.GetConfig("key = ?", constant.Telegram2FAEnable)
-	if err != nil || config.Value == nil {
-		return false
-	}
-	return *config.Value == "1"
-}
-
-var Telegram2FAEnabled = telegram2FAEnabled
