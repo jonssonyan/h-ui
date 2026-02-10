@@ -164,6 +164,11 @@ Note: Only the system administrator can log in.
 Export the user, system configuration, and Hysteria2 configuration in the management background, redeploy the latest
 version of h-ui, and import the data into the management background after the deployment is complete.
 
+
+## DNS
+
+Telegram requests resolve through an internal resolver without EDNS, preferring IPv4 with IPv6 fallback and TCP retries. If you need the standard OS resolver, open an issue or pull request to add a switch.
+
 ## FAQ
 
 [English > FAQ](./docs/FAQ.md)
