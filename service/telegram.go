@@ -1,12 +1,15 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/sirupsen/logrus"
 	"h-ui/dao"
 	"h-ui/model/constant"
+	"net"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -51,14 +54,16 @@ func InitTelegramBot() error {
 		}
 		return err
 	}
-	bot, err = tgbotapi.NewBotAPI(token)
+	client, err := telegramHTTPClient()
+	if err != nil {
+		return err
+	}
+	bot, err = tgbotapi.NewBotAPIWithClient(token, tgbotapi.APIEndpoint, client)
 	if err != nil {
 		logrus.Errorf("new bot api err: %v", err)
 		return err
 	}
 	bot.Debug = os.Getenv(constant.TelegramDebug) == "true"
-	logrus.Infof("Authorized on account %s", bot.Self.UserName)
-	// 初始化 menu
 	commands := []tgbotapi.BotCommand{
 		{Command: "status", Description: "System Status"},
 		{Command: "restart", Description: "System Restart"},
@@ -71,7 +76,6 @@ func InitTelegramBot() error {
 		logrus.Errorf("unable to set commands err: %v", err)
 		return err
 	}
-	// 处理消息
 	go func(done chan bool) {
 		updates := getUpdatesChan()
 		for {
@@ -87,6 +91,78 @@ func InitTelegramBot() error {
 		}
 	}(done)
 	return nil
+}
+
+func newResolver(dnsServer string) *net.Resolver {
+	return &net.Resolver{
+		PreferGo: true,
+		Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
+			d := net.Dialer{
+				Timeout: 2 * time.Second,
+			}
+			return d.DialContext(ctx, "udp", net.JoinHostPort(dnsServer, "53"))
+		},
+	}
+}
+
+func testTelegramDNS(resolver *net.Resolver) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	ips, err := resolver.LookupIP(ctx, "ip", "api.telegram.org")
+	if err != nil {
+		return err
+	}
+	if len(ips) == 0 {
+		return errors.New("dns resolved but no ip returned")
+	}
+	return nil
+}
+
+func telegramHTTPClient() (*http.Client, error) {
+	dnsServers := strings.Split(os.Getenv(constant.TelegramDNSServers), ",")
+
+	for _, s := range dnsServers {
+		dns := strings.TrimSpace(s)
+		if dns == "" {
+			continue
+		}
+
+		resolver := newResolver(dns)
+
+		if err := testTelegramDNS(resolver); err != nil {
+			logrus.Warnf("telegram dns %s unavailable: %v", dns, err)
+			continue
+		}
+
+		dialer := &net.Dialer{
+			Timeout:  5 * time.Second, // TCP dial
+			Resolver: resolver,
+		}
+
+		transport := &http.Transport{
+			DialContext:           dialer.DialContext,
+			TLSHandshakeTimeout:   5 * time.Second,
+			ResponseHeaderTimeout: 10 * time.Second,
+			ExpectContinueTimeout: 1 * time.Second,
+			MaxIdleConns:          100,
+			IdleConnTimeout:       90 * time.Second,
+			DisableCompression:    false,
+		}
+
+		logrus.Infof("using telegram dns %s", dns)
+
+		return &http.Client{
+			Transport: transport,
+			Timeout:   30 * time.Second,
+		}, nil
+	}
+
+	logrus.Warn("no custom telegram dns available, fallback to default resolver")
+
+	return &http.Client{
+		Timeout: 30 * time.Second,
+	}, nil
 }
 
 func getUpdatesChan() tgbotapi.UpdatesChannel {
@@ -187,14 +263,14 @@ func SendWithMessage(chatId int64, text string) error {
 }
 
 // TelegramLoginRemind 登录提醒
-func TelegramLoginRemind(username string, ip string) {
+func TelegramLoginRemind(username string, ip string) error {
 	configs, err := dao.ListConfig("key in ?", []string{
 		constant.TelegramEnable,
 		constant.TelegramChatId,
 		constant.TelegramLoginJobEnable,
 		constant.TelegramLoginJobText})
 	if err != nil {
-		return
+		return err
 	}
 	var telegramEnable, telegramChatId, telegramLoginJobEnable, telegramLoginJobText = "0", "", "0", ""
 	for _, item := range configs {
@@ -214,13 +290,13 @@ func TelegramLoginRemind(username string, ip string) {
 	}
 
 	if telegramEnable != "1" || telegramChatId == "" || telegramLoginJobEnable != "1" || telegramLoginJobText == "" {
-		return
+		return nil
 	}
 
 	chatId, err := strconv.ParseInt(telegramChatId, 10, 64)
 	if err != nil {
 		logrus.Errorf("parse chatId err: %v", err)
-		return
+		return err
 	}
 
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[time]", time.Now().Format("2006-01-02 15:04:05"))
@@ -228,6 +304,7 @@ func TelegramLoginRemind(username string, ip string) {
 	telegramLoginJobText = strings.ReplaceAll(telegramLoginJobText, "[ip]", ip)
 
 	if err = SendWithMessage(chatId, fmt.Sprintf("【H UI】\n%s", telegramLoginJobText)); err != nil {
-		return
+		return err
 	}
+	return nil
 }

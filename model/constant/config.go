@@ -18,5 +18,6 @@ const (
 	TelegramDebug              = "TELEGRAM_DEBUG"
 	TelegramLoginJobEnable     = "TELEGRAM_LOGIN_JOB_ENABLE"
 	TelegramLoginJobText       = "TELEGRAM_LOGIN_JOB_TEXT"
+	TelegramDNSServers         = "TELEGRAM_DNS_SERVERS"
 	ClashExtension             = "CLASH_EXTENSION"
 )
