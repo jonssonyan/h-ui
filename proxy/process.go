@@ -3,12 +3,15 @@ package proxy
 import (
 	"bufio"
 	"errors"
-	"github.com/sirupsen/logrus"
-	"gopkg.in/natefinch/lumberjack.v2"
 	"h-ui/model/constant"
 	"io"
 	"os/exec"
 	"sync"
+	"syscall"
+	"time"
+
+	"github.com/sirupsen/logrus"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var logger logrus.Logger
@@ -91,10 +94,31 @@ func (p *process) stop() error {
 		return nil
 	}
 
-	if err := p.cmd.Process.Kill(); err != nil {
-		logrus.Errorf("cmd stop err: %v", err)
-		return errors.New("cmd stop err")
+	_ = p.cmd.Process.Signal(syscall.SIGTERM)
+	done := make(chan error, 1)
+	go func() {
+		done <- p.cmd.Wait()
+	}()
+
+	select {
+	case err := <-done:
+		if err != nil {
+			logrus.Errorf("process exit with error: %v", err)
+			return errors.New("cmd stop err")
+		}
+
+	case <-time.After(3 * time.Second):
+		if err := p.cmd.Process.Kill(); err != nil {
+			logrus.Errorf("force kill failed: %v", err)
+			return errors.New("cmd stop err")
+
+		}
+		if err := <-done; err != nil {
+			logrus.Errorf("wait after kill failed:: %v", err)
+			return errors.New("cmd stop err")
+		}
 	}
+
 	p.cmd = nil
 	return nil
 }

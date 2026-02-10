@@ -3,9 +3,6 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
@@ -21,6 +18,10 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v3"
 )
 
 func UpdateConfigs(c *gin.Context) {
@@ -81,7 +82,7 @@ func UpdateConfigs(c *gin.Context) {
 		}
 
 		if key == constant.Hysteria2ConfigPortHopping {
-			re := regexp.MustCompile("^\\d+(?:-\\d+)?(?:,\\d+(?:-\\d+)?)*$")
+			re := regexp.MustCompile(`^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$`)
 			if value != "" && !re.MatchString(value) {
 				vo.Fail(fmt.Sprintf("port hopping: %s is invalid", value), c)
 				return
