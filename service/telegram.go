@@ -70,7 +70,6 @@ func InitTelegramBot() error {
 			cancel()
 			if err == nil {
 				net.DefaultResolver = r
-				logrus.Infof("telegram dns server %s", addr)
 				break
 			}
 		}
@@ -78,7 +77,8 @@ func InitTelegramBot() error {
 	httpClient := &http.Client{Timeout: 5 * time.Second}
 	bot, err = tgbotapi.NewBotAPIWithClient(token, tgbotapi.APIEndpoint, httpClient)
 	if err != nil {
-		return fmt.Errorf("telegram init failed: %v", err)
+		logrus.Errorf("new bot api err: %v", err)
+		return err
 	}
 	bot.Debug = os.Getenv(constant.TelegramDebug) == "true"
 	commands := []tgbotapi.BotCommand{
