@@ -3,6 +3,7 @@ package proxy
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"h-ui/model/constant"
@@ -84,43 +85,78 @@ func (p *process) start(name string, arg ...string) error {
 
 func (p *process) stop() error {
 	if !p.mutex.TryLock() {
-		logrus.Errorf("cmd stop err: lock not acquired")
-		return errors.New("cmd stop err")
+		return errors.New("cmd stop err: lock not acquired")
 	}
-	defer p.mutex.Unlock()
 
 	if !p.isRunning() {
+		p.mutex.Unlock()
 		return nil
 	}
 
-	if err := p.cmd.Process.Signal(syscall.SIGTERM); err != nil {
-		logrus.Errorf("send SIGTERM failed: %v", err)
-	}
+	cmd := p.cmd
+	p.mutex.Unlock()
 
 	done := make(chan error, 1)
 	go func() {
-		done <- p.cmd.Wait()
+		done <- cmd.Wait()
 	}()
+
+	if err := cmd.Process.Signal(syscall.SIGTERM); err != nil {
+		logrus.Warnf("send SIGTERM failed: %v", err)
+	}
+
+	timer := time.NewTimer(3 * time.Second)
+	defer timer.Stop()
 
 	select {
 	case err := <-done:
-		if err != nil {
-			logrus.Errorf("process exit with error: %v", err)
-			return errors.New("cmd stop err")
+		if normalizeExitErr(err, syscall.SIGTERM) != nil {
+			return fmt.Errorf("process exit failed: %w", err)
 		}
-	case <-time.After(3 * time.Second):
-		if err := p.cmd.Process.Kill(); err != nil {
-			logrus.Errorf("SIGKILL failed: %v", err)
-			return errors.New("cmd stop err")
+
+	case <-timer.C:
+		if err := cmd.Process.Kill(); err != nil {
+			return fmt.Errorf("SIGKILL failed: %w", err)
 		}
-		if err := <-done; err != nil {
-			logrus.Errorf("wait after kill failed: %v", err)
-			return errors.New("cmd stop err")
+
+		err := <-done
+		if normalizeExitErr(err, syscall.SIGKILL) != nil {
+			return fmt.Errorf("process killed but exit abnormal: %w", err)
 		}
 	}
 
+	p.mutex.Lock()
 	p.cmd = nil
+	p.mutex.Unlock()
+
 	return nil
+}
+
+func normalizeExitErr(err error, allowedSignals ...syscall.Signal) error {
+	if err == nil {
+		return nil
+	}
+
+	exitErr, ok := err.(*exec.ExitError)
+	if !ok {
+		return err
+	}
+
+	status, ok := exitErr.Sys().(syscall.WaitStatus)
+	if !ok {
+		return err
+	}
+
+	if status.Signaled() {
+		sig := status.Signal()
+		for _, s := range allowedSignals {
+			if sig == s {
+				return nil
+			}
+		}
+	}
+
+	return err
 }
 
 func (p *process) release() error {
