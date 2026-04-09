@@ -134,7 +134,7 @@ export default {
   log: {
     numLine: "Количество строк",
   },
-  telegram: {  #dont_toch
+  telegram: { 
     placeholder: "Placeholder",
     enable: "Enable",
     disable: "Disable",
@@ -188,9 +188,9 @@ export default {
         email: "Email",
         ca: "The CA to use. Can be letsencrypt or zerossl.",
         listenHost:
-          "The host address (not including the port) to listen on for the ACME challenge. If omitted, the server will listen on all interfaces.",
-        dir: "The directory to store the ACME account key and certificates.",
-        type: "ACME challenge type. Can be http, tls, or dns.",
+          "Адрес хоста (не включая порт) для прослушивания запроса ACME. Если этот параметр не указан, сервер будет прослушивать все интерфейсы.",
+        dir: "Каталог для хранения ключа учетной записи ACME и сертификатов.",
+        type: "Тип запроса ACME. Может быть http, tls или dns.",
         http: {
           altPort:
             "Порт прослушивания для запросов HTTP. (Примечание: для перехода на порт, отличный от 80, требуется переадресация портов или обратный прокси-сервер HTTP, иначе вызов завершится неудачей!)",
@@ -200,8 +200,8 @@ export default {
             "Порт прослушивания для вызовов TLS-ALPN. (Примечание: для перехода на порт, отличный от 443, требуется переадресация портов или обратный прокси-сервер TLS, в противном случае вызов завершится неудачей!)",
         },
         dns: {
-          name: "DNS provider. For details, refer to ACME DNS Configuration.",
-          config: "ACME DNS Configuration",
+          name: "DNS поставщик. Дополнительные сведения см. в разделе Настройка ACME DNS.",
+          config: "ACME DNS настройка",
         },
         disableHTTP: "Disable HTTP challenge.",
         disableTLSALPN: "Disable TLS-ALPN challenge.",
