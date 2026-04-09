@@ -124,17 +124,17 @@ export default {
     cpuPercent: "CPU Usage",
     memPercent: "Memory Usage",
     diskPercent: "Disk Usage",
-    hysteria2UserTotal: "Number of online users",
-    hysteria2DeviceTotal: "Number of online devices",
-    hysteria2Version: "Hysteria2 Version",
-    hysteria2Running: "Hysteria2 Status",
-    hysteria2RunningTrue: "Running",
-    hysteria2RunningFalse: "Stop",
+    hysteria2UserTotal: "Колич польз в сети",
+    hysteria2DeviceTotal: "Колич устр в сети",
+    hysteria2Version: "Hysteria2 Версия",
+    hysteria2Running: "Hysteria2 Статус",
+    hysteria2RunningTrue: "Запущено",
+    hysteria2RunningFalse: "Остановлено",
   },
   log: {
-    numLine: "Number of lines",
+    numLine: "Количество строк",
   },
-  telegram: {
+  telegram: {  #dont_toch
     placeholder: "Placeholder",
     enable: "Enable",
     disable: "Disable",
@@ -150,8 +150,8 @@ export default {
     enable: "Enable",
     disable: "Disable",
     addConfigItem: "Add Config Item",
-    hysteria2Version: "Hysteria2 Version",
-    hysteria2Running: "Hysteria2 Status",
+    hysteria2Version: "Hysteria2 Версия",
+    hysteria2Running: "Hysteria2 Статус",
     hysteria2ChangeVersion: "Change",
     addOutbound: "Add Outbound",
     extension: "Extension",
@@ -172,16 +172,16 @@ export default {
       enable: "Enable/Disable",
       remark: "Remark",
       portHopping:
-        "Port Hopping, Multiple individual ports: 1234,5678,9012; A range of ports: 20000-50000; A combination of both: 1234,5000-6000,7044,8000-9000",
+        "Переключение между портами, несколько отдельных портов: 1234,5678,9012; Диапазон портов: 20000-50000; Комбинация обоих: 1234,5000-6000,7044,8000-9000",
       clashExtension: "Clash subscription extension",
       listen:
-        "When the IP address is omitted, the server will listen on all interfaces, both IPv4 and IPv6. To listen on IPv4 only, you can use 0.0.0.0:443. To listen on IPv6 only, you can use [::]:443.",
+        "Если IP-адрес не указан, сервер будет прослушивать все интерфейсы, как IPv4, так и IPv6. Чтобы прослушивать только IPv4, вы можете использовать 0.0.0.0:443. Для прослушивания только по протоколу IPv6 вы можете использовать [::]:443.",
       tlsType: "TLS type",
       tls: {
         cert: "The path to the Cert file.",
         key: "The path to the Key file.",
         sniGuard:
-          'Verify the SNI provided by the client. Accept the connection only when it matches what\'s in the certificate. Terminate the TLS handshake otherwise. Set to strict to enforce this behavior. Set to disable to disable this entirely. The default is dns-san, which enables this feature only when the certificate contains the "Subject Alternative Name" extension with a domain name in it.',
+          'Проверьте SNI, предоставленный клиентом. Принимайте соединение только в том случае, если оно соответствует тому, что указано в сертификате. В противном случае завершите подтверждение TLS. Установите значение strict, чтобы обеспечить соблюдение этого правила. Установите значение disable, чтобы полностью отключить это. По умолчанию используется dns-san, который включает эту функцию только в том случае, если сертификат содержит расширение "Альтернативное имя субъекта" с доменным именем в нем.',
       },
       acme: {
         domains: "Domains",
@@ -280,26 +280,26 @@ export default {
         file: "The path to the ACL file.",
         inline: "The list of inline ACL rules.",
         geoip:
-          "Optional. Uncomment to enable. The path to the GeoIP database file. If this field is omitted, Hysteria will automatically download the latest database to your working directory.",
+          "Необязательно. Раскомментируйте, чтобы включить. Путь к файлу базы данных GeoIP. Если это поле не указано, Hysteria автоматически загрузит последнюю версию базы данных в ваш рабочий каталог.",
         geosite:
-          "Optional. Uncomment to enable. The path to the GeoSite database file. If this field is omitted, Hysteria will automatically download the latest database to your working directory.",
+          "Необязательно. Раскомментируйте, чтобы включить. Путь к файлу базы данных GeoSite. Если это поле не указано, Hysteria автоматически загрузит последнюю версию базы данных в ваш рабочий каталог.",
         geoUpdateInterval:
-          "Optional. The interval at which to refresh the GeoIP/GeoSite databases. 168 hours (1 week) by default. Only applies if the GeoIP/GeoSite databases are automatically downloaded. (Check the note below for more information.)",
+          "Необязательно. Интервал обновления баз данных GeoIP/GeoSite. По умолчанию - 168 часов (1 неделя). Применяется только в том случае, если базы данных GeoIP/GeoSite загружаются автоматически. (Для получения дополнительной информации ознакомьтесь с примечанием ниже).",
       },
       outbounds: {
-        name: "The name of the outbound. This is used in ACL rules.",
+        name: "Имя исх соединения (outbound). Это используется в правилах ACL.",
         type: "Type",
         socks5: {
-          addr: "The address of the SOCKS5 proxy.",
+          addr: "Адрес прокси-сервера SOCKS5.",
           username:
-            "Optional. The username for the SOCKS5 proxy, if authentication is required.",
+            "Рекомендуется. Имя пользователя для прокси-сервера SOCKS5, если требуется аутентификация.",
           password:
-            "Optional. The password for the SOCKS5 proxy, if authentication is required.",
+            "Рекомендуется. Пароль для прокси-сервера SOCKS5, если требуется аутентификация.",
         },
         http: {
           url: "The URL of the HTTP/HTTPS proxy. (Can be http:// or https://)",
           insecure:
-            "Optional. Whether to disable TLS verification. Applies to HTTPS proxies only.",
+            "Необязательно. Следует ли отключить проверку по протоколу TLS. Применяется только к HTTPS-прокси.",
         },
         direct: {
           mode: "Type",
