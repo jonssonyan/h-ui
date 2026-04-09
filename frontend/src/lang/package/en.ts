@@ -30,7 +30,7 @@ export default {
   },
   common: {
     id: "ID",
-    createTime: "CreateTime",
+    createTime: "Create Time",
     operate: "Operate",
     edit: "Edit",
     delete: "Delete",
@@ -82,7 +82,7 @@ export default {
     quota: "Quota",
     download: "Download",
     upload: "Upload",
-    expireTime: "ExpireTime",
+    expireTime: "Expire Time",
     kickUtilTimeLast: "Offline Remaining Time",
     kickUtilTime: "Offline Time",
     deviceNo: "Limit Devices",
