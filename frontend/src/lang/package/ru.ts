@@ -62,17 +62,17 @@ export default {
     yes: "Да",
     no: "Нет",
     securityRisk: "Security Risks",
-    defaultPassTip: `Please change the default login password as soon as possible, It is recommended to set a strong password to protect your account security. <a href="/#/account/list?focus=change-pass" style="color: #00BFFF">Click here</a> to change`,
-    noHttpsTip: `Your website is not using HTTPS, making data transmission insecure, Please enable HTTPS as soon as possible to protect user information. <a href="/#/config/list?focus=huiHttps" style="color: #00BFFF">Click here</a> to enable`,
+    defaultPassTip: `Пожалуйста, измените пароль для входа в систему по умолчанию как можно скорее, рекомендуется установить надежный пароль для защиты вашей учетной записи. <a href="/#/account/list?focus=change-pass" style="color: #00BFFF">Click here</a> to change`,
+    noHttpsTip: `Ваша панель не использует HTTPS, что делает передачу данных небезопасной, пожалуйста, включите HTTPS как можно скорее, чтобы защитить информацию пользователя. <a href="/#/config/list?focus=huiHttps" style="color: #00BFFF">Click here</a> to enable`,
   },
   info: {
     expireTime: "y-M-d H:m:s",
-    greeting1: "The cool and fresh air awakens your energy for the day🌅！",
+    greeting1: "Воздух чистый, с холодком, пускай кровь разгонит и дух твой пробудит для великих дел 🌅！",
     greeting2: "Доброе утро，",
     greeting3: "Добрый день，",
     greeting4: "Добрый вечер，",
     greeting5:
-      "I want to be a shooting star, cutting through the darkness, just to illuminate your dreams, good night🌛！",
+      "Хочу падующей звездой прошить темень ночную, лишь бы озарить твои грёзы. Доброй ночи🌛！",
   },
   account: {
     remark: "Remark",
@@ -206,14 +206,14 @@ export default {
         disableHTTP: "Disable HTTP challenge.",
         disableTLSALPN: "Disable TLS-ALPN challenge.",
         altHTTPPort:
-          "Alternate HTTP challenge port. (Note: If you want to use anything other than 80, you must set up port forward/HTTP reverse proxy from 80 to that port, otherwise ACME will not be able to issue the certificate.)",
+          "Альтернативный порт запроса HTTP. (Примечание: Если вы хотите использовать что-либо, отличное от 80, вы должны настроить прямой/обратный HTTP-прокси-сервер с 80 на этот порт, иначе ACME не сможет выдать сертификат.)",
         altTLSALPNPort:
-          "Alternate TLS-ALPN challenge port. (Note: If you want to use anything other than 443, you must set up port forward/SNI proxy from 443 to that port, otherwise ACME will not be able to issue the certificate.)",
+          "Альтернативный порт вызова TLS-ALPN. (Примечание: Если вы хотите использовать что-либо, отличное от 443, вы должны настроить переадресацию портов/SNI-прокси с 443 на этот порт, иначе ACME не сможет выдать сертификат.)",
       },
       obfs: {
         type: "Type",
         salamander: {
-          password: "Replace with a strong password of your choice.",
+          password: "Замени на надежный пароль по вашему выбору.",
         },
       },
       quic: {
@@ -265,15 +265,15 @@ export default {
         },
       },
       sniff: {
-        enable: "Whether to enable protocol sniffing.",
+        enable: "Следует ли включать protocol sniffing.",
         timeout:
-          "Sniffing timeout. If the protocol/domain cannot be determined within this time, the original address will be used to initiate the connection.",
+          "Sniffing timeout. Если протокол/домен не могут быть определены в течение этого времени, для установления соединения будет использован исходный адрес.",
         rewriteDomain:
-          "Whether to rewrite requests that are already in domain name form. If enabled, requests with the target address already in domain name form will still be sniffed.",
+          "Следует ли переписывать запросы, которые уже находятся в форме доменного имени. Если эта опция включена, запросы с целевым адресом, уже указанным в форме доменного имени, по-прежнему будут обрабатываться.",
         tcpPorts:
-          "List of TCP ports. Only TCP requests on these ports will be sniffed.",
+          "Список TCP-портов. Анализироваться(sniffing) будут только TCP-запросы, поступающие на эти порты.",
         udpPorts:
-          "List of UDP ports. Only UDP requests on these ports will be sniffed.",
+          "Список UDP-портов. Анализироваться(sniffing) будут только UDP-запросы, поступающие на эти порты.",
       },
       aclType: "ACL type",
       acl: {
@@ -318,10 +318,10 @@ export default {
           dir: "The directory to serve files from.",
         },
         proxy: {
-          url: "The URL of the website to proxy.",
+          url: "URL-адрес веб-сайта для подключения к прокси-серверу.",
           rewriteHost:
-            "Whether to rewrite the Host header to match the proxied website. This is required if the target web server uses Host to determine which site to serve.",
-          insecure: "Disable TLS verification for the proxied website.",
+            "Следует ли переписать заголовок Host, чтобы он соответствовал прокси-сайту. Это необходимо, если целевой веб-сервер использует Host для определения того, какой сайт обслуживать.",
+          insecure: "Отключите проверку TLS для проксируемого веб-сайта.",
         },
         string: {
           content: "The string to return.",
