@@ -115,9 +115,9 @@ export default {
     huiHttps: "Open https on the panel",
     resetTrafficCron: "Reset traffic schedule task",
     resetTrafficCronTip:
-      "Scheduled task expression, reference: https://pkg.go.dev/github.com/robfig/cron/v3",
-    resetTrafficMonth: "Run once a month, midnight, first of month",
-    resetTrafficWeek: "Run once a week, midnight between Sat/Sun",
+      "Выражение запланированной задачи, пример: https://pkg.go.dev/github.com/robfig/cron/v3",
+    resetTrafficMonth: "Запуск раз в месяц, в полночь, первого числа",
+    resetTrafficWeek: "Запуск раз в неделю, в полночь между Сб и Вс",
   },
   monitor: {
     huiVersion: "H UI Version",
@@ -173,13 +173,13 @@ export default {
       remark: "Remark",
       portHopping:
         "Переключение между портами, несколько отдельных портов: 1234,5678,9012; Диапазон портов: 20000-50000; Комбинация обоих: 1234,5000-6000,7044,8000-9000",
-      clashExtension: "Clash subscription extension",
+      clashExtension: "Продление подписки на Clash",
       listen:
         "Если IP-адрес не указан, сервер будет прослушивать все интерфейсы, как IPv4, так и IPv6. Чтобы прослушивать только IPv4, вы можете использовать 0.0.0.0:443. Для прослушивания только по протоколу IPv6 вы можете использовать [::]:443.",
       tlsType: "TLS type",
       tls: {
-        cert: "The path to the Cert file.",
-        key: "The path to the Key file.",
+        cert: "Путь к Cert file.",
+        key: "Путь к Key file.",
         sniGuard:
           'Проверьте SNI, предоставленный клиентом. Принимайте соединение только в том случае, если оно соответствует тому, что указано в сертификате. В противном случае завершите подтверждение TLS. Установите значение strict, чтобы обеспечить соблюдение этого правила. Установите значение disable, чтобы полностью отключить это. По умолчанию используется dns-san, который включает эту функцию только в том случае, если сертификат содержит расширение "Альтернативное имя субъекта" с доменным именем в нем.',
       },
@@ -193,11 +193,11 @@ export default {
         type: "ACME challenge type. Can be http, tls, or dns.",
         http: {
           altPort:
-            "Listening port for HTTP challenges. (Note: Changing to a port other than 80 requires port forwarding or HTTP reverse proxy, or the challenge will fail!)",
+            "Порт прослушивания для запросов HTTP. (Примечание: для перехода на порт, отличный от 80, требуется переадресация портов или обратный прокси-сервер HTTP, иначе вызов завершится неудачей!)",
         },
         tls: {
           altPort:
-            "Listening port for TLS-ALPN challenges. (Note: Changing to a port other than 443 requires port forwarding or TLS reverse proxy, or the challenge will fail!)",
+            "Порт прослушивания для вызовов TLS-ALPN. (Примечание: для перехода на порт, отличный от 443, требуется переадресация портов или обратный прокси-сервер TLS, в противном случае вызов завершится неудачей!)",
         },
         dns: {
           name: "DNS provider. For details, refer to ACME DNS Configuration.",
@@ -213,34 +213,34 @@ export default {
       obfs: {
         type: "Type",
         salamander: {
-          password: "Замени на надежный пароль по вашему выбору.",
+          password: "Замени на надежный пароль.",
         },
       },
       quic: {
-        initStreamReceiveWindow: "The initial QUIC stream receive window size.",
-        maxStreamReceiveWindow: "The maximum QUIC stream receive window size.",
+        initStreamReceiveWindow: "Начальный размер окна приема потока QUIC.",
+        maxStreamReceiveWindow: "Максимальный размер окна приема QUIC stream.",
         initConnReceiveWindow:
-          "The initial QUIC connection receive window size.",
+          "Размер окна начального QUIC-соединения.",
         maxConnReceiveWindow:
-          "The maximum QUIC connection receive window size.",
+          "Максимальный размер окна QUIC-соединения.",
         maxIdleTimeout:
-          "The maximum idle timeout. How long the server will consider the client still connected without any activity.",
+          "Максимальное время ожидания в режиме ожидания. Как долго сервер будет считать, что клиент все еще подключен без каких-либо действий.",
         maxIncomingStreams:
-          "The maximum number of concurrent incoming streams.",
-        disablePathMTUDiscovery: "Disable QUIC path MTU discovery.",
+          "Максимальное количество одновременных входящих потоков.",
+        disablePathMTUDiscovery: "Отключить обнаружение MTU QUIC path.",
       },
       bandwidth: {
         up: "Вверх",
         down: "Вниз",
       },
       ignoreClientBandwidth:
-        "When enabled, makes the server to disregard any bandwidth hints set by clients",
+        "Когда этот параметр включен, сервер игнорирует любые указания по пропускной способности, установленные клиентами",
       speedTest:
-        "speedTest enables the built-in speed test server. When enabled, clients can test their download and upload speeds with the server. For more information, see the Speed Test documentation.",
+        "speedTest включает встроенный сервер тестирования скорости. Если этот параметр включен, клиенты могут тестировать скорость загрузки с помощью сервера. Дополнительные сведения см. в документации по тестированию скорости.",
       disableUDP:
-        "disableUDP disables UDP forwarding, only allowing TCP connections.",
+        "disableUDP отключает переадресацию UDP, разрешая только TCP-соединения.",
       udpIdleTimeout:
-        "udpIdleTimeout specifies the amount of time the server will keep a local UDP port open for each UDP session that has no activity. This is conceptually similar to the NAT UDP session timeout.",
+        "udpIdleTimeout определяет время, в течение которого сервер будет поддерживать локальный UDP-порт открытым для каждого сеанса UDP, в котором нет активности. Это концептуально аналогично тайм-ауту сеанса NAT UDP.",
       resolver: {
         type: "Type",
         tcp: {
@@ -277,8 +277,8 @@ export default {
       },
       aclType: "ACL type",
       acl: {
-        file: "The path to the ACL file.",
-        inline: "The list of inline ACL rules.",
+        file: "Путь к файлу ACL.",
+        inline: "Список встроенных правил ACL.",
         geoip:
           "Необязательно. Раскомментируйте, чтобы включить. Путь к файлу базы данных GeoIP. Если это поле не указано, Hysteria автоматически загрузит последнюю версию базы данных в ваш рабочий каталог.",
         geosite:
@@ -297,7 +297,7 @@ export default {
             "Рекомендуется. Пароль для прокси-сервера SOCKS5, если требуется аутентификация.",
         },
         http: {
-          url: "The URL of the HTTP/HTTPS proxy. (Can be http:// or https://)",
+          url: "URL-адрес прокси-сервера HTTP/HTTPS. (Может быть http:// или https://)",
           insecure:
             "Необязательно. Следует ли отключить проверку по протоколу TLS. Применяется только к HTTPS-прокси.",
         },
@@ -331,7 +331,7 @@ export default {
         listenHTTP: "HTTP (TCP) listen address.",
         listenHTTPS: "HTTPS (TCP) listen address.",
         forceHTTPS:
-          "Whether to force HTTPS. If enabled, all HTTP requests will be redirected to HTTPS.",
+          "Если этот параметр включен, все HTTP-запросы будут перенаправляться на HTTPS.",
       },
     },
   },
