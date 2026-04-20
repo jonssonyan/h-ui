@@ -322,6 +322,7 @@ export default {
           rewriteHost:
             "Whether to rewrite the Host header to match the proxied website. This is required if the target web server uses Host to determine which site to serve.",
           insecure: "Disable TLS verification for the proxied website.",
+          xForwarded: "Optional. Whether to set X-Forwarded-For, X-Forwarded-Host, and X-Forwarded-Proto headers when proxying requests. Disabled by default.",
         },
         string: {
           content: "The string to return.",
