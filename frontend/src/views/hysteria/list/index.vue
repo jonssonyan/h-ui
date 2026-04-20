@@ -1497,6 +1497,7 @@ const submitForm = () => {
       if (!state.bandwidth) {
         state.dataForm.bandwidth = undefined;
         state.dataForm.ignoreClientBandwidth = undefined;
+        state.dataForm.congestion = undefined;
       }
       if (!state.speedTest) {
         state.dataForm.speedTest = undefined;
