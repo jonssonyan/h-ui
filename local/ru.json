@@ -1,14 +1,15 @@
 {
   "menu": {
-    "recommend_os": "Рекомендуемая OS",
-    "description": "Описание: Быстрая установка  H UI",
+    "recommend_os": "Рекомендуемая ОС",
+    "description": "Описание: быстрая установка H UI",
     "author": "Автор",
-    "install_hui_systemd": "Утсновка H UI (systemd)",
+    "install_hui_systemd": "Установка H UI (systemd)",
     "upgrade_h_ui_systemd": "Обновление H UI (systemd)",
     "uninstall_h_ui_systemd": "Удаление H UI (systemd)",
-    "install_h_ui_docker": "Утсновка H UI (Docker)",
+    "install_h_ui_docker": "Установка H UI (Docker)",
     "upgrade_h_ui_docker": "Обновление H UI (Docker)",
     "uninstall_h_ui_docker": "Удаление H UI (Docker)",
-    "ssh_local_port_forwarding": "Переадресация локального порта SSH (Invalid after restarting the server)",
-    "reset_sysadmin": "Сброс логина и пароля"
+    "ssh_local_port_forwarding": "Локальная переадресация порта SSH (недействительно после перезапуска сервера)",
+    "reset_sysadmin": "Сброс имени пользователя и пароля системного администратора"
   }
+}

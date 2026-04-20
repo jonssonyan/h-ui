@@ -193,11 +193,15 @@ select_language() {
   echo_content red "=============================================================="
   echo_content skyBlue "Please select language"
   echo_content yellow "1. English (Default)"
-  echo_content yellow "2. 简体中文"
+  echo_content yellow "2. Русский"
+  echo_content yellow "3. 简体中文"
   echo_content red "=============================================================="
   read -r -p "Please choose: " input_option
   case ${input_option} in
   2)
+    translation_file="ru.json"
+    ;;
+  3)
     translation_file="zh_cn.json"
     ;;
   esac
