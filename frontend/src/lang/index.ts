@@ -4,6 +4,7 @@ import { useAppStore } from "@/store/modules/app";
 const appStore = useAppStore();
 // 本地语言包
 import enLocale from "./package/en";
+import ruLocale from "./package/ru";
 import zhCnLocale from "./package/zh-cn";
 
 const messages = {
@@ -12,6 +13,9 @@ const messages = {
   },
   en: {
     ...enLocale,
+  },
+	ru: {
+    ...ruLocale,
   },
 };
 
