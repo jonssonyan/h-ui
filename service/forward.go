@@ -46,21 +46,19 @@ func InitTableAndChain() error {
 }
 
 func InitPortHopping() error {
-	if err := RemoveByComment(); err != nil {
-		return err
-	}
-
-	hysteria2Config, err := GetHysteria2Config()
-	if err != nil {
-		return err
-	}
-
 	// set port forward
 	hysteria2ConfigPortHopping, err := dao.GetConfig("key = ?", constant.Hysteria2ConfigPortHopping)
 	if err != nil {
 		return err
 	}
 	if *hysteria2ConfigPortHopping.Value != "" {
+		if err := RemoveByComment(); err != nil {
+			return err
+		}
+		hysteria2Config, err := GetHysteria2Config()
+		if err != nil {
+			return err
+		}
 		listen := strings.Split(*hysteria2Config.Listen, ":")
 		if len(listen) == 2 {
 			portHoppings := strings.Split(*hysteria2ConfigPortHopping.Value, ",")
