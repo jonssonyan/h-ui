@@ -8,14 +8,14 @@ import ruLocale from "./package/ru";
 import zhCnLocale from "./package/zh-cn";
 
 const messages = {
-  "zh-cn": {
-    ...zhCnLocale,
-  },
   en: {
     ...enLocale,
   },
-	ru: {
+  ru: {
     ...ruLocale,
+  },
+  "zh-cn": {
+    ...zhCnLocale,
   },
 };
 
