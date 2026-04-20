@@ -9,7 +9,7 @@ type Hysteria2ServerConfig struct {
 	Bandwidth             *serverConfigBandwidth      `yaml:"bandwidth,omitempty" json:"bandwidth" validate:"omitempty"`
 	IgnoreClientBandwidth *bool                       `yaml:"ignoreClientBandwidth,omitempty" json:"ignoreClientBandwidth" validate:"omitempty"`
 	SpeedTest             *bool                       `yaml:"speedTest,omitempty" json:"speedTest" validate:"omitempty"`
-	Congestion            *ServerConfigCongestion     `yaml:"congestion,omitempty" json:"congestion" validate:"omitempty"`
+	Congestion            *serverConfigCongestion     `yaml:"congestion,omitempty" json:"congestion" validate:"omitempty"`
 	DisableUDP            *bool                       `yaml:"disableUDP,omitempty" json:"disableUDP" validate:"omitempty"`
 	UDPIdleTimeout        *string                     `yaml:"udpIdleTimeout,omitempty" json:"udpIdleTimeout" validate:"omitempty"`
 	Auth                  *ServerConfigAuth           `yaml:"auth,omitempty" json:"-" validate:"omitempty"`
@@ -86,14 +86,14 @@ type serverConfigBandwidth struct {
 	Down *string `yaml:"down,omitempty" json:"down" validate:"required"`
 }
 
+type serverConfigCongestion struct {
+	Type       *string `yaml:"type,omitempty" json:"type" validate:"required"`
+	BbrProfile *string `yaml:"bbrProfile,omitempty" json:"bbrProfile" validate:"required"`
+}
+
 type ServerConfigAuthHTTP struct {
 	URL      *string `yaml:"url,omitempty" json:"url" validate:"required"`
 	Insecure *bool   `yaml:"insecure,omitempty" json:"insecure" validate:"required"`
-}
-
-type ServerConfigCongestion struct {
-	Type       *string `yaml:"type,omitempty" json:"type" validate:"required"`
-	BbrProfile *string `yaml:"bbrProfile,omitempty" json:"bbrProfile" validate:"required"`
 }
 
 type ServerConfigAuth struct {
