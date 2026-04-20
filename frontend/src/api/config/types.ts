@@ -69,6 +69,10 @@ export interface Hysteria2ServerConfig {
     down: string;
   };
   ignoreClientBandwidth?: boolean;
+  congestion?: {
+    type: string;
+    bbrProfile: string;
+  };
   speedTest?: boolean;
   disableUDP?: boolean;
   udpIdleTimeout?: string;
@@ -184,6 +188,10 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     down: "1 gbps",
   },
   ignoreClientBandwidth: false,
+  congestion: {
+    type: "bbr",
+    bbrProfile: "standard",
+  },
   speedTest: false,
   disableUDP: false,
   udpIdleTimeout: "60s",

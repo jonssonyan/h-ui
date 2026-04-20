@@ -609,6 +609,46 @@
                 <el-switch v-model="dataForm.ignoreClientBandwidth" />
               </el-form-item>
             </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.congestion.type')"
+              placement="bottom"
+            >
+              <el-form-item label="congestion.type" prop="congestion.type">
+                <el-select
+                  v-model="dataForm.congestion.type"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in congestionTypes"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
+              v-if="dataForm.congestion.type === 'bbr'"
+              :content="$t('hysteria.config.congestion.bbrProfile')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="congestion.bbrProfile"
+                prop="congestion.bbrProfile"
+              >
+                <el-select
+                  v-model="dataForm.congestion.bbrProfile"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in bbrProfiles"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
           <el-tab-pane
             :label="$t('hysteria.speedTest')"
@@ -1146,6 +1186,8 @@ const dataFormRules = {
 };
 
 const tlsTypes = ref<string[]>(["tls", "acme"]);
+const congestionTypes = ref<string[]>(["bbr", "reno"]);
+const bbrProfiles = ref<string[]>(["standard", "conservative", "aggressive"]);
 const tlsSniGuards = ref<string[]>(["dns-san", "disable", "strict"]);
 const aclTypes = ref<string[]>(["file", "inline"]);
 const acmeCas = ref<string[]>(["zerossl", "letsencrypt"]);

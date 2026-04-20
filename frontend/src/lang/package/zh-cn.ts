@@ -230,6 +230,10 @@ export default {
         down: "下载",
       },
       ignoreClientBandwidth: "忽略客户端带宽设置",
+      congestion: {
+        type: "类型",
+        bbrProfile: "此字段仅在 type 为 bbr 时生效。默认值为 standard。",
+      },
       speedTest: "speedTest 启用后，服务端将允许客户端进行下载和上传速度测试。",
       disableUDP: "disableUDP 启用后服务端禁用 UDP 转发，只支持 TCP。",
       udpIdleTimeout:
