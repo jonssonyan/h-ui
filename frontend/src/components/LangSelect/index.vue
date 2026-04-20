@@ -11,6 +11,8 @@ function handleLanguageChange(lang: string) {
   appStore.changeLanguage(lang);
   if (lang == "en") {
     ElMessage.success("Switch Language Successful!");
+  } else if (lang == "ru") {
+    ElMessage.success("Смена языка прошла успешно!");
   } else {
     ElMessage.success("切换语言成功！");
   }
@@ -24,14 +26,17 @@ function handleLanguageChange(lang: string) {
     </div>
     <template #dropdown>
       <el-dropdown-menu>
+        <el-dropdown-item :disabled="appStore.language === 'en'" command="en">
+          English
+        </el-dropdown-item>
+        <el-dropdown-item :disabled="appStore.language === 'ru'" command="ru">
+          Русский
+        </el-dropdown-item>
         <el-dropdown-item
           :disabled="appStore.language === 'zh-cn'"
           command="zh-cn"
         >
-          中文
-        </el-dropdown-item>
-        <el-dropdown-item :disabled="appStore.language === 'en'" command="en">
-          English
+          简体中文
         </el-dropdown-item>
       </el-dropdown-menu>
     </template>
