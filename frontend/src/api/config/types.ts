@@ -122,6 +122,7 @@ export interface Hysteria2ServerConfig {
       url: string;
       rewriteHost: boolean;
       insecure: boolean;
+      xForwarded: boolean;
     };
     string?: {
       content: string;
@@ -236,6 +237,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
       url: "",
       rewriteHost: true,
       insecure: false,
+      xForwarded: false,
     },
     string: {
       content: "hello stupid world",

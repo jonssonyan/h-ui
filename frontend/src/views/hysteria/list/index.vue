@@ -995,6 +995,18 @@
               </el-form-item>
             </el-tooltip>
             <el-tooltip
+              v-if="dataForm.masquerade.type === 'proxy'"
+              :content="$t('hysteria.config.masquerade.proxy.xForwarded')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="masquerade.proxy.xForwarded"
+                prop="masquerade.proxy.xForwarded"
+              >
+                <el-switch v-model="dataForm.masquerade.proxy.xForwarded" />
+              </el-form-item>
+            </el-tooltip>
+            <el-tooltip
               v-if="dataForm.masquerade.type === 'string'"
               :content="$t('hysteria.config.masquerade.string.content')"
               placement="bottom"
