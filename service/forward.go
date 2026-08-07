@@ -19,13 +19,13 @@ var (
 )
 
 func InitForward() {
-	if nft, err := util.Exec("command -v nft"); err == nil && strings.TrimSpace(nft) != "" {
+	if nft, err := util.ExecShell("command -v nft"); err == nil && strings.TrimSpace(nft) != "" {
 		netManager = "nft"
-	} else if iptables, err := util.Exec("command -v iptables"); err == nil && strings.TrimSpace(iptables) != "" {
+	} else if iptables, err := util.ExecShell("command -v iptables"); err == nil && strings.TrimSpace(iptables) != "" {
 		netManager = "iptables"
 	}
 
-	if ii, err := util.Exec("ls /sys/class/net | grep -E '^en|^eth'"); err == nil && strings.TrimSpace(ii) != "" {
+	if ii, err := util.ExecShell("ls /sys/class/net | grep -E '^en|^eth'"); err == nil && strings.TrimSpace(ii) != "" {
 		iiList := strings.Split(ii, "\n")
 		ingressInterface = strings.TrimSpace(iiList[0])
 	}
@@ -33,11 +33,11 @@ func InitForward() {
 
 func InitTableAndChain() error {
 	if netManager == "nft" {
-		_, err := util.Exec(fmt.Sprintf("nft add table inet %s", Table))
+		_, err := util.ExecShell(fmt.Sprintf("nft add table inet %s", Table))
 		if err != nil {
 			return err
 		}
-		_, err = util.Exec(fmt.Sprintf("nft add chain inet %s prerouting { type nat hook prerouting priority dstnat\\; policy accept\\; }", Table))
+		_, err = util.ExecShell(fmt.Sprintf("nft add chain inet %s prerouting { type nat hook prerouting priority dstnat\\; policy accept\\; }", Table))
 		if err != nil {
 			return err
 		}
@@ -114,8 +114,25 @@ func nftForward(rules string, target string, option string) error {
 	// 创建表：nft add table inet hui_hysteria_porthopping
 	// 创建链：nft add chain inet hui_hysteria_porthopping prerouting { type nat hook prerouting priority dstnat\; policy accept\; }
 	// 添加规则：nft add rule inet hui_hysteria_porthopping prerouting iifname enp1s0 udp dport {30000-40000} counter redirect to :444 comment hui_hysteria_porthopping
-	_, err := util.Exec(fmt.Sprintf("nft %s rule inet %s prerouting iifname %s udp dport {%s} counter redirect to :%s comment %s", option, Table, ingressInterface, rules, target, Comment))
-	if err != nil {
+	if _, err := util.ExecCommand(
+		"nft",
+		option,
+		"rule",
+		"inet",
+		Table,
+		"prerouting",
+		"iifname",
+		ingressInterface,
+		"udp",
+		"dport",
+		fmt.Sprintf("{%s}", rules),
+		"counter",
+		"redirect",
+		"to",
+		fmt.Sprintf(":%s", target),
+		"comment",
+		Comment,
+	); err != nil {
 		return err
 	}
 
@@ -131,7 +148,7 @@ func ntfRemoveByComment(comment string) error {
 		if strings.Contains(rule, comment) {
 			parts := strings.Fields(rule)
 			handle := parts[len(parts)-1]
-			_, err := util.Exec(fmt.Sprintf("nft delete rule inet %s prerouting handle %s", Table, strings.TrimSpace(handle)))
+			_, err := util.ExecShell(fmt.Sprintf("nft delete rule inet %s prerouting handle %s", Table, strings.TrimSpace(handle)))
 			if err != nil {
 				return err
 			}
@@ -141,14 +158,14 @@ func ntfRemoveByComment(comment string) error {
 }
 
 func nftRules() ([]string, error) {
-	listOutput, err := util.Exec(fmt.Sprintf("nft list ruleset | grep -q %s && echo 'found' || echo 'not found'", Comment))
+	listOutput, err := util.ExecShell(fmt.Sprintf("nft list ruleset | grep -q %s && echo 'found' || echo 'not found'", Comment))
 	if err != nil {
 		return nil, err
 	}
 	if strings.TrimSpace(listOutput) == "not found" {
 		return []string{}, nil
 	}
-	output, err := util.Exec(fmt.Sprintf("nft --handle list chain inet %s prerouting", Table))
+	output, err := util.ExecShell(fmt.Sprintf("nft --handle list chain inet %s prerouting", Table))
 	if err != nil {
 		return nil, err
 	}
@@ -190,8 +207,27 @@ func iptablesAddRule(option, ports, target string) error {
 	protocols := [2]string{"iptables", "ip6tables"}
 	for _, protocol := range protocols {
 		// iptables -t nat -A PREROUTING -i enp1s0 -p udp --dport 30000:40000 -j REDIRECT --to-port 444 -m comment --comment hui_hysteria_porthopping
-		_, err := util.Exec(fmt.Sprintf("%s -t nat %s PREROUTING -i %s -p udp --dport %s -j REDIRECT --to-port %s -m comment --comment %s", protocol, option, ingressInterface, ports, target, Comment))
-		if err != nil {
+		if _, err := util.ExecCommand(
+			protocol,
+			"-t",
+			"nat",
+			option,
+			"PREROUTING",
+			"-i",
+			ingressInterface,
+			"-p",
+			"udp",
+			"--dport",
+			ports,
+			"-j",
+			"REDIRECT",
+			"--to-port",
+			target,
+			"-m",
+			"comment",
+			"--comment",
+			Comment,
+		); err != nil {
 			return err
 		}
 	}
@@ -209,7 +245,7 @@ func iptablesRemoveByComment(comment string) error {
 			if strings.Contains(rule, comment) {
 				parts := strings.Fields(rule)
 				handle := parts[0]
-				_, err := util.Exec(fmt.Sprintf("%s -t nat -D PREROUTING %s", protocol, strings.TrimSpace(handle)))
+				_, err := util.ExecShell(fmt.Sprintf("%s -t nat -D PREROUTING %s", protocol, strings.TrimSpace(handle)))
 				if err != nil {
 					return err
 				}
@@ -222,7 +258,7 @@ func iptablesRemoveByComment(comment string) error {
 
 func iptablesRules(protocol string) ([]string, error) {
 	// iptables -t nat -L PREROUTING -v --line-numbers
-	output, err := util.Exec(fmt.Sprintf("%s -t nat -L PREROUTING -v --line-numbers", protocol))
+	output, err := util.ExecShell(fmt.Sprintf("%s -t nat -L PREROUTING -v --line-numbers", protocol))
 	if err != nil {
 		return nil, err
 	}

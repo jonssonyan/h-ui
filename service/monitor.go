@@ -48,7 +48,7 @@ func MonitorHysteria2() (vo.Hysteria2MonitorVo, error) {
 	}
 
 	hysteria2MonitorVo.Version = "-"
-	content, err := util.Exec(fmt.Sprintf("%s version", util.GetHysteria2BinPath()))
+	content, err := util.ExecShell(fmt.Sprintf("%s version", util.GetHysteria2BinPath()))
 	if err == nil {
 		pattern := `v\d+\.\d+\.\d+`
 		re := regexp.MustCompile(pattern)

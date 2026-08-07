@@ -14,13 +14,24 @@ import (
 	"time"
 )
 
-func Exec(cmd string) (string, error) {
+func ExecShell(cmd string) (string, error) {
 	command := exec.Command("bash", "-c", cmd)
 	command.Env = os.Environ()
 	output, err := command.CombinedOutput()
 	if err != nil {
 		logrus.Errorf("execute command failed cmd: %s err: %v", cmd, err)
 		return "", fmt.Errorf("execute command failed cmd: %s", cmd)
+	}
+	return string(output), nil
+}
+
+func ExecCommand(name string, args ...string) (string, error) {
+	command := exec.Command(name, args...)
+	command.Env = os.Environ()
+	output, err := command.CombinedOutput()
+	if err != nil {
+		logrus.Errorf("execute command failed name: %s err: %v", name, err)
+		return "", fmt.Errorf("execute command name cmd: %s", name)
 	}
 	return string(output), nil
 }
