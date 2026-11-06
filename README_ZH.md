@@ -233,7 +233,7 @@ Telegram Channel: https://t.me/jonssonyan_channel
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jonssonyan/h-ui&type=Date)](https://star-history.com/#jonssonyan/h-ui&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=jonssonyan/h-ui&type=Date)](https://star-history.dera.page/#jonssonyan/h-ui&Date)
 
 ## 开源协议
 
