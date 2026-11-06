@@ -187,10 +187,10 @@ export default {
       acme: {
         domains: "Domains",
         email: "Email",
-        ca: "The CA to use. Can be letsencrypt or zerossl.",
+        ca: "CA to use. Can be letsencrypt or zerossl.",
         listenHost:
-          "The host address (not including the port) to listen on for the ACME challenge. If omitted, the server will listen on all interfaces.",
-        dir: "The directory to store the ACME account key and certificates.",
+          "Listening address for ACME verification (no port). Defaults to listening on all available interfaces.",
+        dir: "Directory to store ACME credentials.",
         type: "ACME challenge type. Can be http, tls, or dns.",
         http: {
           altPort:
@@ -239,6 +239,8 @@ export default {
         maxIncomingStreams:
           "The maximum number of concurrent incoming streams.",
         disablePathMTUDiscovery: "Disable QUIC path MTU discovery.",
+        disableStatelessReset:
+          "Disable QUIC stateless resets. Stateless resets let a client holding a connection the server no longer knows about (after a restart, for example) reconnect immediately, instead of waiting out its idle timeout. Disabling them makes the server stay silent in that situation. (Requires Hysteria >= v2.12.2)",
       },
       bandwidth: {
         up: "Up",
@@ -246,7 +248,7 @@ export default {
 		  disableLossCompensation:"Brutal congestion control has a \"loss compensation\" mechanism: when there is packet loss, it attempts to send slightly faster than the set bandwidth to compensate and still reach the target speed. This may or may not help depending on the network conditions, and can sometimes make things worse. Set this to true to disable the compensation and always send at exactly the set speed. Note that this option is local to the endpoint (it only affects the upload direction of this machine)."
       },
       ignoreClientBandwidth:
-        "When enabled, makes the server to disregard any bandwidth hints set by clients",
+        "ignoreClientBandwidth is a special option that, when enabled, makes the server disregard any bandwidth hints set by clients and use the configured non-Brutal controller instead. This effectively overrides any bandwidth values set by clients in both directions.",
       congestion: {
         type: "Type",
         bbrProfile:
@@ -284,7 +286,7 @@ export default {
       sniff: {
         enable: "Whether to enable protocol sniffing.",
         timeout:
-          "Sniffing timeout. If the protocol/domain cannot be determined within this time, the original address will be used to initiate the connection.",
+          "Sniffing timeout for TCP. If the protocol/domain cannot be determined within this time, the original address will be used to initiate the connection. UDP is not affected: a UDP session is decided within its first 8 packets. (TCP only in Hysteria >= v2.13.0)",
         rewriteDomain:
           "Whether to rewrite requests that are already in domain name form. If enabled, requests with the target address already in domain name form will still be sniffed.",
         tcpPorts:
@@ -301,7 +303,7 @@ export default {
         geosite:
           "Optional. Uncomment to enable. The path to the GeoSite database file. If this field is omitted, Hysteria will automatically download the latest database to your working directory.",
         geoUpdateInterval:
-          "Optional. The interval at which to refresh the GeoIP/GeoSite databases. 168 hours (1 week) by default. Only applies if the GeoIP/GeoSite databases are automatically downloaded. (Check the note below for more information.)",
+          "Optional. The interval at which to refresh the GeoIP/GeoSite databases. 168 hours (1 week) by default. Only applies if the GeoIP/GeoSite databases are automatically downloaded.",
       },
       outbounds: {
         name: "The name of the outbound. This is used in ACL rules.",
@@ -335,7 +337,7 @@ export default {
           dir: "The directory to serve files from.",
         },
         proxy: {
-          url: "The URL of the website to proxy.",
+          url: "The URL of the website to proxy. Can also be a Unix socket, written as unix:///path/to.sock or as an absolute path like /path/to.sock. (Unix socket requires Hysteria >= v2.12.2)",
           rewriteHost:
             "Whether to rewrite the Host header to match the proxied website. This is required if the target web server uses Host to determine which site to serve.",
           insecure: "Disable TLS verification for the proxied website.",

@@ -235,6 +235,8 @@ export default {
           "最长空闲超时时间。服务器会在多长时间没有收到任何客户端数据后关闭连接。",
         maxIncomingStreams: "最大并发传入流的数量。",
         disablePathMTUDiscovery: "禁用 MTU 探测。",
+        disableStatelessReset:
+          "禁用 QUIC stateless reset。当服务端不再认识客户端持有的连接时（如服务端被重启），stateless reset 能让它立即重连，而不必等待空闲超时。禁用后，服务端在这种情况下将保持静默。（需要 Hysteria >= v2.12.2）",
       },
       bandwidth: {
         up: "上传",
@@ -242,12 +244,14 @@ export default {
         disableLossCompensation:
           "Brutal 拥塞控制有一个「丢包补偿」机制：当出现丢包时，它会根据丢包率以略高于设定带宽的速度发送，以尝试继续达到设定的目标速度。取决于网络环境，这可能有用也可能适得其反。将此项设为 true 即可关闭补偿机制，永远不以高于设定带宽的速度发送。注意此选项是本地的，只影响本机的上传方向。",
       },
-      ignoreClientBandwidth: "忽略客户端带宽设置",
+      ignoreClientBandwidth:
+        "ignoreClientBandwidth 启用后，服务器将忽略客户端设置的任何带宽，改为使用已配置的非 Brutal 控制器。",
       congestion: {
         type: "类型",
         bbrProfile: "此字段仅在 type 为 bbr 时生效。默认值为 standard。",
       },
-      speedTest: "speedTest 启用后，服务端将允许客户端进行下载和上传速度测试。",
+      speedTest:
+        "speedTest 启用后，服务端将允许客户端进行下载和上传速度测试。详细信息请参考 速度测试文档。",
       disableUDP: "disableUDP 启用后服务端禁用 UDP 转发，只支持 TCP。",
       udpIdleTimeout:
         "udpIdleTimeout 用于指定服务器对于每个 UDP 会话，在没有流量时保持本地 UDP 端口的时间长度。概念上与 NAT 的 UDP 会话超时时间相似。",
@@ -277,7 +281,7 @@ export default {
       sniff: {
         enable: "是否启用协议嗅探。",
         timeout:
-          "嗅探超时时间。如果超过这个时间仍然无法确定协议/获取域名，将使用原地址发起连接。",
+          "TCP 嗅探超时时间。如果超过这个时间仍然无法确定协议/获取域名，将使用原地址发起连接。UDP 不受此影响：UDP 会话会在前 8 个包内完成判定。（Hysteria >= v2.13.0 起仅对 TCP 生效）",
         rewriteDomain:
           "是否重写已经是域名的请求。如果启用，对于目标地址已经是域名的请求，仍会进行嗅探。",
         tcpPorts: "TCP 端口列表。只有这些端口的 TCP 请求会被嗅探。",
@@ -323,7 +327,7 @@ export default {
           dir: "用于提供文件的目录。",
         },
         proxy: {
-          url: "要代理的网站的 URL。",
+          url: "要代理的网站的 URL。也可以是 Unix socket，支持 unix:///path/to.sock 或 /path/to.sock 绝对路径。（Unix socket 需要 Hysteria >= v2.12.2）",
           rewriteHost:
             "是否重写 Host 头以匹配被代理的网站。如果目标网站通过 Host 识别请求的网站，这个选项是必须的。",
           insecure: "禁用对代理网站的 TLS 验证。",
