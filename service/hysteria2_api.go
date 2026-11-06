@@ -3,11 +3,13 @@ package service
 import (
 	"errors"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"h-ui/dao"
 	"h-ui/model/bo"
 	"h-ui/model/constant"
 	"h-ui/proxy"
+	"h-ui/util"
 	"net/url"
 	"strings"
 	"time"
@@ -251,6 +253,15 @@ func Hysteria2Url(accountId int64, hostname string) (string, error) {
 	}
 
 	urlConfig += "&insecure=0"
+
+	if hysteria2Config.Ech != nil && hysteria2Config.Ech.KeyPath != "" {
+		echConfigList, err := util.ReadEchConfigList(hysteria2Config.Ech.KeyPath)
+		if err != nil {
+			logrus.Warnf("read ECH config list err: %v", err)
+		} else {
+			urlConfig += fmt.Sprintf("&ech=%s", url.QueryEscape(echConfigList))
+		}
+	}
 
 	if hysteria2Config.Bandwidth != nil &&
 		hysteria2Config.Bandwidth.Down != nil &&
