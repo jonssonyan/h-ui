@@ -626,6 +626,17 @@
                 <el-switch v-model="dataForm.quic.disablePathMTUDiscovery" />
               </el-form-item>
             </el-tooltip>
+            <el-tooltip
+              :content="$t('hysteria.config.quic.disableStatelessReset')"
+              placement="bottom"
+            >
+              <el-form-item
+                label="quic.disableStatelessReset"
+                prop="quic.disableStatelessReset"
+              >
+                <el-switch v-model="dataForm.quic.disableStatelessReset" />
+              </el-form-item>
+            </el-tooltip>
           </el-tab-pane>
           <el-tab-pane
             :label="$t('hysteria.bandwidth')"
@@ -1262,7 +1273,10 @@ const dnsNames = ref<string[]>([
   "duckdns",
   "gandi",
   "godaddy",
+  "namecheap",
   "namedotcom",
+  "njalla",
+  "porkbun",
   "vultr",
 ]);
 const obfsTypes = ref<string[]>(["salamander", "gecko"]);

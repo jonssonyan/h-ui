@@ -71,6 +71,7 @@ export interface Hysteria2ServerConfig {
     maxIdleTimeout?: string;
     maxIncomingStreams?: number;
     disablePathMTUDiscovery?: boolean;
+    disableStatelessReset?: boolean;
   };
   bandwidth?: {
     up: string;
@@ -199,6 +200,7 @@ export const defaultHysteria2ServerConfig: Hysteria2ServerConfig = {
     maxIdleTimeout: "30s",
     maxIncomingStreams: 1024,
     disablePathMTUDiscovery: false,
+    disableStatelessReset: false,
   },
   bandwidth: {
     up: "1 gbps",
