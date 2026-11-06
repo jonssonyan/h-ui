@@ -4,6 +4,7 @@ export PATH
 
 hui_systemd_version="${1:-latest}"
 hui_docker_version=":${hui_systemd_version#v}"
+hui_docker_image="ghcr.io/jonssonyan/h-ui"
 
 init_var() {
   ECHO_TYPE="echo -e"
@@ -284,7 +285,7 @@ install_h_ui_docker() {
     -v /h-ui/data:/h-ui/data \
     -v /h-ui/export:/h-ui/export \
     -v /h-ui/logs:/h-ui/logs \
-    jonssonyan/h-ui"${hui_docker_version}" \
+    "${hui_docker_image}${hui_docker_version}" \
     ./h-ui -p ${h_ui_port}
   sleep 3
   echo_content yellow "h-ui Access URL: http://:<your-server-ip>:${h_ui_port}"
@@ -316,7 +317,7 @@ upgrade_h_ui_docker() {
 
   echo_content green "---> Upgrade H UI"
   docker rm -f h-ui
-  docker rmi jonssonyan/h-ui
+  docker images "${hui_docker_image}" -q | xargs -r docker rmi -f
 
   read -r -p "Please enter the port of H UI (default: 8081): " h_ui_port
   [[ -z "${h_ui_port}" ]] && h_ui_port="8081"
@@ -331,7 +332,7 @@ upgrade_h_ui_docker() {
     -v /h-ui/data:/h-ui/data \
     -v /h-ui/export:/h-ui/export \
     -v /h-ui/logs:/h-ui/logs \
-    jonssonyan/h-ui \
+    "${hui_docker_image}" \
     ./h-ui -p ${h_ui_port}
   echo_content skyBlue "---> H UI upgrade successful"
 }
@@ -348,7 +349,7 @@ uninstall_h_ui_docker() {
 
   echo_content green "---> Uninstall H UI"
   docker rm -f h-ui
-  docker images jonssonyan/h-ui -q | xargs -r docker rmi -f
+  docker images "${hui_docker_image}" -q | xargs -r docker rmi -f
   rm -rf /h-ui/
   remove_forward
   echo_content skyBlue "---> H UI uninstall successful"
