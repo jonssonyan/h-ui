@@ -13,7 +13,6 @@ Just the panel for Hysteria2
 <a href="https://github.com/jonssonyan/h-ui/stargazers"><img src="https://img.shields.io/github/stars/jonssonyan/h-ui" alt="GitHub stars"></a>
 <a href="https://github.com/jonssonyan/h-ui/forks"><img src="https://img.shields.io/github/forks/jonssonyan/h-ui" alt="GitHub forks"></a>
 <a href="https://github.com/jonssonyan/h-ui/releases"><img src="https://img.shields.io/github/v/release/jonssonyan/h-ui" alt="GitHub release"></a>
-<a href="https://hub.docker.com/r/jonssonyan/h-ui"><img src="https://img.shields.io/docker/pulls/jonssonyan/h-ui" alt="Docker pulls"></a>
 </p>
 
 ![cover](./docs/images/cover.png)
@@ -94,7 +93,7 @@ rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
 2. Start a container
 
    ```bash
-   docker pull jonssonyan/h-ui
+   docker pull ghcr.io/jonssonyan/h-ui
 
    docker run -d --cap-add=NET_ADMIN \
      --name h-ui --restart always \
@@ -103,7 +102,7 @@ rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
      -v /h-ui/data:/h-ui/data \
      -v /h-ui/export:/h-ui/export \
      -v /h-ui/logs:/h-ui/logs \
-     jonssonyan/h-ui
+     ghcr.io/jonssonyan/h-ui
    ```
 
    Custom web port, default is 8081
@@ -116,7 +115,7 @@ rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
      -v /h-ui/data:/h-ui/data \
      -v /h-ui/export:/h-ui/export \
      -v /h-ui/logs:/h-ui/logs \
-     jonssonyan/h-ui \
+     ghcr.io/jonssonyan/h-ui \
      ./h-ui -p 8081
    ```
 
@@ -131,14 +130,14 @@ rm -rf /etc/systemd/system/h-ui.service /usr/local/h-ui/
      -v /h-ui/data:/h-ui/data \
      -v /h-ui/export:/h-ui/export \
      -v /h-ui/logs:/h-ui/logs \
-     jonssonyan/h-ui
+     ghcr.io/jonssonyan/h-ui
    ```
 
 Uninstall
 
 ```bash
 docker rm -f h-ui
-docker rmi jonssonyan/h-ui
+docker rmi ghcr.io/jonssonyan/h-ui
 rm -rf /h-ui
 ```
 
