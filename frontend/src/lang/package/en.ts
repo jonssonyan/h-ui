@@ -211,9 +211,10 @@ export default {
         altTLSALPNPort:
           "Alternate TLS-ALPN challenge port. (Note: If you want to use anything other than 443, you must set up port forward/SNI proxy from 443 to that port, otherwise ACME will not be able to issue the certificate.)",
       },
-		ech:{
-			keyPath:"Path to an ECH key file generated with `sing-box generate ech-keypair <public_name>`. On startup, the server logs the config list that clients need to set in their tls.ech. See ECH for details."
-		},
+      ech: {
+        keyPath:
+          "Path to an ECH key file generated with `sing-box generate ech-keypair <public_name>`. On startup, the server logs the config list that clients need to set in their tls.ech. See ECH for details.",
+      },
       obfs: {
         type: "Type",
         salamander: {
@@ -245,7 +246,8 @@ export default {
       bandwidth: {
         up: "Up",
         down: "Down",
-		  disableLossCompensation:"Brutal congestion control has a \"loss compensation\" mechanism: when there is packet loss, it attempts to send slightly faster than the set bandwidth to compensate and still reach the target speed. This may or may not help depending on the network conditions, and can sometimes make things worse. Set this to true to disable the compensation and always send at exactly the set speed. Note that this option is local to the endpoint (it only affects the upload direction of this machine)."
+        disableLossCompensation:
+          'Brutal congestion control has a "loss compensation" mechanism: when there is packet loss, it attempts to send slightly faster than the set bandwidth to compensate and still reach the target speed. This may or may not help depending on the network conditions, and can sometimes make things worse. Set this to true to disable the compensation and always send at exactly the set speed. Note that this option is local to the endpoint (it only affects the upload direction of this machine).',
       },
       ignoreClientBandwidth:
         "ignoreClientBandwidth is a special option that, when enabled, makes the server disregard any bandwidth hints set by clients and use the configured non-Brutal controller instead. This effectively overrides any bandwidth values set by clients in both directions.",

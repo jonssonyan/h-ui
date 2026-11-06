@@ -1274,7 +1274,6 @@ const dnsNames = ref<string[]>([
   "gandi",
   "godaddy",
   "namecheap",
-  "namedotcom",
   "njalla",
   "porkbun",
   "vultr",
