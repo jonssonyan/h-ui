@@ -91,6 +91,7 @@ type serverConfigQUIC struct {
 	MaxIdleTimeout              *string `yaml:"maxIdleTimeout,omitempty" json:"maxIdleTimeout" validate:"omitempty"`
 	MaxIncomingStreams          *int64  `yaml:"maxIncomingStreams,omitempty" json:"maxIncomingStreams" validate:"omitempty"`
 	DisablePathMTUDiscovery     *bool   `yaml:"disablePathMTUDiscovery,omitempty" json:"disablePathMTUDiscovery" validate:"omitempty"`
+	DisableStatelessReset       *bool   `yaml:"disableStatelessReset,omitempty" json:"disableStatelessReset" validate:"omitempty"`
 }
 
 type serverConfigBandwidth struct {
