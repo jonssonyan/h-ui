@@ -16,12 +16,14 @@ var rootCmd = &cobra.Command{
 }
 
 var (
-	version bool
-	port    string
+	version    bool
+	port       string
+	listenAddr string
 )
 
 func init() {
 	rootCmd.Flags().BoolVarP(&version, "version", "v", false, "Show version")
+	rootCmd.Flags().StringVarP(&listenAddr, "address", "a", "", "IP address to bind the web server to")
 	rootCmd.Flags().StringVarP(&port, "port", "p", "", "The port of the web server")
 }
 
@@ -35,8 +37,14 @@ func run(cmd *cobra.Command, args []string) {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+
+	if err := util.VerifyListenIP(listenAddr); err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
 	for {
-		if err := runServer(port); err != nil {
+		if err := runServer(listenAddr, port); err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)
 		}
