@@ -23,7 +23,13 @@ var (
 
 func init() {
 	rootCmd.Flags().BoolVarP(&version, "version", "v", false, "Show version")
-	rootCmd.Flags().StringVarP(&listenAddr, "address", "a", "", "IP address to bind the web server to")
+	rootCmd.Flags().StringVarP(
+		&listenAddr,
+		"address",
+		"a",
+		"",
+		"IP address to bind the web server to (intended for the loopback address only)",
+	)
 	rootCmd.Flags().StringVarP(&port, "port", "p", "", "The port of the web server")
 }
 
