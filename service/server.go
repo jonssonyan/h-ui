@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"fmt"
 	"github.com/sirupsen/logrus"
@@ -12,16 +13,33 @@ import (
 
 var server *http.Server
 
-func InitServer(addr string, handler http.Handler) {
+func InitServer(addr string, handler http.Handler, certPath, keyPath string) {
 	server = &http.Server{
 		Addr:    addr,
 		Handler: handler,
 	}
+
+	if certPath != "" && keyPath != "" {
+		server.TLSConfig = &tls.Config{
+			// GetCertificate will be called in every TLS handshake, So the
+			// server will always get the latest certificate.
+			GetCertificate: func(*tls.ClientHelloInfo) (*tls.Certificate, error) {
+				cert, err := tls.LoadX509KeyPair(certPath, keyPath)
+
+				if err != nil {
+					return nil, err
+				}
+
+				return &cert, nil
+			},
+		}
+
+	}
 }
 
-func StartServer(crtPath string, keyPath string) error {
-	if crtPath != "" && keyPath != "" {
-		return server.ListenAndServeTLS(crtPath, keyPath)
+func StartServer() error {
+	if server.TLSConfig != nil {
+		return server.ListenAndServeTLS("", "")
 	}
 	return server.ListenAndServe()
 }
