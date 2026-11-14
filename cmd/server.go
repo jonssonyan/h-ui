@@ -55,8 +55,8 @@ func runServer(port string) error {
 		return err
 	}
 
-	service.InitServer(fmt.Sprintf(":%d", serverPort), r)
-	if err := service.StartServer(crtPath, keyPath); err != nil && err != http.ErrServerClosed {
+	service.InitServer(fmt.Sprintf(":%d", serverPort), r, crtPath, keyPath)
+	if err := service.StartServer(); err != nil && err != http.ErrServerClosed {
 		logrus.Errorf("start server err: %v", err)
 		return errors.New("start server err")
 	}
