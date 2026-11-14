@@ -104,3 +104,16 @@ func VerifyPort(port string) error {
 	}
 	return nil
 }
+
+func VerifyListenIP(ip string) error {
+	// An empty string, means listening to all the network interfaces.
+	if ip == "" {
+		return nil
+	}
+
+	if net.ParseIP(ip) == nil {
+		return errors.New("invalid IP address")
+	}
+
+	return nil
+}
